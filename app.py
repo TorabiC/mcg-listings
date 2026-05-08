@@ -9,6 +9,8 @@ import logging
 import hmac
 import hashlib
 import time
+import threading
+import uuid
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -24,7 +26,7 @@ import listing_generator
 from listing_generator import normalize, generate_html
 from webflow_client import WebflowClient
 
-load_dotenv()
+load_dotenv(override=True)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
@@ -40,6 +42,11 @@ GENERATED_DIR = Path(__file__).parent / "generated"
 GENERATED_DIR.mkdir(exist_ok=True)
 
 SETTINGS_FILE = Path(__file__).parent / ".dashboard_settings.json"
+
+# ── Background scrape jobs ────────────────────────────────────────────────────
+# Keyed by job_id: {"status": "working"|"done"|"error", "listing": {...}, "error": "..."}
+_scrape_jobs: dict = {}
+_jobs_lock = threading.Lock()
 
 ADMIN_USER = os.getenv("ADMIN_USERNAME", "mcgadmin")
 ADMIN_PASS = os.getenv("ADMIN_PASSWORD", "")
@@ -204,7 +211,8 @@ def post_settings():
 @login_required
 def api_scrape():
     """
-    Accept an MLS URL, scrape all listing data, return normalized listing dict.
+    Start a background scrape job. Returns {job_id} immediately.
+    Poll GET /api/scrape/<job_id> for status and results.
     """
     body = request.get_json(force=True) or {}
     url = (body.get("url") or "").strip()
@@ -216,19 +224,36 @@ def api_scrape():
     if not api_key:
         return jsonify({"error": "Anthropic API key not configured. Add it in Settings."}), 400
 
-    try:
-        logger.info(f"Scraping: {url}")
-        raw = scrape_listing(url, api_key)
+    job_id = str(uuid.uuid4())
+    with _jobs_lock:
+        _scrape_jobs[job_id] = {"status": "working"}
 
-        # Normalize into template-ready format
-        listing = normalize(raw)
+    def _run(job_id, url, api_key):
+        try:
+            logger.info(f"[job {job_id}] Scraping: {url}")
+            raw = scrape_listing(url, api_key)
+            listing = normalize(raw)
+            logger.info(f"[job {job_id}] Done: {listing.get('address_full')} @ {listing.get('price_formatted')}")
+            with _jobs_lock:
+                _scrape_jobs[job_id] = {"status": "done", "listing": listing, "source": raw.get("source", "unknown")}
+        except Exception as e:
+            logger.error(f"[job {job_id}] Scrape error: {e}", exc_info=True)
+            with _jobs_lock:
+                _scrape_jobs[job_id] = {"status": "error", "error": str(e)}
 
-        logger.info(f"Scraped: {listing.get('address_full')} @ {listing.get('price_formatted')}")
-        return jsonify({"listing": listing, "source": raw.get("source", "unknown")})
+    threading.Thread(target=_run, args=(job_id, url, api_key), daemon=True).start()
+    return jsonify({"job_id": job_id, "status": "working"})
 
-    except Exception as e:
-        logger.error(f"Scrape error: {e}", exc_info=True)
-        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/scrape/<job_id>", methods=["GET"])
+@login_required
+def api_scrape_poll(job_id):
+    """Poll for scrape job status."""
+    with _jobs_lock:
+        job = _scrape_jobs.get(job_id)
+    if not job:
+        return jsonify({"error": "Job not found"}), 404
+    return jsonify(job)
 
 
 @app.route("/api/generate", methods=["POST"])

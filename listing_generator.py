@@ -537,7 +537,7 @@ def normalize(raw: dict) -> dict:
         "seo_description": seo_description,
         "schema_json": _build_schema_json(
             listing_type, street, city, state, zip_code, full_address,
-            beds, baths, sqft, total_acres, units, price, price_formatted,
+            beds, baths, sqft_raw, total_acres_raw, units, price_raw, price_formatted,
             year_built, cap_rate_display, photos if isinstance(photos, list) else [],
         ),
     }
