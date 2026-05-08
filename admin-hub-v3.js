@@ -8,8 +8,7 @@
 
 (function () {
   // ── Config ──────────────────────────────────────────────────────────────────
-  // Set window.MCG_API from a Webflow inline script, or update the fallback below
-  const API_URL = (window.MCG_API || 'https://mcg-dashboard-production.up.railway.app').replace(/\/$/, '');
+  const API_URL = 'https://mcg-dashboard-production.up.railway.app';
   const TOKEN_KEY = 'mcg_admin_token';
   const TOKEN_TS_KEY = 'mcg_admin_token_ts';
   const TOKEN_TTL = 23 * 60 * 60 * 1000; // 23 h in ms (server token is 24 h)
