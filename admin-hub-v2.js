@@ -9,7 +9,7 @@
 (function () {
   // ── Config ──────────────────────────────────────────────────────────────────
   // Set window.MCG_API from a Webflow inline script, or update the fallback below
-  const API_URL = (window.MCG_API || 'https://YOUR-RAILWAY-APP.railway.app').replace(/\/$/, '');
+  const API_URL = (window.MCG_API || 'https://mcg-dashboard-production.up.railway.app').replace(/\/$/, '');
   const TOKEN_KEY = 'mcg_admin_token';
   const TOKEN_TS_KEY = 'mcg_admin_token_ts';
   const TOKEN_TTL = 23 * 60 * 60 * 1000; // 23 h in ms (server token is 24 h)
@@ -30,6 +30,35 @@
   function clearToken() {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(TOKEN_TS_KEY);
+  }
+
+  // ── Inject login overlay if not present in the Webflow page HTML ─────────────
+  if (!document.getElementById('mcg-login')) {
+    const overlay = document.createElement('div');
+    overlay.id = 'mcg-login';
+    overlay.style.cssText = [
+      'position:fixed','inset:0','z-index:999999',
+      'background:#16162a','display:flex','align-items:center',
+      'justify-content:center','font-family:Lato,sans-serif'
+    ].join(';');
+    overlay.innerHTML = `
+      <div class="login-box" style="background:#fff;border-radius:12px;padding:40px 36px;width:340px;max-width:90vw;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)">
+        <img src="https://cdn.prod.website-files.com/699cb0b733f309dd4bda1b56/69a1adfa32ad89b96dade636_NEW%20LOGO%20COLOR%20copy.png"
+             style="height:44px;width:auto;display:block;margin:0 auto 18px" alt="Mason Capital Group">
+        <h2 style="font-size:20px;font-weight:900;color:#16162a;margin:0 0 6px">Admin Hub</h2>
+        <div style="font-size:13px;color:#6b7280;margin-bottom:24px">Sign in to access the marketing dashboard</div>
+        <input id="mcg-user" type="text" placeholder="Username" autocomplete="off"
+          style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:14px;margin-bottom:10px;box-sizing:border-box;font-family:inherit;outline:none">
+        <input id="mcg-pass" type="password" placeholder="Password"
+          style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:14px;margin-bottom:14px;box-sizing:border-box;font-family:inherit;outline:none">
+        <button id="mcg-login-btn"
+          style="width:100%;padding:12px;background:#ab012e;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
+          Sign In
+        </button>
+        <div id="mcg-login-error" style="color:#ab012e;font-size:13px;margin-top:10px;min-height:18px"></div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:16px">Mason Capital Group • Authorized Access Only</div>
+      </div>`;
+    document.body.appendChild(overlay);
   }
 
   // ── DOM refs ─────────────────────────────────────────────────────────────────
@@ -98,7 +127,7 @@
     try {
       const res = await fetch(API_URL + '/api/auth', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'bypass-tunnel-reminder': '1' },
         body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
@@ -185,19 +214,40 @@
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token,
+      'bypass-tunnel-reminder': '1',
     };
 
     try {
-      // ── Step 1: Scrape ────────────────────────────────────────────────────
-      const scrapeRes = await fetch(API_URL + '/api/scrape', {
+      // ── Step 1: Start scrape job ──────────────────────────────────────────
+      const startRes = await fetch(API_URL + '/api/scrape', {
         method: 'POST', headers,
         body: JSON.stringify({ url }),
       });
-      if (scrapeRes.status === 401) { clearToken(); showLogin(); return; }
-      const scrapeData = await scrapeRes.json();
-      if (scrapeData.error) throw new Error('Scrape: ' + scrapeData.error);
+      if (startRes.status === 401) { clearToken(); showLogin(); return; }
+      const startData = await startRes.json();
+      if (startData.error) throw new Error('Scrape: ' + startData.error);
 
-      const listing = scrapeData.listing;
+      const jobId = startData.job_id;
+
+      // ── Step 2: Poll until done ───────────────────────────────────────────
+      let listing = null;
+      let elapsed = 0;
+      while (elapsed < 180000) { // max 3 min
+        await new Promise(r => setTimeout(r, 3000));
+        elapsed += 3000;
+
+        const dots = '.'.repeat(1 + (elapsed / 3000) % 3);
+        setCardStatus('Listing Page', 'working', 'Scraping listing' + dots);
+
+        const pollRes = await fetch(API_URL + '/api/scrape/' + jobId, { headers });
+        if (pollRes.status === 401) { clearToken(); showLogin(); return; }
+        const poll = await pollRes.json();
+
+        if (poll.status === 'error') throw new Error('Scrape: ' + poll.error);
+        if (poll.status === 'done') { listing = poll.listing; break; }
+      }
+      if (!listing) throw new Error('Scrape timed out after 3 minutes.');
+
       setCardStatus('Listing Page', 'working', 'Generating page HTML…');
 
       // ── Step 2: Generate HTML ─────────────────────────────────────────────
