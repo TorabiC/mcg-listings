@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCG Marketing Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--crimson:#ab012e;--navy:#16162a;--gold:#c4a35a;--bg:#f4f4f4;--white:#fff;--border:#e0e0e0;--mid:#6b7280;--text:#1a1a1a;--sidebar:260px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Lato',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;display:flex}
+a{color:var(--crimson);text-decoration:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{0%{background-position:0% center}50%{background-position:100% center}100%{background-position:0% center}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
+.sidebar-logo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo-mark{display:flex;align-items:center;gap:10px}
+.logo-bar{width:3px;height:22px;background:var(--gold);border-radius:2px}
+.logo-text{font-size:13px;font-weight:900;color:#fff;letter-spacing:1.5px;text-transform:uppercase;line-height:1.2}
+.logo-sub{font-size:10px;color:rgba(255,255,255,.4);font-weight:400;letter-spacing:.5px;margin-top:2px}
+.sidebar-nav{padding:16px 0;flex:1;overflow-y:auto}
+.nav-section{padding:10px 16px 6px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:13px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,.05)}
+.nav-item.active{color:#fff;background:rgba(196,163,90,.12);border-left-color:var(--gold)}
+.nav-item svg{width:17px;height:17px;fill:currentColor;flex-shrink:0}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:rgba(255,255,255,.3)}
+
+/* MAIN */
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 32px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{font-size:16px;font-weight:900;color:var(--navy)}
+.topbar-sub{font-size:12px;color:var(--mid);margin-top:1px}
+.topbar-actions{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
+.btn-primary{background:var(--crimson);color:#fff}
+.btn-primary:hover{background:#8e0124}
+.btn-gold{background:linear-gradient(90deg,#c49a52,#d4a843,#edd87a,#FFBF00,#edd87a,#d4a843,#c49a52);background-size:400%;animation:shimmer 7s ease-in-out infinite;color:#313946}
+.btn-outline{background:#fff;border:1.5px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--navy)}
+.btn svg{width:15px;height:15px;fill:currentColor}
+.content{padding:32px;flex:1}
+
+/* PANELS */
+.panel{background:var(--white);border-radius:10px;border:1px solid var(--border);overflow:hidden}
+.panel-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.panel-title{font-size:15px;font-weight:700;color:var(--navy)}
+.panel-sub{font-size:12px;color:var(--mid);margin-top:2px}
+.panel-body{padding:22px}
+
+/* URL INPUT HERO */
+.url-hero{background:linear-gradient(135deg,var(--navy) 0%,#1e1e3a 100%);border-radius:12px;padding:36px 40px;margin-bottom:28px;position:relative;overflow:hidden}
+.url-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(196,163,90,.12) 0%,transparent 70%);pointer-events:none}
+.url-hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.url-hero-heading{font-size:26px;font-weight:900;color:#fff;line-height:1.3;margin-bottom:6px}
+.url-hero-sub{font-size:14px;color:rgba(255,255,255,.55);margin-bottom:24px;line-height:1.6}
+.url-input-row{display:flex;gap:12px;align-items:stretch}
+.url-input{flex:1;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:8px;padding:13px 18px;font-size:14px;color:#fff;font-family:inherit;outline:none;transition:border-color .15s}
+.url-input::placeholder{color:rgba(255,255,255,.3)}
+.url-input:focus{border-color:rgba(196,163,90,.6);background:rgba(255,255,255,.1)}
+.url-submit-btn{padding:13px 28px;background:var(--crimson);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;transition:background .15s;display:flex;align-items:center;gap:8px}
+.url-submit-btn:hover{background:#8e0124}
+.url-submit-btn:disabled{background:#555;cursor:not-allowed}
+.url-submit-btn svg{width:16px;height:16px;fill:#fff}
+.supported-sites{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap}
+.site-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:4px 12px;font-size:11px;color:rgba(255,255,255,.5)}
+.site-tag svg{width:12px;height:12px;fill:rgba(196,163,90,.6)}
+
+/* PROGRESS STEPS */
+.progress-wrap{margin-bottom:28px;display:none}
+.progress-wrap.visible{display:block}
+.progress-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--white);border-radius:10px;border:1px solid var(--border);overflow:hidden}
+.step{padding:16px 18px;display:flex;align-items:center;gap:10px;border-right:1px solid var(--border);transition:background .2s}
+.step:last-child{border-right:none}
+.step.done{background:#f0faf4}
+.step.active{background:#fffbf0}
+.step.error{background:#fff5f5}
+.step-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;background:#e5e7eb;color:#6b7280}
+.step.done .step-icon{background:#dcfce7;color:#166534}
+.step.active .step-icon{background:#fef3c7;color:#92400e;animation:pulse 1.5s infinite}
+.step.error .step-icon{background:#fee2e2;color:#991b1b}
+.step-label{font-size:12px;font-weight:700;color:var(--mid)}
+.step.done .step-label{color:#166534}
+.step.active .step-label{color:#92400e}
+.step.error .step-label{color:#991b1b}
+.step-sub{font-size:11px;color:var(--mid);margin-top:1px}
+
+/* STATUS BAR */
+.status-bar{background:var(--navy);color:#fff;border-radius:8px;padding:12px 18px;margin-bottom:20px;display:none;align-items:center;gap:12px;font-size:13px}
+.status-bar.visible{display:flex}
+.status-spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0}
+.status-msg{flex:1}
+.status-pct{font-size:12px;color:rgba(255,255,255,.5);white-space:nowrap}
+
+/* RESULTS GRID */
+.results-grid{display:grid;grid-template-columns:1fr 360px;gap:24px;display:none}
+.results-grid.visible{display:grid}
+
+/* PREVIEW PANEL */
+.preview-panel{border-radius:10px;border:1px solid var(--border);overflow:hidden;background:var(--white)}
+.preview-toolbar{background:var(--navy);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.preview-toolbar-left{display:flex;align-items:center;gap:12px}
+.preview-dots{display:flex;gap:6px}
+.preview-dot{width:12px;height:12px;border-radius:50%}
+.preview-title{font-size:12px;font-weight:700;color:rgba(255,255,255,.7)}
+.preview-frame{width:100%;height:calc(100vh - 200px);border:none;display:block}
+.preview-placeholder{height:400px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--mid);background:#f9f9f9}
+.preview-placeholder svg{width:48px;height:48px;fill:#d1d5db}
+
+/* DATA PANEL */
+.data-panel{display:flex;flex-direction:column;gap:16px}
+.data-section{background:var(--white);border-radius:10px;border:1px solid var(--border);overflow:hidden}
+.data-section-header{padding:14px 18px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;color:var(--navy);display:flex;align-items:center;justify-content:space-between}
+.data-section-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:#e6f4ed;color:#1a7a45}
+.data-field{padding:10px 18px;border-bottom:1px solid #f5f5f5;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.data-field:last-child{border-bottom:none}
+.data-field-label{font-size:11px;color:var(--mid);font-weight:600;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0}
+.data-field-val{font-size:13px;font-weight:700;color:var(--text);text-align:right}
+.data-field-input{font-size:13px;border:1px solid var(--border);border-radius:5px;padding:5px 10px;font-family:inherit;color:var(--text);text-align:right;background:#f9f9f9;width:180px}
+.data-field-input:focus{outline:none;border-color:var(--navy)}
+
+/* PUBLISH CARD */
+.publish-card{background:linear-gradient(135deg,var(--navy),#1e1e3a);border-radius:10px;padding:22px;color:#fff}
+.publish-card-title{font-size:15px;font-weight:900;margin-bottom:4px}
+.publish-card-sub{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:20px;line-height:1.5}
+.publish-url-preview{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:10px 14px;font-size:12px;color:rgba(255,255,255,.6);margin-bottom:16px;font-family:monospace;word-break:break-all}
+.publish-url-preview span{color:var(--gold)}
+.publish-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:var(--crimson);border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s;margin-bottom:10px}
+.publish-btn:hover{background:#8e0124}
+.publish-btn:disabled{background:#555;cursor:not-allowed}
+.publish-btn svg{width:16px;height:16px;fill:#fff}
+.download-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s}
+.download-btn:hover{background:rgba(255,255,255,.14)}
+.download-btn svg{width:15px;height:15px;fill:#fff}
+
+/* LISTINGS TABLE */
+.listings-table{width:100%;border-collapse:collapse}
+.listings-table th{background:#f9f9f9;padding:10px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border)}
+.listings-table td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.listings-table tr:last-child td{border-bottom:none}
+.listings-table tr:hover td{background:#fafafa}
+.badge{display:inline-flex;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:700}
+.badge-live{background:#dcfce7;color:#166534}
+.badge-draft{background:#fef3c7;color:#92400e}
+.badge-error{background:#fee2e2;color:#991b1b}
+.table-action{background:none;border:none;cursor:pointer;color:var(--crimson);font-size:12px;font-weight:700;padding:4px 8px;border-radius:4px;transition:background .15s;font-family:inherit}
+.table-action:hover{background:#fce8ee}
+
+/* TOAST */
+.toast-container{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:9999}
+.toast{background:var(--navy);color:#fff;padding:14px 20px;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.3);display:flex;align-items:center;gap:10px;animation:fadeIn .25s ease;max-width:360px}
+.toast.success{border-left:4px solid #22c55e}
+.toast.error{border-left:4px solid var(--crimson)}
+.toast.info{border-left:4px solid var(--gold)}
+.toast svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
+
+/* SUCCESS STATE */
+.success-banner{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px 20px;display:flex;align-items:center;gap:12px;font-size:13px;color:#166534;display:none}
+.success-banner.visible{display:flex}
+.success-banner svg{width:20px;height:20px;fill:#166534;flex-shrink:0}
+.success-banner a{color:#166534;font-weight:700;text-decoration:underline}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;color:var(--mid)}
+.empty-state svg{width:56px;height:56px;fill:#d1d5db;margin:0 auto 16px}
+.empty-state h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.empty-state p{font-size:13px;line-height:1.6}
+
+@media(max-width:1100px){.results-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.sidebar{width:56px}.sidebar .logo-text,.sidebar .logo-sub,.sidebar .nav-section,.nav-item span,.sidebar-footer{display:none}.main{margin-left:56px}.nav-item{padding:10px 16px;justify-content:center}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-bar"></div>
+      <div>
+        <div class="logo-text">Mason Capital</div>
+        <div class="logo-sub">Marketing Dashboard</div>
+      </div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Tools</div>
+    <div class="nav-item active" onclick="showPanel('create')">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+      <span>Create Listing</span>
+    </div>
+    <div class="nav-item" onclick="showPanel('listings')">
+      <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+      <span>All Listings</span>
+    </div>
+    <div class="nav-section">Site</div>
+    <div class="nav-item" onclick="window.open('https://masoncapitalgroup.com/properties','_blank')">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Live Site</span>
+    </div>
+    <div class="nav-item" onclick="window.open('https://webflow.com/design','_blank')">
+      <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+      <span>Webflow</span>
+    </div>
+    <div class="nav-section">Settings</div>
+    <div class="nav-item" onclick="showPanel('settings')">
+      <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+      <span>Settings</span>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="/logout" style="display:flex;align-items:center;gap:8px;color:#6b7280;font-size:12px;text-decoration:none;padding:8px 0;transition:color .15s;" onmouseover="this.style.color='#9b1c31'" onmouseout="this.style.color='#6b7280'">
+      <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+      Sign Out
+    </a>
+    <span style="color:#9ca3af;font-size:11px;">v1.0 · MCG Dashboard</span>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="topbar-title">Create Listing Page</div>
+      <div class="topbar-sub" id="topbar-sub">Paste any MLS URL to auto-generate a listing page</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-outline" onclick="window.open('https://masoncapitalgroup.com','_blank')">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        masoncapitalgroup.com
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══ CREATE PANEL ═══ -->
+    <div id="panel-create">
+
+      <!-- URL HERO INPUT -->
+      <div class="url-hero">
+        <div class="url-hero-eyebrow">MCG Listing Builder</div>
+        <div class="url-hero-heading">Paste an MLS URL → Publish in minutes</div>
+        <div class="url-hero-sub">Supports Zillow, Realtor.com, Redfin, and any IDX/MLS URL. AI extracts all listing data, generates the page, and publishes it to masoncapitalgroup.com.</div>
+        <div class="url-input-row">
+          <input class="url-input" type="url" id="mlsUrl" placeholder="https://www.zillow.com/homedetails/... or any MLS link" autofocus>
+          <button class="url-submit-btn" id="scrapeBtn" onclick="startScrape()">
+            <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+            Build Listing Page
+          </button>
+        </div>
+        <div class="supported-sites">
+          <span class="site-tag"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>Zillow</span>
+          <span class="site-tag"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>Realtor.com</span>
+          <span class="site-tag"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>Redfin</span>
+          <span class="site-tag"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>IDX Broker</span>
+          <span class="site-tag"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>Any MLS URL</span>
+        </div>
+      </div>
+
+      <!-- PROGRESS STEPS -->
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-steps">
+          <div class="step" id="step-scrape">
+            <div class="step-icon" id="step-scrape-icon">1</div>
+            <div><div class="step-label">Scraping MLS</div><div class="step-sub">Extracting listing data</div></div>
+          </div>
+          <div class="step" id="step-ai">
+            <div class="step-icon" id="step-ai-icon">2</div>
+            <div><div class="step-label">AI Enhancement</div><div class="step-sub">Generating content</div></div>
+          </div>
+          <div class="step" id="step-generate">
+            <div class="step-icon" id="step-generate-icon">3</div>
+            <div><div class="step-label">Building Page</div><div class="step-sub">Rendering template</div></div>
+          </div>
+          <div class="step" id="step-ready">
+            <div class="step-icon" id="step-ready-icon">4</div>
+            <div><div class="step-label">Ready to Publish</div><div class="step-sub">Review and go live</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATUS BAR -->
+      <div class="status-bar" id="statusBar">
+        <div class="status-spinner"></div>
+        <div class="status-msg" id="statusMsg">Processing...</div>
+        <div class="status-pct" id="statusPct"></div>
+      </div>
+
+      <!-- SUCCESS BANNER -->
+      <div class="success-banner" id="successBanner">
+        <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+        <div>Page published successfully! &nbsp;<a href="#" id="successLink" target="_blank" rel="noopener">View live on masoncapitalgroup.com →</a></div>
+      </div>
+
+      <!-- RESULTS: Preview + Data Panel -->
+      <div class="results-grid" id="resultsGrid">
+
+        <!-- LEFT: Page Preview -->
+        <div class="preview-panel">
+          <div class="preview-toolbar">
+            <div class="preview-toolbar-left">
+              <div class="preview-dots">
+                <div class="preview-dot" style="background:#ef4444;"></div>
+                <div class="preview-dot" style="background:#f59e0b;"></div>
+                <div class="preview-dot" style="background:#22c55e;"></div>
+              </div>
+              <div class="preview-title" id="previewTitle">Preview</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-outline" style="padding:6px 12px;font-size:11px;" onclick="regeneratePage()">
+                <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                Regenerate
+              </button>
+              <button class="btn btn-outline" style="padding:6px 12px;font-size:11px;" onclick="openPreviewNewTab()">
+                <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                Open
+              </button>
+            </div>
+          </div>
+          <div id="previewContainer">
+            <div class="preview-placeholder" id="previewPlaceholder">
+              <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z"/></svg>
+              <div style="font-size:14px;font-weight:700;color:var(--text);">Page preview will appear here</div>
+              <div style="font-size:12px;">Paste an MLS URL above to get started</div>
+            </div>
+            <iframe id="previewFrame" class="preview-frame" style="display:none;" title="Listing Page Preview"></iframe>
+          </div>
+        </div>
+
+        <!-- RIGHT: Data + Publish -->
+        <div class="data-panel">
+
+          <!-- Listing Data (editable) -->
+          <div class="data-section">
+            <div class="data-section-header">
+              <span>Listing Data</span>
+              <span class="data-section-badge" id="dataSourceBadge">AI Extracted</span>
+            </div>
+            <div id="listingDataFields">
+              <!-- Populated by JS after scrape -->
+            </div>
+          </div>
+
+          <!-- Publish Card -->
+          <div class="publish-card">
+            <div class="publish-card-title">Publish to Webflow</div>
+            <div class="publish-card-sub">Creates a live page at masoncapitalgroup.com with the exact listing design. Publishes immediately.</div>
+            <div class="publish-url-preview" id="publishUrlPreview">
+              <span>masoncapitalgroup.com</span>/properties/<span id="slugPreview">—</span>
+            </div>
+            <button class="publish-btn" id="publishBtn" onclick="publishToWebflow()" disabled>
+              <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+              Publish to masoncapitalgroup.com
+            </button>
+            <button class="download-btn" id="downloadBtn" onclick="downloadHTML()" disabled>
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+              Download HTML File
+            </button>
+          </div>
+
+          <!-- Photos -->
+          <div class="data-section" id="photosSection" style="display:none;">
+            <div class="data-section-header">
+              <span>Photos</span>
+              <span class="data-section-badge" id="photoCount">0 photos</span>
+            </div>
+            <div id="photoGrid" style="padding:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /panel-create -->
+
+    <!-- ═══ LISTINGS PANEL ═══ -->
+    <div id="panel-listings" style="display:none;">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">All Published Listings</div>
+            <div class="panel-sub">Pages created and published to masoncapitalgroup.com</div>
+          </div>
+          <button class="btn btn-primary" onclick="showPanel('create')">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+            New Listing
+          </button>
+        </div>
+        <div class="panel-body" style="padding:0;">
+          <div id="listingsTableWrap">
+            <div class="empty-state" style="padding:60px 40px;">
+              <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+              <h3>No listings yet</h3>
+              <p>Create your first listing page by pasting an MLS URL in the Create Listing panel.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SETTINGS PANEL ═══ -->
+    <div id="panel-settings" style="display:none;">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Settings</div>
+        </div>
+        <div class="panel-body" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+          <div>
+            <h3 style="font-size:14px;font-weight:700;margin-bottom:14px;color:var(--navy);">Webflow</h3>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div><label style="font-size:11px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;">API Token</label>
+              <input id="s-wf-token" type="password" placeholder="wf_..." style="width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:13px;font-family:inherit;"></div>
+              <div><label style="font-size:11px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;">Site ID</label>
+              <input id="s-wf-site" type="text" placeholder="699cb0b733f309dd4bda1b56" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:13px;font-family:inherit;"></div>
+            </div>
+          </div>
+          <div>
+            <h3 style="font-size:14px;font-weight:700;margin-bottom:14px;color:var(--navy);">Claude AI</h3>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div><label style="font-size:11px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;">Anthropic API Key</label>
+              <input id="s-ai-key" type="password" placeholder="sk-ant-..." style="width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:13px;font-family:inherit;"></div>
+            </div>
+          </div>
+          <div style="grid-column:1/-1;">
+            <h3 style="font-size:14px;font-weight:700;margin-bottom:14px;color:var(--navy);">Agent Info</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div><label style="font-size:11px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;">Name</label>
+              <input id="s-agent-name" type="text" placeholder="Cameron Torabi" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:13px;font-family:inherit;"></div>
+              <div><label style="font-size:11px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;">Phone</label>
+              <input id="s-agent-phone" type="tel" placeholder="(858) 500-0222" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:13px;font-family:inherit;"></div>
+              <div><label style="font-size:11px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;">License</label>
+              <input id="s-agent-license" type="text" placeholder="AR RE License #PB00056565" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:13px;font-family:inherit;"></div>
+              <div><label style="font-size:11px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;">Email</label>
+              <input id="s-agent-email" type="email" placeholder="info@masoncapitalgroup.com" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:13px;font-family:inherit;"></div>
+            </div>
+            <button class="btn btn-primary" style="margin-top:16px;" onclick="saveSettings()">Save Settings</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+var currentListing = null;
+var currentHTML = '';
+var publishedListings = JSON.parse(localStorage.getItem('mcg_listings') || '[]');
+
+// ── Panel switching ──────────────────────────────────────────────────────────
+function showPanel(name) {
+  ['create','listings','settings'].forEach(function(p) {
+    document.getElementById('panel-' + p).style.display = p === name ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-item').forEach(function(el, i) {
+    el.classList.toggle('active', el.getAttribute('onclick') && el.getAttribute('onclick').includes("'" + name + "'"));
+  });
+  var titles = { create: 'Create Listing Page', listings: 'All Listings', settings: 'Settings' };
+  var subs = { create: 'Paste any MLS URL to auto-generate a listing page', listings: 'Manage pages published to masoncapitalgroup.com', settings: 'Configure API keys and agent defaults' };
+  document.getElementById('topbar-title').textContent = titles[name];
+  document.getElementById('topbar-sub').textContent = subs[name];
+  if (name === 'listings') renderListingsTable();
+}
+
+// ── Steps ────────────────────────────────────────────────────────────────────
+function setStep(id, state, subText) {
+  var el = document.getElementById('step-' + id);
+  var icon = document.getElementById('step-' + id + '-icon');
+  el.className = 'step ' + state;
+  if (state === 'done') icon.innerHTML = '✓';
+  else if (state === 'error') icon.innerHTML = '✕';
+  if (subText) el.querySelector('.step-sub').textContent = subText;
+}
+function resetSteps() {
+  ['scrape','ai','generate','ready'].forEach(function(s, i) {
+    var el = document.getElementById('step-' + s);
+    el.className = 'step';
+    document.getElementById('step-' + s + '-icon').textContent = i + 1;
+  });
+}
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+function toast(msg, type) {
+  type = type || 'info';
+  var icons = { success: '<path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>', error: '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>', info: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>' };
+  var t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;">' + icons[type] + '</svg>' + msg;
+  document.getElementById('toastContainer').appendChild(t);
+  setTimeout(function() { t.remove(); }, 4000);
+}
+
+// ── Status bar ───────────────────────────────────────────────────────────────
+function setStatus(msg, pct) {
+  document.getElementById('statusBar').classList.add('visible');
+  document.getElementById('statusMsg').textContent = msg;
+  document.getElementById('statusPct').textContent = pct != null ? pct + '%' : '';
+}
+function hideStatus() { document.getElementById('statusBar').classList.remove('visible'); }
+
+// ── Main scrape + build flow ─────────────────────────────────────────────────
+function startScrape() {
+  var url = document.getElementById('mlsUrl').value.trim();
+  if (!url) { toast('Please paste an MLS URL first', 'error'); return; }
+  if (!url.startsWith('http')) { toast('URL must start with http:// or https://', 'error'); return; }
+
+  resetSteps();
+  document.getElementById('progressWrap').classList.add('visible');
+  document.getElementById('resultsGrid').classList.remove('visible');
+  document.getElementById('successBanner').classList.remove('visible');
+  document.getElementById('publishBtn').disabled = true;
+  document.getElementById('downloadBtn').disabled = true;
+  document.getElementById('scrapeBtn').disabled = true;
+  document.getElementById('scrapeBtn').innerHTML = '<span style="width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block;"></span> Working...';
+
+  setStep('scrape', 'active', 'Fetching listing data...');
+  setStatus('Connecting to MLS and extracting listing data...', 10);
+
+  // Step 1: Scrape
+  fetch('/api/scrape', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url: url })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.error) throw new Error(data.error);
+    setStep('scrape', 'done', 'Listing data extracted');
+    setStep('ai', 'active', 'Claude AI generating content...');
+    setStatus('AI enhancing content: descriptions, comps, schools, market data...', 40);
+
+    // Step 2: Generate page
+    setTimeout(function() {
+      setStep('ai', 'done', 'Content generated');
+      setStep('generate', 'active', 'Rendering listing template...');
+      setStatus('Building page from template...', 70);
+
+      fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ listing: data.listing })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(genData) {
+        if (genData.error) throw new Error(genData.error);
+        currentListing = data.listing;
+        currentHTML = genData.html;
+
+        setStep('generate', 'done', 'Page built');
+        setStep('ready', 'done', 'Ready to review');
+        hideStatus();
+
+        // Show results
+        showResults(data.listing, genData.html);
+        document.getElementById('scrapeBtn').disabled = false;
+        document.getElementById('scrapeBtn').innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg> Build Listing Page';
+        toast('Listing page built successfully!', 'success');
+      })
+      .catch(handleError);
+    }, 1200);
+  })
+  .catch(handleError);
+}
+
+function handleError(err) {
+  setStep('scrape', 'error', 'Failed');
+  hideStatus();
+  toast('Error: ' + (err.message || 'Something went wrong'), 'error');
+  document.getElementById('scrapeBtn').disabled = false;
+  document.getElementById('scrapeBtn').innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg> Build Listing Page';
+}
+
+// ── Show results ─────────────────────────────────────────────────────────────
+function showResults(listing, html) {
+  document.getElementById('resultsGrid').classList.add('visible');
+
+  // Preview iframe
+  var frame = document.getElementById('previewFrame');
+  document.getElementById('previewPlaceholder').style.display = 'none';
+  frame.style.display = 'block';
+  frame.srcdoc = html;
+  document.getElementById('previewTitle').textContent = (listing.address_street || 'Listing') + ' Preview';
+
+  // Slug
+  var slug = listing.slug || '';
+  document.getElementById('slugPreview').textContent = slug;
+
+  // Data fields
+  renderDataFields(listing);
+
+  // Photos
+  if (listing.photos && listing.photos.length) {
+    document.getElementById('photosSection').style.display = '';
+    document.getElementById('photoCount').textContent = listing.photos.length + ' photos';
+    var grid = document.getElementById('photoGrid');
+    grid.innerHTML = '';
+    listing.photos.slice(0, 9).forEach(function(url) {
+      var img = document.createElement('img');
+      img.src = url;
+      img.style.cssText = 'width:100%;height:70px;object-fit:cover;border-radius:4px;border:1px solid var(--border);';
+      grid.appendChild(img);
+    });
+  }
+
+  // Enable buttons
+  document.getElementById('publishBtn').disabled = false;
+  document.getElementById('downloadBtn').disabled = false;
+}
+
+function renderDataFields(listing) {
+  var fields = [
+    ['Address', (listing.address_street || '') + ', ' + (listing.address_city || '') + ', ' + (listing.address_state || '') + ' ' + (listing.address_zip || '')],
+    ['Price', listing.price_formatted || ('$' + (listing.price || 0).toLocaleString())],
+    ['Status', listing.status || 'Active'],
+    ['MLS #', listing.mls_number || '—'],
+    ['Beds / Baths', (listing.beds || 0) + ' / ' + (listing.baths || 0)],
+    ['Sq Ft', listing.sqft_formatted || ((listing.sqft || 0).toLocaleString())],
+    ['Lot Size', (listing.lot_acres_display || '—') + ' acres'],
+    ['Year Built', listing.year_built || '—'],
+    ['HOA', listing.hoa_display || (listing.hoa_fee ? '$' + listing.hoa_fee + '/mo' : 'No HOA')],
+    ['Est. Monthly', listing.monthly_total_formatted || '—'],
+  ];
+  var html = fields.map(function(f) {
+    return '<div class="data-field"><span class="data-field-label">' + f[0] + '</span><span class="data-field-val">' + (f[1] || '—') + '</span></div>';
+  }).join('');
+  document.getElementById('listingDataFields').innerHTML = html;
+  document.getElementById('dataSourceBadge').textContent = 'AI Extracted · ' + (listing.source || 'Web');
+}
+
+// ── Publish ───────────────────────────────────────────────────────────────────
+function publishToWebflow() {
+  if (!currentListing || !currentHTML) { toast('No listing to publish', 'error'); return; }
+  var btn = document.getElementById('publishBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span style="width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block;"></span> Publishing...';
+
+  fetch('/api/publish', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ listing: currentListing, html: currentHTML })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.error) throw new Error(data.error);
+    var liveUrl = data.url || 'https://masoncapitalgroup.com/properties/' + currentListing.slug;
+    document.getElementById('successLink').href = liveUrl;
+    document.getElementById('successBanner').classList.add('visible');
+
+    // Save to listings
+    publishedListings.unshift({
+      address: currentListing.address_full || currentListing.address_street,
+      price: currentListing.price_formatted,
+      status: currentListing.status,
+      url: liveUrl,
+      slug: currentListing.slug,
+      published_at: new Date().toISOString(),
+    });
+    localStorage.setItem('mcg_listings', JSON.stringify(publishedListings));
+
+    btn.innerHTML = '✓ Published!';
+    toast('Page is live at masoncapitalgroup.com!', 'success');
+    setTimeout(function() {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg> Publish to masoncapitalgroup.com';
+    }, 3000);
+  })
+  .catch(function(err) {
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg> Publish to masoncapitalgroup.com';
+    toast('Publish failed: ' + err.message, 'error');
+  });
+}
+
+// ── Download HTML ─────────────────────────────────────────────────────────────
+function downloadHTML() {
+  if (!currentHTML) return;
+  var blob = new Blob([currentHTML], { type: 'text/html' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (currentListing ? currentListing.slug : 'listing') + '.html';
+  a.click();
+}
+
+function openPreviewNewTab() {
+  if (!currentHTML) return;
+  var w = window.open('', '_blank');
+  w.document.write(currentHTML);
+  w.document.close();
+}
+
+function regeneratePage() {
+  if (!currentListing) return;
+  fetch('/api/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ listing: currentListing })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    currentHTML = d.html;
+    document.getElementById('previewFrame').srcdoc = d.html;
+    toast('Page regenerated', 'success');
+  })
+  .catch(function(e) { toast('Regenerate failed: ' + e.message, 'error'); });
+}
+
+// ── Listings table ────────────────────────────────────────────────────────────
+function renderListingsTable() {
+  var wrap = document.getElementById('listingsTableWrap');
+  if (!publishedListings.length) {
+    wrap.innerHTML = '<div class="empty-state" style="padding:60px 40px;"><svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg><h3>No listings yet</h3><p>Create your first listing page by pasting an MLS URL in the Create Listing panel.</p></div>';
+    return;
+  }
+  var rows = publishedListings.map(function(l) {
+    var date = new Date(l.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return '<tr><td style="font-weight:700;">' + l.address + '</td><td>' + (l.price || '—') + '</td><td><span class="badge badge-live">' + (l.status || 'Active') + '</span></td><td>' + date + '</td><td style="display:flex;gap:4px;"><button class="table-action" onclick="window.open(\'' + l.url + '\',\'_blank\')">View</button><button class="table-action" onclick="copyToClipboard(\'' + l.url + '\')">Copy URL</button></td></tr>';
+  }).join('');
+  wrap.innerHTML = '<table class="listings-table"><thead><tr><th>Address</th><th>Price</th><th>Status</th><th>Published</th><th>Actions</th></tr></thead><tbody>' + rows + '</tbody></table>';
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(function() { toast('URL copied!', 'success'); });
+}
+
+// ── Settings ─────────────────────────────────────────────────────────────────
+function saveSettings() {
+  var settings = {
+    wf_token: document.getElementById('s-wf-token').value,
+    wf_site: document.getElementById('s-wf-site').value,
+    ai_key: document.getElementById('s-ai-key').value,
+    agent_name: document.getElementById('s-agent-name').value,
+    agent_phone: document.getElementById('s-agent-phone').value,
+    agent_license: document.getElementById('s-agent-license').value,
+    agent_email: document.getElementById('s-agent-email').value,
+  };
+  fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings) })
+    .then(function(r) { return r.json(); })
+    .then(function() { toast('Settings saved', 'success'); })
+    .catch(function() { toast('Failed to save settings', 'error'); });
+}
+
+// Load settings on page load
+fetch('/api/settings').then(function(r) { return r.json(); }).then(function(s) {
+  if (s.agent_name) document.getElementById('s-agent-name').value = s.agent_name;
+  if (s.agent_phone) document.getElementById('s-agent-phone').value = s.agent_phone;
+  if (s.agent_license) document.getElementById('s-agent-license').value = s.agent_license;
+  if (s.agent_email) document.getElementById('s-agent-email').value = s.agent_email;
+  if (s.wf_site) document.getElementById('s-wf-site').value = s.wf_site;
+}).catch(function(){});
+
+// Handle Enter key in URL input
+document.getElementById('mlsUrl').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') startScrape();
+});
+</script>
+</body>
+</html>

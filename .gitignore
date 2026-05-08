@@ -1,0 +1,8 @@
+venv/
+.env
+.dashboard_settings.json
+generated/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store

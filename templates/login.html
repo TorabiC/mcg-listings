@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCG Admin — Sign In</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #0f172a;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 48px 44px 44px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.35);
+  }
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .logo-wrap img { height: 36px; }
+  .logo-text { font-size: 15px; font-weight: 700; color: #1a1a2e; line-height: 1.2; }
+  .logo-text span { display: block; font-size: 11px; font-weight: 500; color: #6b7280; letter-spacing: .5px; }
+  h1 { font-size: 22px; font-weight: 900; color: #1a1a2e; margin-bottom: 6px; }
+  .sub { font-size: 13px; color: #6b7280; margin-bottom: 28px; }
+  label { display: block; font-size: 12px; font-weight: 700; color: #374151; margin-bottom: 6px; letter-spacing: .3px; }
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    font-size: 14px;
+    color: #1a1a2e;
+    outline: none;
+    transition: border-color .15s;
+    margin-bottom: 18px;
+  }
+  input[type=text]:focus, input[type=password]:focus { border-color: #9b1c31; }
+  .error {
+    background: #fee2e2;
+    color: #991b1b;
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+  }
+  button {
+    width: 100%;
+    padding: 13px;
+    background: #9b1c31;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s;
+    letter-spacing: .3px;
+  }
+  button:hover { background: #7f1628; }
+  .footer { text-align: center; font-size: 11px; color: #9ca3af; margin-top: 24px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo-wrap">
+    <img src="/static/img/mcg-logo.png" alt="MCG">
+    <div class="logo-text">Mason Capital Group<span>Admin Dashboard</span></div>
+  </div>
+  <h1>Sign In</h1>
+  <p class="sub">Restricted access — authorized personnel only.</p>
+  {% if error %}
+  <div class="error">{{ error }}</div>
+  {% endif %}
+  <form method="POST">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" autocomplete="username" autofocus required>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" autocomplete="current-password" required>
+    <button type="submit">Sign In</button>
+  </form>
+  <p class="footer">masoncapitalgroup.com &nbsp;·&nbsp; Internal use only</p>
+</div>
+</body>
+</html>

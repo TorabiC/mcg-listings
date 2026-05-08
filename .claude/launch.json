@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mcg-dashboard",
+      "runtimeExecutable": "/Users/camerontorabi/mcg-marketing-dashboard/venv/bin/python",
+      "runtimeArgs": ["app.py"],
+      "port": 5050
+    }
+  ]
+}
