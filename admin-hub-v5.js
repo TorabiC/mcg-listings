@@ -1,58 +1,59 @@
 /**
  * MCG Marketing Hub v5.0 — Full React Dashboard
- * Replaces the Webflow admin-hub static content with the complete Marketing Hub UI.
- * Includes auth (login screen + JWT token management).
- * Backend: https://mcg-dashboard-production.up.railway.app
+ * Replaces Webflow admin-hub page with full Marketing Hub UI.
+ * Auth: login screen + JWT. Backend: https://mcg-dashboard-production.up.railway.app
  */
 (function() {
   'use strict';
 
-  // ── Step 1: Hide Webflow chrome, set base styles ──────────────────────
+  // ── Inject styles immediately (before any content renders) ───────────
   var styleEl = document.createElement('style');
   styleEl.textContent = `*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Lato','Helvetica Neue',Arial,sans-serif!important;background:#f5f0eb!important;color:#16162a;overflow-x:hidden}
-.w-nav,.w-nav-bar,.w-nav-button,.navbar,nav,header,.mcg-header,.navbar-wrapper,.nav-wrapper,.nav-menu-2,.w-container{display:none!important}
-.page-wrapper,.main-wrapper{padding:0!important;margin:0!important;max-width:none!important}
+html,body{height:100%}
+body{font-family:'Lato','Helvetica Neue',Arial,sans-serif!important;background:#f5f0eb!important;color:#16162a;overflow:hidden!important}
+/* Nuke all Webflow chrome */
+body>*:not(#mcg-hub-root){display:none!important}
+/* Hub root fills the full viewport and scrolls internally */
+#mcg-hub-root{position:fixed!important;top:0;left:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;background:#f5f0eb;z-index:1}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:#e8e3dc}
 ::-webkit-scrollbar-thumb{background:#c4a35a;border-radius:3px}
 ::selection{background:#c4a35a;color:#fff}`;
   document.head.appendChild(styleEl);
 
-  // ── Step 2: Inject Google Fonts ───────────────────────────────────────
+  // ── Google Fonts ──────────────────────────────────────────────────────
   var fontLink = document.createElement('link');
   fontLink.rel = 'stylesheet';
   fontLink.href = 'https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap';
   document.head.appendChild(fontLink);
 
-  // ── Step 3: Create root mount point ──────────────────────────────────
+  // ── Create root (fixed full-viewport div) ─────────────────────────────
   function ensureRoot() {
     var r = document.getElementById('mcg-hub-root');
     if (!r) {
       r = document.createElement('div');
       r.id = 'mcg-hub-root';
-      document.body.appendChild(r);
+      // Insert at the very start of body so z-index stacking is clean
+      document.body.insertBefore(r, document.body.firstChild);
     }
     return r;
   }
 
-  // ── Step 4: Load React, ReactDOM, then Babel, then boot app ──────────
+  // ── Script loader ─────────────────────────────────────────────────────
   function loadScript(src, onload) {
     var s = document.createElement('script');
     s.src = src;
     s.crossOrigin = 'anonymous';
     s.onload = onload;
-    s.onerror = function() { console.error('Failed to load:', src); };
+    s.onerror = function() { console.error('[MCG Hub] Failed to load:', src); };
     document.head.appendChild(s);
   }
 
   function bootApp() {
-    // Inject the Babel/JSX code as a text/babel script so Babel processes it
     var babelScript = document.createElement('script');
     babelScript.type = 'text/babel';
     babelScript.setAttribute('data-presets', 'react');
     babelScript.textContent = `
-// ─── AUTH ───────────────────────────────────────────
 const API_BASE='https://mcg-dashboard-production.up.railway.app';
 const TOKEN_KEY='mcg_admin_token';
 const TOKEN_TS_KEY='mcg_admin_token_ts';
@@ -60,7 +61,6 @@ const TOKEN_TTL=23*60*60*1000;
 const getToken=()=>{const t=localStorage.getItem(TOKEN_KEY);const ts=parseInt(localStorage.getItem(TOKEN_TS_KEY)||'0',10);return(t&&Date.now()-ts<TOKEN_TTL)?t:null;};
 const storeToken=t=>{localStorage.setItem(TOKEN_KEY,t);localStorage.setItem(TOKEN_TS_KEY,Date.now().toString());};
 const clearToken=()=>{localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(TOKEN_TS_KEY);};
-
 const {useState,useEffect,useRef,Fragment}=React;
 
 // ─── BRAND ───────────────────────────────────────
@@ -916,47 +916,6 @@ const SettingsView=({settings,setSettings})=>{
   </div>;
 };
 
-
-// ─── LOGIN ──────────────────────────────────────────
-const LoginScreen=({onLogin})=>{
-  const [user,setUser]=useState('');
-  const [pass,setPass]=useState('');
-  const [err,setErr]=useState('');
-  const [loading,setLoading]=useState(false);
-  const submit=async()=>{
-    if(!user||!pass){setErr('Enter your username and password.');return;}
-    setLoading(true);setErr('');
-    try{
-      const res=await fetch(API_BASE+'/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:user,password:pass})});
-      const data=await res.json();
-      if(res.ok&&data.token){storeToken(data.token);setPass('');onLogin(data.token);}
-      else setErr(data.error||'Invalid credentials.');
-    }catch{setErr('Cannot reach server. Try again.');}
-    finally{setLoading(false);}
-  };
-  return(
-    <div style={{position:'fixed',inset:0,zIndex:999999,background:B.navy,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:B.font}}>
-      <div style={{background:B.white,borderRadius:12,padding:'40px 36px',width:340,maxWidth:'90vw',textAlign:'center',boxShadow:'0 20px 60px rgba(0,0,0,.4)'}}>
-        <img src="https://cdn.prod.website-files.com/699cb0b733f309dd4bda1b56/69a1adfa32ad89b96dade636_NEW%20LOGO%20COLOR%20copy.png" style={{height:44,width:'auto',display:'block',margin:'0 auto 18px'}} alt="Mason Capital Group"/>
-        <h2 style={{fontSize:20,fontWeight:900,color:B.navy,margin:'0 0 6px'}}>Marketing Hub</h2>
-        <div style={{fontSize:13,color:B.gray600,marginBottom:24}}>Sign in to access your dashboard</div>
-        <input value={user} onChange={e=>setUser(e.target.value)} type="text" placeholder="Username" autoComplete="off"
-          style={{width:'100%',padding:'11px 14px',border:'1.5px solid #e5e7eb',borderRadius:6,fontSize:14,marginBottom:10,boxSizing:'border-box',fontFamily:B.font,outline:'none'}}
-          onKeyDown={e=>e.key==='Enter'&&submit()}/>
-        <input value={pass} onChange={e=>setPass(e.target.value)} type="password" placeholder="Password"
-          style={{width:'100%',padding:'11px 14px',border:'1.5px solid #e5e7eb',borderRadius:6,fontSize:14,marginBottom:14,boxSizing:'border-box',fontFamily:B.font,outline:'none'}}
-          onKeyDown={e=>e.key==='Enter'&&submit()}/>
-        <button onClick={submit} disabled={loading}
-          style={{width:'100%',padding:12,background:B.crimson,color:B.white,border:'none',borderRadius:6,fontSize:14,fontWeight:700,cursor:'pointer',fontFamily:B.font,opacity:loading?.6:1}}>
-          {loading?'Signing in…':'Sign In'}
-        </button>
-        {err&&<div style={{color:B.crimson,fontSize:13,marginTop:10}}>{err}</div>}
-        <div style={{fontSize:11,color:'#9ca3af',marginTop:16}}>Mason Capital Group • Authorized Access Only</div>
-      </div>
-    </div>
-  );
-};
-
 // ─── APP ─────────────────────────────────────────
 const App=()=>{
   const [authToken,setAuthToken]=useState(()=>getToken());
@@ -1030,16 +989,12 @@ const App=()=>{
 };
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-// Mount to dedicated root
-var hubRoot = document.getElementById('mcg-hub-root') || document.body;
+// Mount to the hub root
+var hubRoot = document.getElementById('mcg-hub-root');
 ReactDOM.createRoot(hubRoot).render(<App/>);
 `;
     document.body.appendChild(babelScript);
-    // Babel standalone auto-processes new text/babel scripts in some versions;
-    // explicitly call it to be safe.
-    if (window.Babel && Babel.transformScriptTags) {
-      Babel.transformScriptTags();
-    }
+    if (window.Babel && Babel.transformScriptTags) Babel.transformScriptTags();
   }
 
   function init() {
