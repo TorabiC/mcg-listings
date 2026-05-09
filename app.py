@@ -12,6 +12,7 @@ import time
 import threading
 import uuid
 import smtplib
+import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from pathlib import Path
