@@ -42,11 +42,16 @@ CORS(app, origins=[
 GENERATED_DIR = Path(__file__).parent / "generated"
 GENERATED_DIR.mkdir(exist_ok=True)
 
+OUTPUT_DIR = Path(__file__).parent / "output"
+OUTPUT_DIR.mkdir(exist_ok=True)
+
 SETTINGS_FILE = Path(__file__).parent / ".dashboard_settings.json"
 
 # ── Background scrape jobs ────────────────────────────────────────────────────
 # Keyed by job_id: {"status": "working"|"done"|"error", "listing": {...}, "error": "..."}
 _scrape_jobs: dict = {}
+# Keyed by job_id: unified generate jobs (scrape + generate + publish)
+_gen_jobs: dict = {}
 _jobs_lock = threading.Lock()
 
 ADMIN_USER = os.getenv("ADMIN_USERNAME", "mcgadmin")
@@ -313,6 +318,151 @@ def api_generate():
     except Exception as e:
         logger.error(f"Generate error: {e}", exc_info=True)
         return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/generate-job", methods=["POST"])
+@login_required
+def api_generate_job():
+    """
+    Unified generate endpoint: accepts {url} or {listing}, runs scrape→generate→Webflow publish
+    as a background job. Returns {jobId} immediately.
+    The dashboard polls GET /api/status/<jobId> for progress and results.
+    """
+    body = request.get_json(force=True) or {}
+    url = (body.get("url") or "").strip()
+    listing_input = body.get("listing")
+
+    if not url and not listing_input:
+        return jsonify({"error": "url or listing required"}), 400
+
+    job_id = str(int(time.time() * 1000))
+    with _jobs_lock:
+        _gen_jobs[job_id] = {
+            "status": "running",
+            "step": "scrape" if url else "generate",
+            "log": "",
+            "slug": None,
+            "files": [],
+            "error": None,
+            "webflow_url": None,
+        }
+
+    def _update(step=None, log_append=None, **kw):
+        with _jobs_lock:
+            j = _gen_jobs[job_id]
+            if step:
+                j["step"] = step
+            if log_append:
+                j["log"] += log_append + "\n"
+            j.update(kw)
+
+    def _run():
+        try:
+            settings = load_settings()
+            api_key = settings.get("ai_key") or os.getenv("ANTHROPIC_API_KEY", "")
+            wf_token = settings.get("wf_token") or os.getenv("WEBFLOW_API_TOKEN", "")
+            wf_site = settings.get("wf_site") or os.getenv("WEBFLOW_SITE_ID", "699cb0b733f309dd4bda1b56")
+
+            listing = listing_input
+
+            # ── Step 1: Scrape ────────────────────────────────────────────────
+            if url:
+                if not api_key:
+                    raise ValueError("Anthropic API key not configured. Add it in Settings.")
+                _update(step="scrape", log_append="Scraping listing...")
+                raw = scrape_listing(url, api_key)
+                listing = normalize(raw)
+                _update(log_append=f"Scraped: {listing.get('address_full')}")
+
+            listing["agent"] = listing_generator.AGENT_DEFAULTS
+            slug = listing.get("slug", "listing")
+
+            # ── Step 2: Generate HTML ─────────────────────────────────────────
+            _update(step="listing", log_append="Generating listing page...")
+            html = generate_html(listing)
+
+            # Save listing page
+            out_dir = OUTPUT_DIR / slug
+            out_dir.mkdir(parents=True, exist_ok=True)
+            (out_dir / "listing-page.html").write_text(html, encoding="utf-8")
+            (out_dir / "flipbook.html").write_text(html, encoding="utf-8")
+            (GENERATED_DIR / f"{slug}.html").write_text(html, encoding="utf-8")
+            (GENERATED_DIR / f"{slug}.json").write_text(
+                json.dumps(listing, default=str, ensure_ascii=False), encoding="utf-8"
+            )
+            _update(log_append="Listing page generated.")
+
+            # ── Step 3: Publish to Webflow ────────────────────────────────────
+            webflow_url = None
+            if wf_token:
+                _update(step="publish", log_append="Publishing to Webflow...")
+                client = WebflowClient(wf_token, wf_site)
+
+                # Publish live CMS item (Property Listings collection)
+                try:
+                    cms_result = client.push_listing_to_cms(listing, is_draft=False)
+                    webflow_url = cms_result.get("url")
+                    _update(log_append=f"CMS item published: {webflow_url}")
+                except Exception as cms_err:
+                    _update(log_append=f"CMS publish warning: {cms_err}")
+
+                # Create / update static page under Featured Listings folder
+                try:
+                    page_result = client.create_listing_page(listing, html)
+                    webflow_url = page_result.get("url") or webflow_url
+                    _update(log_append=f"Static page published: {page_result.get('url')}")
+                except Exception as page_err:
+                    _update(log_append=f"Static page warning: {page_err}")
+            else:
+                _update(log_append="Webflow token not configured — skipping publish.")
+
+            # ── Save metadata ─────────────────────────────────────────────────
+            meta = {
+                "slug": slug,
+                "address": listing.get("address_full"),
+                "price": listing.get("price_formatted"),
+                "webflow_url": webflow_url,
+            }
+            (out_dir / "metadata.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
+
+            with _jobs_lock:
+                _gen_jobs[job_id].update({
+                    "status": "done",
+                    "step": "done",
+                    "slug": slug,
+                    "files": [f.name for f in out_dir.iterdir()],
+                    "webflow_url": webflow_url,
+                    "log": _gen_jobs[job_id]["log"] + "Generation complete.",
+                })
+
+        except Exception as e:
+            logger.error(f"Generate job {job_id} error: {e}", exc_info=True)
+            with _jobs_lock:
+                _gen_jobs[job_id].update({"status": "error", "error": str(e)})
+
+    threading.Thread(target=_run, daemon=True).start()
+    return jsonify({"jobId": job_id, "status": "started"})
+
+
+@app.route("/api/status/<job_id>", methods=["GET"])
+@login_required
+def api_status(job_id):
+    """Poll status of a unified generate job."""
+    with _jobs_lock:
+        job = _gen_jobs.get(job_id)
+    if not job:
+        return jsonify({"error": "Job not found"}), 404
+    return jsonify(job)
+
+
+@app.route("/output/<slug>/<filename>")
+@login_required
+def serve_output(slug, filename):
+    """Serve generated output files (listing-page.html, flipbook.html, etc.)."""
+    file_path = OUTPUT_DIR / slug / filename
+    if not file_path.exists():
+        return jsonify({"error": "File not found"}), 404
+    return send_file(str(file_path))
 
 
 @app.route("/api/refresh", methods=["POST"])
