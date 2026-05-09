@@ -35,4 +35,4 @@ RUN pip install playwright==1.44.0 && playwright install chromium
 
 COPY . .
 
-CMD ["/bin/sh", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT:-5050} --workers 2 --timeout 300"]
+CMD ["/bin/sh", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT:-5050} --workers 1 --threads 4 --timeout 300"]
