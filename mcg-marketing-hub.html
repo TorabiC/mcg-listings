@@ -428,7 +428,7 @@ const OMView=({listings,settings})=>{
     setIxactStatus(null);
 
     try{
-      const _tok=getToken();const r=await fetch(`${backendUrl}/api/generate`,{
+      const _tok=getToken();const r=await fetch(`${backendUrl}/api/generate-job`,{
         method:'POST',
         headers:{'Content-Type':'application/json',...(_tok?{'Authorization':'Bearer '+_tok}:{})},
         body:JSON.stringify({url}),
@@ -439,7 +439,7 @@ const OMView=({listings,settings})=>{
       // Poll for status
       pollRef.current=setInterval(async()=>{
         try{
-          const sr=await fetch(`${backendUrl}/api/status/${d.jobId}`);
+          const sr=await fetch(`${backendUrl}/api/status/${d.jobId}`,{headers:{...(getToken()?{'Authorization':'Bearer '+getToken()}:{})}});
           const sd=await sr.json();
           if(sd.log) setLog(sd.log);
           if(sd.step) setStep(sd.step);
@@ -447,15 +447,15 @@ const OMView=({listings,settings})=>{
             clearInterval(pollRef.current);
             setPhase('done');
             const base=backendUrl;
-            const omUrl=`${base}/output/${sd.slug}/flipbook.html`;
-            const listingUrl=`${base}/output/${sd.slug}/listing-page.html`;
+            const omUrl=sd.webflow_url||`${base}/output/${sd.slug}/flipbook.html`;
+            const listingUrl=sd.webflow_url||`${base}/output/${sd.slug}/listing-page.html`;
             const emailUrl=`${base}/output/${sd.slug}/email-campaign.html`;
             const flyerUrl=`${base}/output/${sd.slug}/flyer.html`;
             const flyerPdf=`${base}/output/${sd.slug}/flyer.pdf`;
             const omPdf=`${base}/output/${sd.slug}/om.pdf`;
             const embedCode=`<iframe src="${omUrl}" style="width:100%;height:720px;border:none" loading="lazy" title="Offering Memorandum"><\/iframe>`;
             const files=sd.files||[];
-            setResult({slug:sd.slug,omUrl,listingUrl,emailUrl,flyerUrl,flyerPdf,omPdf,embedCode,files});
+            setResult({slug:sd.slug,omUrl,listingUrl,emailUrl,flyerUrl,flyerPdf,omPdf,embedCode,files,webflowUrl:sd.webflow_url});
             pushToIxact(sd.slug,omUrl,url);
           }else if(sd.status==='error'){
             clearInterval(pollRef.current);
@@ -578,12 +578,12 @@ const OMView=({listings,settings})=>{
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8}}>
               <div>
                 <div style={{fontSize:12,fontWeight:700,color:B.navy}}>Listing Page</div>
-                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>Full property page with OM embedded inline</div>
+                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>{result.webflowUrl?'Published on masoncapitalgroup.com':'Full property page with OM embedded inline'}</div>
               </div>
-              <span style={{background:'#fce7f3',color:B.crimson,fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase',letterSpacing:1}}>OM Embedded</span>
+              <span style={{background:result.webflowUrl?'#dcfce7':'#fce7f3',color:result.webflowUrl?'#15803d':B.crimson,fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase',letterSpacing:1}}>{result.webflowUrl?'✓ Live on Webflow':'OM Embedded'}</span>
             </div>
             <div style={{display:'flex',gap:8}}>
-              <a href={result.listingUrl} target="_blank" style={{...S.btn('primary'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12} color={B.white}/> Preview</a>
+              <a href={result.listingUrl} target="_blank" style={{...S.btn('primary'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12} color={B.white}/> {result.webflowUrl?'View on Webflow':'Preview'}</a>
               <button style={{...S.btn('outline'),padding:'6px 14px',fontSize:11}} onClick={()=>copyText('listing',result.listingUrl)}>{copyState.listing?'Copied!':'Copy URL'}</button>
             </div>
           </div>
