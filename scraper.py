@@ -95,7 +95,8 @@ def _fetch_rendered(url: str) -> tuple:
                 user_agent=HEADERS["User-Agent"],
                 viewport={"width": 1280, "height": 900},
             )
-            page.goto(url, wait_until="networkidle", timeout=30000)
+            page.goto(url, wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_timeout(3000)  # extra settle time for lazy images
 
             # ── Phase 1: scroll to trigger all lazy-loaded gallery images ─────
             page.evaluate("window.scrollTo(0, document.body.scrollHeight * 0.3)")

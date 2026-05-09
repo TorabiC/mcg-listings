@@ -231,7 +231,7 @@
       // ── Step 2: Poll until done ───────────────────────────────────────────
       let listing = null;
       let elapsed = 0;
-      while (elapsed < 180000) { // max 3 min
+      while (elapsed < 300000) { // max 5 min
         await new Promise(r => setTimeout(r, 3000));
         elapsed += 3000;
 
