@@ -614,8 +614,8 @@ textarea.em-input{resize:vertical;min-height:90px}
         {% for card in l.location_cards %}
         <div class="l410-card {{ c_classes[loop.index0 % 4] }} {% if loop.index % 2 == 0 %}rev{% endif %}">
           <div class="l410-img-wrap">
-            {% if card.image_url %}<img class="l410-img" src="{{ card.image_url }}" alt="{{ card.heading }}" loading="lazy">
-            {% else %}<svg viewBox="0 0 24 24" style="width:48px;height:48px;fill:#d1d5db;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>{% endif %}
+            {% if card.image_url %}<img class="l410-img" src="{{ card.image_url }}" alt="{{ card.heading }}" loading="lazy" onerror="this.onerror=null;mcgLocImgFallback(this)">
+            {% endif %}
           </div>
           <div class="l410-text-wrap">
             <div class="l410-card-tagline">{{ card.tagline }}</div>
@@ -1266,7 +1266,13 @@ function submitEmail(btn) {
 // ── Virtual tour button ──────────────────────────────────────────────────────
 var MCG_VIRTUAL_TOUR_URL = '{{ l.virtual_tour_url }}';
 
-// ── Location card images (JS fallback for cards without server-side image_url) ──
+// ── Location card images — onerror fallback + fill any card missing an img ──
+function mcgLocImgFallback(imgEl) {
+  var card = imgEl.closest('.l410-card');
+  if (!card) return;
+  var idx = Array.from(document.querySelectorAll('.l410-card')).indexOf(card);
+  _mcgSetLocImg(imgEl.closest('.l410-img-wrap'), card, idx);
+}
 (function() {
   var city = '{{ l.address_city | lower }}';
   var bvImages = {
@@ -1314,10 +1320,7 @@ var MCG_VIRTUAL_TOUR_URL = '{{ l.virtual_tour_url }}';
     'photo-1541339907198-e08756dedf3f'
   ];
 
-  var cards = document.querySelectorAll('.l410-card');
-  cards.forEach(function(card, idx) {
-    var wrap = card.querySelector('.l410-img-wrap');
-    if (!wrap || wrap.querySelector('img')) return;
+  window._mcgSetLocImg = function(wrap, card, idx) {
     var taglineEl = card.querySelector('.l410-card-tagline, .l410-tagline');
     if (!taglineEl) return;
     var key = taglineEl.textContent.trim().toLowerCase();
@@ -1341,6 +1344,14 @@ var MCG_VIRTUAL_TOUR_URL = '{{ l.virtual_tour_url }}';
     img.loading = 'lazy';
     wrap.innerHTML = '';
     wrap.appendChild(img);
+  };
+
+  // Fill any card that has no img at all (server-side image_url was empty)
+  var cards = document.querySelectorAll('.l410-card');
+  cards.forEach(function(card, idx) {
+    var wrap = card.querySelector('.l410-img-wrap');
+    if (!wrap || wrap.querySelector('img')) return;
+    _mcgSetLocImg(wrap, card, idx);
   });
 })();
 </script>
