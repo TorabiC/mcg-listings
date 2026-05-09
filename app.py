@@ -359,9 +359,11 @@ def api_generate_job():
     def _run():
         try:
             settings = load_settings()
-            api_key = settings.get("ai_key") or os.getenv("ANTHROPIC_API_KEY", "")
-            wf_token = settings.get("wf_token") or os.getenv("WEBFLOW_API_TOKEN", "")
-            wf_site = settings.get("wf_site") or os.getenv("WEBFLOW_SITE_ID", "699cb0b733f309dd4bda1b56")
+            api_key    = settings.get("ai_key")    or os.getenv("ANTHROPIC_API_KEY", "")
+            wf_token   = settings.get("wf_token")  or os.getenv("WEBFLOW_API_TOKEN", "")
+            wf_site    = settings.get("wf_site")   or os.getenv("WEBFLOW_SITE_ID", "699cb0b733f309dd4bda1b56")
+            ixact_key  = settings.get("ixactKey")  or os.getenv("IXACT_API_KEY", "")
+            gen_server = os.getenv("GEN_SERVER_URL", "https://mcg-marketing-hub-production.up.railway.app")
 
             listing = listing_input
 
@@ -377,62 +379,168 @@ def api_generate_job():
             listing["agent"] = listing_generator.AGENT_DEFAULTS
             slug = listing.get("slug", "listing")
 
-            # ── Step 2: Generate HTML ─────────────────────────────────────────
-            _update(step="listing", log_append="Generating listing page...")
-            html = generate_html(listing)
+            # ── Step 2: Full generation via Node.js server ───────────────────
+            # Produces: flipbook, listing page, flyer HTML, flyer PDF, OM PDF, email campaign
+            _update(step="generate", log_append="Generating OM, listing page, flyer + PDFs…")
+            gen_payload = {
+                "address":       listing.get("address_full", ""),
+                "streetAddress": listing.get("address_street", ""),
+                "city":          listing.get("address_city", ""),
+                "state":         listing.get("address_state", "AR"),
+                "zip":           listing.get("address_zip", ""),
+                "price":         listing.get("price_formatted", ""),
+                "beds":          listing.get("beds"),
+                "baths":         listing.get("baths"),
+                "sqft":          listing.get("sqft_formatted", ""),
+                "acres":         listing.get("lot_acres_display", ""),
+                "yearBuilt":     listing.get("year_built"),
+                "description":   " ".join(listing.get("description_paragraphs") or []),
+                "photos":        listing.get("photos") or [],
+                "mls":           listing.get("mls_number", ""),
+                "status":        listing.get("status", "Active"),
+                "county":        listing.get("county", ""),
+                "subdivision":   listing.get("subdivision", ""),
+                "zoning":        listing.get("zoning", ""),
+                "type":          listing.get("property_type", "Residential"),
+                "lat":           listing.get("lat"),
+                "lng":           listing.get("lng"),
+                "listingUrl":    url or "",
+            }
 
-            # Save listing page
-            out_dir = OUTPUT_DIR / slug
+            gen_resp = requests.post(
+                f"{gen_server}/api/generate-from-data",
+                json=gen_payload,
+                timeout=240,  # PDFs can take up to 3 min
+            )
+            gen_data = gen_resp.json() if gen_resp.ok else {}
+            if not gen_resp.ok:
+                _update(log_append=f"Generation server warning ({gen_resp.status_code}): {gen_resp.text[:200]}")
+
+            urls = gen_data.get("urls", {})
+            node_slug = gen_data.get("slug") or slug
+
+            # Absolute URLs hosted on the Node.js server
+            def abs_url(rel):
+                if not rel:
+                    return None
+                return f"{gen_server}{rel}" if rel.startswith("/") else rel
+
+            om_url       = abs_url(urls.get("flipbook"))
+            listing_url  = abs_url(urls.get("listingPage"))
+            flyer_url    = abs_url(urls.get("flyer"))
+            flyer_pdf    = abs_url(urls.get("flyerPdf"))
+            om_pdf       = abs_url(urls.get("omPdf"))
+            email_url    = abs_url(urls.get("emailCampaign"))
+
+            _update(log_append="Content generation complete.")
+
+            # ── Step 3: Generate listing page HTML (Python) for Webflow ──────
+            # We use our own HTML generator for the Webflow page so it matches
+            # the approved design and embeds the flipbook via iframe.
+            _update(step="listing", log_append="Building listing page for Webflow…")
+            html = generate_html(listing)
+            if om_url:
+                # Inject OM flipbook iframe just before </body>
+                embed = (
+                    f'\n<section style="padding:40px 0;background:#f9f6f2">'
+                    f'<div style="max-width:1200px;margin:0 auto;padding:0 20px">'
+                    f'<h2 style="text-align:center;margin-bottom:20px">Offering Memorandum</h2>'
+                    f'<iframe src="{om_url}" style="width:100%;height:750px;border:none;border-radius:8px" '
+                    f'loading="lazy" title="Offering Memorandum"></iframe></div></section>'
+                )
+                html = html.replace("</body>", embed + "</body>")
+
+            out_dir = OUTPUT_DIR / node_slug
             out_dir.mkdir(parents=True, exist_ok=True)
             (out_dir / "listing-page.html").write_text(html, encoding="utf-8")
-            (out_dir / "flipbook.html").write_text(html, encoding="utf-8")
-            (GENERATED_DIR / f"{slug}.html").write_text(html, encoding="utf-8")
-            (GENERATED_DIR / f"{slug}.json").write_text(
+            (GENERATED_DIR / f"{node_slug}.html").write_text(html, encoding="utf-8")
+            (GENERATED_DIR / f"{node_slug}.json").write_text(
                 json.dumps(listing, default=str, ensure_ascii=False), encoding="utf-8"
             )
-            _update(log_append="Listing page generated.")
 
-            # ── Step 3: Publish to Webflow ────────────────────────────────────
+            # ── Step 4: Publish to Webflow ────────────────────────────────────
             webflow_url = None
             if wf_token:
-                _update(step="publish", log_append="Publishing to Webflow...")
+                _update(step="publish", log_append="Publishing to Webflow (Featured Listings)…")
                 client = WebflowClient(wf_token, wf_site)
 
-                # Publish live CMS item (Property Listings collection)
+                # Live CMS item
                 try:
                     cms_result = client.push_listing_to_cms(listing, is_draft=False)
                     webflow_url = cms_result.get("url")
-                    _update(log_append=f"CMS item published: {webflow_url}")
-                except Exception as cms_err:
-                    _update(log_append=f"CMS publish warning: {cms_err}")
+                    _update(log_append=f"CMS live: {webflow_url}")
+                except Exception as e:
+                    _update(log_append=f"CMS warning: {e}")
 
-                # Create / update static page under Featured Listings folder
+                # Static page under Featured Listings folder
                 try:
                     page_result = client.create_listing_page(listing, html)
                     webflow_url = page_result.get("url") or webflow_url
-                    _update(log_append=f"Static page published: {page_result.get('url')}")
-                except Exception as page_err:
-                    _update(log_append=f"Static page warning: {page_err}")
+                    _update(log_append=f"Featured Listings page: {page_result.get('url')}")
+                except Exception as e:
+                    _update(log_append=f"Static page warning: {e}")
             else:
-                _update(log_append="Webflow token not configured — skipping publish.")
+                _update(log_append="Webflow token not set — skipping publish.")
 
-            # ── Save metadata ─────────────────────────────────────────────────
-            meta = {
-                "slug": slug,
-                "address": listing.get("address_full"),
-                "price": listing.get("price_formatted"),
-                "webflow_url": webflow_url,
-            }
-            (out_dir / "metadata.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
+            # ── Step 5: Push email campaign to IXACT ─────────────────────────
+            ixact_result = None
+            if ixact_key and email_url:
+                _update(step="ixact", log_append="Pushing email campaign to IXACT…")
+                try:
+                    # Fetch the generated email HTML from Node.js server
+                    email_html_resp = requests.get(email_url, timeout=30)
+                    email_html = email_html_resp.text if email_html_resp.ok else ""
 
+                    if not email_html and node_slug:
+                        # Fallback: fetch via slug API
+                        r2 = requests.get(f"{gen_server}/api/email-html/{node_slug}", timeout=15)
+                        if r2.ok:
+                            email_html = r2.json().get("html", "")
+
+                    if email_html:
+                        address = listing.get("address_full", "New Listing")
+                        subject = f"New MCG Listing: {address}"
+                        ixact_resp = requests.post(
+                            "https://api.ixactcontact.com/v1/MassEmail",
+                            headers={
+                                "Content-Type": "application/json",
+                                "Accept": "application/json",
+                                "IXACT-API-Key": ixact_key,
+                            },
+                            json={
+                                "Subject": subject,
+                                "From": "info@masoncapitalgroup.com",
+                                "FromName": "Cameron Torabi, Mason Capital Group",
+                                "ReplyTo": "info@masoncapitalgroup.com",
+                                "Body": email_html,
+                                "IsDraft": True,
+                            },
+                            timeout=30,
+                        )
+                        ixact_result = {"success": ixact_resp.ok, "status": ixact_resp.status_code}
+                        _update(log_append=f"IXACT email campaign {'saved' if ixact_resp.ok else 'failed'} (HTTP {ixact_resp.status_code})")
+                    else:
+                        _update(log_append="IXACT: no email HTML found — skipping.")
+                except Exception as e:
+                    _update(log_append=f"IXACT warning: {e}")
+                    ixact_result = {"success": False, "error": str(e)}
+
+            # ── Finalize ──────────────────────────────────────────────────────
             with _jobs_lock:
                 _gen_jobs[job_id].update({
-                    "status": "done",
-                    "step": "done",
-                    "slug": slug,
-                    "files": [f.name for f in out_dir.iterdir()],
+                    "status":      "done",
+                    "step":        "done",
+                    "slug":        node_slug,
+                    "files":       gen_data.get("files", []),
                     "webflow_url": webflow_url,
-                    "log": _gen_jobs[job_id]["log"] + "Generation complete.",
+                    "om_url":      om_url,
+                    "listing_url": listing_url or webflow_url,
+                    "flyer_url":   flyer_url,
+                    "flyer_pdf":   flyer_pdf,
+                    "om_pdf":      om_pdf,
+                    "email_url":   email_url,
+                    "ixact":       ixact_result,
+                    "log":         _gen_jobs[job_id]["log"] + "✓ All done.",
                 })
 
         except Exception as e:
