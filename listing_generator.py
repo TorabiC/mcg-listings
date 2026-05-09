@@ -305,95 +305,128 @@ def normalize(raw: dict) -> dict:
     ]
     _UNSPLASH_BASE = "https://images.unsplash.com/{id}?w=1200&h=800&fit=crop&q=80"
 
-    # City-specific curated images keyed by city_name.lower() → tagline.lower() → url
-    # All URLs verified 200 OK. Add new cities here as listings are generated.
+    # Curated city images — verified URLs, matched to card CATEGORY not just tagline.
+    # Priority: recreation > trails/outdoor | community > downtown | investment > growth | lifestyle > arts
+    # GitHub Pages hosts local NWA images: https://torabic.github.io/mcg-listings/img/
+    _GH = 'https://torabic.github.io/mcg-listings/img'
+    _WM = 'https://upload.wikimedia.org/wikipedia/commons'
     _CITY_IMAGES = {
         'bella vista': {
-            'recreation':   '/static/img/nwa-lake.jpeg',
-            'trail access': '/static/img/nwa-trails.jpg',
-            'trails':       '/static/img/nwa-trails.jpg',
-            'golf':         '/static/img/nwa-golf.jpeg',
-            'community':    '/static/img/nwa-community.jpeg',
-            'investment':   '/static/img/nwa-community.jpeg',
-            'lifestyle':    '/static/img/nwa-lake.jpeg',
+            'recreation':   f'{_GH}/nwa-lake.jpeg',
+            'trail access': f'{_GH}/nwa-trails.jpg',
+            'trails':       f'{_GH}/nwa-trails.jpg',
+            'outdoor':      f'{_GH}/nwa-trails.jpg',
+            'golf':         f'{_GH}/nwa-golf.jpeg',
+            'community':    f'{_GH}/nwa-community.jpeg',
+            'downtown':     f'{_GH}/nwa-community.jpeg',
+            'investment':   f'{_WM}/7/77/Walmart_AMP.jpg',
+            'growth':       f'{_WM}/7/77/Walmart_AMP.jpg',
+            'lifestyle':    f'{_GH}/nwa-lake.jpeg',
+            'lake':         f'{_GH}/nwa-lake.jpeg',
+            'arts':         f'{_WM}/8/8b/Crystal_Bridges_from_trail.jpg',
+            'arts & culture': f'{_WM}/8/8b/Crystal_Bridges_from_trail.jpg',
         },
         'bentonville': {
             'recreation':   'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_800,q_75,w_1200/v1/clients/bentonville/DRAGER_VB_Madden3695_medium_bd038d34-aad0-4ff4-8f2f-c5fbbabc8d0d.jpg',
             'trail access': 'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_800,q_75,w_1200/v1/clients/bentonville/DRAGER_VB_Madden3695_medium_bd038d34-aad0-4ff4-8f2f-c5fbbabc8d0d.jpg',
             'trails':       'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_800,q_75,w_1200/v1/clients/bentonville/DRAGER_VB_Madden3695_medium_bd038d34-aad0-4ff4-8f2f-c5fbbabc8d0d.jpg',
+            'outdoor':      'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_800,q_75,w_1200/v1/clients/bentonville/DRAGER_VB_Madden3695_medium_bd038d34-aad0-4ff4-8f2f-c5fbbabc8d0d.jpg',
             'community':    'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,f_jpg,h_600,q_85,w_1200/v1/clients/bentonville-redesign/ThingsToDo_DowtownSquare_BentonvilleSquare_06aa7a2a-9335-42ee-a0c0-278721e1a985.jpg',
             'downtown':     'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,f_jpg,h_600,q_85,w_1200/v1/clients/bentonville-redesign/ThingsToDo_DowtownSquare_BentonvilleSquare_06aa7a2a-9335-42ee-a0c0-278721e1a985.jpg',
             'investment':   'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_800,q_75,w_1200/v1/clients/bentonville/Untitled_2025_03_13T152829_688_12f0e71b-66f3-4d1f-9b24-2229ac627ba2.png',
             'growth':       'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_800,q_75,w_1200/v1/clients/bentonville/Untitled_2025_03_13T152829_688_12f0e71b-66f3-4d1f-9b24-2229ac627ba2.png',
-            'lifestyle':    'https://upload.wikimedia.org/wikipedia/commons/f/fc/Crystal_Bridges_Museum_of_American_Art%2C_in_Bentonville%2C_Arkansas%2C_with_walkway_and_galleries.jpg',
-            'arts':         'https://upload.wikimedia.org/wikipedia/commons/f/fc/Crystal_Bridges_Museum_of_American_Art%2C_in_Bentonville%2C_Arkansas%2C_with_walkway_and_galleries.jpg',
-            'arts & culture': 'https://upload.wikimedia.org/wikipedia/commons/f/fc/Crystal_Bridges_Museum_of_American_Art%2C_in_Bentonville%2C_Arkansas%2C_with_walkway_and_galleries.jpg',
+            'lifestyle':    f'{_WM}/f/fc/Crystal_Bridges_Museum_of_American_Art%2C_in_Bentonville%2C_Arkansas%2C_with_walkway_and_galleries.jpg',
+            'arts':         f'{_WM}/f/fc/Crystal_Bridges_Museum_of_American_Art%2C_in_Bentonville%2C_Arkansas%2C_with_walkway_and_galleries.jpg',
+            'arts & culture': f'{_WM}/f/fc/Crystal_Bridges_Museum_of_American_Art%2C_in_Bentonville%2C_Arkansas%2C_with_walkway_and_galleries.jpg',
+            'golf':         f'{_GH}/nwa-golf.jpeg',
+            'recreation':   f'{_WM}/8/8b/Crystal_Bridges_from_trail.jpg',
         },
         'rogers': {
-            'recreation':   'https://upload.wikimedia.org/wikipedia/commons/0/00/Beaver_Lake_from_Prairie_Creek%2C_Arkansas.jpg',
-            'trail access': 'https://upload.wikimedia.org/wikipedia/commons/0/00/Beaver_Lake_from_Prairie_Creek%2C_Arkansas.jpg',
-            'trails':       'https://upload.wikimedia.org/wikipedia/commons/0/00/Beaver_Lake_from_Prairie_Creek%2C_Arkansas.jpg',
-            'lake':         'https://upload.wikimedia.org/wikipedia/commons/0/00/Beaver_Lake_from_Prairie_Creek%2C_Arkansas.jpg',
-            'outdoor':      'https://upload.wikimedia.org/wikipedia/commons/0/00/Beaver_Lake_from_Prairie_Creek%2C_Arkansas.jpg',
-            'community':    'https://upload.wikimedia.org/wikipedia/commons/0/02/Frisco_Festival%2C_Rogers%2C_AR.jpg',
-            'downtown':     'https://upload.wikimedia.org/wikipedia/commons/0/02/Frisco_Festival%2C_Rogers%2C_AR.jpg',
-            'investment':   'https://upload.wikimedia.org/wikipedia/commons/7/77/Walmart_AMP.jpg',
-            'growth':       'https://upload.wikimedia.org/wikipedia/commons/7/77/Walmart_AMP.jpg',
-            'lifestyle':    'https://upload.wikimedia.org/wikipedia/commons/8/8b/Crystal_Bridges_from_trail.jpg',
-            'arts':         'https://upload.wikimedia.org/wikipedia/commons/8/8b/Crystal_Bridges_from_trail.jpg',
-            'arts & culture': 'https://upload.wikimedia.org/wikipedia/commons/8/8b/Crystal_Bridges_from_trail.jpg',
+            'recreation':   f'{_WM}/0/00/Beaver_Lake_from_Prairie_Creek%2C_Arkansas.jpg',
+            'trail access': f'{_WM}/0/00/Beaver_Lake_from_Prairie_Creek%2C_Arkansas.jpg',
+            'trails':       f'{_WM}/0/00/Beaver_Lake_from_Prairie_Creek%2C_Arkansas.jpg',
+            'lake':         f'{_WM}/0/00/Beaver_Lake_from_Prairie_Creek%2C_Arkansas.jpg',
+            'outdoor':      f'{_WM}/0/00/Beaver_Lake_from_Prairie_Creek%2C_Arkansas.jpg',
+            'community':    f'{_WM}/0/02/Frisco_Festival%2C_Rogers%2C_AR.jpg',
+            'downtown':     f'{_WM}/0/02/Frisco_Festival%2C_Rogers%2C_AR.jpg',
+            'investment':   'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&h=800&fit=crop&q=80',
+            'growth':       'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&h=800&fit=crop&q=80',
+            'lifestyle':    f'{_WM}/8/8b/Crystal_Bridges_from_trail.jpg',
+            'arts':         f'{_WM}/8/8b/Crystal_Bridges_from_trail.jpg',
+            'arts & culture': f'{_WM}/8/8b/Crystal_Bridges_from_trail.jpg',
+            'golf':         f'{_GH}/nwa-golf.jpeg',
+        },
+        'fayetteville': {
+            'recreation':   f'{_WM}/d/d1/Lake_Leatherwood_Mountain_Biking_Trails.jpg',
+            'trail access': f'{_WM}/d/d1/Lake_Leatherwood_Mountain_Biking_Trails.jpg',
+            'trails':       f'{_WM}/d/d1/Lake_Leatherwood_Mountain_Biking_Trails.jpg',
+            'outdoor':      f'{_WM}/d/d1/Lake_Leatherwood_Mountain_Biking_Trails.jpg',
+            'community':    'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200&h=800&fit=crop&q=80',
+            'downtown':     'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200&h=800&fit=crop&q=80',
+            'investment':   'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&h=800&fit=crop&q=80',
+            'growth':       'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&h=800&fit=crop&q=80',
+            'lifestyle':    f'{_WM}/8/8b/Crystal_Bridges_from_trail.jpg',
+            'arts':         f'{_WM}/8/8b/Crystal_Bridges_from_trail.jpg',
+            'arts & culture': f'{_WM}/8/8b/Crystal_Bridges_from_trail.jpg',
+            'university':   'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&h=800&fit=crop&q=80',
+            'education':    'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&h=800&fit=crop&q=80',
+            'golf':         f'{_GH}/nwa-golf.jpeg',
+        },
+        'springdale': {
+            'recreation':   f'{_GH}/nwa-trails.jpg',
+            'trails':       f'{_GH}/nwa-trails.jpg',
+            'outdoor':      f'{_GH}/nwa-trails.jpg',
+            'community':    'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=1200&h=800&fit=crop&q=80',
+            'downtown':     'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=1200&h=800&fit=crop&q=80',
+            'investment':   'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&h=800&fit=crop&q=80',
+            'growth':       'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&h=800&fit=crop&q=80',
+            'lifestyle':    f'{_GH}/nwa-lake.jpeg',
+            'arts':         f'{_WM}/8/8b/Crystal_Bridges_from_trail.jpg',
         },
     }
+    # Alias shared across NWA cities
+    _CITY_IMAGES['centerton'] = _CITY_IMAGES['bentonville']
+    _CITY_IMAGES['cave springs'] = _CITY_IMAGES['bentonville']
+    _CITY_IMAGES['highfill'] = _CITY_IMAGES['bentonville']
+    _CITY_IMAGES['elm springs'] = _CITY_IMAGES['springdale']
+    _CITY_IMAGES['lowell'] = _CITY_IMAGES['springdale']
+    _CITY_IMAGES['pea ridge'] = _CITY_IMAGES['rogers']
+    _CITY_IMAGES['gravette'] = _CITY_IMAGES['rogers']
 
     city_key = city.lower()
     city_img_map = _CITY_IMAGES.get(city_key, {})
 
-    def _valid_image_url(url: str) -> bool:
-        """Accept only direct image URLs from trusted public domains."""
-        if not url or not url.startswith("http"):
-            return False
-        lower = url.lower().split("?")[0]
-        if not any(lower.endswith(ext) for ext in (".jpg", ".jpeg", ".png", ".webp")):
-            return False
-        trusted = ("upload.wikimedia.org", "assets.simpleviewinc.com", "images.unsplash.com",
-                   "arkansasstateparks.com", "cdn.visitarkansas.com", "visitbentonville.com",
-                   "visitorlando.com", "uark.edu", "static.wixstatic.com")
-        # Allow any https image URL — Claude knows real URLs; validation catches blank/bad ones
-        return True
-
     for idx, card in enumerate(location_cards):
-        ai_url = card.get("image_url", "").strip()
-        # 1. Use AI-provided URL if valid
-        if _valid_image_url(ai_url):
-            pass  # keep card["image_url"] as-is
+        tagline_key = card.get("tagline", "").lower()
+        heading_key = card.get("heading", "").lower()
+        card["image_url"] = ""  # always use our curated map — Claude's URLs are unreliable
+
+        # 1. City-specific exact match on tagline
+        if tagline_key in city_img_map:
+            card["image_url"] = city_img_map[tagline_key]
         else:
-            card["image_url"] = ""  # clear invalid/empty value
-            tagline_key = card.get("tagline", "").lower()
-            # 2. City-specific exact match
-            if tagline_key in city_img_map:
-                card["image_url"] = city_img_map[tagline_key]
+            # 2. City-specific partial match (tagline or heading contains a key)
+            city_url = None
+            search_text = tagline_key + " " + heading_key
+            for k, v in city_img_map.items():
+                if k in search_text or any(w in k for w in search_text.split()):
+                    city_url = v
+                    break
+            if city_url:
+                card["image_url"] = city_url
             else:
-                # 3. City-specific partial match
-                city_url = None
-                for k, v in city_img_map.items():
-                    if k in tagline_key or tagline_key in k:
-                        city_url = v
-                        break
-                if city_url:
-                    card["image_url"] = city_url
+                # 3. Generic Unsplash by category: exact match → partial match → index fallback
+                photo_ids = _UNSPLASH.get(tagline_key)
+                if not photo_ids:
+                    for k, v in _UNSPLASH.items():
+                        if k in tagline_key or tagline_key in k:
+                            photo_ids = v
+                            break
+                if photo_ids:
+                    photo_id = photo_ids[idx % len(photo_ids)]
                 else:
-                    # 3. Generic Unsplash by category: exact match → partial match → index fallback
-                    photo_ids = _UNSPLASH.get(tagline_key)
-                    if not photo_ids:
-                        for k, v in _UNSPLASH.items():
-                            if k in tagline_key or tagline_key in k:
-                                photo_ids = v
-                                break
-                    if photo_ids:
-                        photo_id = photo_ids[idx % len(photo_ids)]
-                    else:
-                        photo_id = _INDEX_FALLBACK[idx % len(_INDEX_FALLBACK)]
-                    card["image_url"] = _UNSPLASH_BASE.format(id=photo_id)
+                    photo_id = _INDEX_FALLBACK[idx % len(_INDEX_FALLBACK)]
+                card["image_url"] = _UNSPLASH_BASE.format(id=photo_id)
 
     # ── Environmental ───────────────────────────────────────────────────────
     env = raw.get("environmental", {
