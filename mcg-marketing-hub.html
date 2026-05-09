@@ -362,7 +362,7 @@ const STEPS=[
   {id:'generate', label:'Building OM flipbook, flyer + PDFs'},
   {id:'listing',  label:'Generating Webflow listing page'},
   {id:'publish',  label:'Publishing to Webflow Featured Listings'},
-  {id:'ixact',    label:'Pushing email campaign to IXACT'},
+  {id:'ixact',    label:'Finalizing & pushing to IXACT'},
   {id:'done',     label:'Done'},
 ];
 
@@ -481,7 +481,7 @@ const OMView=({listings,settings})=>{
 
   return <div>
     <div style={S.sectionTitle}>OM Generator</div>
-    <div style={S.sectionSub}>Paste a listing URL → listing page + interactive flip book generated simultaneously + pushed to IXACT</div>
+    <div style={S.sectionSub}>Paste a listing URL → listing page + OM flipbook + flyer + PDFs + IXACT email — all in one click</div>
 
     {!backendUrl&&<div style={{padding:'10px 16px',background:'#fef3c7',border:'1px solid #f59e0b',borderRadius:8,marginBottom:20,fontSize:12,color:'#92400e'}}>
       ⚠ Backend URL not configured. <span style={{cursor:'pointer',textDecoration:'underline'}} onClick={()=>{}}>Go to Settings → Backend URL</span> to connect the Railway server.
@@ -642,19 +642,18 @@ const OMView=({listings,settings})=>{
           </div>
 
           {/* IXACT — Email Campaign */}
-          <div style={{...S.card,marginBottom:10,borderLeft:`3px solid ${result.ixactOk?'#10b981':'#ef4444'}`}}>
+          <div style={{...S.card,marginBottom:10,borderLeft:'3px solid #10b981'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
               <div>
                 <div style={{fontSize:12,fontWeight:700,color:B.navy}}>IXACT Email Campaign</div>
-                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>Digital OM embedded — saved as draft in IXACT MassEmail</div>
+                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>OM link + flyer download embedded — copy HTML into IXACT</div>
               </div>
-              {result.ixactOk
-                ?<span style={{background:'#d1fae5',color:'#059669',fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase'}}>✓ Saved to IXACT</span>
-                :<span style={{background:'#fee2e2',color:'#dc2626',fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase'}}>Check IXACT Key</span>}
+              <span style={{background:'#d1fae5',color:'#059669',fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase'}}>✓ READY</span>
             </div>
-            <div style={{display:'flex',gap:8}}>
-              {result.emailUrl&&<a href={result.emailUrl} target="_blank" style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12}/> Preview Email</a>}
-              <div style={{fontSize:10,color:B.gray400,alignSelf:'center'}}>Flyer PDF link included in email body</div>
+            <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+              {result.emailUrl&&<a href={result.emailUrl} target="_blank" style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12}/> Preview</a>}
+              {result.emailUrl&&<button onClick={()=>{fetch(result.emailUrl).then(r=>r.text()).then(h=>{navigator.clipboard.writeText(h);alert('Email HTML copied — paste into IXACT Mass Email HTML editor.');}).catch(()=>alert('Open the preview and use View Source to copy the HTML.'));}} style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,cursor:'pointer'}}><Icon name="copy" size={12}/> Copy HTML</button>}
+              {result.emailUrl&&<a href={result.emailUrl} download="email-campaign.html" style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="download" size={12}/> Download</a>}
             </div>
           </div>
         </div>}
