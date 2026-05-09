@@ -294,10 +294,13 @@ class WebflowClient:
     def _publish_site(self):
         """Trigger a site publish so changes go live."""
         try:
-            self._post(f"/sites/{self.site_id}/publish", {
-                "publishToWebflowSubdomain": True,
-                "customDomains": ["masoncapitalgroup.com"],
-            })
+            # Fetch custom domain IDs dynamically (v2 API requires IDs, not domain names)
+            site_data = self._get(f"/sites/{self.site_id}")
+            domain_ids = [d["id"] for d in site_data.get("customDomains", []) if d.get("id")]
+            payload: dict = {"publishToWebflowSubdomain": True}
+            if domain_ids:
+                payload["customDomains"] = domain_ids
+            self._post(f"/sites/{self.site_id}/publish", payload)
             logger.info("Site publish triggered")
             time.sleep(2)
         except Exception as e:
