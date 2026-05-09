@@ -260,8 +260,8 @@ def api_scrape_poll(job_id):
 @login_required
 def api_generate():
     """
-    Accept a normalized listing dict, render the full listing page HTML.
-    Saves the HTML to the generated/ folder and returns it.
+    Accept a normalized listing dict, render the full listing page HTML,
+    and push to Webflow CMS so images are editable in the Webflow Editor.
     """
     body = request.get_json(force=True) or {}
     listing = body.get("listing")
@@ -270,21 +270,36 @@ def api_generate():
 
     try:
         # Always inject current AGENT_DEFAULTS so agent photo/info stays fresh
-        # regardless of what was stored in the scraped listing dict
         listing["agent"] = listing_generator.AGENT_DEFAULTS
 
         html = generate_html(listing)
 
-        # Save to disk for serving previews and downloads
+        # Save to disk for preview/download fallback
         slug = listing.get("slug", "listing")
         out_path = GENERATED_DIR / f"{slug}.html"
         out_path.write_text(html, encoding="utf-8")
-
         logger.info(f"Generated: {out_path}")
+
+        # Push to Webflow CMS — all fields (including EXPERIENCE images) editable in Editor
+        webflow_url = None
+        settings = load_settings()
+        wf_token = settings.get("wf_token") or os.getenv("WEBFLOW_API_TOKEN", "")
+        wf_site = settings.get("wf_site") or os.getenv("WEBFLOW_SITE_ID", "699cb0b733f309dd4bda1b56")
+
+        if wf_token:
+            try:
+                client = WebflowClient(wf_token, wf_site)
+                cms_result = client.push_listing_to_cms(listing)
+                webflow_url = cms_result.get("url")
+                logger.info(f"CMS published: {webflow_url}")
+            except Exception as cms_err:
+                logger.warning(f"CMS push failed (non-fatal): {cms_err}")
+
         return jsonify({
             "html": html,
             "slug": slug,
             "file": str(out_path),
+            "webflow_url": webflow_url,
         })
 
     except Exception as e:

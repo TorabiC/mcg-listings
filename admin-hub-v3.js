@@ -259,9 +259,11 @@
       if (genData.error) throw new Error('Generate: ' + genData.error);
 
       const slug = genData.slug;
-      const previewUrl = API_URL + '/preview/' + slug;
+      const webflowUrl = genData.webflow_url;
+      const previewUrl = webflowUrl || (API_URL + '/preview/' + slug);
+      const doneLabel = webflowUrl ? '✓ View on Webflow ↗' : '✓ View Listing Page';
 
-      setCardStatus('Listing Page', 'done', '✓ View Listing Page', previewUrl);
+      setCardStatus('Listing Page', 'done', doneLabel, previewUrl);
       setCardStatus('OM Flip Book', 'ready', 'Ready — coming soon');
 
     } catch (err) {
