@@ -194,6 +194,38 @@
     }
   }
 
+  // ── Refresh pipeline (re-generates static page using CMS image overrides) ───
+  let _lastSlug = null;
+
+  async function handleRefresh() {
+    const token = getToken();
+    if (!token) { clearToken(); showLogin(); return; }
+    if (!_lastSlug) { alert('Run Generate All first.'); return; }
+
+    const refreshBtn = document.querySelector('.dash-refresh-btn');
+    if (refreshBtn) { refreshBtn.textContent = 'Refreshing…'; refreshBtn.disabled = true; }
+    setCardStatus('Listing Page', 'working', 'Applying CMS image updates…');
+
+    try {
+      const res = await fetch(API_URL + '/api/refresh', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, 'bypass-tunnel-reminder': '1' },
+        body: JSON.stringify({ slug: _lastSlug }),
+      });
+      if (res.status === 401) { clearToken(); showLogin(); return; }
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      const url = data.webflow_url || (API_URL + '/preview/' + _lastSlug);
+      const label = data.webflow_url ? '✓ Updated on Webflow ↗' : '✓ Page Refreshed';
+      setCardStatus('Listing Page', 'done', label, url);
+    } catch (err) {
+      setCardStatus('Listing Page', 'error', err.message.substring(0, 80));
+    } finally {
+      if (refreshBtn) { refreshBtn.textContent = 'Refresh Images'; refreshBtn.disabled = false; }
+    }
+  }
+
   // ── Generate pipeline ────────────────────────────────────────────────────────
   async function handleGenerate() {
     const token = getToken();
@@ -264,6 +296,8 @@
       const doneLabel = webflowUrl ? '✓ View on Webflow ↗' : '✓ View Listing Page';
 
       setCardStatus('Listing Page', 'done', doneLabel, previewUrl);
+      // Store slug so the Refresh button knows what to update
+      _lastSlug = slug;
       setCardStatus('OM Flip Book', 'ready', 'Ready — coming soon');
 
     } catch (err) {
@@ -282,6 +316,11 @@
     });
     if (goBtn) goBtn.addEventListener('click', function (e) {
       e.preventDefault(); handleGenerate();
+    });
+
+    const refreshBtn = document.querySelector('.dash-refresh-btn');
+    if (refreshBtn) refreshBtn.addEventListener('click', function (e) {
+      e.preventDefault(); handleRefresh();
     });
 
     // Show login overlay unless a valid token is already stored

@@ -261,7 +261,8 @@ def api_scrape_poll(job_id):
 def api_generate():
     """
     Accept a normalized listing dict, render the full listing page HTML,
-    and push to Webflow CMS so images are editable in the Webflow Editor.
+    publish it to Webflow as a static page (preserving the approved design),
+    and store a CMS draft item so EXPERIENCE images are editable in the Editor.
     """
     body = request.get_json(force=True) or {}
     listing = body.get("listing")
@@ -274,26 +275,39 @@ def api_generate():
 
         html = generate_html(listing)
 
-        # Save to disk for preview/download fallback
+        # Save to disk (HTML for serving, JSON for Refresh endpoint)
         slug = listing.get("slug", "listing")
         out_path = GENERATED_DIR / f"{slug}.html"
         out_path.write_text(html, encoding="utf-8")
+        (GENERATED_DIR / f"{slug}.json").write_text(
+            json.dumps(listing, default=str, ensure_ascii=False), encoding="utf-8"
+        )
         logger.info(f"Generated: {out_path}")
 
-        # Push to Webflow CMS — all fields (including EXPERIENCE images) editable in Editor
-        webflow_url = None
         settings = load_settings()
         wf_token = settings.get("wf_token") or os.getenv("WEBFLOW_API_TOKEN", "")
         wf_site = settings.get("wf_site") or os.getenv("WEBFLOW_SITE_ID", "699cb0b733f309dd4bda1b56")
 
+        webflow_url = None
         if wf_token:
+            client = WebflowClient(wf_token, wf_site)
+
+            # Step 1: Push approved HTML to a static Webflow page (design unchanged)
             try:
-                client = WebflowClient(wf_token, wf_site)
-                cms_result = client.push_listing_to_cms(listing)
-                webflow_url = cms_result.get("url")
-                logger.info(f"CMS published: {webflow_url}")
+                page_result = client.create_listing_page(listing, html)
+                webflow_url = page_result.get("url")
+                logger.info(f"Static page published: {webflow_url}")
+            except Exception as page_err:
+                logger.warning(f"Static page publish failed (non-fatal): {page_err}")
+
+            # Step 2: Write CMS draft item so EXPERIENCE images are editable in the Editor.
+            # isDraft=True means this item never creates a competing live /listings/[slug] page.
+            # User edits images in the CMS Editor, then hits Refresh in the admin hub.
+            try:
+                client.push_listing_to_cms(listing, is_draft=True)
+                logger.info(f"CMS draft item saved for {slug}")
             except Exception as cms_err:
-                logger.warning(f"CMS push failed (non-fatal): {cms_err}")
+                logger.warning(f"CMS draft save failed (non-fatal): {cms_err}")
 
         return jsonify({
             "html": html,
@@ -304,6 +318,62 @@ def api_generate():
 
     except Exception as e:
         logger.error(f"Generate error: {e}", exc_info=True)
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/refresh", methods=["POST"])
+@login_required
+def api_refresh():
+    """
+    Re-generate and re-publish a listing page using any image overrides
+    stored in the CMS draft item (edited via Webflow Editor).
+    """
+    body = request.get_json(force=True) or {}
+    slug = (body.get("slug") or "").strip()
+    if not slug:
+        return jsonify({"error": "slug is required"}), 400
+
+    # Load the saved listing from disk
+    out_path = GENERATED_DIR / f"{slug}.html"
+    listing_path = GENERATED_DIR / f"{slug}.json"
+    if not listing_path.exists():
+        return jsonify({"error": "Listing data not found. Re-run Generate first."}), 404
+
+    settings = load_settings()
+    wf_token = settings.get("wf_token") or os.getenv("WEBFLOW_API_TOKEN", "")
+    wf_site = settings.get("wf_site") or os.getenv("WEBFLOW_SITE_ID", "699cb0b733f309dd4bda1b56")
+
+    if not wf_token:
+        return jsonify({"error": "Webflow API token not configured"}), 400
+
+    try:
+        listing = json.loads(listing_path.read_text(encoding="utf-8"))
+        listing["agent"] = listing_generator.AGENT_DEFAULTS
+
+        client = WebflowClient(wf_token, wf_site)
+
+        # Pull any image overrides from the CMS draft item
+        overrides = client.get_cms_image_overrides(slug)
+        if overrides:
+            cards = listing.get("location_cards") or []
+            for i, card in enumerate(cards):
+                key = f"experience-{i+1}-image"
+                if key in overrides and overrides[key]:
+                    card["image_url"] = overrides[key]
+            listing["location_cards"] = cards
+            logger.info(f"Applied {len(overrides)} CMS image overrides for {slug}")
+
+        html = generate_html(listing)
+        out_path.write_text(html, encoding="utf-8")
+
+        page_result = client.create_listing_page(listing, html)
+        webflow_url = page_result.get("url")
+        logger.info(f"Refreshed static page: {webflow_url}")
+
+        return jsonify({"ok": True, "slug": slug, "webflow_url": webflow_url})
+
+    except Exception as e:
+        logger.error(f"Refresh error: {e}", exc_info=True)
         return jsonify({"error": str(e)}), 500
 
 

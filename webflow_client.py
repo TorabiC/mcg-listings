@@ -73,11 +73,17 @@ class WebflowClient:
 
     # ── CMS: push listing ───────────────────────────────────────────────────
 
-    def push_listing_to_cms(self, listing: dict) -> dict:
+    def push_listing_to_cms(self, listing: dict, is_draft: bool = True) -> dict:
         """
-        Creates or updates a Property Listings CMS item and publishes it.
-        All fields — including EXPERIENCE images — are editable in the Webflow Editor.
-        Returns {"url": ..., "item_id": ..., "slug": ...}
+        Creates or updates a Property Listings CMS item.
+
+        is_draft=True (default): saves the item without publishing it as a live page.
+        This means it never creates a competing /listings/[slug] page — the approved
+        static page remains the canonical URL. The draft item exists solely so EXPERIENCE
+        images (and all other fields) are editable via the Webflow Editor.
+
+        is_draft=False: publishes the item as a live CMS page (only use if the
+        Property Listings template matches the approved design).
         """
         collection_id = PROPERTY_LISTINGS_COLLECTION
         slug = listing.get("slug", "listing")
@@ -87,38 +93,57 @@ class WebflowClient:
 
         if existing:
             item_id = existing["id"]
-            logger.info(f"CMS item exists ({item_id}) — updating")
+            logger.info(f"CMS item exists ({item_id}) — updating (isDraft={is_draft})")
             self._patch(f"/collections/{collection_id}/items/{item_id}", {
                 "isArchived": False,
-                "isDraft": False,
+                "isDraft": is_draft,
                 "fieldData": field_data,
             })
         else:
             result = self._post(f"/collections/{collection_id}/items", {
                 "isArchived": False,
-                "isDraft": False,
+                "isDraft": is_draft,
                 "fieldData": field_data,
             })
             item_id = result["id"]
-            logger.info(f"Created CMS item {item_id}")
+            logger.info(f"Created CMS item {item_id} (isDraft={is_draft})")
 
-        # Publish the item
-        try:
-            self._post(f"/collections/{collection_id}/items/publish", {
-                "itemIds": [item_id],
-            })
-            logger.info(f"Published CMS item {item_id}")
-        except Exception as e:
-            logger.warning(f"CMS item publish failed: {e}")
-
-        # Trigger full site publish
-        self._publish_site()
+        if not is_draft:
+            try:
+                self._post(f"/collections/{collection_id}/items/publish", {"itemIds": [item_id]})
+                logger.info(f"Published CMS item {item_id}")
+            except Exception as e:
+                logger.warning(f"CMS item publish failed: {e}")
+            self._publish_site()
 
         return {
             "item_id": item_id,
             "slug": slug,
             "url": f"https://masoncapitalgroup.com/listings/{slug}",
         }
+
+    def get_cms_image_overrides(self, slug: str) -> dict:
+        """
+        Reads the EXPERIENCE image fields from the CMS draft item for a given slug.
+        Returns a dict like {"experience-1-image": "https://...", ...} for any field
+        that has been overridden (non-null) in the CMS Editor.
+        """
+        collection_id = PROPERTY_LISTINGS_COLLECTION
+        item = self._find_cms_item_by_slug(collection_id, slug)
+        if not item:
+            return {}
+
+        field_data = item.get("fieldData") or {}
+        overrides = {}
+        for i in range(1, 5):
+            key = f"experience-{i}-image"
+            val = field_data.get(key)
+            if val:
+                # Image fields return {"url": "...", "alt": "..."}
+                url = val.get("url") if isinstance(val, dict) else str(val)
+                if url:
+                    overrides[key] = url
+        return overrides
 
     def _build_cms_field_data(self, listing: dict) -> dict:
         photos = listing.get("photos") or []
