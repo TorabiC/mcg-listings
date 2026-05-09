@@ -358,12 +358,12 @@ const NewListingView=({onAdd,setView})=>{
 
 // OM Generator View
 const STEPS=[
-  {id:'scrape',  label:'Scraping listing data'},
-  {id:'research',label:'Running market research'},
-  {id:'listing', label:'Generating listing page'},
-  {id:'flipbook',label:'Building flip book (11 pages)'},
-  {id:'print',   label:'Generating PDF & 1-page flyer'},
-  {id:'done',    label:'Finalizing & pushing to IXACT'},
+  {id:'scrape',   label:'Scraping listing data'},
+  {id:'generate', label:'Building OM flipbook, flyer + PDFs'},
+  {id:'listing',  label:'Generating Webflow listing page'},
+  {id:'publish',  label:'Publishing to Webflow Featured Listings'},
+  {id:'ixact',    label:'Pushing email campaign to IXACT'},
+  {id:'done',     label:'Done'},
 ];
 
 const OMView=({listings,settings})=>{
@@ -446,17 +446,18 @@ const OMView=({listings,settings})=>{
           if(sd.status==='done'){
             clearInterval(pollRef.current);
             setPhase('done');
-            const base=backendUrl;
-            const omUrl=sd.webflow_url||`${base}/output/${sd.slug}/flipbook.html`;
-            const listingUrl=sd.webflow_url||`${base}/output/${sd.slug}/listing-page.html`;
-            const emailUrl=`${base}/output/${sd.slug}/email-campaign.html`;
-            const flyerUrl=`${base}/output/${sd.slug}/flyer.html`;
-            const flyerPdf=`${base}/output/${sd.slug}/flyer.pdf`;
-            const omPdf=`${base}/output/${sd.slug}/om.pdf`;
+            const GEN='https://mcg-marketing-hub-production.up.railway.app';
+            const slug=sd.slug||'';
+            const omUrl=sd.om_url||`${GEN}/output/${slug}/flipbook.html`;
+            const listingUrl=sd.listing_url||sd.webflow_url||`${GEN}/output/${slug}/listing-page.html`;
+            const emailUrl=sd.email_url||`${GEN}/output/${slug}/email-campaign.html`;
+            const flyerUrl=sd.flyer_url||`${GEN}/output/${slug}/flyer.html`;
+            const flyerPdf=sd.flyer_pdf||`${GEN}/output/${slug}/flyer.pdf`;
+            const omPdf=sd.om_pdf||`${GEN}/output/${slug}/om.pdf`;
             const embedCode=`<iframe src="${omUrl}" style="width:100%;height:720px;border:none" loading="lazy" title="Offering Memorandum"><\/iframe>`;
-            const files=sd.files||[];
-            setResult({slug:sd.slug,omUrl,listingUrl,emailUrl,flyerUrl,flyerPdf,omPdf,embedCode,files,webflowUrl:sd.webflow_url});
-            pushToIxact(sd.slug,omUrl,url);
+            const ixactOk=sd.ixact&&sd.ixact.success;
+            setResult({slug,omUrl,listingUrl,emailUrl,flyerUrl,flyerPdf,omPdf,embedCode,files:sd.files||[],webflowUrl:sd.webflow_url,ixactOk});
+            if(ixactOk) setIxactStatus('ok'); else if(sd.ixact) setIxactStatus('error');
           }else if(sd.status==='error'){
             clearInterval(pollRef.current);
             setPhase('error');
@@ -573,14 +574,14 @@ const OMView=({listings,settings})=>{
 
         {/* Results */}
         {phase==='done'&&result&&<div>
-          {/* Listing Page */}
-          <div style={{...S.card,marginBottom:12,borderLeft:`3px solid ${B.crimson}`}}>
+          {/* Listing Page — Webflow */}
+          <div style={{...S.card,marginBottom:10,borderLeft:`3px solid ${B.crimson}`}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8}}>
               <div>
                 <div style={{fontSize:12,fontWeight:700,color:B.navy}}>Listing Page</div>
-                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>{result.webflowUrl?'Published on masoncapitalgroup.com':'Full property page with OM embedded inline'}</div>
+                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>{result.webflowUrl?'Published · OM flipbook embedded inline':'Featured Listings — masoncapitalgroup.com'}</div>
               </div>
-              <span style={{background:result.webflowUrl?'#dcfce7':'#fce7f3',color:result.webflowUrl?'#15803d':B.crimson,fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase',letterSpacing:1}}>{result.webflowUrl?'✓ Live on Webflow':'OM Embedded'}</span>
+              <span style={{background:result.webflowUrl?'#dcfce7':'#fce7f3',color:result.webflowUrl?'#15803d':B.crimson,fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase'}}>{result.webflowUrl?'✓ Live on Webflow':'Generating…'}</span>
             </div>
             <div style={{display:'flex',gap:8}}>
               <a href={result.listingUrl} target="_blank" style={{...S.btn('primary'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12} color={B.white}/> {result.webflowUrl?'View on Webflow':'Preview'}</a>
@@ -588,72 +589,72 @@ const OMView=({listings,settings})=>{
             </div>
           </div>
 
-          {/* Standalone OM */}
-          <div style={{...S.card,marginBottom:12,borderLeft:`3px solid ${B.gold}`}}>
+          {/* Standalone OM Flipbook */}
+          <div style={{...S.card,marginBottom:10,borderLeft:`3px solid ${B.gold}`}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:6}}>
               <div>
-                <div style={{fontSize:12,fontWeight:700,color:B.navy}}>Standalone OM Flip Book</div>
-                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>Direct link for email campaigns, text, social</div>
+                <div style={{fontSize:12,fontWeight:700,color:B.navy}}>Interactive OM Flip Book</div>
+                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>11-page digital OM — standalone link + embedded in listing page</div>
               </div>
-              <span style={{background:'#fef9ec',color:B.gold,fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase',letterSpacing:1,border:`1px solid ${B.gold}`}}>Email Marketing</span>
+              <span style={{background:'#fef9ec',color:B.gold,fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase',border:`1px solid ${B.gold}`}}>Embedded + Standalone</span>
             </div>
-            <div style={{fontSize:10,fontFamily:'monospace',color:B.gray600,padding:'6px 10px',background:B.cream,borderRadius:4,marginBottom:10,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{result.omUrl}</div>
+            <div style={{fontSize:10,fontFamily:'monospace',color:B.gray600,padding:'6px 10px',background:B.cream,borderRadius:4,marginBottom:8,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{result.omUrl}</div>
             <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
               <a href={result.omUrl} target="_blank" style={{...S.btn('gold'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12} color={B.navy}/> Preview</a>
               <button style={{...S.btn('outline'),padding:'6px 14px',fontSize:11}} onClick={()=>copyText('om',result.omUrl)}>{copyState.om?'Copied!':'Copy URL'}</button>
-              <button style={{...S.btn('outline'),padding:'6px 14px',fontSize:11}} onClick={()=>copyText('embed',result.embedCode)}>{copyState.embed?'Copied!':'Copy Embed Code'}</button>
+              <button style={{...S.btn('outline'),padding:'6px 14px',fontSize:11}} onClick={()=>copyText('embed',result.embedCode)}>{copyState.embed?'Copied!':'Copy Embed'}</button>
             </div>
           </div>
 
-          {/* Print OM PDF */}
-          <div style={{...S.card,marginBottom:12,borderLeft:`3px solid #6366f1`}}>
+          {/* OM PDF */}
+          <div style={{...S.card,marginBottom:10,borderLeft:`3px solid #6366f1`}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8}}>
               <div>
-                <div style={{fontSize:12,fontWeight:700,color:B.navy}}>Print-Ready OM</div>
-                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>Full 11-page PDF — send to investors or print</div>
+                <div style={{fontSize:12,fontWeight:700,color:B.navy}}>OM PDF</div>
+                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>Print-ready 11-page PDF — send to investors, attach to emails</div>
               </div>
-              <span style={{background:'#eef2ff',color:'#6366f1',fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase',letterSpacing:1}}>PDF · 11 pages</span>
+              <span style={{background:'#eef2ff',color:'#6366f1',fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase'}}>PDF · 11 pages</span>
             </div>
             <div style={{display:'flex',gap:8}}>
-              {result.files&&result.files.includes('om.pdf')
-                ?<><a href={result.omPdf} target="_blank" style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12}/> Open PDF</a>
+              {result.omPdf
+                ?<><a href={result.omPdf} target="_blank" style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12}/> Open</a>
                    <a href={result.omPdf} download style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}>↓ Download</a></>
-                :<span style={{fontSize:11,color:B.gray400}}>PDF not generated (check server logs)</span>}
+                :<span style={{fontSize:11,color:B.gray400}}>PDF generation pending…</span>}
             </div>
           </div>
 
-          {/* 1-Page Flyer */}
-          <div style={{...S.card,marginBottom:12,borderLeft:`3px solid #0891b2`}}>
+          {/* Marketing Flyer */}
+          <div style={{...S.card,marginBottom:10,borderLeft:`3px solid #0891b2`}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8}}>
               <div>
-                <div style={{fontSize:12,fontWeight:700,color:B.navy}}>1-Page Flyer</div>
-                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>Single-page marketing flyer for print or email</div>
+                <div style={{fontSize:12,fontWeight:700,color:B.navy}}>Marketing Flyer</div>
+                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>1-page print flyer + PDF — upload to IXACT as attachment</div>
               </div>
-              <span style={{background:'#ecfeff',color:'#0891b2',fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase',letterSpacing:1}}>Print / Email</span>
+              <span style={{background:'#ecfeff',color:'#0891b2',fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase'}}>Flyer + PDF</span>
             </div>
             <div style={{display:'flex',gap:8}}>
-              {result.files&&result.files.includes('flyer.html')
-                ?<><a href={result.flyerUrl} target="_blank" style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12}/> Preview</a>
-                   {result.files.includes('flyer.pdf')&&<a href={result.flyerPdf} download style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}>↓ PDF</a>}</>
-                :<span style={{fontSize:11,color:B.gray400}}>Flyer not generated</span>}
+              {result.flyerUrl
+                ?<a href={result.flyerUrl} target="_blank" style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12}/> Preview Flyer</a>
+                :<span style={{fontSize:11,color:B.gray400}}>Generating…</span>}
+              {result.flyerPdf&&<a href={result.flyerPdf} download style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}>↓ Flyer PDF</a>}
+              {result.flyerPdf&&<button style={{...S.btn('outline'),padding:'6px 14px',fontSize:11}} onClick={()=>copyText('flyer',result.flyerPdf)}>{copyState.flyer?'Copied!':'Copy PDF Link'}</button>}
             </div>
           </div>
 
-          {/* IXACT Status */}
-          <div style={{...S.card,marginBottom:12,borderLeft:`3px solid ${ixactStatus==='ok'?'#10b981':ixactStatus==='error'?'#ef4444':B.navy}`}}>
+          {/* IXACT — Email Campaign */}
+          <div style={{...S.card,marginBottom:10,borderLeft:`3px solid ${result.ixactOk?'#10b981':'#ef4444'}`}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
               <div>
-                <div style={{fontSize:12,fontWeight:700,color:B.navy}}>IXACT Marketing Resource</div>
-                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>Email campaign template auto-pushed to CRM</div>
+                <div style={{fontSize:12,fontWeight:700,color:B.navy}}>IXACT Email Campaign</div>
+                <div style={{fontSize:10,color:B.gray400,marginTop:2}}>Digital OM embedded — saved as draft in IXACT MassEmail</div>
               </div>
-              {ixactStatus==='pushing'&&<span style={{fontSize:10,color:B.gray400}}>Pushing…</span>}
-              {ixactStatus==='ok'&&<span style={{background:'#d1fae5',color:'#059669',fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase'}}>✓ Saved to IXACT</span>}
-              {ixactStatus==='error'&&<span style={{background:'#fee2e2',color:'#dc2626',fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase'}}>Push Failed</span>}
-              {!ixactStatus&&<span style={{fontSize:10,color:B.gray400}}>Queued</span>}
+              {result.ixactOk
+                ?<span style={{background:'#d1fae5',color:'#059669',fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase'}}>✓ Saved to IXACT</span>
+                :<span style={{background:'#fee2e2',color:'#dc2626',fontSize:9,fontWeight:700,padding:'3px 8px',borderRadius:20,textTransform:'uppercase'}}>Check IXACT Key</span>}
             </div>
             <div style={{display:'flex',gap:8}}>
-              <a href={result.emailUrl} target="_blank" style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12}/> Preview Email</a>
-              {ixactStatus==='error'&&<button style={{...S.btn('outline'),padding:'6px 14px',fontSize:11}} onClick={()=>pushToIxact(result.slug,result.omUrl,'listing')}>Retry Push</button>}
+              {result.emailUrl&&<a href={result.emailUrl} target="_blank" style={{...S.btn('outline'),padding:'6px 14px',fontSize:11,textDecoration:'none'}}><Icon name="eye" size={12}/> Preview Email</a>}
+              <div style={{fontSize:10,color:B.gray400,alignSelf:'center'}}>Flyer PDF link included in email body</div>
             </div>
           </div>
         </div>}
@@ -662,7 +663,7 @@ const OMView=({listings,settings})=>{
         {phase==='idle'&&<div style={{...S.card,textAlign:'center',padding:60,color:B.gray400}}>
           <Icon name="book" size={48} color={B.gray200}/>
           <div style={{marginTop:12,fontSize:14}}>Enter a listing URL and click Generate</div>
-          <div style={{fontSize:11,marginTop:4}}>Listing page + 11-page OM + IXACT email created simultaneously</div>
+          <div style={{fontSize:11,marginTop:4,lineHeight:1.6}}>Listing page + 11-page OM flipbook + OM PDF + Flyer + IXACT email — all in one click</div>
         </div>}
       </div>
     </div>
