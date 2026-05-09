@@ -36,6 +36,7 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "mcg-dashboard-dev-key")
 CORS(app, origins=[
     "https://www.masoncapitalgroup.com",
     "https://masoncapitalgroup.com",
+    "https://torabic.github.io",
 ])
 
 GENERATED_DIR = Path(__file__).parent / "generated"
