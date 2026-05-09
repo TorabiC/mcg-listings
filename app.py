@@ -292,22 +292,15 @@ def api_generate():
         if wf_token:
             client = WebflowClient(wf_token, wf_site)
 
-            # Step 1: Push approved HTML to a static Webflow page (design unchanged)
+            # Publish listing as a live CMS page on masoncapitalgroup.com/listings/{slug}.
+            # is_draft=False: publishes the item so it goes live immediately.
+            # All fields (including EXPERIENCE images) remain editable in the Webflow Editor.
             try:
-                page_result = client.create_listing_page(listing, html)
-                webflow_url = page_result.get("url")
-                logger.info(f"Static page published: {webflow_url}")
-            except Exception as page_err:
-                logger.warning(f"Static page publish failed (non-fatal): {page_err}")
-
-            # Step 2: Write CMS draft item so EXPERIENCE images are editable in the Editor.
-            # isDraft=True means this item never creates a competing live /listings/[slug] page.
-            # User edits images in the CMS Editor, then hits Refresh in the admin hub.
-            try:
-                client.push_listing_to_cms(listing, is_draft=True)
-                logger.info(f"CMS draft item saved for {slug}")
+                cms_result = client.push_listing_to_cms(listing, is_draft=False)
+                webflow_url = cms_result.get("url")
+                logger.info(f"CMS page published: {webflow_url}")
             except Exception as cms_err:
-                logger.warning(f"CMS draft save failed (non-fatal): {cms_err}")
+                logger.warning(f"CMS publish failed (non-fatal): {cms_err}")
 
         return jsonify({
             "html": html,
