@@ -483,48 +483,15 @@ def api_generate_job():
             else:
                 _update(log_append="Webflow token not set — skipping publish.")
 
-            # ── Step 5: Push email campaign to IXACT ─────────────────────────
+            # ── Step 5: Confirm email campaign is ready ───────────────────────
+            # IXACT Contact does not expose a REST API for mass email creation.
+            # The generated email HTML is served from the Node.js server and
+            # surfaced in the dashboard for copy-paste into IXACT.
             ixact_result = None
-            if ixact_key and email_url:
-                _update(step="ixact", log_append="Pushing email campaign to IXACT…")
-                try:
-                    # Fetch the generated email HTML from Node.js server
-                    email_html_resp = requests.get(email_url, timeout=30)
-                    email_html = email_html_resp.text if email_html_resp.ok else ""
-
-                    if not email_html and node_slug:
-                        # Fallback: fetch via slug API
-                        r2 = requests.get(f"{gen_server}/api/email-html/{node_slug}", timeout=15)
-                        if r2.ok:
-                            email_html = r2.json().get("html", "")
-
-                    if email_html:
-                        address = listing.get("address_full", "New Listing")
-                        subject = f"New MCG Listing: {address}"
-                        ixact_resp = requests.post(
-                            "https://api.ixactcontact.com/v1/MassEmail",
-                            headers={
-                                "Content-Type": "application/json",
-                                "Accept": "application/json",
-                                "IXACT-API-Key": ixact_key,
-                            },
-                            json={
-                                "Subject": subject,
-                                "From": "info@masoncapitalgroup.com",
-                                "FromName": "Cameron Torabi, Mason Capital Group",
-                                "ReplyTo": "info@masoncapitalgroup.com",
-                                "Body": email_html,
-                                "IsDraft": True,
-                            },
-                            timeout=30,
-                        )
-                        ixact_result = {"success": ixact_resp.ok, "status": ixact_resp.status_code}
-                        _update(log_append=f"IXACT email campaign {'saved' if ixact_resp.ok else 'failed'} (HTTP {ixact_resp.status_code})")
-                    else:
-                        _update(log_append="IXACT: no email HTML found — skipping.")
-                except Exception as e:
-                    _update(log_append=f"IXACT warning: {e}")
-                    ixact_result = {"success": False, "error": str(e)}
+            _update(step="ixact", log_append="Email campaign ready — copy HTML from dashboard into IXACT.")
+            if email_url:
+                ixact_result = {"success": True, "ready": True, "email_url": email_url}
+                logger.info(f"Email campaign HTML ready at: {email_url}")
 
             # ── Finalize ──────────────────────────────────────────────────────
             with _jobs_lock:
