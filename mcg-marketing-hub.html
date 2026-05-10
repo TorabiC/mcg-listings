@@ -445,9 +445,15 @@ const OMView=({listings,settings})=>{
           if(sd.step) setStep(sd.step);
           if(sd.status==='done'){
             clearInterval(pollRef.current);
-            setPhase('done');
             const GEN='https://mcg-marketing-hub-production.up.railway.app';
-            const slug=sd.slug||'';
+            // Server now guarantees slug is set before status=done. Fallback: parse log.
+            const slug=sd.slug||(sd.log&&sd.log.match(/output[\/\\]([a-z0-9][a-z0-9-]*)/i)||[])[1]||'';
+            if(!slug){
+              setPhase('error');
+              setLog('Generation completed but property slug was not captured. Check Railway logs for [SLUG-BUG] entries.');
+              return;
+            }
+            setPhase('done');
             const omUrl=sd.om_url||`${GEN}/output/${slug}/flipbook.html`;
             const listingUrl=sd.listing_url||sd.webflow_url||`${GEN}/output/${slug}/listing-page.html`;
             const emailUrl=sd.email_url||`${GEN}/output/${slug}/email-campaign.html`;
