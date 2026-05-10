@@ -446,11 +446,15 @@ const OMView=({listings,settings})=>{
           if(sd.status==='done'){
             clearInterval(pollRef.current);
             const GEN='https://mcg-marketing-hub-production.up.railway.app';
-            // Server now guarantees slug is set before status=done. Fallback: parse log.
+            // Prefer backend-provided URLs (Flask returns full om_url, listing_url, etc.).
+            // Fall back to constructing from slug only when the backend doesn't supply them.
+            // If neither is available, parse slug from log; if still nothing, surface a real error
+            // instead of building //listing-page.html URLs.
             const slug=sd.slug||(sd.log&&sd.log.match(/output[\/\\]([a-z0-9][a-z0-9-]*)/i)||[])[1]||'';
-            if(!slug){
+            const hasDirectUrls=sd.om_url||sd.listing_url||sd.webflow_url;
+            if(!slug && !hasDirectUrls){
               setPhase('error');
-              setLog('Generation completed but property slug was not captured. Check Railway logs for [SLUG-BUG] entries.');
+              setLog('Generation completed but neither slug nor file URLs were returned by the backend.');
               return;
             }
             setPhase('done');
