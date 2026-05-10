@@ -370,6 +370,58 @@ def api_generate_job():
 
             # ── Step 1: Scrape ────────────────────────────────────────────────
             if url:
+                # MLS Matrix shared URLs use a dedicated Node.js HTML parser that
+                # works reliably with simple HTTP GET. Playwright+Claude (the Python
+                # path) fails on these URLs due to bot-detection on the Railway host.
+                # Delegate the entire scrape+generate pipeline to the Node server and
+                # convert the result back into the Flask job format.
+                from urllib.parse import urlparse as _up
+                _domain = _up(url).netloc.lower()
+                if "mlsmatrix" in _domain or "matrix" in _domain:
+                    _update(step="scrape", log_append="MLS Matrix URL — delegating to Node.js generator…")
+                    node_job_resp = requests.post(
+                        f"{gen_server}/api/generate",
+                        json={"url": url},
+                        timeout=30,
+                    )
+                    if not node_job_resp.ok:
+                        raise ValueError(f"Node generator error: {node_job_resp.text[:200]}")
+                    node_job_id = node_job_resp.json().get("jobId")
+                    if not node_job_id:
+                        raise ValueError("Node generator did not return a jobId")
+                    # Poll Node's /api/status until done
+                    import time as _time
+                    for _ in range(60):
+                        _time.sleep(5)
+                        st_resp = requests.get(f"{gen_server}/api/status/{node_job_id}", timeout=15)
+                        st = st_resp.json() if st_resp.ok else {}
+                        _update(log_append=st.get("log", "")[-200:] if st.get("log") else None)
+                        if st.get("status") == "error":
+                            raise ValueError(f"Node generation failed: {st.get('error','unknown')}")
+                        if st.get("status") == "done":
+                            node_slug = st.get("slug") or ""
+                            node_files = st.get("files") or []
+                            def _node_url(path):
+                                return f"{gen_server}/output/{node_slug}/{path}" if node_slug else None
+                            with _jobs_lock:
+                                _gen_jobs[job_id].update({
+                                    "status":      "done",
+                                    "step":        "done",
+                                    "slug":        node_slug,
+                                    "files":       node_files,
+                                    "webflow_url": None,
+                                    "om_url":      _node_url("flipbook.html"),
+                                    "listing_url": _node_url("listing-page.html"),
+                                    "flyer_url":   _node_url("flyer.html"),
+                                    "flyer_pdf":   _node_url("flyer.pdf"),
+                                    "om_pdf":      _node_url("om.pdf"),
+                                    "email_url":   _node_url("email-campaign.html"),
+                                    "ixact":       None,
+                                    "log":         _gen_jobs[job_id]["log"] + "✓ All done.",
+                                })
+                            return  # exit _run — Node handled everything
+                    raise ValueError("Node generation timed out after 5 minutes")
+
                 if not api_key:
                     raise ValueError("Anthropic API key not configured. Add it in Settings.")
                 _update(step="scrape", log_append="Scraping listing...")
