@@ -21,7 +21,7 @@ body{font-family:'Lato','Helvetica Neue',Arial,sans-serif;background:#f5f0eb;col
 <div id="root"></div>
 <script type="text/babel">
 // ─── AUTH ────────────────────────────────────────
-const API_BASE='https://mcg-dashboard-production.up.railway.app';
+const API_BASE='https://mcg-marketing-hub.azurewebsites.net';
 const TOKEN_KEY='mcg_admin_token';
 const TOKEN_TS_KEY='mcg_admin_token_ts';
 const TOKEN_TTL=23*60*60*1000;
@@ -67,10 +67,7 @@ const Icon=({name,size=20,color='currentColor'})=>{
 };
 
 // ─── DATA ────────────────────────────────────────
-const SAMPLE_LISTINGS=[
-  {id:1,street:'407 Old Forge Dr',city:'Bentonville',state:'AR',zip:'72712',price:549900,beds:4,baths:3,sqft:2847,type:'Residential',status:'Published',mls:'MLS-240871',flipBookReady:true,flyerReady:true,emailTemplateReady:true,embedReady:true,configValid:true,auditPassed:true,url:'https://masoncapitalgroup.com/properties/407-old-forge-dr'},
-  {id:2,street:'610 W Central Ave',city:'Bentonville',state:'AR',zip:'72712',price:1580000,beds:0,baths:2,sqft:3200,type:'Commercial',status:'OM Generated',mls:'MLS-240955',flipBookReady:true,flyerReady:false,emailTemplateReady:false,embedReady:false,configValid:true,auditPassed:true,url:'https://masoncapitalgroup.com/properties/610-w-central-ave'}
-];
+const SAMPLE_LISTINGS=[];
 
 const EMAIL_TEMPLATES=[
   {id:1,name:'Buyer Welcome Drip',subject:'Welcome to Mason Capital Group',type:'drip',steps:5},
@@ -445,7 +442,7 @@ const OMView=({listings,settings})=>{
           if(sd.step) setStep(sd.step);
           if(sd.status==='done'){
             clearInterval(pollRef.current);
-            const GEN='https://mcg-marketing-hub-production.up.railway.app';
+            const GEN='https://mcg-marketing-hub.azurewebsites.net';
             // Prefer backend-provided URLs (Flask returns full om_url, listing_url, etc.).
             // Fall back to constructing from slug only when the backend doesn't supply them.
             // If neither is available, parse slug from log; if still nothing, surface a real error
@@ -494,7 +491,7 @@ const OMView=({listings,settings})=>{
     <div style={S.sectionSub}>Paste a listing URL → listing page + OM flipbook + flyer + PDFs + IXACT email — all in one click</div>
 
     {!backendUrl&&<div style={{padding:'10px 16px',background:'#fef3c7',border:'1px solid #f59e0b',borderRadius:8,marginBottom:20,fontSize:12,color:'#92400e'}}>
-      ⚠ Backend URL not configured. <span style={{cursor:'pointer',textDecoration:'underline'}} onClick={()=>{}}>Go to Settings → Backend URL</span> to connect the Railway server.
+      ⚠ Backend URL not configured. <span style={{cursor:'pointer',textDecoration:'underline'}} onClick={()=>{}}>Go to Settings → Backend URL</span> to connect the backend server.
     </div>}
 
     <div style={{display:'flex',gap:20}}>
@@ -844,7 +841,7 @@ const BlogView=()=>{
 
 const SETTINGS_KEY='mcg_hub_settings';
 const DEFAULT_SETTINGS={
-  backendUrl:'https://mcg-dashboard-production.up.railway.app',
+  backendUrl:'https://mcg-marketing-hub.azurewebsites.net',
   ixactKey:'Lf2Yr-xYyXErVJ@zpYoYfQ',
   webflowSiteId:'699cb0b733f309dd4bda1b56',
   blogCollectionId:'69ab56787f5bcd0a8faf4e7b',
@@ -870,10 +867,10 @@ const SettingsView=({settings,setSettings})=>{
   </div>;
   return <div>
     <div style={S.sectionTitle}>Settings</div>
-    <div style={S.sectionSub}>Configure the Railway backend and API integrations — saved to your browser</div>
+    <div style={S.sectionSub}>Configure the backend and API integrations — saved to your browser</div>
     <div style={{maxWidth:600,...S.card}}>
       <div style={{fontSize:14,fontWeight:700,color:B.navy,marginBottom:16,paddingBottom:12,borderBottom:`1px solid ${B.gray200}`}}>Backend</div>
-      <Field label="Railway Backend URL" field="backendUrl" hint="e.g. https://mcg-marketing-hub.up.railway.app — no trailing slash"/>
+      <Field label="Backend URL" field="backendUrl" hint="e.g. https://mcg-marketing-hub.azurewebsites.net — no trailing slash"/>
       <div style={{fontSize:14,fontWeight:700,color:B.navy,marginBottom:16,marginTop:32,paddingBottom:12,borderBottom:`1px solid ${B.gray200}`}}>API Integrations</div>
       <Field label="IXACT CRM API Key" field="ixactKey"/>
       <Field label="Webflow Site ID" field="webflowSiteId"/>
