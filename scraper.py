@@ -514,11 +514,84 @@ Return ONLY valid JSON. No explanation."""
     return _safe_json_parse(raw)
 
 
+def _web_search(query: str, num_results: int = 4) -> list:
+    """Search DuckDuckGo HTML and return title+snippet strings. No API key required."""
+    try:
+        resp = requests.get(
+            "https://html.duckduckgo.com/html/",
+            params={"q": query, "kl": "us-en"},
+            headers=HEADERS,
+            timeout=12,
+        )
+        soup = BeautifulSoup(resp.text, "lxml")
+        results = []
+        for r in soup.select(".result__body")[:num_results]:
+            title_el = r.select_one(".result__title")
+            snip_el = r.select_one(".result__snippet")
+            title = title_el.get_text(strip=True) if title_el else ""
+            snip = snip_el.get_text(strip=True) if snip_el else ""
+            if snip:
+                results.append(f"{title}: {snip}" if title else snip)
+        return results
+    except Exception as e:
+        logger.warning(f"Web search failed for '{query}': {e}")
+        return []
+
+
+def _research_property(data: dict) -> str:
+    """
+    Run 4 targeted web searches for the property and return a research brief
+    to ground Claude content generation in real, current, verifiable data.
+    """
+    street = data.get("address_street", "")
+    city = data.get("address_city", "")
+    state = data.get("address_state", "")
+    listing_type = data.get("listing_type", "residential")
+    prop_type = data.get("property_type", "")
+    addr = f"{street}, {city}, {state}".strip(", ")
+
+    queries = [f"{addr} property details real estate listing"]
+
+    if listing_type in ("commercial", "investment", "rental"):
+        queries += [
+            f"{prop_type} investment cap rate {city} {state} 2026",
+            f"{city} {state} commercial real estate market 2026",
+            f"{city} {state} population growth employment economic drivers 2026",
+        ]
+    elif listing_type in ("land", "development"):
+        queries += [
+            f"{city} {state} land development zoning growth 2026",
+            f"{city} {state} new construction development pipeline 2026",
+            f"{city} {state} real estate market appreciation 2026",
+        ]
+    else:
+        queries += [
+            f"{city} {state} real estate market home prices appreciation 2026",
+            f"{city} {state} neighborhood walkability schools amenities",
+            f"{city} {state} population growth employers economic drivers 2026",
+        ]
+
+    sections = []
+    for query in queries:
+        results = _web_search(query, num_results=3)
+        if results:
+            bullets = "\n".join(f"  • {r}" for r in results)
+            sections.append(f"[{query}]\n{bullets}")
+
+    if not sections:
+        return ""
+    return (
+        "LIVE MARKET RESEARCH — fetched from the web at generation time:\n\n"
+        + "\n\n".join(sections)
+    )
+
+
 def _enhance_with_claude(data: dict, url: str, api_key: str) -> dict:
     """
     Fill in missing fields and generate compelling MCG-quality content.
     Generates: highlights, feature lists, description paragraphs, schools, comparables,
     tax estimates, loan payment breakdown, location content, environmental scores.
+    Research is fetched live from the web before generation to ensure accuracy.
     """
     client = anthropic.Anthropic(api_key=api_key)
 
@@ -566,9 +639,13 @@ def _enhance_with_claude(data: dict, url: str, api_key: str) -> dict:
     {{"name": "High School", "grades": "9-12", "type": "Public", "distance": "1.8 mi", "rating": 9, "level": "H"}}
   ],'''
 
+    research_brief = _research_property(data)
+
     prompt = f"""You are a top-tier real estate copywriter and data analyst for Mason Capital Group, a luxury investment-focused brokerage in Northwest Arkansas. Generate comprehensive, investor-grade listing page content for this property.
 
-PROPERTY DATA:
+{research_brief}
+
+PROPERTY DATA (extracted from MLS):
 Address: {addr}
 Price: ${price_int:,}
 Type: {prop_type} ({listing_type})
@@ -579,7 +656,7 @@ MLS#: {data.get('mls_number', '')}
 Existing description: {(data.get('description') or '')[:500]}
 Existing highlights: {data.get('highlights', [])}
 
-Generate a JSON object with ALL of the following (use real location data for {city}, {state}):
+Ground every market claim, stat, and location reference in the LIVE MARKET RESEARCH above. Generate a JSON object with ALL of the following:
 
 {{
   "highlights": ["up to 9 concise bullet highlights relevant to this listing type"],
@@ -654,12 +731,16 @@ Generate a JSON object with ALL of the following (use real location data for {ci
   "school_district": "{data.get('school_district') or ''}"
 }}
 
-IMPORTANT:
-- Use real data for {city}, {state}. Research actual schools, parks, trails, employers, and location facts.
-- Location card content MUST be specific to this exact property and community — name actual trails, streets, employers, universities, developments, etc.
-- image_url rules: Provide a REAL, working direct image URL for each card. Prefer Wikimedia Commons (https://upload.wikimedia.org/wikipedia/commons/...) — search your knowledge for the exact filename of a well-known photo of this specific place, landmark, or asset. Each card's image must be VISUALLY DISTINCT (recreation ≠ community ≠ investment ≠ lifestyle). If you are not confident a specific Wikimedia URL exists, use a known public tourism CDN or leave image_url as "" — do NOT guess or fabricate URLs.
-- Tax history: estimate based on typical {city}, {state} rates.
-- Comparables: realistic nearby properties with plausible data for this listing type.
+CRITICAL ACCURACY RULES:
+- Every market stat (price appreciation %, cap rates, population growth, median prices, NOI, etc.) MUST come from the LIVE MARKET RESEARCH above. Do not invent specific numbers not found there.
+- Description paragraphs and highlights MUST be grounded in real property data + research-backed market stats. No generic filler sentences — every claim must be supportable.
+- If a specific stat is not in the research, use conservative general language ("strong appreciation", "growing demand") rather than fabricating a number.
+- Location card content MUST name actual trails, employers, universities, developments, streets, or institutions specific to {city}, {state} — sourced from the research, not invented.
+- Highlights should mix hard property specs (acreage, units, cap rate, sq ft) with verified market data points (appreciation %, NOI, tax efficiency, zoning flexibility). Make them investor-grade, not generic.
+- Description paragraphs: paragraph 1 = property overview with key specs; paragraph 2 = features/investment mechanics; paragraph 3 = location/market thesis with specific data from research.
+- image_url: Provide a REAL direct image URL for each card. Prefer Wikimedia Commons (https://upload.wikimedia.org/wikipedia/commons/...). If not confident a URL is real and working, set image_url to "" — never fabricate or guess a URL.
+- Tax history: use actual data from research if available, otherwise estimate based on {city}, {state} typical rates.
+- Comparables: realistic nearby properties consistent with research data for this listing type.
 - Brand voice: authoritative, investment-focused, direct. Not salesy.
 - Return ONLY valid JSON."""
 
