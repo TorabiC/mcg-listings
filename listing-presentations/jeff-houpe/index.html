@@ -1624,8 +1624,8 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     // Remove hero min-height:100vh so it sizes to content
     var hero = document.querySelector('.hero');
     if (hero) hero.style.minHeight = 'auto';
-    // Remove body fixed-nav padding
-    document.body.style.paddingTop = '0';
+    // Add top padding to clear parent page's navbar (~80px)
+    document.body.style.paddingTop = '80px';
     // Send height to parent for iframe resizing
     function sendHeight() {
       var h = document.documentElement.scrollHeight;
