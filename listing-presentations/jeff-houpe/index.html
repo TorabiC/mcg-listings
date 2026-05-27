@@ -1614,5 +1614,30 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 })();
 </script>
 
+<script>
+// Iframe-aware embedding support
+(function(){
+  if (window !== window.top) {
+    // Hide internal nav when embedded (parent page has its own)
+    var nav = document.querySelector('.nav');
+    if (nav) nav.style.display = 'none';
+    // Remove hero min-height:100vh so it sizes to content
+    var hero = document.querySelector('.hero');
+    if (hero) hero.style.minHeight = 'auto';
+    // Remove body fixed-nav padding
+    document.body.style.paddingTop = '0';
+    // Send height to parent for iframe resizing
+    function sendHeight() {
+      var h = document.documentElement.scrollHeight;
+      window.parent.postMessage({type:'listingHeight', height: h}, '*');
+    }
+    // Send on load, resize, and periodically for dynamic content
+    window.addEventListener('load', function(){ setTimeout(sendHeight, 500); });
+    window.addEventListener('resize', sendHeight);
+    sendHeight();
+    setInterval(sendHeight, 2000);
+  }
+})();
+</script>
 </body>
 </html>
