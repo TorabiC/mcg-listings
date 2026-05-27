@@ -1628,8 +1628,14 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     document.body.style.paddingTop = '0';
     // Send height to parent for iframe resizing
     function sendHeight() {
-      var h = document.documentElement.scrollHeight;
-      window.parent.postMessage({type:'listingHeight', height: h}, '*');
+      // Don't use scrollHeight — it matches the iframe viewport when oversized.
+      // Instead, find the bottom of the last visible (non-script) body child.
+      var last = document.body.lastElementChild;
+      while (last && last.tagName === 'SCRIPT') last = last.previousElementSibling;
+      var h = last ? (last.offsetTop + last.offsetHeight + 20) : 0;
+      if (h > 100) {
+        window.parent.postMessage({type:'listingHeight', height: Math.ceil(h)}, '*');
+      }
     }
     // Send on load, resize, and periodically for dynamic content
     window.addEventListener('load', function(){ setTimeout(sendHeight, 500); });
