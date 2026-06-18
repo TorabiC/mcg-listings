@@ -1471,7 +1471,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   var sold = dot('#c4a35a', 14, '2px solid #fff');
 
   // Subject: Horsebarn RD, Rogers (geocoded)
-  L.marker([36.318408, -94.186444], {icon: subject}).addTo(map)
+  L.marker([36.328499, -94.188798], {icon: subject}).addTo(map)
     .bindPopup('<strong style="color:#ab012e">SUBJECT: 624 &amp; 628 S Horsebarn RD</strong><br>20 Acres &bull; 2 Residences<br><strong>$8,000,000 – $9,000,000</strong>');
 
   // Active comps
@@ -1483,7 +1483,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   // Pending comps
   L.marker([36.332572, -94.196121], {icon: pending}).addTo(map)
     .bindPopup('<strong>5801 W Venture Park BLVD</strong><br>5.12 ac &bull; Pending &bull; $2,509,056');
-  L.marker([36.333100, -94.197200], {icon: pending}).addTo(map)
+  L.marker([36.332900, -94.196800], {icon: pending}).addTo(map)
     .bindPopup('<strong>5879 W Venture Park BLVD</strong><br>5.55 ac &bull; Pending &bull; $2,719,777');
 
   // Sold comps
@@ -1496,9 +1496,9 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 
   // Fit bounds to all markers
   var allCoords = [
-    [36.318408, -94.186444], [36.326192, -94.187045],
+    [36.328499, -94.188798], [36.326192, -94.187045],
     [36.332729, -94.197507], [36.332572, -94.196121],
-    [36.333100, -94.197200], [36.332811, -94.187550],
+    [36.332900, -94.196800], [36.332811, -94.187550],
     [36.328064, -94.183889], [36.332611, -94.188496]
   ];
   map.fitBounds(L.latLngBounds(allCoords).pad(0.15));
