@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Presentation — Horsebarn RD, Rogers | Mason Capital Group</title>
+<meta name="description" content="Comprehensive market analysis and listing presentation for Horsebarn RD, Rogers, AR 72758. Prepared by Cameron Torabi, Principal Broker at Mason Capital Group Real Estate Investment & Trust.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+/* ===== VARIABLES ===== */
+:root {
+  --navy: #16162a;
+  --navy-light: #1e1e3a;
+  --crimson: #ab012e;
+  --crimson-dark: #8a0125;
+  --gold: #c4a35a;
+  --gold-light: #d4b96e;
+  --white: #ffffff;
+  --off-white: #f8f6f3;
+  --gray-100: #f0ede8;
+  --gray-200: #e0dbd3;
+  --gray-300: #bbb5aa;
+  --gray-400: #a09888;
+  --gray-500: #6b6560;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-sans); color: var(--navy); background: var(--white); line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ===== UTILITY ===== */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 80px 0; }
+.section-alt { background: var(--off-white); }
+.section-dark { background: var(--navy); color: var(--white); }
+.text-gold { color: var(--gold); }
+.text-crimson { color: var(--crimson); }
+.text-center { text-align: center; }
+.accent-line { width: 80px; height: 3px; background: var(--crimson); }
+.accent-line-gold { width: 80px; height: 3px; background: var(--gold); }
+.accent-line-center { margin-left: auto; margin-right: auto; }
+.label { font-family: var(--font-sans); font-size: 11px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; }
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-32 { margin-bottom: 32px; }
+.mb-48 { margin-bottom: 48px; }
+.mb-64 { margin-bottom: 64px; }
+
+/* ===== LANGUAGE TOGGLE ===== */
+.lang-toggle {
+  position: fixed; bottom: 24px; right: 24px; z-index: 200;
+  background: var(--navy); color: var(--white); border: 2px solid var(--gold);
+  border-radius: 50px; padding: 10px 20px; font-size: 13px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3); transition: all 0.3s;
+}
+.lang-toggle:hover { background: var(--crimson); border-color: var(--crimson); }
+.lang-toggle .flag { font-size: 18px; }
+
+/* ===== NAVIGATION ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(22,22,42,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(196,163,90,0.2);
+  padding: 0 24px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--white); }
+.nav-logo span { font-family: var(--font-sans); font-size: 9px; color: var(--crimson); letter-spacing: 1px; display: block; font-weight: 400; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-300); transition: color 0.3s; }
+.nav-links a:hover { color: var(--gold); }
+.nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 24px; cursor: pointer; }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative; min-height: 100vh; display: flex; align-items: flex-end;
+  background: linear-gradient(180deg, rgba(22,22,42,0.95) 0%, rgba(22,22,42,0.70) 50%, rgba(22,22,42,0.95) 100%);
+  padding: 120px 0 80px; overflow: hidden;
+}
+.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--crimson); z-index: 2; }
+.hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: var(--crimson); z-index: 2; }
+.hero .container { position: relative; z-index: 1; width: 100%; }
+.hero-badge {
+  display: inline-block; background: var(--crimson); color: var(--white);
+  font-size: 11px; font-weight: 900; letter-spacing: 5px; padding: 10px 24px;
+  margin-bottom: 32px;
+}
+.hero-title { font-family: var(--font-serif); font-size: clamp(40px, 7vw, 72px); font-weight: 900; color: var(--white); line-height: 1.05; margin-bottom: 12px; }
+.hero-address { font-size: clamp(16px, 3vw, 24px); color: var(--gold); letter-spacing: 4px; font-weight: 300; margin-bottom: 28px; }
+.hero-price { font-family: var(--font-serif); font-size: clamp(28px, 5vw, 48px); font-weight: 700; color: var(--white); margin-bottom: 32px; }
+.hero-stats { display: flex; flex-wrap: wrap; gap: 40px; margin-bottom: 24px; }
+.hero-stat .val { font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: var(--white); }
+.hero-stat .lbl { font-size: 10px; color: var(--gray-300); letter-spacing: 1.5px; margin-top: 2px; text-transform: uppercase; }
+.hero-tagline { font-size: 13px; color: var(--gray-400); letter-spacing: 1.5px; }
+.hero-logo { position: absolute; bottom: 0; right: 24px; text-align: right; }
+.hero-logo .name { font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: var(--white); opacity: 0.85; }
+.hero-logo .sub { font-size: 9px; color: var(--crimson); letter-spacing: 1px; }
+
+/* ===== SECTION HEADERS ===== */
+.section-header { margin-bottom: 48px; }
+.section-header .label { margin-bottom: 12px; display: block; }
+.section-header h2 { font-family: var(--font-serif); font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.15; margin-bottom: 16px; }
+.section-header p { font-size: 17px; color: var(--gray-500); max-width: 640px; line-height: 1.7; }
+.section-header.centered p { margin-left: auto; margin-right: auto; }
+
+/* ===== ABOUT BROKER SECTION ===== */
+.broker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.broker-img-wrap {
+  position: relative; border-radius: 4px; overflow: hidden;
+  background: var(--navy); aspect-ratio: 4/5;
+  display: flex; align-items: center; justify-content: center;
+}
+.broker-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.broker-img-wrap::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 6px; background: var(--crimson);
+}
+.broker-details h3 { font-family: var(--font-serif); font-size: 32px; font-weight: 700; margin-bottom: 4px; }
+.broker-details .title { color: var(--crimson); font-weight: 700; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+.broker-details p { font-size: 16px; color: var(--gray-500); line-height: 1.8; margin-bottom: 24px; }
+.broker-contact { display: flex; flex-direction: column; gap: 8px; }
+.broker-contact .item { font-size: 14px; color: var(--navy); }
+.broker-contact .item strong { color: var(--gold); margin-right: 8px; font-size: 11px; letter-spacing: 1px; }
+.credential-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.credential-badge {
+  background: var(--navy); color: var(--gold); font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; padding: 6px 14px; border-radius: 2px;
+}
+
+/* ===== VALUE PROPS ===== */
+.value-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.value-card {
+  background: var(--white); border: 1px solid var(--gray-200); padding: 40px 32px;
+  position: relative; transition: transform 0.3s, box-shadow 0.3s;
+}
+.value-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(22,22,42,0.1); }
+.value-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--crimson); }
+.value-card .icon { font-size: 36px; margin-bottom: 20px; }
+.value-card h4 { font-family: var(--font-serif); font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+.value-card p { font-size: 14px; color: var(--gray-500); line-height: 1.7; }
+
+/* ===== PROPERTY DETAILS ===== */
+.details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.detail-table { width: 100%; border-collapse: collapse; }
+.detail-table caption {
+  font-family: var(--font-serif); font-size: 20px; font-weight: 700;
+  text-align: left; padding-bottom: 16px; border-bottom: 2px solid var(--navy);
+  margin-bottom: 0; caption-side: top;
+}
+.detail-table tr { border-bottom: 1px solid var(--gray-200); }
+.detail-table td { padding: 12px 0; font-size: 14px; }
+.detail-table td:first-child { color: var(--gray-500); font-weight: 400; width: 45%; }
+.detail-table td:last-child { font-weight: 700; color: var(--navy); }
+
+/* ===== VALUATION SECTION ===== */
+.val-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.val-card {
+  text-align: center; padding: 40px 24px; position: relative;
+  border: 1px solid rgba(196,163,90,0.2); background: rgba(30,30,58,0.5);
+}
+.val-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: var(--gold); }
+.val-card .val-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-300); margin-bottom: 12px; }
+.val-card .val-amount { font-family: var(--font-serif); font-size: 36px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.val-card .val-sub { font-size: 12px; color: var(--gray-400); }
+.val-card.featured { border-color: var(--gold); background: rgba(196,163,90,0.08); }
+.val-card.featured .val-amount { color: var(--gold); }
+
+/* ===== CHARTS ===== */
+.chart-container { background: var(--white); border: 1px solid var(--gray-200); border-radius: 4px; padding: 32px; margin-bottom: 32px; }
+.chart-container h4 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin-bottom: 24px; color: var(--navy); }
+.chart-container-dark { background: rgba(30,30,58,0.5); border: 1px solid rgba(196,163,90,0.2); border-radius: 4px; padding: 32px; margin-bottom: 32px; }
+.chart-container-dark h4 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin-bottom: 24px; color: var(--white); }
+.bar-chart { display: flex; align-items: flex-end; gap: 12px; height: 220px; padding-top: 20px; }
+.bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; height: 100%; justify-content: flex-end; }
+.bar { width: 100%; max-width: 60px; border-radius: 3px 3px 0 0; transition: height 0.8s ease-out; position: relative; }
+.bar-label { font-size: 10px; color: var(--gray-500); margin-top: 8px; text-align: center; letter-spacing: 0.5px; font-weight: 700; }
+.bar-value { font-size: 11px; font-weight: 700; margin-bottom: 4px; text-align: center; }
+.chart-legend { display: flex; gap: 24px; margin-top: 20px; justify-content: center; flex-wrap: wrap; }
+.chart-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--gray-500); }
+.chart-legend-dot { width: 12px; height: 12px; border-radius: 2px; }
+
+/* Gauge */
+.gauge-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.gauge-item { text-align: center; }
+.gauge-ring { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; position: relative; }
+.gauge-inner { width: 84px; height: 84px; border-radius: 50%; background: var(--off-white); display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.gauge-inner .g-val { font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1; }
+.gauge-inner .g-unit { font-size: 9px; color: var(--gray-500); letter-spacing: 1px; text-transform: uppercase; }
+.gauge-label { font-size: 12px; color: var(--gray-500); font-weight: 700; letter-spacing: 0.5px; }
+
+/* ===== SYNDICATION SECTION ===== */
+.synd-hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.synd-number { font-family: var(--font-serif); font-size: 96px; font-weight: 900; color: var(--crimson); line-height: 1; margin-bottom: 8px; }
+.synd-plus { font-family: var(--font-serif); font-size: 48px; color: var(--gold); vertical-align: super; }
+.synd-subtitle { font-size: 18px; color: var(--navy); font-weight: 700; letter-spacing: 1px; margin-bottom: 16px; }
+.synd-text { font-size: 15px; color: var(--gray-500); line-height: 1.7; margin-bottom: 24px; }
+.platform-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.platform-card {
+  background: var(--white); border: 1px solid var(--gray-200); padding: 20px 16px;
+  text-align: center; border-radius: 4px; transition: transform 0.3s, box-shadow 0.3s;
+}
+.platform-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(22,22,42,0.08); }
+.platform-card .p-name { font-family: var(--font-serif); font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.platform-card .p-type { font-size: 10px; color: var(--gray-400); letter-spacing: 1px; text-transform: uppercase; }
+.investor-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+.investor-card {
+  background: var(--navy); padding: 32px 24px; border-radius: 4px; text-align: center;
+  border-bottom: 3px solid var(--gold); position: relative;
+}
+.investor-card .ic-icon { font-size: 32px; margin-bottom: 16px; }
+.investor-card h4 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.investor-card p { font-size: 13px; color: var(--gray-300); line-height: 1.6; }
+
+/* ===== CMA TABLE ===== */
+.cma-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.cma-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+.cma-table thead { background: var(--navy); }
+.cma-table th {
+  color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; padding: 14px 16px; text-align: left;
+}
+.cma-table td { padding: 14px 16px; font-size: 13px; border-bottom: 1px solid var(--gray-200); }
+.cma-table tr:nth-child(even) { background: var(--off-white); }
+.cma-table .highlight { background: rgba(171,1,46,0.06); font-weight: 700; }
+.status-badge {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  padding: 3px 10px; border-radius: 2px; text-transform: uppercase;
+}
+.status-active { background: #e8f5e9; color: #2e7d32; }
+.status-closed { background: #e3f2fd; color: #1565c0; }
+.status-pending { background: #fff8e1; color: #f57f17; }
+.status-expired { background: #fce4ec; color: #c62828; }
+.status-withdrawn { background: #f3e5f5; color: #7b1fa2; }
+
+/* ===== DIGITAL MARKETING PLATFORM ===== */
+.homes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.homes-feature-list { display: flex; flex-direction: column; gap: 28px; }
+.homes-feature { display: flex; gap: 20px; align-items: flex-start; }
+.homes-feature .feat-icon {
+  flex-shrink: 0; width: 48px; height: 48px; background: var(--crimson);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--white); border-radius: 2px;
+}
+.homes-feature h4 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.homes-feature p { font-size: 14px; color: var(--gray-500); line-height: 1.6; }
+.homes-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 40px; }
+.homes-stat {
+  text-align: center; padding: 28px 16px; background: var(--navy);
+  border-bottom: 3px solid var(--crimson);
+}
+.homes-stat .big { font-family: var(--font-serif); font-size: 32px; font-weight: 900; color: var(--gold); }
+.homes-stat .sm { font-size: 11px; color: var(--gray-300); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+
+.homes-visual {
+  background: var(--navy); border-radius: 4px; padding: 48px 32px;
+  text-align: center; position: relative; overflow: hidden;
+  min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.homes-visual::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--crimson), var(--gold)); }
+.homes-visual .homes-logo-text { font-family: var(--font-serif); font-size: 48px; font-weight: 900; color: var(--white); margin-bottom: 8px; }
+.homes-visual .homes-tagline { font-size: 14px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 32px; }
+.homes-visual .feature-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.feature-pill {
+  background: rgba(196,163,90,0.1); border: 1px solid rgba(196,163,90,0.3);
+  color: var(--gold-light); font-size: 11px; font-weight: 700;
+  letter-spacing: 1px; padding: 8px 16px; border-radius: 2px;
+}
+
+/* ===== MATTERPORT 3D TOUR SECTION ===== */
+.matterport-section { background: var(--navy); color: var(--white); position: relative; overflow: hidden; }
+.matterport-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--crimson), var(--gold), var(--crimson)); }
+.matterport-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
+.matterport-mockup {
+  position: relative; background: #0d0d1a; border-radius: 8px; overflow: hidden;
+  border: 2px solid rgba(196,163,90,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.mockup-topbar {
+  display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+  background: #111125; border-bottom: 1px solid rgba(196,163,90,0.15);
+}
+.mockup-dot { width: 8px; height: 8px; border-radius: 50%; }
+.mockup-dot.red { background: #ff5f57; }
+.mockup-dot.yellow { background: #febc2e; }
+.mockup-dot.green { background: #28c840; }
+.mockup-url {
+  margin-left: 12px; font-size: 10px; color: var(--gray-400);
+  background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 3px; flex: 1;
+}
+.mockup-body { padding: 24px; min-height: 320px; position: relative; }
+.mockup-3d-visual {
+  width: 100%; aspect-ratio: 16/10; background: linear-gradient(135deg, #1a1a3a 0%, #0d0d20 50%, #1a1a3a 100%);
+  border-radius: 4px; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.dollhouse-svg-wrap { width: 90%; height: 90%; display: flex; align-items: center; justify-content: center; }
+.dollhouse-svg-wrap svg { width: 100%; height: 100%; }
+.dollhouse-label {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase;
+  background: rgba(22,22,42,0.9); padding: 4px 16px; border-radius: 2px;
+}
+@keyframes matterport-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+}
+.mp-scan-line { animation: matterport-pulse 2.5s ease-in-out infinite; }
+.mockup-nav-bar {
+  display: flex; gap: 0; margin-top: 12px; border-radius: 4px; overflow: hidden;
+  border: 1px solid rgba(196,163,90,0.2);
+}
+.mockup-nav-item {
+  flex: 1; text-align: center; padding: 8px 4px; font-size: 9px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; color: var(--gray-400);
+  background: rgba(22,22,42,0.8); border-right: 1px solid rgba(196,163,90,0.1);
+  transition: all 0.3s;
+}
+.mockup-nav-item.active { background: var(--crimson); color: var(--white); }
+.mockup-nav-item:last-child { border-right: none; }
+
+.matterport-features { display: flex; flex-direction: column; gap: 24px; }
+.mp-feature {
+  display: flex; gap: 16px; align-items: flex-start; padding: 20px;
+  background: rgba(255,255,255,0.03); border-left: 3px solid var(--gold);
+  transition: background 0.3s;
+}
+.mp-feature:hover { background: rgba(255,255,255,0.06); }
+.mp-feature-icon { font-size: 28px; flex-shrink: 0; width: 48px; text-align: center; }
+.mp-feature h4 { font-family: var(--font-serif); font-size: 17px; font-weight: 700; margin-bottom: 5px; }
+.mp-feature p { font-size: 13px; color: var(--gray-300); line-height: 1.6; }
+
+/* ===== REACH SECTION ===== */
+.reach-banner {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  background: var(--navy); border-radius: 4px; overflow: hidden;
+  border: 1px solid rgba(196,163,90,0.15); margin-bottom: 56px;
+}
+.reach-cell {
+  text-align: center; padding: 40px 24px; position: relative;
+  border-right: 1px solid rgba(196,163,90,0.1);
+}
+.reach-cell:last-child { border-right: none; }
+.reach-cell .reach-num {
+  font-family: var(--font-serif); font-size: clamp(36px, 5vw, 56px);
+  font-weight: 900; color: var(--gold); line-height: 1;
+}
+.reach-cell .reach-unit { font-size: 13px; color: var(--crimson); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+.reach-cell .reach-desc { font-size: 12px; color: var(--gray-400); margin-top: 8px; line-height: 1.5; }
+
+.target-marketing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.target-card {
+  background: var(--white); border: 1px solid var(--gray-200); padding: 36px 28px;
+  text-align: center; position: relative; overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.target-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+.target-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--crimson); }
+.target-card .tc-icon { font-size: 36px; margin-bottom: 16px; }
+.target-card h4 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.target-card p { font-size: 13px; color: var(--gray-500); line-height: 1.6; }
+
+/* ===== COSTAR NETWORK VISUAL ===== */
+.network-visual {
+  background: linear-gradient(135deg, var(--navy) 0%, #0d0d1a 100%);
+  border-radius: 4px; padding: 48px; margin-top: 56px; position: relative;
+  overflow: hidden; border: 1px solid rgba(196,163,90,0.1);
+}
+.network-visual::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  width: 400px; height: 400px; border-radius: 50%;
+  border: 1px solid rgba(196,163,90,0.06);
+  transform: translate(-50%, -50%);
+}
+.network-center { text-align: center; position: relative; z-index: 1; margin-bottom: 36px; }
+.network-center .nc-label { font-size: 10px; color: var(--crimson); letter-spacing: 4px; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+.network-center .nc-brand { font-family: var(--font-serif); font-size: 28px; font-weight: 900; color: var(--white); }
+.network-center .nc-sub { font-size: 13px; color: var(--gray-300); margin-top: 4px; }
+.network-brands {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+  position: relative; z-index: 1;
+}
+.network-brand-pill {
+  background: rgba(196,163,90,0.08); border: 1px solid rgba(196,163,90,0.2);
+  color: var(--gray-300); font-size: 11px; font-weight: 700;
+  letter-spacing: 1px; padding: 10px 20px; border-radius: 2px;
+  transition: all 0.3s;
+}
+.network-brand-pill:hover { background: rgba(196,163,90,0.15); color: var(--gold); }
+.network-brand-pill.highlight { background: var(--crimson); border-color: var(--crimson); color: var(--white); }
+
+/* ===== TAX HISTORY ===== */
+.tax-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.tax-table thead { background: var(--navy); }
+.tax-table th {
+  color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; padding: 12px 16px; text-align: left;
+}
+.tax-table td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--gray-200); }
+.tax-table tr:nth-child(even) { background: var(--off-white); }
+.growth-positive { color: #2e7d32; font-weight: 700; }
+
+/* ===== WHY MCG SECTION ===== */
+.why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+.why-card {
+  padding: 40px 36px; background: rgba(30,30,58,0.4); border-left: 3px solid var(--gold);
+  transition: background 0.3s;
+}
+.why-card:hover { background: rgba(30,30,58,0.6); }
+.why-card .num {
+  font-family: var(--font-serif); font-size: 36px; font-weight: 900;
+  color: var(--crimson); margin-bottom: 12px;
+}
+.why-card h4 { font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+.why-card p { font-size: 14px; color: var(--gray-300); line-height: 1.7; }
+
+/* ===== MARKET SNAPSHOT ===== */
+.snapshot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.snap-card {
+  text-align: center; padding: 32px 16px; border: 1px solid var(--gray-200);
+  background: var(--white);
+}
+.snap-card .snap-val { font-family: var(--font-serif); font-size: 28px; font-weight: 700; color: var(--navy); }
+.snap-card .snap-label { font-size: 11px; color: var(--gray-500); letter-spacing: 1px; text-transform: uppercase; margin-top: 6px; }
+.snap-card .snap-change { font-size: 12px; font-weight: 700; margin-top: 8px; }
+
+/* ===== CTA ===== */
+.cta-section {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  text-align: center; padding: 100px 24px; position: relative;
+}
+.cta-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--crimson); }
+.cta-section h2 { font-family: var(--font-serif); font-size: clamp(28px, 5vw, 48px); font-weight: 700; color: var(--white); margin-bottom: 16px; }
+.cta-section p { font-size: 18px; color: var(--gray-300); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-block; padding: 16px 40px; font-size: 12px; font-weight: 900;
+  letter-spacing: 3px; text-transform: uppercase; transition: all 0.3s;
+  cursor: pointer; border: none;
+}
+.btn-crimson { background: var(--crimson); color: var(--white); }
+.btn-crimson:hover { background: var(--crimson-dark); }
+.btn-outline { background: transparent; color: var(--gold); border: 2px solid var(--gold); }
+.btn-outline:hover { background: var(--gold); color: var(--navy); }
+
+/* ===== FOOTER ===== */
+.footer {
+  background: var(--navy); color: var(--gray-400); text-align: center;
+  padding: 40px 24px; border-top: 1px solid rgba(196,163,90,0.15);
+}
+.footer .foot-logo { font-family: var(--font-serif); font-size: 20px; color: var(--white); margin-bottom: 4px; }
+.footer .foot-sub { font-size: 10px; color: var(--crimson); letter-spacing: 1px; margin-bottom: 16px; }
+.footer p { font-size: 12px; line-height: 1.6; }
+.footer .disclaimer { font-size: 10px; color: var(--gray-500); margin-top: 16px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+/* ===== WEBSITE & SIGNAGE ===== */
+.web-global-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.web-feature-list { display: flex; flex-direction: column; gap: 20px; }
+.web-feature { display: flex; gap: 16px; align-items: flex-start; }
+.web-feature-icon {
+  flex-shrink: 0; width: 44px; height: 44px; background: var(--crimson); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+.web-feature h4 { font-family: var(--font-serif); font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.web-feature p { font-size: 13px; color: var(--gray-500); line-height: 1.6; }
+.sign-visual {
+  background: linear-gradient(135deg, var(--navy) 0%, #0d0d1a 100%); border-radius: 8px;
+  padding: 48px 32px; text-align: center; border: 2px solid rgba(196,163,90,0.2);
+  position: relative; overflow: hidden;
+}
+.sign-visual::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--crimson), var(--gold)); }
+.sign-mockup {
+  background: var(--white); border-radius: 4px; padding: 24px; display: inline-block;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3); position: relative; margin-bottom: 20px;
+}
+.qr-placeholder {
+  width: 120px; height: 120px; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;
+}
+.qr-placeholder img { width: 100%; height: 100%; border-radius: 4px; object-fit: contain; }
+
+/* ===== ANIMATIONS ===== */
+.animate { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.animate.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: var(--navy); padding: 24px; gap: 16px; }
+  .nav-toggle { display: block; }
+  .broker-grid, .details-grid, .homes-grid, .synd-hero-grid, .matterport-grid, .web-global-grid { grid-template-columns: 1fr; }
+  .value-grid { grid-template-columns: 1fr 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .val-cards { grid-template-columns: 1fr; }
+  .snapshot-grid { grid-template-columns: 1fr 1fr; }
+  .platform-grid { grid-template-columns: 1fr 1fr; }
+  .investor-cards { grid-template-columns: 1fr; }
+  .gauge-row { grid-template-columns: 1fr; }
+  .reach-banner { grid-template-columns: 1fr; }
+  .reach-cell { border-right: none; border-bottom: 1px solid rgba(196,163,90,0.1); }
+  .target-marketing-grid { grid-template-columns: 1fr; }
+  .hero-logo { position: static; text-align: left; margin-top: 32px; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 16px; }
+  .section { padding: 56px 0; }
+  .value-grid { grid-template-columns: 1fr; }
+  .snapshot-grid { grid-template-columns: 1fr 1fr; }
+  .homes-stats-row { grid-template-columns: 1fr 1fr; }
+  .hero-stats { gap: 24px; }
+  .platform-grid { grid-template-columns: 1fr 1fr; }
+  .bar-chart { height: 180px; gap: 6px; }
+  .bar-label { font-size: 9px; }
+  .bar-value { font-size: 10px; }
+  .network-visual { padding: 28px 16px; }
+  .network-brands { gap: 6px; }
+  .network-brand-pill { font-size: 10px; padding: 4px 10px; }
+  .hero-title { margin-bottom: 8px; }
+  .hero-price { margin-bottom: 24px; }
+  .hero-stat .val { font-size: 16px; }
+  .hero-badge { font-size: 10px; padding: 8px 16px; letter-spacing: 3px; }
+  .section-header h2 { font-size: clamp(24px, 6vw, 36px); }
+  .section-header p { font-size: 15px; }
+  .broker-details h2 { font-size: 28px; }
+  .broker-details p { font-size: 14px; }
+  .cma-table-wrap { margin-left: -16px; margin-right: -16px; padding: 0 16px; }
+  .val-card { padding: 24px 20px; }
+  .val-amount { font-size: clamp(24px, 5vw, 32px); }
+  .reach-cell { padding: 20px 16px; }
+  .reach-num { font-size: 36px; }
+  .sign-visual { padding: 32px 20px; }
+  .cta-section h2 { font-size: clamp(24px, 6vw, 36px); }
+  .lang-toggle { bottom: 16px; right: 16px; padding: 8px 14px; font-size: 11px; }
+}
+@media (max-width: 380px) {
+  .hero-stats { gap: 16px; }
+  .hero-stat .val { font-size: 14px; }
+  .snapshot-grid { grid-template-columns: 1fr; }
+  .homes-stats-row { grid-template-columns: 1fr; }
+  .platform-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+  html { font-size: 11px; }
+  body { background: white; }
+  .nav, .nav-toggle, .lang-toggle { display: none !important; }
+  .hero { min-height: auto; padding: 60px 0 48px; background: var(--navy) !important; page-break-after: always; }
+  .hero::before, .hero::after { background: var(--crimson) !important; }
+  .section { padding: 40px 0; }
+  .section-dark { background: var(--navy) !important; }
+  .section-alt { background: var(--off-white) !important; }
+  .value-card, .why-card, .snap-card, .platform-card, .investor-card, .target-card, .mp-feature { break-inside: avoid; }
+  .matterport-section { background: var(--navy) !important; }
+  .animate { opacity: 1 !important; transform: none !important; }
+  .cma-table-wrap { overflow: visible; }
+  .cma-table { min-width: unset; }
+  a[href]::after { content: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- LANGUAGE TOGGLE BUTTON -->
+<button class="lang-toggle" id="langToggle" onclick="toggleLanguage()">
+  <span class="flag">&#127474;&#127485;</span>
+  <span id="langLabel">Espanol</span>
+</button>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo" style="display:flex;align-items:center;gap:10px;"><img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group" style="height:36px;width:auto;"></div>
+  <div class="nav-links" id="navLinks">
+    <a href="#property" data-en="Property" data-es="Propiedad">Property</a>
+    <a href="#why-mcg-intro" data-en="Why MCG" data-es="Por Que MCG">Why MCG</a>
+    <a href="#details" data-en="Details" data-es="Detalles">Details</a>
+    <a href="#valuation" data-en="Valuation" data-es="Valuacion">Valuation</a>
+    <a href="#syndication" data-en="Marketing" data-es="Marketing">Marketing</a>
+    <a href="#homes" data-en="Platform" data-es="Plataforma">Platform</a>
+    <a href="#web-signage" data-en="Digital" data-es="Digital">Digital</a>
+    <a href="#contact" data-en="Contact" data-es="Contacto">Contact</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">&#9776;</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="property">
+  <div class="container">
+    <div class="hero-badge" data-en="LISTING PRESENTATION" data-es="PRESENTACION DE LISTADO">LISTING PRESENTATION</div>
+    <div class="hero-title">Horsebarn<br>Road</div>
+    <div class="hero-address">ROGERS, ARKANSAS 72758</div>
+    <div style="width:80px;height:3px;background:var(--crimson);margin-bottom:28px"></div>
+    <div class="hero-price" data-en="Market Analysis" data-es="Analisis de Mercado">Market Analysis</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="val">4,224 SF</div><div class="lbl" data-en="Heated Structure" data-es="Estructura Calefaccionada">Heated Structure</div></div>
+      <div class="hero-stat"><div class="val">3 Full Baths</div><div class="lbl" data-en="Bathrooms" data-es="Banos">Bathrooms</div></div>
+      <div class="hero-stat"><div class="val">1 Acre</div><div class="lbl" data-en="Lot Size" data-es="Tamano del Lote">Lot Size</div></div>
+      <div class="hero-stat"><div class="val">1987</div><div class="lbl" data-en="Year Built" data-es="Ano de Construccion">Year Built</div></div>
+    </div>
+    <div class="hero-tagline" data-en="Prepared for Garman &bull; June 18, 2026 &bull; Benton County" data-es="Preparado para Garman &bull; 18 de Junio, 2026 &bull; Condado de Benton">Prepared for Garman &nbsp;&bull;&nbsp; June 18, 2026 &nbsp;&bull;&nbsp; Benton County</div>
+    <div class="hero-logo">
+      <img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group" style="height:48px;width:auto;">
+    </div>
+  </div>
+</section>
+
+<!-- YOUR BROKER -->
+<section class="section" id="broker">
+  <div class="container">
+    <div class="broker-grid">
+      <div class="broker-img-wrap">
+        <img src="broker-headshot.jpg" alt="Cameron Torabi — Principal Broker, Mason Capital Group">
+      </div>
+      <div class="broker-details">
+        <div class="section-header">
+          <span class="label text-crimson" data-en="Your Broker" data-es="Su Corredor">Your Broker</span>
+          <h2>Cameron Torabi</h2>
+        </div>
+        <div class="title">Principal Broker</div>
+        <p data-en="Garman, thank you for the opportunity to present this market analysis for your Horsebarn Road property. With over 30 years of experience and $2.4 billion in transaction history, I bring deep expertise in Northwest Arkansas real estate — from residential properties to large-scale investment opportunities. My approach is data-driven and results-oriented. When you work with Mason Capital Group, you get more than an agent. You get a full-service real estate investment and trust firm committed to maximizing the value of your property." data-es="Garman, gracias por la oportunidad de presentar este analisis de mercado para su propiedad en Horsebarn Road. Con mas de 30 anos de experiencia y $2.4 mil millones en historial de transacciones, aporto una profunda experiencia en bienes raices del Noroeste de Arkansas — desde propiedades residenciales hasta oportunidades de inversion a gran escala. Mi enfoque esta basado en datos y orientado a resultados. Cuando trabaja con Mason Capital Group, obtiene mas que un agente. Obtiene una firma de inversion y fideicomiso inmobiliario de servicio completo comprometida a maximizar el valor de su propiedad.">Garman, thank you for the opportunity to present this market analysis for your Horsebarn Road property. With over 30 years of experience and $2.4 billion in transaction history, I bring deep expertise in Northwest Arkansas real estate — from residential properties to large-scale investment opportunities. My approach is data-driven and results-oriented. When you work with Mason Capital Group, you get more than an agent. You get a full-service real estate investment and trust firm committed to maximizing the value of your property.</p>
+        <p data-en="I leverage cutting-edge marketing technology, professional-grade presentation tools, and a proprietary network of buyers and investors to ensure your property receives the maximum exposure it deserves." data-es="Utilizo tecnologia de marketing de vanguardia, herramientas de presentacion de grado profesional y una red propietaria de compradores e inversores para garantizar que su propiedad reciba la maxima exposicion que merece.">I leverage cutting-edge marketing technology, professional-grade presentation tools, and a proprietary network of buyers and investors to ensure your property receives the maximum exposure it deserves.</p>
+        <div class="broker-contact">
+          <div class="item"><strong>PHONE</strong> (479) 925-3333</div>
+          <div class="item"><strong>EMAIL</strong> Info@MasonCapitalGroup.com</div>
+          <div class="item"><strong>WEB</strong> www.MasonCapitalGroup.com</div>
+        </div>
+        <div class="credential-badges">
+          <span class="credential-badge">AR RE License #PB00056565</span>
+          <span class="credential-badge">Principal Broker</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY MASON CAPITAL GROUP — VALUE PROPOSITIONS -->
+<section class="section section-alt" id="why-mcg-intro">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-crimson" data-en="The MCG Advantage" data-es="La Ventaja MCG">The MCG Advantage</span>
+      <h2 data-en="Why Mason Capital Group Is the Right Choice for Your Listing" data-es="Por Que Mason Capital Group Es la Eleccion Correcta para Su Listado">Why Mason Capital Group Is the<br>Right Choice for Your Listing</h2>
+      <div class="accent-line accent-line-center mb-24" style="margin-top:16px"></div>
+      <p data-en="We're not just brokers — we're a full-service real estate investment firm. That means we bring a level of market intelligence, marketing firepower, and transaction expertise that traditional agents simply can't match." data-es="No somos solo corredores — somos una firma de inversion inmobiliaria de servicio completo. Eso significa que aportamos un nivel de inteligencia de mercado, poder de marketing y experiencia en transacciones que los agentes tradicionales simplemente no pueden igualar.">We're not just brokers — we're a full-service real estate investment firm. That means we bring a level of market intelligence, marketing firepower, and transaction expertise that traditional agents simply can't match.</p>
+    </div>
+    <div class="value-grid">
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="32" height="28" rx="3" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M10 26V18" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M18 26V14" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M26 26V10" stroke="#ab012e" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="16" r="2" fill="#ab012e"/><circle cx="18" cy="12" r="2" fill="#ab012e"/><circle cx="26" cy="8" r="2" fill="#ab012e"/><line x1="10" y1="16" x2="18" y2="12" stroke="#ab012e" stroke-width="1.5"/><line x1="18" y1="12" x2="26" y2="8" stroke="#ab012e" stroke-width="1.5"/></svg></div>
+        <h4 data-en="Licensed Principal Broker" data-es="Corredor Principal Licenciado">Licensed Principal Broker</h4>
+        <p data-en="As a Principal Broker in Arkansas, I bring executive-level expertise to every transaction. This means I price your property with precision based on real market data — not guesswork — so you leave nothing on the table." data-es="Como Corredor Principal en Arkansas, aporto experiencia de nivel ejecutivo a cada transaccion. Esto significa que precio su propiedad con precision basada en datos reales del mercado — no en conjeturas — para que no deje nada sobre la mesa.">As a Principal Broker in Arkansas, I bring executive-level expertise to every transaction. This means I price your property with precision based on real market data — not guesswork — so you leave nothing on the table.</p>
+      </div>
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="15" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="6" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="2" fill="#ab012e"/><line x1="18" y1="3" x2="18" y2="9" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="27" x2="18" y2="33" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="9" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="27" y1="18" x2="33" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h4 data-en="Investment-Grade Marketing" data-es="Marketing de Grado de Inversion">Investment-Grade Marketing</h4>
+        <p data-en="We market your property the way institutional investors market assets — with professional photography, digital offering memorandums, targeted digital ad campaigns, and syndication across nearly 100 platforms including Zillow, Realtor.com, Redfin, and Crexi." data-es="Comercializamos su propiedad como los inversores institucionales comercializan activos — con fotografia profesional, memorandos de oferta digital, campanas publicitarias digitales dirigidas y sindicacion en casi 100 plataformas incluyendo Zillow, Realtor.com, Redfin y Crexi.">We market your property the way institutional investors market assets — with professional photography, digital offering memorandums, targeted digital ad campaigns, and syndication across nearly 100 platforms including Zillow, Realtor.com, Redfin, and Crexi.</p>
+      </div>
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="10" r="5" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="8" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="28" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><path d="M18 15V20" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><path d="M18 20L8 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/><path d="M18 20L28 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h4 data-en="Buyer &amp; Investor Network" data-es="Red de Compradores e Inversores">Buyer &amp; Investor Network</h4>
+        <p data-en="Our active investor network and relationships with local, national, and international buyers mean your property gets seen by serious, qualified buyers from day one — not just casual browsers. We connect sellers with capital." data-es="Nuestra red activa de inversores y relaciones con compradores locales, nacionales e internacionales significan que su propiedad es vista por compradores serios y calificados desde el primer dia — no solo navegantes casuales. Conectamos vendedores con capital.">Our active investor network and relationships with local, national, and international buyers mean your property gets seen by serious, qualified buyers from day one — not just casual browsers. We connect sellers with capital.</p>
+      </div>
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 4L22 14H32L24 20L27 31L18 24L9 31L12 20L4 14H14L18 4Z" stroke="#c4a35a" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M14 18L17 21L23 15" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h4 data-en="Premium Portal Placement" data-es="Colocacion Premium en Portales">Premium Portal Placement</h4>
+        <p data-en="As a premium member agent on the nation's top real estate portals, your listing gets priority placement above non-member listings, a larger display with your agent photo, and 25X more buyer exposure. This translates to 540% more favorites and 515% more shares." data-es="Como agente miembro premium en los principales portales inmobiliarios del pais, su listado obtiene ubicacion prioritaria sobre listados de no miembros, una pantalla mas grande con su foto de agente y 25X mas exposicion al comprador.">As a premium member agent on the nation's top real estate portals, your listing gets priority placement above non-member listings, a larger display with your agent photo, and 25X more buyer exposure. This translates to 540% more favorites and 515% more shares.</p>
+      </div>
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="8" width="28" height="24" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M4 16H32" stroke="#ab012e" stroke-width="2"/><path d="M18 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M11 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M25 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="22" r="2" fill="#ab012e"/><circle cx="18" cy="22" r="2" fill="#c4a35a"/><circle cx="24" cy="22" r="2" fill="#ab012e"/><circle cx="12" cy="28" r="2" fill="#c4a35a"/><circle cx="18" cy="28" r="2" fill="#ab012e"/><path d="M9 12L13 12" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h4 data-en="Professional Aerial &amp; Visual Media" data-es="Medios Aereos y Visuales Profesionales">Professional Aerial &amp; Visual Media</h4>
+        <p data-en="We provide complimentary professional drone photography, aerial videography, and interactive media for every listing. Buyers can experience your property from every angle, attracting serious out-of-area buyers relocating to NWA." data-es="Proporcionamos fotografia profesional con drones, videografia aerea y medios interactivos de cortesia para cada listado. Los compradores pueden experimentar su propiedad desde todos los angulos.">We provide complimentary professional drone photography, aerial videography, and interactive media for every listing. Buyers can experience your property from every angle, attracting serious out-of-area buyers relocating to NWA.</p>
+      </div>
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 28L12 20L18 24L26 14L32 8" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 8H32V14" stroke="#ab012e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="20" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="18" cy="24" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="26" cy="14" r="3" fill="#c4a35a" opacity="0.3"/><line x1="4" y1="32" x2="32" y2="32" stroke="#16162a" stroke-width="1.5" opacity="0.3"/></svg></div>
+        <h4 data-en="Data-Driven Pricing Strategy" data-es="Estrategia de Precios Basada en Datos">Data-Driven Pricing Strategy</h4>
+        <p data-en="Every listing begins with a comprehensive CMA, AVM analysis, and refined value assessment. We analyze comparable properties, tax records, and market trends to ensure optimal pricing from day one." data-es="Cada listado comienza con un CMA integral, analisis AVM y evaluacion de valor refinada. Analizamos propiedades comparables, registros fiscales y tendencias del mercado para garantizar precios optimos desde el primer dia.">Every listing begins with a comprehensive CMA, AVM analysis, and refined value assessment. We analyze comparable properties, tax records, and market trends to ensure optimal pricing from day one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROPERTY DETAILS -->
+<section class="section" id="details">
+  <div class="container">
+    <div class="section-header mb-48">
+      <span class="label text-crimson" data-en="Property Details" data-es="Detalles de la Propiedad">Property Details</span>
+      <h2>Horsebarn Road</h2>
+      <div class="accent-line mb-16" style="margin-top:12px"></div>
+      <p data-en="A 1-acre residential property with mixed-use potential in Rogers, featuring a 4,224 SF heated structure built in 1987 with 3 full baths. Positioned for investors, builders, and owner-occupants looking for value in one of Northwest Arkansas's key growth corridors." data-es="Una propiedad residencial de 1 acre con potencial de uso mixto en Rogers, que cuenta con una estructura calefaccionada de 4,224 SF construida en 1987 con 3 banos completos. Posicionada para inversores, constructores y propietarios-ocupantes que buscan valor en uno de los corredores de crecimiento clave del Noroeste de Arkansas.">A 1-acre residential property with mixed-use potential in Rogers, featuring a 4,224 SF heated structure built in 1987 with 3 full baths. Positioned for investors, builders, and owner-occupants looking for value in one of Northwest Arkansas's key growth corridors.</p>
+    </div>
+    <div class="details-grid">
+      <table class="detail-table">
+        <caption data-en="Property Facts" data-es="Datos de la Propiedad">Property Facts</caption>
+        <tr><td data-en="Property Type" data-es="Tipo de Propiedad">Property Type</td><td>Residential / Mixed Use Potential</td></tr>
+        <tr><td data-en="Total Acreage" data-es="Superficie Total">Total Acreage</td><td>1 Acre</td></tr>
+        <tr><td data-en="Heated Structure" data-es="Estructura Calefaccionada">Heated Structure</td><td>4,224 sq ft</td></tr>
+        <tr><td data-en="Full Baths" data-es="Banos Completos">Full Baths</td><td>3</td></tr>
+        <tr><td data-en="Bedrooms" data-es="Dormitorios">Bedrooms</td><td>Data Pending</td></tr>
+        <tr><td data-en="Annual Taxes" data-es="Impuestos Anuales">Annual Taxes</td><td>$4,013</td></tr>
+      </table>
+      <table class="detail-table">
+        <caption data-en="Location &amp; Records" data-es="Ubicacion y Registros">Location &amp; Records</caption>
+        <tr><td data-en="Street Address" data-es="Direccion">Street Address</td><td>624 S Horsebarn Rd</td></tr>
+        <tr><td data-en="City" data-es="Ciudad">City</td><td>Rogers</td></tr>
+        <tr><td data-en="State" data-es="Estado">State</td><td>Arkansas</td></tr>
+        <tr><td data-en="Zip Code" data-es="Codigo Postal">Zip Code</td><td>72758</td></tr>
+        <tr><td data-en="County" data-es="Condado">County</td><td>Benton County</td></tr>
+        <tr><td data-en="Year Built" data-es="Ano de Construccion">Year Built</td><td>1987</td></tr>
+      </table>
+    </div>
+
+    <!-- Property Detail Gauges -->
+    <div style="margin-top:48px">
+      <div class="gauge-row">
+        <div class="gauge-item animate">
+          <div class="gauge-ring" style="background:conic-gradient(var(--crimson) 0deg, var(--crimson) 90deg, var(--gray-200) 90deg);">
+            <div class="gauge-inner"><div class="g-val">1.0</div><div class="g-unit">ACRES</div></div>
+          </div>
+          <div class="gauge-label" data-en="Lot Size" data-es="Tamano del Lote">Lot Size</div>
+        </div>
+        <div class="gauge-item animate">
+          <div class="gauge-ring" style="background:conic-gradient(var(--gold) 0deg, var(--gold) 280deg, var(--gray-200) 280deg);">
+            <div class="gauge-inner"><div class="g-val">4,224</div><div class="g-unit">SQ FT</div></div>
+          </div>
+          <div class="gauge-label" data-en="Heated Structure" data-es="Estructura Calefaccionada">Heated Structure</div>
+        </div>
+        <div class="gauge-item animate">
+          <div class="gauge-ring" style="background:conic-gradient(var(--navy) 0deg, var(--navy) 140deg, var(--gray-200) 140deg);">
+            <div class="gauge-inner"><div class="g-val">$4,013</div><div class="g-unit">TAX / YR</div></div>
+          </div>
+          <div class="gauge-label" data-en="Annual Taxes" data-es="Impuestos Anuales">Annual Taxes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUATION -->
+<section class="section section-dark" id="valuation">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-gold" data-en="Market Analysis" data-es="Analisis de Mercado">Market Analysis</span>
+      <h2 style="color:var(--white)" data-en="Your Property's Market Position" data-es="La Posicion de Mercado de Su Propiedad">Your Property's Market Position</h2>
+      <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
+      <p style="color:var(--gray-300)" data-en="Using comparable market analysis across active, pending, and sold properties in the Rogers corridor, we've established a data-driven market position for your property. This CMA provides the foundation for informed pricing decisions." data-es="Utilizando analisis de mercado comparable a traves de propiedades activas, pendientes y vendidas en el corredor de Rogers, hemos establecido una posicion de mercado basada en datos para su propiedad. Este CMA proporciona la base para decisiones de precios informadas.">Using comparable market analysis across active, pending, and sold properties in the Rogers corridor, we've established a data-driven market position for your property. This CMA provides the foundation for informed pricing decisions.</p>
+    </div>
+    <div class="val-cards mb-48">
+      <div class="val-card">
+        <div class="val-label" data-en="Average Sold Price" data-es="Precio Promedio Vendido">Average Sold Price</div>
+        <div class="val-amount">$566,667</div>
+        <div class="val-sub" data-en="Based on 3 recent sold comps<br>Rogers corridor" data-es="Basado en 3 comparables vendidos recientes<br>Corredor de Rogers">Based on 3 recent sold comps<br>Rogers corridor</div>
+      </div>
+      <div class="val-card featured">
+        <div class="val-label" data-en="Median Sold Price" data-es="Precio Mediano Vendido">Median Sold Price</div>
+        <div class="val-amount">$575,000</div>
+        <div class="val-sub" data-en="Center of sold data range<br>Market benchmark" data-es="Centro del rango de datos vendidos<br>Referencia de mercado">Center of sold data range<br>Market benchmark</div>
+      </div>
+      <div class="val-card">
+        <div class="val-label" data-en="Sold Price Range" data-es="Rango de Precio Vendido">Sold Price Range</div>
+        <div class="val-amount">$550K &ndash; $600K</div>
+        <div class="val-sub" data-en="Based on recent closed sales<br>Comparable properties" data-es="Basado en ventas cerradas recientes<br>Propiedades comparables">Based on recent closed sales<br>Comparable properties</div>
+      </div>
+    </div>
+
+    <!-- Value Comparison Bar Chart -->
+    <div class="chart-container-dark animate">
+      <h4 data-en="Comparable Property Pricing Overview" data-es="Resumen de Precios de Propiedades Comparables">Comparable Property Pricing Overview</h4>
+      <div class="bar-chart">
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--gold)">$550K</div>
+          <div class="bar" style="height:11%; background:linear-gradient(180deg, var(--gold-light), var(--gold));"></div>
+          <div class="bar-label" style="color:var(--gold)">402 S Metro<br><span style="font-size:9px;font-weight:400">Sold</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--gold)">$550K</div>
+          <div class="bar" style="height:11%; background:linear-gradient(180deg, var(--gold-light), var(--gold));"></div>
+          <div class="bar-label" style="color:var(--gold)">4707 W Oak<br><span style="font-size:9px;font-weight:400">Sold</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--gold)">$600K</div>
+          <div class="bar" style="height:12%; background:linear-gradient(180deg, var(--gold-light), var(--gold));"></div>
+          <div class="bar-label" style="color:var(--gold)">324 S 52nd<br><span style="font-size:9px;font-weight:400">Sold</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--crimson);font-weight:900">Subject</div>
+          <div class="bar" style="height:14%; background:linear-gradient(180deg, #d4304f, var(--crimson)); border:2px solid var(--gold);"></div>
+          <div class="bar-label" style="color:var(--crimson);font-weight:900">SUBJECT<br><span style="font-size:9px;font-weight:400">Horsebarn RD</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--gray-300)">$1.34M</div>
+          <div class="bar" style="height:27%; background:linear-gradient(180deg, #5a8fd4, #3a6bb0);"></div>
+          <div class="bar-label" style="color:var(--gray-300)">706 S 52nd<br><span style="font-size:9px;font-weight:400">Active</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:#f57f17">$2.51M</div>
+          <div class="bar" style="height:51%; background:linear-gradient(180deg, #ffb74d, #f57f17);"></div>
+          <div class="bar-label" style="color:#f57f17">5801 Venture<br><span style="font-size:9px;font-weight:400">Pending</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:#f57f17">$2.72M</div>
+          <div class="bar" style="height:55%; background:linear-gradient(180deg, #ffb74d, #f57f17);"></div>
+          <div class="bar-label" style="color:#f57f17">5879 Venture<br><span style="font-size:9px;font-weight:400">Pending</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--gray-300)">$4.95M</div>
+          <div class="bar" style="height:100%; background:linear-gradient(180deg, #5a8fd4, #3a6bb0);"></div>
+          <div class="bar-label" style="color:var(--gray-300)">335 S Dodson<br><span style="font-size:9px;font-weight:400">Active</span></div>
+        </div>
+      </div>
+      <div class="chart-legend">
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#5a8fd4"></div>Active</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#f57f17"></div>Pending</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--crimson)"></div>Subject Property</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--gold)"></div>Sold</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;">
+      <p style="color:var(--gray-300);font-size:14px;max-width:700px;margin:0 auto;">
+        <strong style="color:var(--gold)" data-en="Key Insight:" data-es="Punto Clave:">Key Insight:</strong> <span data-en="Recent sold comparables in the Rogers area have closed between $550,000 and $600,000, with an average of $566,667 and a sale-to-list ratio averaging 96.2%. Active listings in the area range significantly higher ($1.34M to $4.95M), reflecting larger acreage and commercial zoning. The sold data provides the most reliable foundation for pricing this 1-acre residential property." data-es="Las comparables vendidas recientes en el area de Rogers se cerraron entre $550,000 y $600,000, con un promedio de $566,667 y una relacion venta/lista promedio de 96.2%. Los listados activos en el area van significativamente mas alto ($1.34M a $4.95M), reflejando mayor superficie y zonificacion comercial. Los datos vendidos proporcionan la base mas confiable para fijar el precio de esta propiedad residencial de 1 acre.">Recent sold comparables in the Rogers area have closed between $550,000 and $600,000, with an average of $566,667 and a sale-to-list ratio averaging 96.2%. Active listings in the area range significantly higher ($1.34M to $4.95M), reflecting larger acreage and commercial zoning. The sold data provides the most reliable foundation for pricing this 1-acre residential property.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CMA / COMPARABLES -->
+<section class="section section-alt" id="cma">
+  <div class="container">
+    <div class="section-header mb-48">
+      <span class="label text-crimson" data-en="Comparative Market Analysis" data-es="Analisis Comparativo de Mercado">Comparative Market Analysis</span>
+      <h2 data-en="Comparable Sales &amp; Active Listings" data-es="Ventas Comparables y Listados Activos">Comparable Sales &amp; Active Listings</h2>
+      <div class="accent-line mb-16" style="margin-top:12px"></div>
+      <p data-en="We analyzed 7 comparable properties in the Rogers corridor — including active, pending, and sold listings — to establish an accurate market position for your property. Here are the most relevant comparables." data-es="Analizamos 7 propiedades comparables en el corredor de Rogers — incluyendo listados activos, pendientes y vendidos — para establecer una posicion de mercado precisa para su propiedad.">We analyzed 7 comparable properties in the Rogers corridor — including active, pending, and sold listings — to establish an accurate market position for your property. Here are the most relevant comparables.</p>
+    </div>
+
+    <!-- Comp Price Chart -->
+    <div class="chart-container animate mb-48">
+      <h4 data-en="Comparable Properties &mdash; Adjusted Price" data-es="Propiedades Comparables &mdash; Precio Ajustado">Comparable Properties &mdash; Adjusted Price</h4>
+      <div class="bar-chart" style="height:200px">
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$550K</div>
+          <div class="bar" style="height:11%; background:var(--gold);"></div>
+          <div class="bar-label">402 S Metro<br>Sold</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$550K</div>
+          <div class="bar" style="height:11%; background:var(--gold);"></div>
+          <div class="bar-label">4707 W Oak<br>Sold</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$600K</div>
+          <div class="bar" style="height:12%; background:var(--gold);"></div>
+          <div class="bar-label">324 S 52nd<br>Sold</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$1.34M</div>
+          <div class="bar" style="height:27%; background:var(--navy);"></div>
+          <div class="bar-label">706 S 52nd<br>Active</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$2.51M</div>
+          <div class="bar" style="height:51%; background:var(--navy);"></div>
+          <div class="bar-label">5801 Venture<br>Pending</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$2.72M</div>
+          <div class="bar" style="height:55%; background:var(--navy);"></div>
+          <div class="bar-label">5879 Venture<br>Pending</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$4.95M</div>
+          <div class="bar" style="height:100%; background:var(--navy);"></div>
+          <div class="bar-label">335 S Dodson<br>Active</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cma-table-wrap">
+      <table class="cma-table">
+        <thead>
+          <tr>
+            <th data-en="Address" data-es="Direccion">Address</th>
+            <th data-en="Status" data-es="Estado">Status</th>
+            <th data-en="MLS #" data-es="MLS #">MLS #</th>
+            <th data-en="Acres / SF" data-es="Acres / SF">Acres / SF</th>
+            <th data-en="DOM" data-es="DOM">DOM</th>
+            <th data-en="List Price" data-es="Precio Lista">List Price</th>
+            <th data-en="Sold Price" data-es="Precio Vendido">Sold Price</th>
+            <th data-en="Sale/List" data-es="Venta/Lista">Sale/List</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td><strong>Horsebarn RD</strong> (Subject)</td>
+            <td><span class="status-badge" style="background:var(--off-white);color:var(--navy);">Subject</span></td>
+            <td>&mdash;</td>
+            <td>1 Ac / 4,224 SF</td>
+            <td>&mdash;</td>
+            <td><strong>Market Analysis</strong></td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td>706 S 52nd ST, Rogers</td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>1290462</td>
+            <td>1.38 Ac</td>
+            <td>586</td>
+            <td>$1,336,483</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td>335 S Dodson RD, Rogers</td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>1341309</td>
+            <td>8.52 Ac</td>
+            <td>78</td>
+            <td>$4,950,000</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td>5801 W Venture Park BLVD, Rogers</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td>1270382</td>
+            <td>5.12 Ac</td>
+            <td>204</td>
+            <td>$2,509,056</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td>5879 W Venture Park BLVD, Rogers</td>
+            <td><span class="status-badge status-pending">Pending</span></td>
+            <td>1270367</td>
+            <td>5.55 Ac</td>
+            <td>204</td>
+            <td>$2,719,777</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td>402 S Metro PKWY, Rogers</td>
+            <td><span class="status-badge status-closed">Sold</span></td>
+            <td>1352287</td>
+            <td>1,980 SF (Comm)</td>
+            <td>0</td>
+            <td>$550,000</td>
+            <td>$550,000</td>
+            <td>100%</td>
+          </tr>
+          <tr>
+            <td>4707 W Oak ST, Rogers</td>
+            <td><span class="status-badge status-closed">Sold</span></td>
+            <td>1328534</td>
+            <td>0.97 Ac</td>
+            <td>1</td>
+            <td>$550,000</td>
+            <td>$550,000</td>
+            <td>100%</td>
+          </tr>
+          <tr>
+            <td>324 S 52nd ST, Rogers</td>
+            <td><span class="status-badge status-closed">Sold</span></td>
+            <td>1263254</td>
+            <td>1.61 Ac</td>
+            <td>360</td>
+            <td>$649,000</td>
+            <td>$600,000</td>
+            <td>92.4%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:var(--gray-500);margin-top:16px;" data-en="Data source: CMA Report / Arkansas MLS. Report date: 6/18/2026. Analysis includes active, pending, and sold comparables in the Rogers corridor." data-es="Fuente de datos: Reporte CMA / MLS de Arkansas. Fecha del reporte: 18/6/2026. El analisis incluye comparables activos, pendientes y vendidos en el corredor de Rogers.">Data source: CMA Report / Arkansas MLS. Report date: 6/18/2026. Analysis includes active, pending, and sold comparables in the Rogers corridor.</p>
+
+    <!-- COMP LOCATION MAP -->
+    <div style="margin-top:48px;">
+      <h3 style="font-family:var(--font-serif);font-size:24px;font-weight:700;margin-bottom:8px;" data-en="Comparable Properties Map" data-es="Mapa de Propiedades Comparables">Comparable Properties Map</h3>
+      <div class="accent-line mb-24" style="margin-top:8px"></div>
+      <div id="compMap" style="width:100%;height:480px;border-radius:8px;border:2px solid var(--gray-200);overflow:hidden;"></div>
+      <div style="display:flex;gap:24px;margin-top:12px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-500);"><div style="width:14px;height:14px;border-radius:50%;background:var(--crimson);border:2px solid var(--gold);"></div>Subject Property</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-500);"><div style="width:12px;height:12px;border-radius:50%;background:#5a8fd4;"></div>Active</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-500);"><div style="width:12px;height:12px;border-radius:50%;background:#f57f17;"></div>Pending</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-500);"><div style="width:12px;height:12px;border-radius:50%;background:var(--gold);"></div>Sold</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAX HISTORY -->
+<section class="section">
+  <div class="container">
+    <div class="section-header mb-48">
+      <span class="label text-crimson" data-en="Public Records" data-es="Registros Publicos">Public Records</span>
+      <h2 data-en="Tax Assessment" data-es="Evaluacion Fiscal">Tax Assessment</h2>
+      <div class="accent-line mb-16" style="margin-top:12px"></div>
+      <p data-en="Current annual tax for 624 S Horsebarn Rd, Rogers, AR 72758 is $4,013. Historical assessment data is pending from Benton County records." data-es="El impuesto anual actual para 624 S Horsebarn Rd, Rogers, AR 72758 es $4,013. Los datos historicos de evaluacion estan pendientes de los registros del Condado de Benton.">Current annual tax for 624 S Horsebarn Rd, Rogers, AR 72758 is $4,013. Historical assessment data is pending from Benton County records.</p>
+    </div>
+
+    <!-- Tax Bar Chart -->
+    <div class="chart-container animate mb-32">
+      <h4 data-en="Annual Tax &mdash; Current Year" data-es="Impuesto Anual &mdash; Ano Actual">Annual Tax &mdash; Current Year</h4>
+      <div class="bar-chart" style="height:220px">
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--crimson);font-weight:900">$4,013</div>
+          <div class="bar" style="height:100%; background:linear-gradient(180deg, #d4304f, var(--crimson));"></div>
+          <div class="bar-label" style="font-weight:900;color:var(--crimson)" data-en="Current" data-es="Actual">Current</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:13px;color:var(--gray-500);margin-top:16px;" data-en="Historical tax data pending. Source: Benton County Assessor." data-es="Datos fiscales historicos pendientes. Fuente: Asesor del Condado de Benton.">Historical tax data pending. Source: Benton County Assessor.</p>
+    </div>
+
+    <!-- Property Records Table -->
+    <div class="cma-table-wrap" style="margin-top:24px;">
+      <table class="tax-table">
+        <thead>
+          <tr><th style="text-align:left;" data-en="Property Record" data-es="Registro de Propiedad">Property Record</th><th style="text-align:left;" data-en="Detail" data-es="Detalle">Detail</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-en="Address" data-es="Direccion">Address</td><td>624 S Horsebarn Rd, Rogers, AR 72758</td></tr>
+          <tr><td data-en="County" data-es="Condado">County</td><td>Benton County</td></tr>
+          <tr><td data-en="Property Type" data-es="Tipo de Propiedad">Property Type</td><td>Residential / Mixed Use Potential</td></tr>
+          <tr><td data-en="Heated Sq Ft" data-es="Pies Cuadrados Calefaccionados">Heated Sq Ft</td><td>4,224 SF</td></tr>
+          <tr><td data-en="Full Baths" data-es="Banos Completos">Full Baths</td><td>3</td></tr>
+          <tr><td data-en="Year Built" data-es="Ano de Construccion">Year Built</td><td>1987</td></tr>
+          <tr><td data-en="Lot Size" data-es="Tamano del Lote">Lot Size</td><td>1 Acre</td></tr>
+          <tr><td data-en="Annual Tax" data-es="Impuesto Anual">Annual Tax</td><td>$4,013</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- GLOBAL MARKETING / SYNDICATION -->
+<section class="section section-dark" id="syndication">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-gold" data-en="Global Marketing Reach" data-es="Alcance de Marketing Global">Global Marketing Reach</span>
+      <h2 style="color:var(--white)" data-en="Your Property Advertised on Nearly 100 Platforms" data-es="Su Propiedad Anunciada en Casi 100 Plataformas">Your Property Advertised on<br>Nearly 100 Platforms</h2>
+      <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
+      <p style="color:var(--gray-300)" data-en="When you list with Mason Capital Group, your property doesn't just sit on the MLS. We syndicate your listing across nearly 100 platforms — reaching residential buyers, investors, builders, and developers both nationally and internationally." data-es="Cuando lista con Mason Capital Group, su propiedad no solo se queda en el MLS. Sindicamos su listado en casi 100 plataformas — alcanzando compradores residenciales, inversores, constructores y desarrolladores tanto nacional como internacionalmente.">When you list with Mason Capital Group, your property doesn't just sit on the MLS. We syndicate your listing across nearly 100 platforms — reaching residential buyers, investors, builders, and developers both nationally and internationally.</p>
+    </div>
+
+    <div class="synd-hero-grid mb-48">
+      <div style="text-align:center;">
+        <div class="synd-number" style="color:var(--gold)">~100</div>
+        <div class="synd-subtitle" style="color:var(--white);" data-en="Syndication Platforms" data-es="Plataformas de Sindicacion">Syndication Platforms</div>
+        <p style="color:var(--gray-300);font-size:14px;line-height:1.7;" data-en="Your listing is pushed to consumer real estate portals, investor marketplaces, social media networks, international property sites, and builder/developer platforms — ensuring maximum visibility across every buyer category." data-es="Su listado se distribuye a portales inmobiliarios de consumo, mercados de inversores, redes sociales, sitios de propiedad internacionales y plataformas de constructores/desarrolladores — asegurando maxima visibilidad en cada categoria de comprador.">Your listing is pushed to consumer real estate portals, investor marketplaces, social media networks, international property sites, and builder/developer platforms — ensuring maximum visibility across every buyer category.</p>
+      </div>
+      <div>
+        <div class="platform-grid" style="gap:12px;">
+          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
+            <div class="p-name" style="color:var(--white)">Homes.com</div>
+            <div class="p-type" style="color:var(--gold)">Premium Partner</div>
+          </div>
+          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
+            <div class="p-name" style="color:var(--white)">Zillow</div>
+            <div class="p-type" style="color:var(--gold)">Consumer</div>
+          </div>
+          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
+            <div class="p-name" style="color:var(--white)">Realtor.com</div>
+            <div class="p-type" style="color:var(--gold)">Consumer</div>
+          </div>
+          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
+            <div class="p-name" style="color:var(--white)">Redfin</div>
+            <div class="p-type" style="color:var(--gold)">Consumer</div>
+          </div>
+          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
+            <div class="p-name" style="color:var(--white)">Crexi</div>
+            <div class="p-type" style="color:var(--crimson)">Investor</div>
+          </div>
+          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
+            <div class="p-name" style="color:var(--white)">LoopNet</div>
+            <div class="p-type" style="color:var(--crimson)">Investor</div>
+          </div>
+          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
+            <div class="p-name" style="color:var(--white)">LandWatch</div>
+            <div class="p-type" style="color:var(--crimson)">Developer</div>
+          </div>
+          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
+            <div class="p-name" style="color:var(--white)">Juwai.com</div>
+            <div class="p-type" style="color:#5a8fd4">International</div>
+          </div>
+        </div>
+        <p style="text-align:center;font-size:11px;color:var(--gray-400);margin-top:12px;letter-spacing:0.5px;">+ Homes.com, Trulia, Facebook Marketplace, Instagram Ads, Land.com, Apartments.com, Investorist, CBRE, Ten-X, and 80+ more</p>
+      </div>
+    </div>
+
+    <!-- Investor / Builder / Developer Targeting -->
+    <div class="investor-cards">
+      <div class="investor-card animate">
+        <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="6" width="26" height="22" rx="2" stroke="#c4a35a" stroke-width="2"/><path d="M11 6V3a1 1 0 011-1h8a1 1 0 011 1v3" stroke="#c4a35a" stroke-width="2"/><path d="M3 14h26" stroke="rgba(196,163,90,0.4)" stroke-width="1.5"/><circle cx="16" cy="14" r="3" fill="#c4a35a"/></svg></div>
+        <h4 data-en="Investor Targeting" data-es="Orientacion a Inversores">Investor Targeting</h4>
+        <p data-en="Your property is showcased on platforms like Crexi, LoopNet, and other commercial real estate portals where active investors search for acquisition opportunities. We also leverage our private investor network for off-market introductions." data-es="Su propiedad se exhibe en plataformas como Crexi, LoopNet y otros portales de bienes raices comerciales donde inversores activos buscan oportunidades de adquisicion.">Your property is showcased on platforms like Crexi, LoopNet, and other commercial real estate portals where active investors search for acquisition opportunities. We also leverage our private investor network for off-market introductions.</p>
+      </div>
+      <div class="investor-card animate">
+        <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 28h24" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M8 28V16l8-10 8 10v12" stroke="#c4a35a" stroke-width="2" stroke-linejoin="round" fill="none"/><rect x="13" y="20" width="6" height="8" stroke="#c4a35a" stroke-width="1.5" fill="none"/><path d="M2 16l14-12 14 12" stroke="#c4a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
+        <h4 data-en="Builder &amp; Developer Outreach" data-es="Alcance a Constructores y Desarrolladores">Builder &amp; Developer Outreach</h4>
+        <p data-en="Targeted advertising on LandWatch, Land.com, and builder-focused MLS feeds ensures developers evaluating sites in Rogers' growing neighborhoods see your property as a development opportunity." data-es="La publicidad dirigida en LandWatch, Land.com y feeds de MLS enfocados en constructores asegura que los desarrolladores que evaluan sitios en los vecindarios en crecimiento de Rogers vean su propiedad como una oportunidad de desarrollo.">Targeted advertising on LandWatch, Land.com, and builder-focused MLS feeds ensures developers evaluating sites in Rogers' growing neighborhoods see your property as a development opportunity.</p>
+      </div>
+      <div class="investor-card animate">
+        <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="#c4a35a" stroke-width="2"/><ellipse cx="16" cy="16" rx="6" ry="13" stroke="#c4a35a" stroke-width="1.5" fill="none"/><path d="M3 12h26M3 20h26" stroke="rgba(196,163,90,0.5)" stroke-width="1.5"/><path d="M16 3v26" stroke="rgba(196,163,90,0.3)" stroke-width="1"/></svg></div>
+        <h4 data-en="International Exposure" data-es="Exposicion Internacional">International Exposure</h4>
+        <p data-en="Through platforms like Juwai.com, Investorist, and global MLS syndication networks, your property reaches qualified international buyers — particularly those targeting NWA for its economic growth." data-es="A traves de plataformas como Juwai.com, Investorist y redes de sindicacion MLS globales, su propiedad llega a compradores internacionales calificados — particularmente aquellos que apuntan al NWA por su crecimiento economico.">Through platforms like Juwai.com, Investorist, and global MLS syndication networks, your property reaches qualified international buyers — particularly those targeting NWA for its economic growth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- MCG DIGITAL MARKETING PLATFORM -->
+<section class="section" id="homes">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-crimson" data-en="MCG Digital Marketing Platform" data-es="Plataforma de Marketing Digital MCG">MCG Digital Marketing Platform</span>
+      <h2 data-en="Your Listing Gets Unmatched Digital Exposure" data-es="Su Listado Obtiene Exposicion Digital Inigualable">Your Listing Gets<br>Unmatched Digital Exposure</h2>
+      <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
+      <p data-en="Through our exclusive premium platform partnerships, I give your listing a level of digital exposure and buyer engagement that other agents in this market simply cannot offer." data-es="A traves de nuestras asociaciones exclusivas de plataformas premium, le doy a su listado un nivel de exposicion digital y participacion de compradores que otros agentes en este mercado simplemente no pueden ofrecer.">Through our exclusive premium platform partnerships, I give your listing a level of digital exposure and buyer engagement that other agents in this market simply cannot offer.</p>
+    </div>
+
+    <div class="homes-grid mb-48">
+      <div>
+        <div class="homes-feature-list">
+          <div class="homes-feature">
+            <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.5 5H17l-4 3.5 1.5 5.5L10 13l-4.5 3 1.5-5.5L3 7h4.5z" fill="white"/></svg></div>
+            <div><h4 data-en="Priority Search Placement" data-es="Colocacion Prioritaria en Busqueda">Priority Search Placement</h4><p data-en="Your listing sorts above non-member listings in search results with a larger, more prominent display that features the best photos of your property and my contact information as your listing agent." data-es="Su listado se posiciona por encima de los listados de no miembros en los resultados de busqueda con una pantalla mas grande y prominente.">Your listing sorts above non-member listings in search results with a larger, more prominent display that features the best photos of your property and my contact information as your listing agent.</p></div>
+          </div>
+          <div class="homes-feature">
+            <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="white" stroke-width="2" fill="none"/><path d="M10 6v4l3 2" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div><h4 data-en="Strategic Retargeting" data-es="Retargeting Estrategico">Strategic Retargeting</h4><p data-en="Your property follows interested buyers across more than 1,000 websites and social platforms including Facebook and Instagram — keeping your home top-of-mind while they browse the internet." data-es="Su propiedad sigue a los compradores interesados a traves de mas de 1,000 sitios web y plataformas sociales.">Your property follows interested buyers across more than 1,000 websites and social platforms including Facebook and Instagram — keeping your home top-of-mind while they browse the internet.</p></div>
+          </div>
+          <div class="homes-feature">
+            <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16V6l6-4 6 4v10H4z" stroke="white" stroke-width="2" fill="none"/><rect x="7" y="10" width="6" height="6" stroke="white" stroke-width="1.5" fill="none"/></svg></div>
+            <div><h4 data-en="Listing Performance Reports" data-es="Reportes de Rendimiento del Listado">Listing Performance Reports</h4><p data-en="Full transparency with detailed performance reports showing views, favorites, shares, and buyer engagement data so you always know exactly how your listing is performing." data-es="Transparencia total con reportes detallados de rendimiento que muestran vistas, favoritos, compartidos y datos de participacion del comprador.">Full transparency with detailed performance reports showing views, favorites, shares, and buyer engagement data so you always know exactly how your listing is performing.</p></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="homes-visual">
+          <div class="homes-logo-text">MCG</div>
+          <div class="homes-tagline">Digital Marketing Platform</div>
+          <div class="feature-pills">
+            <span class="feature-pill">Priority Placement</span>
+            <span class="feature-pill">Professional Aerial Media</span>
+            <span class="feature-pill">Retargeting Ads</span>
+            <span class="feature-pill">Performance Reports</span>
+            <span class="feature-pill">Buyer Email Alerts</span>
+            <span class="feature-pill">AI Virtual Guide</span>
+            <span class="feature-pill">Agent Branding</span>
+            <span class="feature-pill">Lead Vetting</span>
+            <span class="feature-pill">Virtual Staging</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="homes-stats-row">
+      <div class="homes-stat"><div class="big">110M+</div><div class="sm">Monthly Visitors</div></div>
+      <div class="homes-stat"><div class="big">143M+</div><div class="sm">Network Reach</div></div>
+      <div class="homes-stat"><div class="big">14K+</div><div class="sm">Buyers Reached</div></div>
+      <div class="homes-stat"><div class="big">540%</div><div class="sm">More Favorites</div></div>
+    </div>
+
+    <!-- How We Find Your Buyer -->
+    <div style="margin-top:64px;">
+      <div class="section-header text-center centered mb-48">
+        <span class="label text-crimson" data-en="Precision Marketing" data-es="Marketing de Precision">Precision Marketing</span>
+        <h2 data-en="How We Find Your Buyer" data-es="Como Encontramos a Su Comprador">How We Find<br>Your Buyer</h2>
+        <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
+        <p data-en="We don't just list your property — we actively market it to qualified buyers through precision campaigns across multiple channels." data-es="No solo listamos su propiedad — la comercializamos activamente a compradores calificados a traves de campanas de precision en multiples canales.">We don't just list your property — we actively market it to qualified buyers through precision campaigns across multiple channels.</p>
+      </div>
+
+      <div class="reach-banner">
+        <div class="reach-cell">
+          <div class="reach-num">110M<span style="font-size:24px">+</span></div>
+          <div class="reach-unit">Monthly Visitors</div>
+          <div class="reach-desc" data-en="Our primary listing platform reaches over 110 million unique visitors per month — the #2 most-visited real estate portal in America" data-es="Nuestra plataforma principal alcanza mas de 110 millones de visitantes unicos por mes">Our primary listing platform reaches over 110 million unique visitors per month — the #2 most-visited real estate portal in America</div>
+        </div>
+        <div class="reach-cell">
+          <div class="reach-num">143M<span style="font-size:24px">+</span></div>
+          <div class="reach-unit">Network Reach</div>
+          <div class="reach-desc" data-en="Our full partner network reaches 143 million+ monthly unique visitors across residential, commercial, investment, and rental platforms" data-es="Nuestra red completa de socios alcanza mas de 143 millones de visitantes unicos mensuales">Our full partner network reaches 143 million+ monthly unique visitors across residential, commercial, investment, and rental platforms</div>
+        </div>
+        <div class="reach-cell">
+          <div class="reach-num">14K<span style="font-size:24px">+</span></div>
+          <div class="reach-unit">Buyers Reached</div>
+          <div class="reach-desc" data-en="Boosted listings reach over 14,000 active buyers with an average of 32 views per buyer — generating real engagement" data-es="Los listados impulsados alcanzan mas de 14,000 compradores activos con un promedio de 32 vistas por comprador">Boosted listings reach over 14,000 active buyers with an average of 32 views per buyer — generating real engagement</div>
+        </div>
+      </div>
+
+      <div class="target-marketing-grid">
+        <div class="target-card animate">
+          <div class="tc-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="4" y="10" width="28" height="18" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M18 10V6" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="5" r="2" fill="#ab012e"/><path d="M10 16h16M10 22h10" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg></div>
+          <h4 data-en="Primetime TV &amp; Streaming" data-es="TV en Horario Estelar y Streaming">Primetime TV &amp; Streaming</h4>
+          <p data-en="Our platform partners invest heavily in major TV networks and streaming platforms — driving millions of high-intent buyers to search for properties like yours through Super Bowl and primetime campaigns with massive brand recognition." data-es="Nuestros socios de plataforma invierten fuertemente en redes de TV y plataformas de streaming — impulsando millones de compradores a buscar propiedades como la suya.">Our platform partners invest heavily in major TV networks and streaming platforms — driving millions of high-intent buyers to search for properties like yours through Super Bowl and primetime campaigns with massive brand recognition.</p>
+        </div>
+        <div class="target-card animate">
+          <div class="tc-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="8" stroke="#c4a35a" stroke-width="1.5" fill="none"/><circle cx="18" cy="18" r="3" fill="#ab012e"/><line x1="18" y1="4" x2="18" y2="10" stroke="#c4a35a" stroke-width="1.5" opacity="0.5"/><line x1="32" y1="18" x2="26" y2="18" stroke="#c4a35a" stroke-width="1.5" opacity="0.5"/></svg></div>
+          <h4 data-en="Social Media Retargeting" data-es="Retargeting en Redes Sociales">Social Media Retargeting</h4>
+          <p data-en="After viewing your listing, buyers see your property follow them on Facebook, Instagram, and over 1,000 websites — a persistent, targeted ad campaign that keeps your home top-of-mind until they're ready to act." data-es="Despues de ver su listado, los compradores ven su propiedad seguirlos en Facebook, Instagram y mas de 1,000 sitios web.">After viewing your listing, buyers see your property follow them on Facebook, Instagram, and over 1,000 websites — a persistent, targeted ad campaign that keeps your home top-of-mind until they're ready to act.</p>
+        </div>
+        <div class="target-card animate">
+          <div class="tc-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4v28M4 18h28" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="18" r="14" stroke="#c4a35a" stroke-width="1.5" fill="none"/><circle cx="11" cy="12" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="25" cy="12" r="3" fill="#ab012e" opacity="0.3"/><circle cx="11" cy="24" r="3" fill="#ab012e" opacity="0.3"/><circle cx="25" cy="24" r="3" fill="#c4a35a" opacity="0.3"/></svg></div>
+          <h4 data-en="Intent-Based Buyer Matching" data-es="Emparejamiento de Compradores Basado en Intencion">Intent-Based Buyer Matching</h4>
+          <p data-en="Advanced algorithms analyze buyer search behavior, price range, location preferences, and browsing patterns — then proactively serve your listing to the most qualified, high-intent buyers in real time." data-es="Algoritmos avanzados analizan el comportamiento de busqueda del comprador, rango de precios, preferencias de ubicacion y patrones de navegacion.">Advanced algorithms analyze buyer search behavior, price range, location preferences, and browsing patterns — then proactively serve your listing to the most qualified, high-intent buyers in real time.</p>
+        </div>
+      </div>
+
+      <!-- CoStar Network Visual -->
+      <div class="network-visual">
+        <div class="network-center">
+          <div class="nc-label" data-en="Your Listing Reaches" data-es="Su Listado Alcanza">Your Listing Reaches</div>
+          <div class="nc-brand" data-en="Our Exclusive Partner Network" data-es="Nuestra Red Exclusiva de Socios">Our Exclusive Partner Network</div>
+          <div class="nc-sub">143 million+ monthly unique visitors across all platforms</div>
+        </div>
+        <div class="network-brands">
+          <span class="network-brand-pill highlight">Homes.com</span>
+          <span class="network-brand-pill">Apartments.com</span>
+          <span class="network-brand-pill">LoopNet</span>
+          <span class="network-brand-pill">Crexi</span>
+          <span class="network-brand-pill">LandWatch</span>
+          <span class="network-brand-pill">Land.com</span>
+          <span class="network-brand-pill">STR</span>
+          <span class="network-brand-pill">Ten-X</span>
+          <span class="network-brand-pill">BizBuySell</span>
+          <span class="network-brand-pill">Homesnap</span>
+          <span class="network-brand-pill">CityFeet</span>
+          <span class="network-brand-pill">Showcase</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY MCG (COMPETITION) -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-gold" data-en="Superior to the Competition" data-es="Superior a la Competencia">Superior to the Competition</span>
+      <h2 style="color:var(--white)" data-en="What Sets Mason Capital Group Apart from Other Firms" data-es="Lo Que Distingue a Mason Capital Group de Otras Firmas">What Sets Mason Capital Group<br>Apart from Other Firms</h2>
+      <div class="accent-line-gold accent-line-center mb-16" style="margin-top:16px"></div>
+      <p style="color:var(--gray-300)" data-en="When comparing Mason Capital Group to traditional brokerages in Northwest Arkansas, the differences are clear. Here's what you get with us that you won't find anywhere else." data-es="Cuando se compara Mason Capital Group con corredurías tradicionales en el Noroeste de Arkansas, las diferencias son claras.">When comparing Mason Capital Group to traditional brokerages in Northwest Arkansas, the differences are clear. Here's what you get with us that you won't find anywhere else.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card animate">
+        <div class="num">01</div>
+        <h4 data-en="Full-Service Investment Firm, Not Just a Brokerage" data-es="Firma de Inversion de Servicio Completo, No Solo una Correduría">Full-Service Investment Firm, Not Just a Brokerage</h4>
+        <p data-en="Most agents work for a traditional brokerage and follow a cookie-cutter approach. Mason Capital Group operates as a real estate investment and trust firm — which means we bring institutional-level market analysis, negotiation power, and marketing sophistication to every residential listing." data-es="La mayoria de los agentes trabajan para una correduria tradicional y siguen un enfoque generico. Mason Capital Group opera como una firma de inversion y fideicomiso inmobiliario.">Most agents work for a traditional brokerage and follow a cookie-cutter approach. Mason Capital Group operates as a real estate investment and trust firm — which means we bring institutional-level market analysis, negotiation power, and marketing sophistication to every residential listing.</p>
+      </div>
+      <div class="why-card animate">
+        <div class="num">02</div>
+        <h4 data-en="Principal Broker Expertise" data-es="Experiencia de Corredor Principal">Principal Broker Expertise</h4>
+        <p data-en="As a licensed Principal Broker, I personally oversee every aspect of your transaction at the highest standard of care. This means expert pricing, strategic negotiation, and complete accountability — you work directly with the decision-maker, not a junior agent." data-es="Como Corredor Principal licenciado, superviso personalmente cada aspecto de su transaccion al mas alto estandar de cuidado.">As a licensed Principal Broker, I personally oversee every aspect of your transaction at the highest standard of care. This means expert pricing, strategic negotiation, and complete accountability — you work directly with the decision-maker, not a junior agent.</p>
+      </div>
+      <div class="why-card animate">
+        <div class="num">03</div>
+        <h4 data-en="Technology-Forward Marketing" data-es="Marketing con Tecnologia Avanzada">Technology-Forward Marketing</h4>
+        <p data-en="From premium portal priority placement and professional aerial media to digital retargeting across 1,000+ websites, custom offering memorandums, and AI-powered market analytics — we deploy a marketing technology stack that most traditional agents simply don't have access to." data-es="Desde colocacion prioritaria en portales premium y medios aereos profesionales hasta retargeting digital en mas de 1,000 sitios web.">From premium portal priority placement and professional aerial media to digital retargeting across 1,000+ websites, custom offering memorandums, and AI-powered market analytics — we deploy a marketing technology stack that most traditional agents simply don't have access to.</p>
+      </div>
+      <div class="why-card animate">
+        <div class="num">04</div>
+        <h4 data-en="Nearly 100 Platform Syndication" data-es="Sindicacion en Casi 100 Plataformas">Nearly 100 Platform Syndication</h4>
+        <p data-en="Your listing doesn't just go on the MLS. We syndicate to Zillow, Realtor.com, Redfin, Crexi, LoopNet, and nearly 100 additional platforms — targeting residential buyers, investors, builders, and developers nationally and internationally." data-es="Su listado no solo va al MLS. Sindicamos a Zillow, Realtor.com, Redfin, Crexi, LoopNet y casi 100 plataformas adicionales.">Your listing doesn't just go on the MLS. We syndicate to Zillow, Realtor.com, Redfin, Crexi, LoopNet, and nearly 100 additional platforms — targeting residential buyers, investors, builders, and developers nationally and internationally.</p>
+      </div>
+      <div class="why-card animate">
+        <div class="num">05</div>
+        <h4 data-en="Proven Track Record in NWA" data-es="Trayectoria Comprobada en NWA">Proven Track Record in NWA</h4>
+        <p data-en="From listing investment properties at premium prices to residential homes across Benton County — we have the local market experience and transaction history to back up our strategies. Over 30 years and $2.4 billion in transactions speak for themselves." data-es="Desde listar propiedades de inversion a precios premium hasta casas residenciales en todo el Condado de Benton — tenemos la experiencia de mercado local para respaldar nuestras estrategias.">From listing investment properties at premium prices to residential homes across Benton County — we have the local market experience and transaction history to back up our strategies. Over 30 years and $2.4 billion in transactions speak for themselves.</p>
+      </div>
+      <div class="why-card animate">
+        <div class="num">06</div>
+        <h4 data-en="Transparent Communication &amp; Reporting" data-es="Comunicacion Transparente y Reportes">Transparent Communication &amp; Reporting</h4>
+        <p data-en="You'll receive regular performance reports, market updates, and showing feedback. No black boxes. You'll always know exactly where your listing stands and what actions we're taking to drive it toward a successful close." data-es="Recibira reportes de rendimiento regulares, actualizaciones de mercado y retroalimentacion de visitas. Sin cajas negras.">You'll receive regular performance reports, market updates, and showing feedback. No black boxes. You'll always know exactly where your listing stands and what actions we're taking to drive it toward a successful close.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET SNAPSHOT -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-crimson" data-en="Market Snapshot" data-es="Panorama del Mercado">Market Snapshot</span>
+      <h2 data-en="Rogers Real Estate at a Glance" data-es="Bienes Raices de Rogers de un Vistazo">Rogers Real Estate at a Glance</h2>
+      <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
+      <p data-en="Rogers continues to be one of the fastest-growing real estate markets in Northwest Arkansas, driven by major employers, quality of life, and sustained population growth." data-es="Rogers continua siendo uno de los mercados inmobiliarios de mas rapido crecimiento en el Noroeste de Arkansas, impulsado por grandes empleadores, calidad de vida y crecimiento demografico sostenido.">Rogers continues to be one of the fastest-growing real estate markets in Northwest Arkansas, driven by major employers, quality of life, and sustained population growth.</p>
+    </div>
+    <div class="snapshot-grid">
+      <div class="snap-card animate">
+        <div class="snap-val">$566,667</div>
+        <div class="snap-label" data-en="Avg Sold Price" data-es="Precio Promedio Vendido">Avg Sold Price</div>
+        <div class="snap-change" style="color:#2e7d32" data-en="Based on 3 sold comps" data-es="Basado en 3 comparables vendidos">Based on 3 sold comps</div>
+      </div>
+      <div class="snap-card animate">
+        <div class="snap-val">120</div>
+        <div class="snap-label" data-en="Avg Days on Market" data-es="Dias Promedio en Mercado">Avg Days on Market</div>
+        <div class="snap-change" style="color:var(--gold)" data-en="Sold comps average" data-es="Promedio de comparables vendidos">Sold comps average</div>
+      </div>
+      <div class="snap-card animate">
+        <div class="snap-val">96.2%</div>
+        <div class="snap-label" data-en="Sale/List Ratio" data-es="Relacion Venta/Lista">Sale/List Ratio</div>
+        <div class="snap-change" style="color:#2e7d32" data-en="Strong market" data-es="Mercado fuerte">Strong market</div>
+      </div>
+      <div class="snap-card animate">
+        <div class="snap-val">$575K</div>
+        <div class="snap-label" data-en="Median Sold Price" data-es="Precio Mediano Vendido">Median Sold Price</div>
+        <div class="snap-change" style="color:var(--gray-500)" data-en="Rogers corridor" data-es="Corredor de Rogers">Rogers corridor</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEBSITE & SMART SIGNAGE -->
+<section class="section" id="web-signage">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-crimson" data-en="Digital Infrastructure" data-es="Infraestructura Digital">Digital Infrastructure</span>
+      <h2 data-en="A Website Built for Global Reach" data-es="Un Sitio Web Construido para Alcance Global">A Website Built for<br>Global Reach</h2>
+      <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
+      <p data-en="Our state-of-the-art website isn't just a local listing page — it's a global marketing engine optimized to attract buyers, investors, and developers from around the world." data-es="Nuestro sitio web de ultima generacion no es solo una pagina de listado local — es un motor de marketing global optimizado para atraer compradores, inversores y desarrolladores de todo el mundo.">Our state-of-the-art website isn't just a local listing page — it's a global marketing engine optimized to attract buyers, investors, and developers from around the world.</p>
+    </div>
+
+    <div class="web-global-grid mb-48">
+      <div>
+        <div class="web-feature-list">
+          <div class="web-feature">
+            <div class="web-feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="white" stroke-width="2"/><path d="M2 10h16M10 2c2 3 3 5 3 8s-1 5-3 8c-2-3-3-5-3-8s1-5 3-8z" stroke="white" stroke-width="1.5" fill="none"/></svg></div>
+            <div><h4 data-en="SEO-Optimized for Global Discovery" data-es="Optimizado para SEO y Descubrimiento Global">SEO-Optimized for Global Discovery</h4><p data-en="Our website is engineered with advanced SEO practices — structured data, schema markup, and geo-targeted landing pages — so your listing surfaces in search results for buyers searching from anywhere in the world." data-es="Nuestro sitio web esta disenado con practicas avanzadas de SEO para que su listado aparezca en los resultados de busqueda de compradores de todo el mundo.">Our website is engineered with advanced SEO practices — structured data, schema markup, and geo-targeted landing pages — so your listing surfaces in search results for buyers searching from anywhere in the world.</p></div>
+          </div>
+          <div class="web-feature">
+            <div class="web-feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="5" y="2" width="10" height="16" rx="2" stroke="white" stroke-width="2"/><line x1="8" y1="15" x2="12" y2="15" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <div><h4 data-en="Mobile-First, Lightning-Fast Design" data-es="Diseno Mobile-First, Ultra-Rapido">Mobile-First, Lightning-Fast Design</h4><p data-en="Over 70% of buyers start their home search on mobile devices. Our site is fully responsive with sub-second load times, ensuring a seamless experience on every device and connection speed." data-es="Mas del 70% de los compradores comienzan su busqueda de casa en dispositivos moviles. Nuestro sitio es completamente responsivo.">Over 70% of buyers start their home search on mobile devices. Our site is fully responsive with sub-second load times, ensuring a seamless experience on every device and connection speed.</p></div>
+          </div>
+          <div class="web-feature">
+            <div class="web-feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16V6l6-4 6 4v10" stroke="white" stroke-width="2" fill="none" stroke-linejoin="round"/><rect x="7" y="10" width="6" height="6" stroke="white" stroke-width="1.5" fill="none"/></svg></div>
+            <div><h4 data-en="Integrated Analytics &amp; Lead Capture" data-es="Analiticas Integradas y Captura de Leads">Integrated Analytics &amp; Lead Capture</h4><p data-en="Every visitor interaction is tracked. Integrated lead capture forms, click-to-call functionality, and real-time analytics mean we know exactly who's engaging with your listing and how to convert them." data-es="Cada interaccion del visitante es rastreada. Formularios de captura de leads integrados y analiticas en tiempo real.">Every visitor interaction is tracked. Integrated lead capture forms, click-to-call functionality, and real-time analytics mean we know exactly who's engaging with your listing and how to convert them.</p></div>
+          </div>
+          <div class="web-feature">
+            <div class="web-feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="white" stroke-width="2"/><path d="M6 10h8M10 6v8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div><h4 data-en="Multi-Language &amp; International Accessibility" data-es="Multi-Idioma y Accesibilidad Internacional">Multi-Language &amp; International Accessibility</h4><p data-en="Our digital infrastructure is designed to serve international buyers — with translation-ready pages and integration with global property search platforms like Juwai.com and Investorist." data-es="Nuestra infraestructura digital esta disenada para servir a compradores internacionales — con paginas listas para traduccion e integracion con plataformas globales.">Our digital infrastructure is designed to serve international buyers — with translation-ready pages and integration with global property search platforms like Juwai.com and Investorist.</p></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sign-visual">
+          <div style="margin-bottom:24px;">
+            <div style="font-family:var(--font-serif);font-size:28px;font-weight:900;color:var(--white);margin-bottom:4px;" data-en="Smart Signage Technology" data-es="Tecnologia de Senalizacion Inteligente">Smart Signage Technology</div>
+            <div style="font-size:12px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;" data-en="Links Built Into Every Sign" data-es="Enlaces Integrados en Cada Senal">Links Built Into Every Sign</div>
+          </div>
+          <div class="sign-mockup">
+            <div class="qr-placeholder">
+              <img src="243bf5d7-Visual_QR_DO_NOT_RESIZE_BELOW_25mm.png" alt="Scan QR code for full listing at masoncapitalgroup.com">
+            </div>
+            <div style="font-family:var(--font-serif);font-size:14px;font-weight:700;color:var(--navy);" data-en="Scan for Full Listing" data-es="Escanee para Ver Listado Completo">Scan for Full Listing</div>
+            <div style="font-size:10px;color:var(--gray-400);">masoncapitalgroup.com</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;text-align:left;max-width:280px;margin:0 auto;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray-300);"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 3H13l-2.5 2 1 3.5L8 8.5 4.5 10.5l1-3.5L3 5h3.5z" fill="#c4a35a"/></svg>QR Codes &amp; Smart Links</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray-300);"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 3H13l-2.5 2 1 3.5L8 8.5 4.5 10.5l1-3.5L3 5h3.5z" fill="#c4a35a"/></svg>Drive-By to Digital Lead</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray-300);"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 3H13l-2.5 2 1 3.5L8 8.5 4.5 10.5l1-3.5L3 5h3.5z" fill="#c4a35a"/></svg>Trackable ROI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;max-width:700px;margin:0 auto;">
+      <p style="font-size:15px;color:var(--gray-500);line-height:1.7;" data-en="The Bottom Line: The sign in front of your property isn't just a 'For Sale' notice — it's a direct-response marketing piece that drives qualified traffic to your listing 24/7, connecting the physical and digital worlds." data-es="En resumen: El letrero frente a su propiedad no es solo un aviso de 'Se Vende' — es una pieza de marketing de respuesta directa que dirige trafico calificado a su listado 24/7."><strong style="color:var(--navy)">The Bottom Line:</strong> The sign in front of your property isn't just a "For Sale" notice — it's a direct-response marketing piece that drives qualified traffic to your listing 24/7, connecting the physical and digital worlds.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <h2 data-en="Let's Get Your Property Sold" data-es="Vendamos Su Propiedad">Let's Get Your Property Sold</h2>
+  <p data-en="I'm ready to put the full power of Mason Capital Group, nearly 100 syndication platforms, and our exclusive digital marketing platform to work for you. Let's schedule a time to discuss your goals." data-es="Estoy listo para poner todo el poder de Mason Capital Group, casi 100 plataformas de sindicacion y nuestra plataforma exclusiva de marketing digital a trabajar para usted.">I'm ready to put the full power of Mason Capital Group, nearly 100 syndication platforms, and our exclusive digital marketing platform to work for you. Let's schedule a time to discuss your goals.</p>
+  <div class="cta-buttons">
+    <a href="tel:4799253333" class="btn btn-crimson">Call (479) 925-3333</a>
+    <a href="mailto:Info@MasonCapitalGroup.com" class="btn btn-outline">Email Us</a>
+  </div>
+  <p style="font-size:13px;color:var(--gray-400);margin-top:40px;">www.MasonCapitalGroup.com</p>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <img src="mcg-logo-stacked-white.png" alt="Mason Capital Group" style="height:100px;width:auto;margin:0 auto 12px;">
+  <p>Cameron Torabi, Principal Broker<br>
+  Arkansas Real Estate License #PB00056565<br>
+  (479) 925-3333 &nbsp;|&nbsp; Info@MasonCapitalGroup.com</p>
+  <p class="disclaimer" data-en="This presentation contains data and information from public records and third-party sources. Neither this presentation nor the estimated value of a property is an appraisal. Property valuations are approximate estimates generated using comparable market data. Mason Capital Group is not responsible for any claim or loss resulting from the content of, or errors or omissions in, this presentation. Equal Housing Opportunity." data-es="Esta presentacion contiene datos e informacion de registros publicos y fuentes de terceros. Ni esta presentacion ni el valor estimado de una propiedad es una tasacion. Las valoraciones de propiedades son estimaciones aproximadas generadas utilizando datos de mercado comparables. Mason Capital Group no es responsable de ningun reclamo o perdida resultante del contenido de, o errores u omisiones en, esta presentacion. Igualdad de Oportunidades de Vivienda.">This presentation contains data and information from public records and third-party sources. Neither this presentation nor the estimated value of a property is an appraisal. Property valuations are approximate estimates generated using comparable market data. Mason Capital Group is not responsible for any claim or loss resulting from the content of, or errors or omissions in, this presentation. Equal Housing Opportunity.</p>
+  <p style="font-size:10px;color:var(--gray-500);margin-top:12px;">&copy; 2026 Mason Capital Group Real Estate Investment &amp; Trust. All rights reserved.</p>
+</footer>
+
+
+<!-- SCRIPTS -->
+<script>
+// ===== LANGUAGE TOGGLE =====
+var currentLang = 'en';
+function toggleLanguage() {
+  currentLang = currentLang === 'en' ? 'es' : 'en';
+  document.querySelectorAll('[data-' + currentLang + ']').forEach(function(el) {
+    var text = el.getAttribute('data-' + currentLang);
+    if (text) {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = text;
+      } else {
+        el.innerHTML = text;
+      }
+    }
+  });
+  document.getElementById('langLabel').textContent = currentLang === 'en' ? 'Espanol' : 'English';
+  document.documentElement.lang = currentLang;
+}
+
+// Mobile Nav Toggle
+document.getElementById('navToggle').addEventListener('click', function() {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+// Close nav on link click
+document.querySelectorAll('.nav-links a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    document.getElementById('navLinks').classList.remove('open');
+  });
+});
+
+// Scroll Animations
+(function() {
+  var els = document.querySelectorAll('.animate');
+  if (!els.length) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  els.forEach(function(el) { observer.observe(el); });
+})();
+
+// Smooth scroll offset for fixed nav
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      var offset = 80;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+  });
+});
+
+// Animate bars on scroll
+(function() {
+  var bars = document.querySelectorAll('.bar');
+  bars.forEach(function(bar) {
+    var h = bar.style.height;
+    bar.style.height = '0%';
+    bar.dataset.target = h;
+  });
+  var barObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var bars = entry.target.querySelectorAll('.bar');
+        bars.forEach(function(bar, i) {
+          setTimeout(function() {
+            bar.style.height = bar.dataset.target;
+          }, i * 80);
+        });
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.bar-chart').forEach(function(chart) {
+    barObserver.observe(chart);
+  });
+})();
+
+// ===== COMP LOCATION MAP =====
+(function() {
+  var mapEl = document.getElementById('compMap');
+  if (!mapEl || typeof L === 'undefined') return;
+  var map = L.map('compMap', { scrollWheelZoom: false }).setView([36.3314, -94.1185], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 18
+  }).addTo(map);
+
+  function dot(color, size, border) {
+    return L.divIcon({
+      className: '',
+      html: '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:'+color+';border:'+(border||'none')+';box-shadow:0 2px 6px rgba(0,0,0,0.35);"></div>',
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2]
+    });
+  }
+
+  var subject = dot('#ab012e', 22, '3px solid #c4a35a');
+  var active = dot('#5a8fd4', 14, '2px solid #fff');
+  var pending = dot('#f57f17', 14, '2px solid #fff');
+  var sold = dot('#c4a35a', 14, '2px solid #fff');
+
+  // Subject: 624 S Horsebarn Rd, Rogers (approximate coordinates)
+  L.marker([36.3314, -94.1185], {icon: subject}).addTo(map)
+    .bindPopup('<strong style="color:#ab012e">SUBJECT: Horsebarn RD</strong><br>1 Acre &bull; 4,224 SF<br><strong>Market Analysis</strong>');
+
+  // Active comps
+  L.marker([36.3340, -94.1650], {icon: active}).addTo(map)
+    .bindPopup('<strong>706 S 52nd ST</strong><br>1.38 ac &bull; Active &bull; $1,336,483');
+  L.marker([36.3350, -94.1780], {icon: active}).addTo(map)
+    .bindPopup('<strong>335 S Dodson RD</strong><br>8.52 ac &bull; Active &bull; $4,950,000');
+
+  // Pending comps
+  L.marker([36.3250, -94.2050], {icon: pending}).addTo(map)
+    .bindPopup('<strong>5801 W Venture Park BLVD</strong><br>5.12 ac &bull; Pending &bull; $2,509,056');
+  L.marker([36.3255, -94.2080], {icon: pending}).addTo(map)
+    .bindPopup('<strong>5879 W Venture Park BLVD</strong><br>5.55 ac &bull; Pending &bull; $2,719,777');
+
+  // Sold comps
+  L.marker([36.3420, -94.1320], {icon: sold}).addTo(map)
+    .bindPopup('<strong>402 S Metro PKWY</strong><br>1,980 SF &bull; <strong style="color:#c4a35a">Sold</strong> &bull; $550,000');
+  L.marker([36.3180, -94.1900], {icon: sold}).addTo(map)
+    .bindPopup('<strong>4707 W Oak ST</strong><br>0.97 ac &bull; <strong style="color:#c4a35a">Sold</strong> &bull; $550,000');
+  L.marker([36.3345, -94.1640], {icon: sold}).addTo(map)
+    .bindPopup('<strong>324 S 52nd ST</strong><br>1.61 ac &bull; <strong style="color:#c4a35a">Sold</strong> &bull; $600,000');
+
+  // Fit bounds to all markers
+  var allCoords = [
+    [36.3314, -94.1185], [36.3340, -94.1650],
+    [36.3350, -94.1780], [36.3250, -94.2050],
+    [36.3255, -94.2080], [36.3420, -94.1320],
+    [36.3180, -94.1900], [36.3345, -94.1640]
+  ];
+  map.fitBounds(L.latLngBounds(allCoords).pad(0.15));
+})();
+</script>
+
+</body>
+</html>
