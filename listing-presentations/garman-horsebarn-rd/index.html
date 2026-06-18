@@ -1507,13 +1507,13 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 
 <script>
 (function(){
+  var sent=false;
   function sendH(){
+    if(sent)return;
     var h=Math.max(document.documentElement.scrollHeight,document.body.scrollHeight);
-    parent.postMessage({type:'garmanHeight',height:h},'*');
+    if(h>500){parent.postMessage({type:'garmanHeight',height:h},'*');sent=true;}
   }
-  window.addEventListener('load',function(){sendH();setTimeout(sendH,2000);setTimeout(sendH,5000);});
-  window.addEventListener('resize',sendH);
-  new MutationObserver(sendH).observe(document.body,{childList:true,subtree:true});
+  window.addEventListener('load',sendH);
 })();
 </script>
 
