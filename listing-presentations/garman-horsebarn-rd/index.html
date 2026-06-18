@@ -571,10 +571,6 @@ a { color: inherit; text-decoration: none; }
 <body>
 
 <!-- LANGUAGE TOGGLE BUTTON -->
-<button class="lang-toggle" id="langToggle" onclick="toggleLanguage()">
-  <span class="flag">&#127474;&#127485;</span>
-  <span id="langLabel">Espanol</span>
-</button>
 
 <!-- NAV -->
 <nav class="nav">
@@ -603,9 +599,6 @@ a { color: inherit; text-decoration: none; }
     <div class="hero-stats">
       <div class="hero-stat"><div class="val">20 Acres</div><div class="lbl" data-en="Total Land" data-es="Terreno Total">Total Land</div></div>
       <div class="hero-stat"><div class="val">2 Residences</div><div class="lbl" data-en="Structures" data-es="Estructuras">Structures</div></div>
-      <div class="hero-stat"><div class="val">4,224 SF</div><div class="lbl" data-en="Heated Structure" data-es="Estructura Calefaccionada">Heated Structure</div></div>
-      <div class="hero-stat"><div class="val">3 Full Baths</div><div class="lbl" data-en="Bathrooms" data-es="Banos">Bathrooms</div></div>
-      <div class="hero-stat"><div class="val">1987</div><div class="lbl" data-en="Year Built" data-es="Ano de Construccion">Year Built</div></div>
     </div>
     <div class="hero-tagline" data-en="Prepared for Garman &bull; June 18, 2026 &bull; Benton County" data-es="Preparado para Garman &bull; 18 de Junio, 2026 &bull; Condado de Benton">Prepared for Garman &nbsp;&bull;&nbsp; June 18, 2026 &nbsp;&bull;&nbsp; Benton County</div>
     <div class="hero-logo">
@@ -694,7 +687,7 @@ a { color: inherit; text-decoration: none; }
       <span class="label text-crimson" data-en="Property Details" data-es="Detalles de la Propiedad">Property Details</span>
       <h2>Horsebarn Road</h2>
       <div class="accent-line mb-16" style="margin-top:12px"></div>
-      <p data-en="A premier 20-acre land and development opportunity encompassing two existing residences at 624 &amp; 628 S Horsebarn Rd, Rogers. The property features 4,224 SF of total heated structure (built 1987, 3 full baths) and significant dual-street frontage on both W Oak Street and S Horsebarn Rd. The primary value is in the land — 20 contiguous acres positioned for developers, investors, and builders in one of Northwest Arkansas's most active growth corridors." data-es="Una oportunidad premier de terreno y desarrollo de 20 acres que abarca dos residencias existentes en 624 y 628 S Horsebarn Rd, Rogers. La propiedad cuenta con 4,224 SF de estructura calefaccionada total (construida en 1987, 3 banos completos) y un significativo frente doble en W Oak Street y S Horsebarn Rd. El valor principal esta en el terreno — 20 acres contiguos posicionados para desarrolladores, inversores y constructores en uno de los corredores de crecimiento mas activos del Noroeste de Arkansas.">A premier 20-acre land and development opportunity encompassing two existing residences at 624 &amp; 628 S Horsebarn Rd, Rogers. The property features 4,224 SF of total heated structure (built 1987, 3 full baths) and significant dual-street frontage on both W Oak Street and S Horsebarn Rd. The primary value is in the land — 20 contiguous acres positioned for developers, investors, and builders in one of Northwest Arkansas's most active growth corridors.</p>
+      <p>A premier 20-acre land and development opportunity encompassing two existing residences at 624 &amp; 628 S Horsebarn Rd, Rogers. The property offers significant dual-street frontage on both W Oak Street and S Horsebarn Rd. The primary value is in the land — 20 contiguous acres positioned for developers, investors, and builders in one of Northwest Arkansas's most active growth corridors.</p>
     </div>
     <div class="details-grid">
       <table class="detail-table">
@@ -702,8 +695,6 @@ a { color: inherit; text-decoration: none; }
         <tr><td data-en="Property Type" data-es="Tipo de Propiedad">Property Type</td><td>Land / Development Opportunity</td></tr>
         <tr><td data-en="Total Acreage" data-es="Superficie Total">Total Acreage</td><td>20 Acres</td></tr>
         <tr><td data-en="Structures" data-es="Estructuras">Structures</td><td>2 Residences (624 &amp; 628 S Horsebarn Rd)</td></tr>
-        <tr><td data-en="Heated Structure" data-es="Estructura Calefaccionada">Heated Structure</td><td>4,224 sq ft (combined)</td></tr>
-        <tr><td data-en="Full Baths" data-es="Banos Completos">Full Baths</td><td>3</td></tr>
         <tr><td data-en="Road Frontage" data-es="Frente de Calle">Road Frontage</td><td>W Oak Street &amp; S Horsebarn Rd</td></tr>
         <tr><td data-en="Annual Taxes" data-es="Impuestos Anuales">Annual Taxes</td><td>$4,013</td></tr>
       </table>
@@ -714,7 +705,6 @@ a { color: inherit; text-decoration: none; }
         <tr><td data-en="State" data-es="Estado">State</td><td>Arkansas</td></tr>
         <tr><td data-en="Zip Code" data-es="Codigo Postal">Zip Code</td><td>72758</td></tr>
         <tr><td data-en="County" data-es="Condado">County</td><td>Benton County</td></tr>
-        <tr><td data-en="Year Built" data-es="Ano de Construccion">Year Built</td><td>1987</td></tr>
       </table>
     </div>
 
@@ -728,10 +718,10 @@ a { color: inherit; text-decoration: none; }
           <div class="gauge-label" data-en="Total Land" data-es="Terreno Total">Total Land</div>
         </div>
         <div class="gauge-item animate">
-          <div class="gauge-ring" style="background:conic-gradient(var(--gold) 0deg, var(--gold) 280deg, var(--gray-200) 280deg);">
-            <div class="gauge-inner"><div class="g-val">4,224</div><div class="g-unit">SQ FT</div></div>
+          <div class="gauge-ring" style="background:conic-gradient(var(--gold) 0deg, var(--gold) 200deg, var(--gray-200) 200deg);">
+            <div class="gauge-inner"><div class="g-val">2</div><div class="g-unit">HOMES</div></div>
           </div>
-          <div class="gauge-label" data-en="Heated Structure" data-es="Estructura Calefaccionada">Heated Structure</div>
+          <div class="gauge-label" data-en="Residences" data-es="Residencias">Residences</div>
         </div>
         <div class="gauge-item animate">
           <div class="gauge-ring" style="background:conic-gradient(var(--navy) 0deg, var(--navy) 140deg, var(--gray-200) 140deg);">
@@ -903,7 +893,7 @@ a { color: inherit; text-decoration: none; }
             <td><strong>624 &amp; 628 S Horsebarn RD</strong> (Subject)</td>
             <td><span class="status-badge" style="background:var(--off-white);color:var(--navy);">Subject</span></td>
             <td>&mdash;</td>
-            <td>20 Ac / 4,224 SF</td>
+            <td>20 Acres / 2 Residences</td>
             <td>&mdash;</td>
             <td><strong>$8,000,000 – $9,000,000</strong></td>
             <td>&mdash;</td>
@@ -1032,9 +1022,7 @@ a { color: inherit; text-decoration: none; }
           <tr><td data-en="Address" data-es="Direccion">Address</td><td>624 &amp; 628 S Horsebarn Rd, Rogers, AR 72758</td></tr>
           <tr><td data-en="County" data-es="Condado">County</td><td>Benton County</td></tr>
           <tr><td data-en="Property Type" data-es="Tipo de Propiedad">Property Type</td><td>Land / Development Opportunity</td></tr>
-          <tr><td data-en="Heated Sq Ft" data-es="Pies Cuadrados Calefaccionados">Heated Sq Ft</td><td>4,224 SF (combined)</td></tr>
-          <tr><td data-en="Full Baths" data-es="Banos Completos">Full Baths</td><td>3</td></tr>
-          <tr><td data-en="Year Built" data-es="Ano de Construccion">Year Built</td><td>1987</td></tr>
+          <tr><td data-en="Structures" data-es="Estructuras">Structures</td><td>2 Residences</td></tr>
           <tr><td data-en="Lot Size" data-es="Tamano del Lote">Lot Size</td><td>20 Acres</td></tr>
           <tr><td data-en="Annual Tax" data-es="Impuesto Anual">Annual Tax</td><td>$4,013</td></tr>
         </tbody>
@@ -1404,23 +1392,6 @@ a { color: inherit; text-decoration: none; }
 
 <!-- SCRIPTS -->
 <script>
-// ===== LANGUAGE TOGGLE =====
-var currentLang = 'en';
-function toggleLanguage() {
-  currentLang = currentLang === 'en' ? 'es' : 'en';
-  document.querySelectorAll('[data-' + currentLang + ']').forEach(function(el) {
-    var text = el.getAttribute('data-' + currentLang);
-    if (text) {
-      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-        el.placeholder = text;
-      } else {
-        el.innerHTML = text;
-      }
-    }
-  });
-  document.getElementById('langLabel').textContent = currentLang === 'en' ? 'Espanol' : 'English';
-  document.documentElement.lang = currentLang;
-}
 
 // Mobile Nav Toggle
 document.getElementById('navToggle').addEventListener('click', function() {
@@ -1514,7 +1485,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 
   // Subject: Horsebarn RD, Rogers (geocoded)
   L.marker([36.318408, -94.186444], {icon: subject}).addTo(map)
-    .bindPopup('<strong style="color:#ab012e">SUBJECT: 624 &amp; 628 S Horsebarn RD</strong><br>20 Acres &bull; 4,224 SF<br><strong>$8,000,000 – $9,000,000</strong>');
+    .bindPopup('<strong style="color:#ab012e">SUBJECT: 624 &amp; 628 S Horsebarn RD</strong><br>20 Acres &bull; 2 Residences<br><strong>$8,000,000 – $9,000,000</strong>');
 
   // Active comps
   L.marker([36.326192, -94.187045], {icon: active}).addTo(map)
