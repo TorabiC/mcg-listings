@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>if(window.self!==window.top)document.documentElement.classList.add('in-iframe');</script>
 <style>
 /* ===== VARIABLES ===== */
 :root {
@@ -88,6 +89,7 @@ a { color: inherit; text-decoration: none; }
   background: linear-gradient(180deg, rgba(22,22,42,0.92) 0%, rgba(22,22,42,0.55) 50%, rgba(22,22,42,0.92) 100%), url('aerial-hero.jpg') center/cover no-repeat;
   padding: 120px 0 80px; overflow: hidden;
 }
+html.in-iframe .hero { min-height: 900px; }
 .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--crimson); z-index: 2; }
 .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: var(--crimson); z-index: 2; }
 .hero .container { position: relative; z-index: 1; width: 100%; }
