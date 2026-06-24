@@ -9,7 +9,7 @@
 :root{--navy:#16162a;--crimson:#ab012e;--gold:#c4a35a;--white:#fff;--font:'Lato','Helvetica Neue',Arial,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;font-family:var(--font);background:#0a0a18;overflow:hidden}
-.app{width:100%;height:100dvh;display:flex;flex-direction:column;background:linear-gradient(160deg,#080816,#12122a 50%,#18102e);user-select:none}
+.app{width:100%;height:100%;display:flex;flex-direction:column;background:linear-gradient(160deg,#080816,#12122a 50%,#18102e);user-select:none}
 
 .hd{height:40px;flex-shrink:0;background:rgba(0,0,0,.6);display:flex;justify-content:space-between;align-items:center;padding:0 20px;z-index:10}
 .hd .t{font-size:.7rem;font-weight:700;color:var(--white);letter-spacing:.5px}
@@ -204,6 +204,12 @@ function resize(){
   nB.style.right=arrowInGap+'px'; nB.style.top=centerY+'px';
 }
 window.addEventListener('resize',resize);resize();
+// Recompute scale whenever the stage box actually changes size (covers nested-iframe/embedded sizing)
+try{ new ResizeObserver(function(){ resize(); }).observe(stage); }catch(e){}
+window.addEventListener('load',resize);
+setTimeout(resize,300);setTimeout(resize,1000);
+// TEMP DEBUG: report real measurements to the top window
+try{ var DBG=function(){ window.top.postMessage({fbDebug:{win:[innerWidth,innerHeight],stage:[stage.clientWidth,stage.clientHeight],book:book.getAttribute('style')}}, '*'); }; DBG(); setTimeout(DBG,1200); }catch(e){}
 renderPage(pgF,PAGES[0]);ui(0);
 
 function ui(i){cN.textContent=i+1;document.querySelectorAll('.d').forEach((d,j)=>d.classList.toggle('on',j===i));pB.classList.toggle('off',i===0);nB.classList.toggle('off',i===PAGES.length-1);}
