@@ -1811,8 +1811,18 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   if (window.self === window.top) return; // standalone: do nothing
   var vh = window.innerHeight || 800;
   var st = document.createElement('style');
-  st.textContent = '.hero{min-height:' + vh + 'px !important;height:' + vh + 'px !important;}';
+  st.textContent = '.hero{min-height:' + vh + 'px !important;height:' + vh + 'px !important;}'
+    + '.animate{opacity:1 !important;transform:none !important;}';
   (document.head || document.documentElement).appendChild(st);
+  // The parent page scrolls (not this iframe), so in-iframe scroll observers never fire.
+  // Force the scroll-reveal content and bar charts to their final visible state.
+  function reveal(){
+    document.querySelectorAll('.animate').forEach(function(el){ el.classList.add('visible'); });
+    document.querySelectorAll('.bar').forEach(function(b){ if(b.dataset && b.dataset.target){ b.style.height = b.dataset.target; } });
+  }
+  reveal();
+  window.addEventListener('load', reveal);
+  setTimeout(reveal, 300); setTimeout(reveal, 1200);
   var last = 0;
   function send(){
     var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
