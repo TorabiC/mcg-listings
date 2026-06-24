@@ -1805,5 +1805,26 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 })();
 </script>
 
+<!-- Embed adaptation: when shown inside the Webflow iframe, cap the hero to one screen and report full height so the parent can grow the iframe (no internal scroll needed) -->
+<script>
+(function(){
+  if (window.self === window.top) return; // standalone: do nothing
+  var vh = window.innerHeight || 800;
+  var st = document.createElement('style');
+  st.textContent = '.hero{min-height:' + vh + 'px !important;height:' + vh + 'px !important;}';
+  (document.head || document.documentElement).appendChild(st);
+  var last = 0;
+  function send(){
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    if (h && h !== last){ last = h; try { parent.postMessage({ mcgPresHeight: h }, '*'); } catch(e){} }
+  }
+  window.addEventListener('load', send);
+  window.addEventListener('resize', send);
+  try { new ResizeObserver(send).observe(document.body); } catch(e){}
+  var n = 0, t = setInterval(function(){ send(); if (++n > 40) clearInterval(t); }, 500);
+  send();
+})();
+</script>
+
 </body>
 </html>
