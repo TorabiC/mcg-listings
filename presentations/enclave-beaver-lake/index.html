@@ -790,7 +790,7 @@ a { color: inherit; text-decoration: none; }
       <p>Page through the complete digital offering memorandum for The Enclave at Beaver Lake &mdash; the vision, architecture, site plan, amenities, and the surrounding Northwest Arkansas market. Use the on-screen arrows or your keyboard arrow keys to turn each page.</p>
     </div>
     <div class="om-flipbook-frame" style="position:relative;width:100%;max-width:1180px;margin:0 auto;border:1px solid rgba(196,163,90,0.35);border-radius:14px;overflow:hidden;background:#0a0a18;box-shadow:0 18px 50px rgba(8,8,22,0.45);">
-      <iframe src="./flipbook/" title="The Enclave at Beaver Lake &mdash; Digital Offering Memorandum" loading="lazy" allowfullscreen style="display:block;width:100%;height:min(78vh,720px);min-height:440px;border:0;"></iframe>
+      <iframe src="./flipbook/?v=2" title="The Enclave at Beaver Lake &mdash; Digital Offering Memorandum" loading="lazy" allowfullscreen style="display:block;width:100%;height:min(78vh,720px);min-height:440px;border:0;"></iframe>
     </div>
     <div style="text-align:center;margin-top:18px;">
       <a href="./flipbook/" target="_blank" rel="noopener" style="display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--crimson);text-decoration:none;border-bottom:1px solid var(--crimson);padding-bottom:2px;">Open the OM full-screen &nbsp;&#8599;</a>
@@ -1809,7 +1809,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 <script>
 (function(){
   if (window.self === window.top) return; // standalone: do nothing
-  var vh = window.innerHeight || 800;
+  var vh = Math.min(window.innerHeight || 800, 1100);
   var st = document.createElement('style');
   st.textContent = '.hero{min-height:' + vh + 'px !important;height:' + vh + 'px !important;}'
     + '.animate{opacity:1 !important;transform:none !important;}';

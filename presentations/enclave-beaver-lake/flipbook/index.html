@@ -208,8 +208,6 @@ window.addEventListener('resize',resize);resize();
 try{ new ResizeObserver(function(){ resize(); }).observe(stage); }catch(e){}
 window.addEventListener('load',resize);
 setTimeout(resize,300);setTimeout(resize,1000);
-// TEMP DEBUG: report real measurements to the top window
-try{ var DBG=function(){ window.top.postMessage({fbDebug:{win:[innerWidth,innerHeight],stage:[stage.clientWidth,stage.clientHeight],book:book.getAttribute('style')}}, '*'); }; DBG(); setTimeout(DBG,1200); }catch(e){}
 renderPage(pgF,PAGES[0]);ui(0);
 
 function ui(i){cN.textContent=i+1;document.querySelectorAll('.d').forEach((d,j)=>d.classList.toggle('on',j===i));pB.classList.toggle('off',i===0);nB.classList.toggle('off',i===PAGES.length-1);}
