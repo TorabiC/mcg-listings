@@ -19,7 +19,7 @@ html,body{width:100%;height:100%;font-family:var(--font);background:#0a0a18;over
 
 .stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:8px}
 .book-outer{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
-.book{position:relative;transform-origin:center center;transition:transform .1s}
+.book{position:relative;flex:0 0 auto;flex-shrink:0;transform-origin:center center;transition:transform .1s}
 .pg{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:3px;overflow:hidden;backface-visibility:hidden;background:#fff}
 .pg iframe{width:1424px;height:1100px;border:none;display:block;transform-origin:0 0;background:#fff;pointer-events:auto}
 .pg img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
@@ -208,7 +208,6 @@ window.addEventListener('resize',resize);resize();
 try{ new ResizeObserver(function(){ resize(); }).observe(stage); }catch(e){}
 window.addEventListener('load',resize);
 setTimeout(resize,300);setTimeout(resize,1000);
-try{ var DBG=function(){ var d=document; window.top.postMessage({fbDebug2:{ ww:[innerWidth,innerHeight], htmlH:d.documentElement.offsetHeight, bodyH:d.body.offsetHeight, appH:(d.querySelector('.app')||{}).offsetHeight, stage:[stage.clientWidth,stage.clientHeight], book:book.getAttribute('style') }}, '*'); }; setTimeout(DBG,500); setTimeout(DBG,1500); setTimeout(DBG,3000); }catch(e){}
 renderPage(pgF,PAGES[0]);ui(0);
 
 function ui(i){cN.textContent=i+1;document.querySelectorAll('.d').forEach((d,j)=>d.classList.toggle('on',j===i));pB.classList.toggle('off',i===0);nB.classList.toggle('off',i===PAGES.length-1);}
