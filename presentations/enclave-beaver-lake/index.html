@@ -1739,7 +1739,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (function() {
-  var map = L.map('compMap', { scrollWheelZoom: false, zoomControl: true }).setView([36.3830, -93.9250], 13);
+  var map = L.map('compMap', { scrollWheelZoom: false, zoomControl: true }).setView([36.345, -94.045], 12);
 
   // ESRI Satellite imagery
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -1766,16 +1766,16 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   var activeIcon  = makeIcon('#1565c0', 18);
 
   // Subject Property
-  L.marker([36.3855, -93.9280], { icon: subjectIcon, zIndexOffset: 1000 })
+  L.marker([36.34456, -94.05769], { icon: subjectIcon, zIndexOffset: 1000 })
     .bindPopup('<div style="font-family:Lato,sans-serif;min-width:180px;"><strong style="font-size:14px;color:#ab012e;">N Park Rd (Subject)</strong><br><span style="font-size:12px;">42.54 acres &bull; 19 Lots<br><strong>Wholesale: $3,800,000</strong><br>Lots: $250K&ndash;$400K each</span></div>')
     .addTo(map);
 
   // Sold Comps
   var sold = [
-    { lat: 36.3720, lng: -93.8950, name: 'Kindred Hollow Rd', acres: '1.10', price: '$375,000', date: '1/30/2026', saleList: '94%' },
-    { lat: 36.3950, lng: -93.9520, name: 'TBD Village', acres: '11.30', price: '$290,000', date: '2/6/2026', saleList: '96.7%' },
-    { lat: 36.4010, lng: -93.9080, name: 'TBD Beaver Shores Dr', acres: '2.31', price: '$95,000', date: '3/9/2026', saleList: '79.2%' },
-    { lat: 36.3680, lng: -93.9480, name: '1405 W Margaret Pl', acres: '&mdash;', price: '$50,500', date: '&mdash;', saleList: '&mdash;' }
+    { lat: 36.36055, lng: -94.04884, name: 'Kindred Hollow Rd', acres: '1.10', price: '$375,000', date: '1/30/2026', saleList: '94%' },
+    { lat: 36.35500, lng: -94.06500, name: 'TBD Village', acres: '11.30', price: '$290,000', date: '2/6/2026', saleList: '96.7%' },
+    { lat: 36.32792, lng: -94.02638, name: 'TBD Beaver Shores Dr', acres: '2.31', price: '$95,000', date: '3/9/2026', saleList: '79.2%' },
+    { lat: 36.34537, lng: -94.13708, name: '1405 W Margaret Pl', acres: '&mdash;', price: '$50,500', date: '&mdash;', saleList: '&mdash;' }
   ];
   sold.forEach(function(c) {
     L.marker([c.lat, c.lng], { icon: soldIcon })
@@ -1785,11 +1785,11 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 
   // Active Comps
   var active = [
-    { lat: 36.3640, lng: -93.9150, name: 'Tbd Ventris Rd', acres: '5.28', price: '$1,000,000' },
-    { lat: 36.3780, lng: -93.9450, name: '15756 Cottonwood Ln', acres: '1.27', price: '$289,000' },
-    { lat: 36.3890, lng: -93.9380, name: 'Anchor Dr', acres: '2.21', price: '$274,999' },
-    { lat: 36.4050, lng: -93.8980, name: 'Serenity Point', acres: '0.62', price: '$295,000' },
-    { lat: 36.3930, lng: -93.9150, name: 'Edgewater Rd', acres: '1.49', price: '$349,000' }
+    { lat: 36.38480, lng: -93.95955, name: 'Tbd Ventris Rd', acres: '5.28', price: '$1,000,000' },
+    { lat: 36.31821, lng: -94.03406, name: '15756 Cottonwood Ln', acres: '1.27', price: '$289,000' },
+    { lat: 36.32882, lng: -94.03234, name: 'Anchor Dr', acres: '2.21', price: '$274,999' },
+    { lat: 36.33408, lng: -94.03060, name: 'Serenity Point', acres: '0.62', price: '$295,000' },
+    { lat: 36.33313, lng: -93.99141, name: 'Edgewater Rd', acres: '1.49', price: '$349,000' }
   ];
   active.forEach(function(c) {
     L.marker([c.lat, c.lng], { icon: activeIcon })
@@ -1798,7 +1798,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   });
 
   // Fit bounds to show all markers
-  var allCoords = [[36.3855,-93.9280]];
+  var allCoords = [[36.34456,-94.05769]];
   sold.forEach(function(c){ allCoords.push([c.lat,c.lng]); });
   active.forEach(function(c){ allCoords.push([c.lat,c.lng]); });
   map.fitBounds(allCoords, { padding: [40, 40] });
