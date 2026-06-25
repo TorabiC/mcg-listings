@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1424px;height:1100px;font-family:'Lato',sans-serif;overflow:hidden;background:#0c2230}
+.pg{position:relative;width:1424px;height:1100px;overflow:hidden}
+.bg{position:absolute;inset:0;width:1424px;height:1100px;object-fit:cover;object-position:50% 45%;display:block}
+.ring{position:absolute;width:22px;height:22px;border-radius:50%;border:3px solid #ab012e;box-shadow:0 0 0 3px rgba(255,255,255,.55),0 2px 8px rgba(0,0,0,.5);transform:translate(-50%,-50%)}
+.ring::after{content:'';position:absolute;inset:5px;border-radius:50%;background:#ab012e}
+.chip{position:absolute;background:rgba(15,17,20,.86);backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,.16);border-radius:11px;padding:11px 16px;color:#fff;transform:translate(-50%,0);white-space:nowrap}
+.chip .k{font:700 11px/1 'Lato';letter-spacing:.16em;text-transform:uppercase;color:#cd4c4e}
+.chip .v{font:700 18px/1.2 'Lato';margin-top:5px}
+.chip .s{font:400 13px/1.3 'Lato';color:rgba(255,249,249,.7);margin-top:3px;white-space:normal}
+.lake{position:absolute;font:italic 700 26px/1 'Lato';color:rgba(255,255,255,.92);text-shadow:0 2px 10px rgba(0,0,0,.7);letter-spacing:.04em;transform:translate(-50%,-50%)}
+</style>
+</head>
+<body>
+<div class="pg">
+  <img class="bg" src="../assets/page9-lake-sunset.jpg" alt="Aerial of Beaver Lake at sunset in the Ozark hills">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,0,0,.82) 0%,rgba(9,0,0,.4) 20%,rgba(9,0,0,.08) 32%,rgba(9,0,0,0) 44%,rgba(9,0,0,0) 72%,rgba(9,0,0,.55) 100%);"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,0,0,.55) 0%,rgba(9,0,0,0) 44%);"></div>
+
+  <!-- heading -->
+  <div style="position:absolute;left:64px;top:58px;max-width:760px;color:#fff;">
+    <div style="font:700 16px/1 'Lato';letter-spacing:.26em;text-transform:uppercase;color:#f0cccc;">The setting · Beaver Lake</div>
+    <h2 style="font:900 58px/1.02 'Lato';letter-spacing:-.025em;margin:18px 0 0;">Set back from the shore,<br>minutes to the marina.</h2>
+    <p style="font:300 23px/1.42 'Lato';color:rgba(255,249,249,.94);max-width:660px;margin-top:18px;">The Enclave rises in the wooded hills above the Prairie Creek arm of Beaver Lake — a 28,000-acre Ozark reservoir of deep, clean water, with the marina and open lake just minutes from the gate.</p>
+  </div>
+
+  <!-- legend -->
+  <div style="position:absolute;right:56px;bottom:92px;background:rgba(15,17,20,.84);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:20px 24px;color:#fff;max-width:340px;">
+    <div style="font:700 12px/1 'Lato';letter-spacing:.16em;text-transform:uppercase;color:#cd4c4e;">Orientation</div>
+    <div style="display:flex;gap:10px;align-items:baseline;margin-top:12px;"><div style="flex:none;width:24px;height:2px;background:#ab012e;transform:translateY(-5px);"></div><div style="font:400 15px/1.4 'Lato';color:rgba(255,249,249,.9);">The parcel lies <b style="font-weight:700;color:#fff;">southwest of Prairie Creek Marina</b>, set back from the shoreline.</div></div>
+    <div style="display:flex;gap:10px;align-items:baseline;margin-top:10px;"><div style="flex:none;width:24px;height:2px;background:#ab012e;transform:translateY(-5px);"></div><div style="font:400 15px/1.4 'Lato';color:rgba(255,249,249,.9);">Marina, fuel dock and lake access are <b style="font-weight:700;color:#fff;">minutes northeast</b>.</div></div>
+    <div style="display:flex;gap:10px;align-items:baseline;margin-top:10px;"><div style="flex:none;width:24px;height:2px;background:#ab012e;transform:translateY(-5px);"></div><div style="font:400 15px/1.4 'Lato';color:rgba(255,249,249,.9);">Rogers, Bentonville and Hobbs State Park lie a short drive beyond.</div></div>
+  </div>
+
+  <div style="position:absolute;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 56px;background:linear-gradient(180deg,rgba(9,0,0,0),rgba(9,0,0,.5));">
+    <div style="font:700 13px/1 'Lato';letter-spacing:.22em;text-transform:uppercase;color:rgba(255,249,249,.78);">The Enclave at Beaver Lake</div>
+    <div style="font:700 13px/1 'Lato';letter-spacing:.18em;text-transform:uppercase;color:#f0cccc;">Mason Capital Group · 08</div>
+  </div>
+</div>
+</body>
+</html>

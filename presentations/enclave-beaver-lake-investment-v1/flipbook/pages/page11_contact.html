@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1424px;height:1100px;font-family:'Lato',sans-serif;overflow:hidden;background:#0e1326}
+.pg{position:relative;width:1424px;height:1100px;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;margin-top:14px;}
+.row svg{width:17px;height:17px;color:#cd4c4e;flex:none;}
+.row a,.row span{font:400 17px/1 'Lato';color:rgba(255,255,255,.86);text-decoration:none;}
+</style>
+</head>
+<body>
+<div class="pg">
+  <img src="../assets/bl-gate-entry.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%;" alt="The Enclave at Beaver Lake">
+  <div style="position:absolute;inset:0;background:linear-gradient(115deg,rgba(10,14,32,.93) 0%,rgba(10,14,32,.86) 42%,rgba(12,17,38,.72) 100%);"></div>
+
+  <!-- red rules -->
+  <div style="position:absolute;left:46px;right:46px;top:34px;height:3px;background:#ab012e;"></div>
+  <div style="position:absolute;left:46px;right:46px;bottom:34px;height:3px;background:#ab012e;"></div>
+
+  <!-- top-left: logo (matches page 1) -->
+  <img src="../assets/mcg-logo-redwhite.png" style="position:absolute;left:96px;top:56px;height:40px;" alt="Mason Capital Group — Real Estate Investment & Trust">
+
+  <!-- top-right: asking price -->
+  <div style="position:absolute;right:80px;top:104px;">
+    <div style="display:inline-block;background:#ab012e;border-radius:4px;padding:18px 30px;text-align:center;box-shadow:0 10px 28px rgba(171,1,46,.3);">
+      <div style="font:700 12px/1 'Lato';letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.85);">Asking Price</div>
+      <div style="font:700 38px/1 'Lato';color:#fff;margin-top:9px;font-variant-numeric:tabular-nums;">$3,800,000</div>
+    </div>
+  </div>
+
+  <!-- left column -->
+  <div style="position:absolute;left:96px;top:150px;max-width:620px;">
+    <div style="display:inline-block;background:#ab012e;border-radius:3px;padding:8px 18px;font:700 13px/1 'Lato';letter-spacing:.22em;text-transform:uppercase;color:#fff;">For Sale</div>
+    <h1 style="font:300 62px/1.05 'Lato';letter-spacing:-.01em;color:#fff;margin:28px 0 0;">The Enclave at<br>Beaver Lake</h1>
+    <div style="font:400 21px/1 'Lato';letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:22px;">Prairie Creek · Rogers, Arkansas 72756</div>
+    <div style="width:96px;height:3px;background:#ab012e;margin:30px 0 0;"></div>
+
+    <div style="font:700 13px/1 'Lato';letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.62);margin:36px 0 18px;">For more information, please contact:</div>
+
+    <!-- contact card -->
+    <div style="border:1px solid rgba(171,1,46,.55);border-radius:6px;padding:30px 34px;max-width:560px;background:rgba(10,14,32,.35);">
+      <div style="display:flex;align-items:center;gap:20px;">
+        <div style="flex:none;width:72px;height:72px;border-radius:50%;border:2px solid #ab012e;overflow:hidden;"><img src="../assets/cameron-torabi.png" style="width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block;" alt="Cameron Torabi"></div>
+        <div>
+          <div style="font:700 24px/1 'Lato';color:#fff;">Cameron Torabi</div>
+          <div style="font:400 15px/1 'Lato';color:#cd4c4e;margin-top:7px;letter-spacing:.02em;">Broker / Principal</div>
+        </div>
+      </div>
+      <img src="../assets/mcg-logo-redwhite.png" style="height:30px;display:block;margin:22px 0 4px;" alt="Mason Capital Group">
+      <div style="height:1px;background:rgba(255,255,255,.12);margin:18px 0 4px;"></div>
+      <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><a href="mailto:info@masoncapitalgroup.com">info@masoncapitalgroup.com</a></div>
+      <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.33 1.85.56 2.81.69A2 2 0 0 1 22 16.92z"/></svg><span style="font-variant-numeric:tabular-nums;">479-925-3333</span></div>
+      <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></svg><a href="https://www.masoncapitalgroup.com" target="_blank" rel="noopener noreferrer">www.masoncapitalgroup.com</a></div>
+      <div style="font:300 13px/1 'Lato';color:rgba(255,255,255,.4);margin-top:18px;">License #PB00056565</div>
+    </div>
+  </div>
+
+  <!-- disclaimer -->
+  <div style="position:absolute;left:96px;right:96px;bottom:66px;font:300 12px/1.5 'Lato';color:rgba(255,255,255,.38);max-width:760px;">Plans are conceptual and remain under the Prairie Creek Planned Unit Development (Benton County case 25-463), pending final municipal approval. Lot counts, sizes, road alignments and renderings are illustrative and subject to survey, engineering and entitlement. Owner / developer: Beaver Lake Partners LLC.</div>
+</div>
+</body>
+</html>

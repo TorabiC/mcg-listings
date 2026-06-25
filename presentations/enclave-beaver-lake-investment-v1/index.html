@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Offering — The Enclave at Beaver Lake | Mason Capital Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+/* ===== VARIABLES ===== */
+:root {
+  --navy: #16162a;
+  --navy-light: #1e1e3a;
+  --crimson: #ab012e;
+  --crimson-dark: #8a0125;
+  --gold: #c4a35a;
+  --gold-light: #d4b96e;
+  --white: #ffffff;
+  --off-white: #f8f6f3;
+  --gray-100: #f0ede8;
+  --gray-200: #e0dbd3;
+  --gray-300: #bbb5aa;
+  --gray-400: #a09888;
+  --gray-500: #6b6560;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-sans); color: var(--navy); background: var(--white); line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ===== UTILITY ===== */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 80px 0; }
+.section-alt { background: var(--off-white); }
+.section-dark { background: var(--navy); color: var(--white); }
+.text-gold { color: var(--gold); }
+.text-crimson { color: var(--crimson); }
+.text-center { text-align: center; }
+.accent-line { width: 80px; height: 3px; background: var(--crimson); }
+.accent-line-gold { width: 80px; height: 3px; background: var(--gold); }
+.accent-line-center { margin-left: auto; margin-right: auto; }
+.label { font-family: var(--font-sans); font-size: 11px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; }
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-32 { margin-bottom: 32px; }
+.mb-48 { margin-bottom: 48px; }
+.mb-64 { margin-bottom: 64px; }
+
+/* ===== NAVIGATION ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(22,22,42,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(196,163,90,0.2);
+  padding: 0 24px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--white); }
+.nav-logo span { font-family: var(--font-sans); font-size: 9px; color: var(--crimson); letter-spacing: 1px; display: block; font-weight: 400; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-300); transition: color 0.3s; }
+.nav-links a:hover { color: var(--gold); }
+.nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 24px; cursor: pointer; }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative; min-height: 100vh; display: flex; align-items: flex-end;
+  background: linear-gradient(180deg, rgba(22,22,42,0.82) 0%, rgba(22,22,42,0.50) 35%, rgba(22,22,42,0.45) 55%, rgba(22,22,42,0.65) 75%, rgba(22,22,42,0.95) 100%),
+    url('enclave-gate.jpg') center 60%/cover no-repeat;
+  padding: 120px 0 80px; overflow: hidden;
+}
+.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--crimson); z-index: 2; }
+.hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: var(--crimson); z-index: 2; }
+.hero .container { position: relative; z-index: 1; width: 100%; }
+.hero-badge {
+  display: inline-block; background: var(--crimson); color: var(--white);
+  font-size: 11px; font-weight: 900; letter-spacing: 5px; padding: 10px 24px;
+  margin-bottom: 32px;
+}
+.hero-title { font-family: var(--font-serif); font-size: clamp(40px, 7vw, 72px); font-weight: 900; color: var(--white); line-height: 1.05; margin-bottom: 12px; }
+.hero-address { font-size: clamp(16px, 3vw, 24px); color: var(--gold); letter-spacing: 4px; font-weight: 300; margin-bottom: 28px; }
+.hero-price { font-family: var(--font-serif); font-size: clamp(28px, 5vw, 48px); font-weight: 700; color: var(--white); margin-bottom: 32px; }
+.hero-stats { display: flex; flex-wrap: wrap; gap: 40px; margin-bottom: 24px; }
+.hero-stat .val { font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: var(--white); }
+.hero-stat .lbl { font-size: 10px; color: var(--gray-300); letter-spacing: 1.5px; margin-top: 2px; text-transform: uppercase; }
+.hero-tagline { font-size: 13px; color: var(--gray-400); letter-spacing: 1.5px; }
+.hero-logo { position: absolute; bottom: 0; right: 24px; text-align: right; }
+.hero-logo .name { font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: var(--white); opacity: 0.85; }
+.hero-logo .sub { font-size: 9px; color: var(--crimson); letter-spacing: 1px; }
+.hero-dev-logo { margin-bottom: 28px; }
+.hero-dev-logo img { height: 200px; width: auto; filter: drop-shadow(0 6px 20px rgba(196,163,90,0.6)) drop-shadow(0 2px 6px rgba(196,163,90,0.9)) drop-shadow(0 12px 40px rgba(0,0,0,0.5)); }
+@media (max-width: 600px) { .hero-dev-logo img { height: 140px; } }
+
+/* ===== SECTION HEADERS ===== */
+.section-header { margin-bottom: 48px; }
+.section-header .label { margin-bottom: 12px; display: block; }
+.section-header h2 { font-family: var(--font-serif); font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.15; margin-bottom: 16px; }
+.section-header p { font-size: 17px; color: var(--gray-500); max-width: 640px; line-height: 1.7; }
+.section-header.centered p { margin-left: auto; margin-right: auto; }
+
+/* ===== ABOUT BROKER SECTION ===== */
+.broker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.broker-img-wrap {
+  position: relative; border-radius: 4px; overflow: hidden;
+  background: var(--navy); aspect-ratio: 4/5;
+  display: flex; align-items: center; justify-content: center;
+}
+.broker-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.broker-img-wrap::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 6px; background: var(--crimson);
+}
+.broker-details h3 { font-family: var(--font-serif); font-size: 32px; font-weight: 700; margin-bottom: 4px; }
+.broker-details .title { color: var(--crimson); font-weight: 700; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+.broker-details p { font-size: 16px; color: var(--gray-500); line-height: 1.8; margin-bottom: 24px; }
+.broker-contact { display: flex; flex-direction: column; gap: 8px; }
+.broker-contact .item { font-size: 14px; color: var(--navy); }
+.broker-contact .item strong { color: var(--gold); margin-right: 8px; font-size: 11px; letter-spacing: 1px; }
+.credential-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.credential-badge {
+  background: var(--navy); color: var(--gold); font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; padding: 6px 14px; border-radius: 2px;
+}
+
+/* ===== VALUE PROPS ===== */
+.value-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.value-card {
+  background: var(--white); border: 1px solid var(--gray-200); padding: 40px 32px;
+  position: relative; transition: transform 0.3s, box-shadow 0.3s;
+}
+.value-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(22,22,42,0.1); }
+.value-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--crimson); }
+.value-card .icon { font-size: 36px; margin-bottom: 20px; }
+.value-card h4 { font-family: var(--font-serif); font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+.value-card p { font-size: 14px; color: var(--gray-500); line-height: 1.7; }
+
+/* ===== PROPERTY DETAILS ===== */
+.details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.detail-table { width: 100%; border-collapse: collapse; }
+.detail-table caption {
+  font-family: var(--font-serif); font-size: 20px; font-weight: 700;
+  text-align: left; padding-bottom: 16px; border-bottom: 2px solid var(--navy);
+  margin-bottom: 0; caption-side: top;
+}
+.detail-table tr { border-bottom: 1px solid var(--gray-200); }
+.detail-table td { padding: 12px 0; font-size: 14px; }
+.detail-table td:first-child { color: var(--gray-500); font-weight: 400; width: 45%; }
+.detail-table td:last-child { font-weight: 700; color: var(--navy); }
+
+/* ===== VALUATION SECTION ===== */
+.val-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.val-card {
+  text-align: center; padding: 40px 24px; position: relative;
+  border: 1px solid rgba(196,163,90,0.2); background: rgba(30,30,58,0.5);
+}
+.val-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: var(--gold); }
+.val-card .val-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray-300); margin-bottom: 12px; }
+.val-card .val-amount { font-family: var(--font-serif); font-size: 36px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.val-card .val-sub { font-size: 12px; color: var(--gray-400); }
+.val-card.featured { border-color: var(--gold); background: rgba(196,163,90,0.08); }
+.val-card.featured .val-amount { color: var(--gold); }
+
+/* ===== CHARTS ===== */
+.chart-container { background: var(--white); border: 1px solid var(--gray-200); border-radius: 4px; padding: 32px; margin-bottom: 32px; }
+.chart-container h4 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin-bottom: 24px; color: var(--navy); }
+.chart-container-dark { background: rgba(30,30,58,0.5); border: 1px solid rgba(196,163,90,0.2); border-radius: 4px; padding: 32px; margin-bottom: 32px; }
+.chart-container-dark h4 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin-bottom: 24px; color: var(--white); }
+.bar-chart { display: flex; align-items: flex-end; gap: 12px; height: 220px; padding-top: 20px; }
+.bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; height: 100%; justify-content: flex-end; }
+.bar { width: 100%; max-width: 60px; border-radius: 3px 3px 0 0; transition: height 0.8s ease-out; position: relative; }
+.bar-label { font-size: 10px; color: var(--gray-500); margin-top: 8px; text-align: center; letter-spacing: 0.5px; font-weight: 700; }
+.bar-value { font-size: 11px; font-weight: 700; margin-bottom: 4px; text-align: center; }
+.chart-legend { display: flex; gap: 24px; margin-top: 20px; justify-content: center; flex-wrap: wrap; }
+.chart-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--gray-500); }
+.chart-legend-dot { width: 12px; height: 12px; border-radius: 2px; }
+
+/* Donut chart */
+.donut-wrap { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+.donut-center { text-align: center; }
+.donut-center .big-num { font-family: var(--font-serif); font-size: 48px; font-weight: 900; color: var(--gold); }
+.donut-center .big-label { font-size: 12px; color: var(--gray-300); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+.donut-list { display: flex; flex-direction: column; gap: 12px; }
+.donut-list-item { display: flex; align-items: center; gap: 10px; }
+.donut-list-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+.donut-list-text { font-size: 13px; }
+.donut-list-text strong { display: block; color: var(--navy); }
+.donut-list-text span { color: var(--gray-500); font-size: 11px; }
+
+/* Value timeline */
+.timeline-chart { position: relative; height: 200px; border-left: 2px solid var(--gray-200); border-bottom: 2px solid var(--gray-200); margin: 20px 0 20px 60px; }
+.timeline-point { position: absolute; display: flex; flex-direction: column; align-items: center; }
+.timeline-dot { width: 16px; height: 16px; border-radius: 50%; border: 3px solid var(--white); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.timeline-val { font-size: 11px; font-weight: 700; white-space: nowrap; }
+.timeline-year { font-size: 10px; color: var(--gray-500); white-space: nowrap; }
+.y-label { position: absolute; left: -60px; font-size: 10px; color: var(--gray-400); }
+
+/* Gauge */
+.gauge-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.gauge-item { text-align: center; }
+.gauge-ring { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; position: relative; }
+.gauge-inner { width: 84px; height: 84px; border-radius: 50%; background: var(--off-white); display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.gauge-inner .g-val { font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1; }
+.gauge-inner .g-unit { font-size: 9px; color: var(--gray-500); letter-spacing: 1px; text-transform: uppercase; }
+.gauge-label { font-size: 12px; color: var(--gray-500); font-weight: 700; letter-spacing: 0.5px; }
+
+/* ===== SYNDICATION SECTION ===== */
+.synd-hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.synd-number { font-family: var(--font-serif); font-size: 96px; font-weight: 900; color: var(--crimson); line-height: 1; margin-bottom: 8px; }
+.synd-plus { font-family: var(--font-serif); font-size: 48px; color: var(--gold); vertical-align: super; }
+.synd-subtitle { font-size: 18px; color: var(--navy); font-weight: 700; letter-spacing: 1px; margin-bottom: 16px; }
+.synd-text { font-size: 15px; color: var(--gray-500); line-height: 1.7; margin-bottom: 24px; }
+.platform-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.platform-card {
+  background: var(--white); border: 1px solid var(--gray-200); padding: 20px 16px;
+  text-align: center; border-radius: 4px; transition: transform 0.3s, box-shadow 0.3s;
+}
+.platform-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(22,22,42,0.08); }
+.platform-card .p-name { font-family: var(--font-serif); font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.platform-card .p-type { font-size: 10px; color: var(--gray-400); letter-spacing: 1px; text-transform: uppercase; }
+.investor-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+.investor-card {
+  background: var(--navy); padding: 32px 24px; border-radius: 4px; text-align: center;
+  border-bottom: 3px solid var(--gold); position: relative;
+}
+.investor-card .ic-icon { font-size: 32px; margin-bottom: 16px; }
+.investor-card h4 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.investor-card p { font-size: 13px; color: var(--gray-300); line-height: 1.6; }
+
+/* ===== CMA TABLE ===== */
+.cma-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.cma-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+.cma-table thead { background: var(--navy); }
+.cma-table th {
+  color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; padding: 14px 16px; text-align: left;
+}
+.cma-table td { padding: 14px 16px; font-size: 13px; border-bottom: 1px solid var(--gray-200); }
+.cma-table tr:nth-child(even) { background: var(--off-white); }
+.cma-table .highlight { background: rgba(171,1,46,0.06); font-weight: 700; }
+.status-badge {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  padding: 3px 10px; border-radius: 2px; text-transform: uppercase;
+}
+.status-active { background: #e8f5e9; color: #2e7d32; }
+.status-closed { background: #e3f2fd; color: #1565c0; }
+.status-pending { background: #fff8e1; color: #f57f17; }
+
+/* ===== DIGITAL MARKETING PLATFORM ===== */
+.homes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.homes-feature-list { display: flex; flex-direction: column; gap: 28px; }
+.homes-feature { display: flex; gap: 20px; align-items: flex-start; }
+.homes-feature .feat-icon {
+  flex-shrink: 0; width: 48px; height: 48px; background: var(--crimson);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--white); border-radius: 2px;
+}
+.homes-feature h4 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.homes-feature p { font-size: 14px; color: var(--gray-500); line-height: 1.6; }
+.homes-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 40px; }
+.homes-stat {
+  text-align: center; padding: 28px 16px; background: var(--navy);
+  border-bottom: 3px solid var(--crimson);
+}
+.homes-stat .big { font-family: var(--font-serif); font-size: 32px; font-weight: 900; color: var(--gold); }
+.homes-stat .sm { font-size: 11px; color: var(--gray-300); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+
+.homes-visual {
+  background: var(--navy); border-radius: 4px; padding: 48px 32px;
+  text-align: center; position: relative; overflow: hidden;
+  min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.homes-visual::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--crimson), var(--gold)); }
+.homes-visual .homes-logo-text { font-family: var(--font-serif); font-size: 48px; font-weight: 900; color: var(--white); margin-bottom: 8px; }
+.homes-visual .homes-tagline { font-size: 14px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 32px; }
+.homes-visual .feature-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.feature-pill {
+  background: rgba(196,163,90,0.1); border: 1px solid rgba(196,163,90,0.3);
+  color: var(--gold-light); font-size: 11px; font-weight: 700;
+  letter-spacing: 1px; padding: 8px 16px; border-radius: 2px;
+}
+
+/* ===== MATTERPORT 3D TOUR SECTION ===== */
+.matterport-section { background: var(--navy); color: var(--white); position: relative; overflow: hidden; }
+.matterport-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--crimson), var(--gold), var(--crimson)); }
+.matterport-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
+.matterport-mockup {
+  position: relative; background: #0d0d1a; border-radius: 8px; overflow: hidden;
+  border: 2px solid rgba(196,163,90,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.mockup-topbar {
+  display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+  background: #111125; border-bottom: 1px solid rgba(196,163,90,0.15);
+}
+.mockup-dot { width: 8px; height: 8px; border-radius: 50%; }
+.mockup-dot.red { background: #ff5f57; }
+.mockup-dot.yellow { background: #febc2e; }
+.mockup-dot.green { background: #28c840; }
+.mockup-url {
+  margin-left: 12px; font-size: 10px; color: var(--gray-400);
+  background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 3px; flex: 1;
+}
+.mockup-body { padding: 24px; min-height: 320px; position: relative; }
+.mockup-3d-visual {
+  width: 100%; aspect-ratio: 16/10; background: linear-gradient(135deg, #1a1a3a 0%, #0d0d20 50%, #1a1a3a 100%);
+  border-radius: 4px; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.dollhouse-svg-wrap { width: 90%; height: 90%; display: flex; align-items: center; justify-content: center; }
+.dollhouse-svg-wrap svg { width: 100%; height: 100%; }
+.dollhouse-label {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase;
+  background: rgba(22,22,42,0.9); padding: 4px 16px; border-radius: 2px;
+}
+@keyframes matterport-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+}
+.mp-scan-line {
+  animation: matterport-pulse 2.5s ease-in-out infinite;
+}
+.mockup-nav-bar {
+  display: flex; gap: 0; margin-top: 12px; border-radius: 4px; overflow: hidden;
+  border: 1px solid rgba(196,163,90,0.2);
+}
+.mockup-nav-item {
+  flex: 1; text-align: center; padding: 8px 4px; font-size: 9px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; color: var(--gray-400);
+  background: rgba(22,22,42,0.8); border-right: 1px solid rgba(196,163,90,0.1);
+  transition: all 0.3s;
+}
+.mockup-nav-item.active {
+  background: var(--crimson); color: var(--white);
+}
+.mockup-nav-item:last-child { border-right: none; }
+
+.matterport-features { display: flex; flex-direction: column; gap: 24px; }
+.mp-feature {
+  display: flex; gap: 16px; align-items: flex-start; padding: 20px;
+  background: rgba(255,255,255,0.03); border-left: 3px solid var(--gold);
+  transition: background 0.3s;
+}
+.mp-feature:hover { background: rgba(255,255,255,0.06); }
+.mp-feature-icon {
+  font-size: 28px; flex-shrink: 0; width: 48px; text-align: center;
+}
+.mp-feature h4 { font-family: var(--font-serif); font-size: 17px; font-weight: 700; margin-bottom: 5px; }
+.mp-feature p { font-size: 13px; color: var(--gray-300); line-height: 1.6; }
+
+/* ===== REACH SECTION ===== */
+.reach-banner {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  background: var(--navy); border-radius: 4px; overflow: hidden;
+  border: 1px solid rgba(196,163,90,0.15); margin-bottom: 56px;
+}
+.reach-cell {
+  text-align: center; padding: 40px 24px; position: relative;
+  border-right: 1px solid rgba(196,163,90,0.1);
+}
+.reach-cell:last-child { border-right: none; }
+.reach-cell .reach-num {
+  font-family: var(--font-serif); font-size: clamp(36px, 5vw, 56px);
+  font-weight: 900; color: var(--gold); line-height: 1;
+}
+.reach-cell .reach-unit { font-size: 13px; color: var(--crimson); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+.reach-cell .reach-desc { font-size: 12px; color: var(--gray-400); margin-top: 8px; line-height: 1.5; }
+
+.target-marketing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.target-card {
+  background: var(--white); border: 1px solid var(--gray-200); padding: 36px 28px;
+  text-align: center; position: relative; overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.target-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+.target-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--crimson); }
+.target-card .tc-icon { font-size: 36px; margin-bottom: 16px; }
+.target-card h4 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.target-card p { font-size: 13px; color: var(--gray-500); line-height: 1.6; }
+
+/* ===== COSTAR NETWORK VISUAL ===== */
+.network-visual {
+  background: linear-gradient(135deg, var(--navy) 0%, #0d0d1a 100%);
+  border-radius: 4px; padding: 48px; margin-top: 56px; position: relative;
+  overflow: hidden; border: 1px solid rgba(196,163,90,0.1);
+}
+.network-visual::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  width: 400px; height: 400px; border-radius: 50%;
+  border: 1px solid rgba(196,163,90,0.06);
+  transform: translate(-50%, -50%);
+}
+.network-center { text-align: center; position: relative; z-index: 1; margin-bottom: 36px; }
+.network-center .nc-label { font-size: 10px; color: var(--crimson); letter-spacing: 4px; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+.network-center .nc-brand { font-family: var(--font-serif); font-size: 28px; font-weight: 900; color: var(--white); }
+.network-center .nc-sub { font-size: 13px; color: var(--gray-300); margin-top: 4px; }
+.network-brands {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+  position: relative; z-index: 1;
+}
+.network-brand-pill {
+  background: rgba(196,163,90,0.08); border: 1px solid rgba(196,163,90,0.2);
+  color: var(--gray-300); font-size: 11px; font-weight: 700;
+  letter-spacing: 1px; padding: 10px 20px; border-radius: 2px;
+  transition: all 0.3s;
+}
+.network-brand-pill:hover { background: rgba(196,163,90,0.15); color: var(--gold); }
+.network-brand-pill.highlight { background: var(--crimson); border-color: var(--crimson); color: var(--white); }
+
+/* ===== TAX HISTORY ===== */
+.tax-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.tax-table thead { background: var(--navy); }
+.tax-table th {
+  color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; padding: 12px 16px; text-align: left;
+}
+.tax-table td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--gray-200); }
+.tax-table tr:nth-child(even) { background: var(--off-white); }
+.growth-positive { color: #2e7d32; font-weight: 700; }
+
+/* ===== WHY MCG SECTION ===== */
+.why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+.why-card {
+  padding: 40px 36px; background: rgba(30,30,58,0.4); border-left: 3px solid var(--gold);
+  transition: background 0.3s;
+}
+.why-card:hover { background: rgba(30,30,58,0.6); }
+.why-card .num {
+  font-family: var(--font-serif); font-size: 36px; font-weight: 900;
+  color: var(--crimson); margin-bottom: 12px;
+}
+.why-card h4 { font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+.why-card p { font-size: 14px; color: var(--gray-300); line-height: 1.7; }
+
+/* ===== MARKET SNAPSHOT ===== */
+.snapshot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.snap-card {
+  text-align: center; padding: 32px 16px; border: 1px solid var(--gray-200);
+  background: var(--white);
+}
+.snap-card .snap-val { font-family: var(--font-serif); font-size: 28px; font-weight: 700; color: var(--navy); }
+.snap-card .snap-label { font-size: 11px; color: var(--gray-500); letter-spacing: 1px; text-transform: uppercase; margin-top: 6px; }
+.snap-card .snap-change { font-size: 12px; font-weight: 700; margin-top: 8px; }
+
+/* ===== CTA ===== */
+.cta-section {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  text-align: center; padding: 100px 24px; position: relative;
+}
+.cta-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--crimson); }
+.cta-section h2 { font-family: var(--font-serif); font-size: clamp(28px, 5vw, 48px); font-weight: 700; color: var(--white); margin-bottom: 16px; }
+.cta-section p { font-size: 18px; color: var(--gray-300); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-block; padding: 16px 40px; font-size: 12px; font-weight: 900;
+  letter-spacing: 3px; text-transform: uppercase; transition: all 0.3s;
+  cursor: pointer; border: none;
+}
+.btn-crimson { background: var(--crimson); color: var(--white); }
+.btn-crimson:hover { background: var(--crimson-dark); }
+.btn-outline { background: transparent; color: var(--gold); border: 2px solid var(--gold); }
+.btn-outline:hover { background: var(--gold); color: var(--navy); }
+
+/* ===== FOOTER ===== */
+.footer {
+  background: var(--navy); color: var(--gray-400); text-align: center;
+  padding: 40px 24px; border-top: 1px solid rgba(196,163,90,0.15);
+}
+.footer .foot-logo { font-family: var(--font-serif); font-size: 20px; color: var(--white); margin-bottom: 4px; }
+.footer .foot-sub { font-size: 10px; color: var(--crimson); letter-spacing: 1px; margin-bottom: 16px; }
+.footer p { font-size: 12px; line-height: 1.6; }
+.footer .disclaimer { font-size: 10px; color: var(--gray-500); margin-top: 16px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+/* ===== TRANSLATE BUTTON ===== */
+.translate-btn {
+  position: fixed; bottom: 24px; right: 24px; z-index: 200;
+  width: 56px; height: 56px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.9);
+  cursor: pointer; box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+  transition: transform 0.3s, box-shadow 0.3s;
+  background: none; padding: 0; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.translate-btn:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+.translate-btn svg { width: 100%; height: 100%; display: block; }
+
+/* ===== FARSI RTL MODE ===== */
+
+/* ===== RTL/FARSI SUPPORT ===== */
+
+/* ===== WEBSITE & SIGNAGE ===== */
+.web-global-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.web-feature-list { display: flex; flex-direction: column; gap: 20px; }
+.web-feature { display: flex; gap: 16px; align-items: flex-start; }
+.web-feature-icon {
+  flex-shrink: 0; width: 44px; height: 44px; background: var(--crimson); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+.web-feature h4 { font-family: var(--font-serif); font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.web-feature p { font-size: 13px; color: var(--gray-500); line-height: 1.6; }
+.sign-visual {
+  background: linear-gradient(135deg, var(--navy) 0%, #0d0d1a 100%); border-radius: 8px;
+  padding: 48px 32px; text-align: center; border: 2px solid rgba(196,163,90,0.2);
+  position: relative; overflow: hidden;
+}
+.sign-visual::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--crimson), var(--gold)); }
+.sign-mockup {
+  background: var(--white); border-radius: 4px; padding: 24px; display: inline-block;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3); position: relative; margin-bottom: 20px;
+}
+.qr-placeholder {
+  width: 80px; height: 80px; background: var(--navy); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;
+}
+
+/* ===== ANIMATIONS ===== */
+.animate { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.animate.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: var(--navy); padding: 24px; gap: 16px; }
+  .nav-toggle { display: block; }
+  .broker-grid, .details-grid, .homes-grid, .synd-hero-grid, .matterport-grid, .web-global-grid { grid-template-columns: 1fr; }
+  .value-grid { grid-template-columns: 1fr 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .val-cards { grid-template-columns: 1fr; }
+  .snapshot-grid { grid-template-columns: 1fr 1fr; }
+  .platform-grid { grid-template-columns: 1fr 1fr; }
+  .investor-cards { grid-template-columns: 1fr; }
+  .gauge-row { grid-template-columns: 1fr; }
+  .reach-banner { grid-template-columns: 1fr; }
+  .reach-cell { border-right: none; border-bottom: 1px solid rgba(196,163,90,0.1); }
+  .target-marketing-grid { grid-template-columns: 1fr; }
+  .hero-logo { position: static; text-align: left; margin-top: 32px; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 16px; }
+  .section { padding: 56px 0; }
+  .value-grid { grid-template-columns: 1fr; }
+  .snapshot-grid { grid-template-columns: 1fr 1fr; }
+  .homes-stats-row { grid-template-columns: 1fr 1fr; }
+  .hero-stats { gap: 24px; }
+  .platform-grid { grid-template-columns: 1fr 1fr; }
+  .bar-chart { height: 180px; gap: 6px; }
+  .bar-label { font-size: 9px; }
+  .bar-value { font-size: 10px; }
+  .network-visual { padding: 28px 16px; }
+  .network-brands { gap: 6px; }
+  .network-brand-pill { font-size: 10px; padding: 4px 10px; }
+  .hero-title { margin-bottom: 8px; }
+  .hero-price { margin-bottom: 24px; }
+  .hero-stat .val { font-size: 16px; }
+  .hero-badge { font-size: 10px; padding: 8px 16px; letter-spacing: 3px; }
+  .section-header h2 { font-size: clamp(24px, 6vw, 36px); }
+  .section-header p { font-size: 15px; }
+  .broker-details h2 { font-size: 28px; }
+  .broker-details p { font-size: 14px; }
+  .cma-table-wrap { margin-left: -16px; margin-right: -16px; padding: 0 16px; }
+  .val-card { padding: 24px 20px; }
+  .val-amount { font-size: clamp(24px, 5vw, 32px); }
+  .reach-cell { padding: 20px 16px; }
+  .reach-num { font-size: 36px; }
+  .sign-visual { padding: 32px 20px; }
+  .cta-section h2 { font-size: clamp(24px, 6vw, 36px); }
+}
+@media (max-width: 380px) {
+  .hero-stats { gap: 16px; }
+  .hero-stat .val { font-size: 14px; }
+  .snapshot-grid { grid-template-columns: 1fr; }
+  .homes-stats-row { grid-template-columns: 1fr; }
+  .platform-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+  html { font-size: 11px; }
+  body { background: white; }
+  .nav, .nav-toggle { display: none !important; }
+  .hero { min-height: auto; padding: 60px 0 48px; background: var(--navy) !important; page-break-after: always; }
+  .hero::before, .hero::after { background: var(--crimson) !important; }
+  .section { padding: 40px 0; }
+  .section-dark { background: var(--navy) !important; }
+  .section-alt { background: var(--off-white) !important; }
+  .value-card, .why-card, .snap-card, .platform-card, .investor-card, .target-card, .mp-feature { break-inside: avoid; }
+  .matterport-section { background: var(--navy) !important; }
+  .animate { opacity: 1 !important; transform: none !important; }
+  .cma-table-wrap { overflow: visible; }
+  .cma-table { min-width: unset; }
+  a[href]::after { content: none !important; }
+}
+
+/* Strategy cards responsive */
+@media (max-width: 768px) {
+  #valuation .container > div[style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo" style="display:flex;align-items:center;gap:10px;"><a href="https://www.masoncapitalgroup.com" target="_blank" style="display:inline-flex;"><img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group" style="height:36px;width:auto;"></a></div>
+  <div class="nav-links" id="navLinks">
+    <a href="#property">Overview</a>
+    <a href="#opportunity">Opportunity</a>
+    <a href="#details">The Asset</a>
+    <a href="#valuation">The Numbers</a>
+    <a href="#cma">Comps</a>
+    <a href="#contact">Inquire</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">&#9776;</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="property">
+  <div class="container">
+    <div class="hero-dev-logo"><img src="enclave-logo.png" alt="The Enclave at Beaver Lake"></div>
+    <div class="hero-badge">INVESTMENT OPPORTUNITY</div>
+    <div class="hero-title">The Enclave at<br>Beaver Lake</div>
+    <div class="hero-address">ROGERS, ARKANSAS</div>
+    <div style="width:80px;height:3px;background:var(--crimson);margin-bottom:28px"></div>
+    <div class="hero-price">$3,800,000</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="val">42.54 Acres</div><div class="lbl">Total Acreage</div></div>
+      <div class="hero-stat"><div class="val">19 Homesites</div><div class="lbl">Planned Lots</div></div>
+      <div class="hero-stat"><div class="val">$250K&ndash;$400K</div><div class="lbl">Per Lot (Developed)</div></div>
+      <div class="hero-stat"><div class="val">Gated PUD</div><div class="lbl">Development Type</div></div>
+    </div>
+    <div class="hero-tagline">Approved 19-Lot Gated PUD &nbsp;&bull;&nbsp; Fully Entitled &nbsp;&bull;&nbsp; Benton County, Arkansas</div>
+    <div class="hero-logo">
+      <a href="https://www.masoncapitalgroup.com" target="_blank" style="display:inline-flex;"><img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group" style="height:48px;width:auto;"></a>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT SUMMARY -->
+<section class="section section-alt" id="summary">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-crimson">Investment Summary</span>
+      <h2>The Opportunity at a Glance</h2>
+      <div class="accent-line accent-line-center mb-16" style="margin-top:12px"></div>
+    </div>
+    <div class="snapshot-grid">
+      <div class="snap-card"><div class="snap-val">$3.8M</div><div class="snap-label">Offering Price (Wholesale)</div><div class="snap-change" style="color:var(--navy);">$89,365 / acre</div></div>
+      <div class="snap-card"><div class="snap-val">42.54 ac</div><div class="snap-label">Entitled Gated PUD</div><div class="snap-change" style="color:var(--navy);">Benton Co. #25-463</div></div>
+      <div class="snap-card"><div class="snap-val">19 Lots</div><div class="snap-label">Engineered Homesites</div><div class="snap-change" style="color:var(--navy);">1.00&ndash;5.19 ac each</div></div>
+      <div class="snap-card"><div class="snap-val">$4.25&ndash;5.2M</div><div class="snap-label">Projected Lot Sell-Out</div><div class="snap-change growth-positive"><svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:3px"><path d="M6 2l4 5H2z" fill="#2e7d32"/></svg>Gross proceeds</div></div>
+    </div>
+    <p style="text-align:center;max-width:760px;margin:32px auto 0;color:var(--gray-500);font-size:14px;">A fully entitled, development-ready lake community above Beaver Lake in Rogers, Arkansas &mdash; offered exclusively to qualified developers, builders, and investors.</p>
+  </div>
+</section>
+
+<!-- YOUR BROKER -->
+<section class="section" id="broker">
+  <div class="container">
+    <div class="broker-grid">
+      <div class="broker-img-wrap">
+        <img src="broker-headshot.jpg" alt="Cameron Torabi — Principal Broker, Mason Capital Group">
+      </div>
+      <div class="broker-details">
+        <div class="section-header">
+          <span class="label text-crimson">Exclusively Represented By</span>
+          <h2>Cameron Torabi</h2>
+        </div>
+        <div class="title">Principal Broker</div>
+        <p>The Enclave at Beaver Lake is offered exclusively through Mason Capital Group &mdash; a rare opportunity to acquire a fully entitled, development-ready lake community in one of the country's fastest-growing corridors. Approved civil plans, 19 engineered homesites, gated infrastructure, and a PUD designation are already in place. The hard, time-consuming entitlement work is done.</p>
+        <p>With over 30 years in Northwest Arkansas real estate and $2.4 billion in completed transactions, we represent this asset to qualified developers, builders, and investment groups &mdash; and provide the diligence materials, site access, and deal structuring to move from interest to close.</p>
+        <div class="broker-contact">
+          <div class="item"><strong>PHONE</strong> (479) 925-3333</div>
+          <div class="item"><strong>EMAIL</strong> Info@MasonCapitalGroup.com</div>
+          <div class="item"><strong>WEB</strong> www.MasonCapitalGroup.com</div>
+        </div>
+        <div class="credential-badges">
+          <span class="credential-badge">AR RE License #PB00056565</span>
+          <span class="credential-badge">Principal Broker</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY MASON CAPITAL GROUP — VALUE PROPOSITIONS -->
+<section class="section" id="opportunity" style="position:relative;overflow:hidden;">
+  <div id="oppBg" style="position:absolute;left:0;top:-12%;width:100%;height:128%;background:url('opportunity-bg.jpg') center/cover no-repeat;z-index:0;will-change:transform;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(rgba(16,18,28,0.68) 0%, rgba(16,18,28,0.46) 38%, rgba(16,18,28,0.34) 100%);z-index:0;"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-gold">The Opportunity</span>
+      <h2 style="color:var(--white)">An Entitled, De-Risked<br>Lake Development Opportunity</h2>
+      <div class="accent-line accent-line-center mb-24" style="margin-top:16px"></div>
+      <p style="color:rgba(255,255,255,0.92)">The Enclave is not raw land. It is a fully entitled, engineered, 19-lot gated community above Beaver Lake &mdash; acquired development-ready, with proven lakeside demand and multiple paths to return.</p>
+    </div>
+    <div class="value-grid">
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="32" height="28" rx="3" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M10 26V18" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M18 26V14" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M26 26V10" stroke="#ab012e" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="16" r="2" fill="#ab012e"/><circle cx="18" cy="12" r="2" fill="#ab012e"/><circle cx="26" cy="8" r="2" fill="#ab012e"/><line x1="10" y1="16" x2="18" y2="12" stroke="#ab012e" stroke-width="1.5"/><line x1="18" y1="12" x2="26" y2="8" stroke="#ab012e" stroke-width="1.5"/></svg></div>
+        <h4>Fully Entitled &amp; De-Risked</h4>
+        <p>Approved Prairie Creek PUD (Benton Co. Case #25-463), 19 engineered homesites, completed civil plans and infrastructure engineering. The entitlement risk and timeline are already behind you &mdash; acquire a development-ready asset, not raw acreage.</p>
+      </div>
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="15" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="6" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="2" fill="#ab012e"/><line x1="18" y1="3" x2="18" y2="9" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="27" x2="18" y2="33" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="9" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="27" y1="18" x2="33" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h4>Proven Lakeside Demand</h4>
+        <p>Comparable Beaver Lake homesites are trading at $250K&ndash;$400K each at roughly 90% of list. The absorption case is established by recent market activity, not projected &mdash; finished lots in this corridor sell.</p>
+      </div>
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="10" r="5" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="8" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="28" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><path d="M18 15V20" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><path d="M18 20L8 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/><path d="M18 20L28 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h4>Northwest Arkansas Growth</h4>
+        <p>Minutes from Bentonville and Rogers &mdash; anchored by Walmart's global headquarters, sustained corporate relocation, and one of the nation's fastest-growing regional economies. The demand drivers here are structural, not cyclical.</p>
+      </div>
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 4L22 14H32L24 20L27 31L18 24L9 31L12 20L4 14H14L18 4Z" stroke="#c4a35a" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M14 18L17 21L23 15" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h4>Scarcity of Large Lake Parcels</h4>
+        <p>A 42.5-acre contiguous, gated, lake-proximate parcel is a rare acquisition in a supply-constrained corridor. Assembling comparable acreage near Beaver Lake is difficult and costly &mdash; the basis here is defensible.</p>
+      </div>
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="8" width="28" height="24" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M4 16H32" stroke="#ab012e" stroke-width="2"/><path d="M18 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M11 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M25 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="22" r="2" fill="#ab012e"/><circle cx="18" cy="22" r="2" fill="#c4a35a"/><circle cx="24" cy="22" r="2" fill="#ab012e"/><circle cx="12" cy="28" r="2" fill="#c4a35a"/><circle cx="18" cy="28" r="2" fill="#ab012e"/><path d="M9 12L13 12" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h4>Multiple Exit Paths</h4>
+        <p>Acquire and hold, build and sell 19 finished lots (projected $4.25M&ndash;$5.2M gross), or wholesale the entitled package. The asset supports developer, builder, and investor strategies &mdash; flexibility that protects the downside.</p>
+      </div>
+      <div class="value-card animate">
+        <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 28L12 20L18 24L26 14L32 8" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 8H32V14" stroke="#ab012e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="20" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="18" cy="24" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="26" cy="14" r="3" fill="#c4a35a" opacity="0.3"/><line x1="4" y1="32" x2="32" y2="32" stroke="#16162a" stroke-width="1.5" opacity="0.3"/></svg></div>
+        <h4>Diligence-Ready Offering</h4>
+        <p>Civil plans, lot matrix, comparable analysis, tax history, and site detail are assembled and available to qualified parties. Represented by a Principal Broker with 30+ years and $2.4B in Northwest Arkansas transactions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROPERTY DETAILS -->
+<section class="section" id="details">
+  <div class="container">
+    <div class="section-header mb-48">
+      <span class="label text-crimson">Property Details</span>
+      <h2>The Enclave at Beaver Lake</h2>
+      <div class="accent-line mb-16" style="margin-top:12px"></div>
+      <p>An ultra-luxury gated residential development offering 19 exclusive homesites within one of Northwest Arkansas's most coveted lakeside settings. Minutes from downtown Rogers, adjacent to Prairie Park, and commanding proximity to Beaver Lake — this is not a subdivision. It is a private enclave for discerning buyers.</p>
+    </div>
+    <div class="details-grid">
+      <table class="detail-table">
+        <caption>Property Facts</caption>
+        <tr><td>Property Type</td><td>Lot / Land &mdash; Residential PUD</td></tr>
+        <tr><td>Total Acreage</td><td>42.54 acres (42.55 ac per civil plans)</td></tr>
+        <tr><td>Planned Lots</td><td>19 homesites (1.00 &ndash; 5.19 acres each)</td></tr>
+        <tr><td>Lot Description</td><td>Sloped, Wooded</td></tr>
+        <tr><td>Address</td><td>Apx. 9105 N Park Road, Rogers, AR 72756</td></tr>
+        <tr><td>MLS #</td><td>1084951</td></tr>
+        <tr><td>Offering Price</td><td>$3,800,000 &mdash; Wholesale, As-Is</td></tr>
+        <tr><td>Flood Zone</td><td>FEMA Zone X (Not in flood zone)</td></tr>
+      </table>
+      <table class="detail-table">
+        <caption>Development &amp; Infrastructure</caption>
+        <tr><td>PUD Name</td><td>Prairie Creek PUD (Benton Co. Case #25-463)</td></tr>
+        <tr><td>Developer</td><td>Beaver Lake Partners LLC</td></tr>
+        <tr><td>Limits of Disturbance</td><td>5.94 acres</td></tr>
+        <tr><td>Community Space &amp; ROW</td><td>5.11 acres</td></tr>
+        <tr><td>Water</td><td>Rogers Water Utility</td></tr>
+        <tr><td>Sewer</td><td>Septic (AR Dept of Health approved)</td></tr>
+        <tr><td>Access</td><td>2-way asphalt streets, siren-activated 20&rsquo; gate</td></tr>
+        <tr><td>County</td><td>Benton County, Arkansas</td></tr>
+      </table>
+    </div>
+
+    <!-- Property Detail Gauges -->
+    <div style="margin-top:48px">
+      <div class="gauge-row">
+        <div class="gauge-item animate">
+          <div class="gauge-ring" style="background:conic-gradient(var(--crimson) 0deg, var(--crimson) 310deg, var(--gray-200) 310deg);">
+            <div class="gauge-inner"><div class="g-val">42.54</div><div class="g-unit">ACRES</div></div>
+          </div>
+          <div class="gauge-label">Total Acreage</div>
+        </div>
+        <div class="gauge-item animate">
+          <div class="gauge-ring" style="background:conic-gradient(var(--gold) 0deg, var(--gold) 250deg, var(--gray-200) 250deg);">
+            <div class="gauge-inner"><div class="g-val">19</div><div class="g-unit">LOTS</div></div>
+          </div>
+          <div class="gauge-label">Planned Homesites</div>
+        </div>
+        <div class="gauge-item animate">
+          <div class="gauge-ring" style="background:conic-gradient(var(--navy) 0deg, var(--navy) 180deg, var(--gray-200) 180deg);">
+            <div class="gauge-inner"><div class="g-val">5.94</div><div class="g-unit">AC DISTURB</div></div>
+          </div>
+          <div class="gauge-label">Limits of Disturbance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTITLEMENT & SITE READINESS -->
+<section class="section section-dark" id="entitlement">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-gold">De-Risked &amp; Development-Ready</span>
+      <h2 style="color:var(--white)">Entitlement &amp; Site Readiness</h2>
+      <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
+      <p style="color:var(--gray-300)">The work that typically takes a developer years and significant capital is already complete. The Enclave transfers as an entitled, engineered, development-ready asset.</p>
+    </div>
+    <div class="value-grid">
+      <div class="value-card animate" style="background:rgba(255,255,255,0.04);border-color:rgba(196,163,90,0.25);">
+        <h4 style="color:var(--white)">PUD Approved</h4>
+        <p style="color:var(--gray-300)">Prairie Creek PUD designation in place &mdash; Benton County Case #25-463. Density and gated configuration approved.</p>
+      </div>
+      <div class="value-card animate" style="background:rgba(255,255,255,0.04);border-color:rgba(196,163,90,0.25);">
+        <h4 style="color:var(--white)">Civil Plans Complete</h4>
+        <p style="color:var(--gray-300)">Engineered civil plans for 19 homesites, roads, and gated entry &mdash; ready for construction permitting.</p>
+      </div>
+      <div class="value-card animate" style="background:rgba(255,255,255,0.04);border-color:rgba(196,163,90,0.25);">
+        <h4 style="color:var(--white)">Infrastructure Engineered</h4>
+        <p style="color:var(--gray-300)">Water via Rogers Water Utility, septic approved by the AR Dept. of Health, 2-way asphalt streets, and a siren-activated 20&rsquo; gate.</p>
+      </div>
+      <div class="value-card animate" style="background:rgba(255,255,255,0.04);border-color:rgba(196,163,90,0.25);">
+        <h4 style="color:var(--white)">Buildable &amp; Low-Risk</h4>
+        <p style="color:var(--gray-300)">5.94-acre limits of disturbance across 42.54 acres, FEMA Zone X (not in a flood zone), sloped and wooded lake-view terrain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIGITAL OFFERING MEMORANDUM (FLIP BOOK) -->
+<section class="section" id="digital-om">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-crimson">Digital Offering Memorandum</span>
+      <h2>Explore the Full Vision</h2>
+      <div class="accent-line accent-line-center mb-16" style="margin-top:12px"></div>
+      <p>Page through the complete digital offering memorandum for The Enclave at Beaver Lake &mdash; the vision, architecture, site plan, amenities, and the surrounding Northwest Arkansas market. Use the on-screen arrows or your keyboard arrow keys to turn each page.</p>
+    </div>
+    <div class="om-flipbook-frame" style="position:relative;width:100%;max-width:1180px;margin:0 auto;border:1px solid rgba(196,163,90,0.35);border-radius:14px;overflow:hidden;background:#0a0a18;box-shadow:0 18px 50px rgba(8,8,22,0.45);">
+      <iframe src="./flipbook/?v=4" title="The Enclave at Beaver Lake &mdash; Digital Offering Memorandum" loading="lazy" allowfullscreen style="display:block;width:100%;height:min(78vh,720px);min-height:440px;border:0;"></iframe>
+    </div>
+    <div style="text-align:center;margin-top:18px;">
+      <a href="./flipbook/" target="_blank" rel="noopener" style="display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--crimson);text-decoration:none;border-bottom:1px solid var(--crimson);padding-bottom:2px;">Open the OM full-screen &nbsp;&#8599;</a>
+    </div>
+  </div>
+</section>
+
+<!-- VALUATION -->
+<section class="section section-dark" id="valuation">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-gold">The Numbers</span>
+      <h2 style="color:var(--white)">Acquisition Basis &amp; Return Scenarios</h2>
+      <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
+      <p style="color:var(--gray-300)">The asset is offered fully entitled &mdash; approved civil plans, a gated PUD with 19 homesites, and completed infrastructure engineering. Two paths to return present themselves, each with a distinct risk and profile.</p>
+    </div>
+
+    <!-- Two Strategy Cards -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;">
+      <!-- STRATEGY A -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(196,163,90,0.3);border-radius:12px;padding:40px 32px;text-align:center;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--gold);"></div>
+        <div style="font-size:10px;font-weight:900;letter-spacing:4px;color:var(--gold);margin-bottom:12px;">STRATEGY A</div>
+        <div style="font-family:var(--font-serif);font-size:18px;font-weight:700;color:var(--white);margin-bottom:8px;">Wholesale &mdash; As-Is</div>
+        <div style="font-family:var(--font-serif);font-size:42px;font-weight:900;color:var(--gold);margin-bottom:12px;">$3,800,000</div>
+        <div style="width:60px;height:2px;background:var(--crimson);margin:0 auto 16px;"></div>
+        <p style="color:var(--gray-300);font-size:13px;line-height:1.7;">Sell the entire 42.54-acre PUD as one package &mdash; approved plans, 19 lots, gated entry, and entitlements included. Targets developers and investment groups drawn to Beaver Lake&rsquo;s proximity, direct road access, and the sustained demand in this corridor.</p>
+        <div style="margin-top:20px;display:flex;justify-content:center;gap:24px;">
+          <div><div style="font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--white);">$89,365</div><div style="font-size:10px;color:var(--gray-400);letter-spacing:1px;">PER ACRE</div></div>
+          <div><div style="font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--white);">$200,000</div><div style="font-size:10px;color:var(--gray-400);letter-spacing:1px;">PER LOT</div></div>
+        </div>
+      </div>
+      <!-- STRATEGY B -->
+      <div style="background:rgba(255,255,255,0.04);border:2px solid var(--gold);border-radius:12px;padding:40px 32px;text-align:center;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(196,163,90,0.15);">
+        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--crimson);"></div>
+        <div style="font-size:10px;font-weight:900;letter-spacing:4px;color:var(--crimson);margin-bottom:12px;">STRATEGY B</div>
+        <div style="font-family:var(--font-serif);font-size:18px;font-weight:700;color:var(--white);margin-bottom:8px;">Develop &amp; Subdivide</div>
+        <div style="font-family:var(--font-serif);font-size:42px;font-weight:900;color:var(--white);margin-bottom:4px;">$250K &ndash; $400K</div>
+        <div style="font-size:12px;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:12px;">PER LOT</div>
+        <div style="width:60px;height:2px;background:var(--crimson);margin:0 auto 16px;"></div>
+        <p style="color:var(--gray-300);font-size:13px;line-height:1.7;">Build the infrastructure &mdash; roads, gated entry, amenities &mdash; and market individual homesites. Smaller lots start at $250K; larger premium lots (3&ndash;5+ acres) command up to $400K based on lake proximity and topography.</p>
+        <div style="margin-top:20px;padding:16px;background:rgba(196,163,90,0.1);border-radius:8px;">
+          <div style="font-size:10px;font-weight:900;letter-spacing:3px;color:var(--gold);margin-bottom:6px;">PROJECTED GROSS REVENUE</div>
+          <div style="font-family:var(--font-serif);font-size:28px;font-weight:900;color:var(--gold);">$4,250,000 &ndash; $5,200,000</div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">19 lots &times; $250K&ndash;$400K each</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Context Cards Row -->
+    <div class="val-cards mb-48">
+      <div class="val-card">
+        <div class="val-label">Previous Listing (2018)</div>
+        <div class="val-amount">$995,000</div>
+        <div class="val-sub">Raw land &mdash; no entitlements<br>Expired 4/15/2019</div>
+      </div>
+      <div class="val-card">
+        <div class="val-label">RPR CMA (Raw Land)</div>
+        <div class="val-amount">$221,689</div>
+        <div class="val-sub">Range: $30K &ndash; $1M<br>Does not reflect PUD value</div>
+      </div>
+      <div class="val-card featured">
+        <div class="val-label">Offering Price &mdash; Wholesale</div>
+        <div class="val-amount">$3,800,000</div>
+        <div class="val-sub">Approved PUD + civil plans<br>19-lot gated development</div>
+      </div>
+    </div>
+
+    <!-- Value Comparison Chart -->
+    <div class="chart-container-dark animate">
+      <h4>Valuation Comparison &mdash; Land Market Position</h4>
+      <div class="bar-chart">
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--gray-300)">$95K</div>
+          <div class="bar" style="height:2.5%; background: var(--gray-400);"></div>
+          <div class="bar-label" style="color:var(--gray-300)">Beaver<br><span style="font-size:9px;font-weight:400">Shores (Sold)</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--gray-300)">$222K</div>
+          <div class="bar" style="height:5.8%; background: var(--gray-300);"></div>
+          <div class="bar-label" style="color:var(--gray-300)">RPR<br><span style="font-size:9px;font-weight:400">CMA (Raw)</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--gray-300)">$375K</div>
+          <div class="bar" style="height:9.9%; background:linear-gradient(180deg, #5a8fd4, #3a6bb0);"></div>
+          <div class="bar-label" style="color:var(--gray-300)">Kindred<br><span style="font-size:9px;font-weight:400">Hollow (Sold)</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--gray-400)">$995K</div>
+          <div class="bar" style="height:26.2%; background:var(--gray-500);opacity:0.5;border:1px dashed var(--gray-400);"></div>
+          <div class="bar-label" style="color:var(--gray-400)">Prev. List<br><span style="font-size:9px;font-weight:400">(2018, Expired)</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--crimson);font-weight:900">$3.8M</div>
+          <div class="bar" style="height:100%; background:linear-gradient(180deg, #d4304f, var(--crimson)); border:2px solid var(--gold);"></div>
+          <div class="bar-label" style="color:var(--crimson);font-weight:900">WHOLESALE<br><span style="font-size:9px;font-weight:400">As-Is (MCG)</span></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--gold);font-weight:900">$4.25M+</div>
+          <div class="bar" style="height:100%; background:linear-gradient(180deg, var(--gold-light), var(--gold)); border:2px solid var(--white);"></div>
+          <div class="bar-label" style="color:var(--gold);font-weight:900">DEVELOP<br><span style="font-size:9px;font-weight:400">Lot Sales (Low)</span></div>
+        </div>
+      </div>
+      <div class="chart-legend">
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--gray-400)"></div>Sold Comps / Raw CMA</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--gray-500)"></div>Previous Listing</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--crimson)"></div>Wholesale As-Is</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--gold)"></div>Develop &amp; Subdivide</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;">
+      <p style="color:var(--gray-300);font-size:14px;max-width:750px;margin:0 auto;">
+        <strong style="color:var(--gold)">The basis:</strong> Entitled and engineered &mdash; approved civil plans (Case #25-463), a gated PUD with 19 homesites, and direct proximity to Beaver Lake with road access. Comparable lakeside lots trade at $250K&ndash;$400K each. <strong style="color:var(--white)">Acquiring the entitled package at $3.8M positions a developer below projected gross proceeds of $4.25M&ndash;$5.2M from full lot disposition.</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CMA / COMPARABLES -->
+<section class="section section-alt" id="cma">
+  <div class="container">
+    <div class="section-header mb-48">
+      <span class="label text-crimson">Proof of Demand</span>
+      <h2>What the Market Is Paying</h2>
+      <div class="accent-line mb-16" style="margin-top:12px"></div>
+      <p>Nine representative land sales and active listings in the Rogers/Beaver Lake corridor frame the demand and pricing case for finished homesites at The Enclave. Recent sold comps are clearing near list &mdash; evidence that lots in this market absorb.</p>
+    </div>
+
+    <!-- AERIAL COMP MAP -->
+    <div class="chart-container animate mb-48" style="padding:0;overflow:hidden;border-radius:12px;">
+      <div style="padding:20px 24px 12px;background:var(--white);">
+        <h4 style="margin:0;">Comparable Properties &mdash; Aerial Map</h4>
+        <p style="font-size:12px;color:var(--gray-500);margin-top:4px;">
+          <span style="display:inline-block;width:10px;height:10px;background:var(--crimson);border-radius:50%;vertical-align:middle;margin-right:4px;"></span> Subject &nbsp;&nbsp;
+          <span style="display:inline-block;width:10px;height:10px;background:#2e7d32;border-radius:50%;vertical-align:middle;margin-right:4px;"></span> Sold &nbsp;&nbsp;
+          <span style="display:inline-block;width:10px;height:10px;background:#1565c0;border-radius:50%;vertical-align:middle;margin-right:4px;"></span> Active
+        </p>
+      </div>
+      <div id="compMap" style="width:100%;height:480px;"></div>
+    </div>
+
+    <!-- Comp Price Comparison Chart -->
+    <div class="chart-container animate mb-48">
+      <h4>Comparable Land Parcels &mdash; Price per Acre</h4>
+      <div class="bar-chart" style="height:200px">
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$26K</div>
+          <div class="bar" style="height:17%; background:var(--navy);"></div>
+          <div class="bar-label">Village<br>11.3 ac</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$41K</div>
+          <div class="bar" style="height:27%; background:var(--navy);"></div>
+          <div class="bar-label">Beaver<br>Shores 2.3 ac</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$124K</div>
+          <div class="bar" style="height:82%; background:var(--navy);"></div>
+          <div class="bar-label">Anchor<br>Dr 2.2 ac</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--gold)">$151K</div>
+          <div class="bar" style="height:100%; background:linear-gradient(180deg, var(--gold-light), var(--gold));"></div>
+          <div class="bar-label" style="font-weight:700">Active<br>Avg/Acre</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$189K</div>
+          <div class="bar" style="height:100%; background:linear-gradient(180deg, #5a8fd4, #3a6bb0);"></div>
+          <div class="bar-label">Ventris<br>Rd 5.3 ac</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--navy)">$228K</div>
+          <div class="bar" style="height:100%; background:var(--navy);"></div>
+          <div class="bar-label">Cotton-<br>wood 1.3 ac</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-value" style="color:var(--crimson);font-weight:900">$22K</div>
+          <div class="bar" style="height:15%; background:linear-gradient(180deg, #d4304f, var(--crimson)); border:2px solid var(--gold);"></div>
+          <div class="bar-label" style="color:var(--crimson);font-weight:900">SUBJECT<br>42.5 ac</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cma-table-wrap">
+      <table class="cma-table">
+        <thead>
+          <tr>
+            <th>Address / Location</th>
+            <th>Status</th>
+            <th>Acres</th>
+            <th>$/Acre</th>
+            <th>Sale/List %</th>
+            <th>Date</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td><strong>N Park Rd, Rogers</strong> (Subject)</td>
+            <td><span class="status-badge" style="background:var(--off-white);color:var(--navy);">Subject</span></td>
+            <td>42.54</td>
+            <td>$22,333</td>
+            <td>&mdash;</td>
+            <td>Listed 7/10/2018</td>
+            <td><strong>$950,000</strong></td>
+          </tr>
+          <tr>
+            <td>18-05223-001 Kindred Hollow Rd</td>
+            <td><span class="status-badge status-closed">Sold</span></td>
+            <td>1.10</td>
+            <td>$340,909</td>
+            <td>94.0%</td>
+            <td>1/30/2026</td>
+            <td>$375,000</td>
+          </tr>
+          <tr>
+            <td>TBD Village</td>
+            <td><span class="status-badge status-closed">Sold</span></td>
+            <td>11.30</td>
+            <td>$25,664</td>
+            <td>96.7%</td>
+            <td>2/6/2026</td>
+            <td>$290,000</td>
+          </tr>
+          <tr>
+            <td>TBD Beaver Shores Dr</td>
+            <td><span class="status-badge status-closed">Sold</span></td>
+            <td>2.31</td>
+            <td>$41,126</td>
+            <td>79.2%</td>
+            <td>3/9/2026</td>
+            <td>$95,000</td>
+          </tr>
+          <tr>
+            <td>Tbd Ventris Rd</td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>5.28</td>
+            <td>$189,394</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td>$1,000,000</td>
+          </tr>
+          <tr>
+            <td>15756 Cottonwood Ln</td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>1.27</td>
+            <td>$227,559</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td>$289,000</td>
+          </tr>
+          <tr>
+            <td>Anchor Dr, Rogers</td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>2.21</td>
+            <td>$124,434</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td>$274,999</td>
+          </tr>
+          <tr>
+            <td>Serenity Point, Rogers</td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>0.62</td>
+            <td>$475,806</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td>$295,000</td>
+          </tr>
+          <tr>
+            <td>Edgewater Rd, Rogers</td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>1.49</td>
+            <td>$234,228</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td>$349,000</td>
+          </tr>
+          <tr>
+            <td>1405 W Margaret Pl</td>
+            <td><span class="status-badge status-closed">Sold</span></td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td>$50,500</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:var(--gray-500);margin-top:16px;">Data source: RPR CMA &amp; Quick CMA Market Analysis / Arkansas ONE MLS. 9 representative comps shown. Report date: 5/5/2026. Full analysis available upon request.</p>
+  </div>
+</section>
+
+<!-- TAX HISTORY -->
+<section class="section">
+  <div class="container">
+    <div class="section-header mb-48">
+      <span class="label text-crimson">Public Records</span>
+      <h2>Tax &amp; Listing History</h2>
+      <div class="accent-line mb-16" style="margin-top:12px"></div>
+      <p>As raw land, this property carries exceptionally low annual taxes — a significant advantage during the hold and development period.</p>
+    </div>
+
+    <!-- Listing History Timeline -->
+    <div class="chart-container animate mb-32">
+      <h4>Property Listing &amp; Sales History</h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px;">
+        <div style="background:var(--off-white);border-radius:6px;padding:20px;border-left:4px solid var(--gold);">
+          <div style="font-size:12px;color:var(--gray-500);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Listed</div>
+          <div style="font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--navy);">July 10, 2018</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-top:4px;">MLS #1084951 &mdash; $950,000</div>
+        </div>
+        <div style="background:var(--off-white);border-radius:6px;padding:20px;border-left:4px solid var(--gray-400);">
+          <div style="font-size:12px;color:var(--gray-500);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Expired</div>
+          <div style="font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--navy);">April 15, 2019</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-top:4px;">278 days on market</div>
+        </div>
+        <div style="background:var(--off-white);border-radius:6px;padding:20px;border-left:4px solid var(--crimson);">
+          <div style="font-size:12px;color:var(--gray-500);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">RPR Valuation</div>
+          <div style="font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--crimson);">$221,689</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-top:4px;">As of 5/5/2026 &mdash; 279 days in RPR</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cma-table-wrap">
+      <table class="tax-table">
+        <thead>
+          <tr><th>Year</th><th>Assessed Value (Land)</th><th>Assessed Value (Improvements)</th><th>Total Assessed</th><th>Market Value</th><th>Total Tax</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>2025</strong></td><td>$15,000</td><td>$50,190</td><td>$65,190</td><td><strong>$325,950</strong></td><td>$1,480</td>
+          </tr>
+          <tr>
+            <td>2024</td><td>$15,000</td><td>$50,190</td><td>$65,190</td><td>$325,950</td><td>$1,419</td>
+          </tr>
+          <tr>
+            <td>2023</td><td>$8,600</td><td>$21,530</td><td>$30,130</td><td>$150,650</td><td>$1,352</td>
+          </tr>
+          <tr>
+            <td>2022</td><td>$8,600</td><td>$21,530</td><td>$30,130</td><td>$150,650</td><td>$947</td>
+          </tr>
+          <tr>
+            <td>2021</td><td>$8,600</td><td>$21,530</td><td>$30,130</td><td>$150,650</td><td>$885</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:14px;color:var(--gray-500);margin-top:20px;"><strong style="color:var(--navy)">Note:</strong> The 2024&ndash;2025 reassessment increased the total assessed value by 116% (from $30,130 to $65,190) and the market value by 116% (from $150,650 to $325,950) — reflecting the market's recognition of Bentonville's rapid growth.</p>
+  </div>
+</section>
+
+<!-- MARKET SNAPSHOT -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-crimson">Market Snapshot</span>
+      <h2>Rogers / Beaver Lake Land Market at a Glance</h2>
+      <div class="accent-line accent-line-center mb-16" style="margin-top:12px"></div>
+      <p>The Rogers / Beaver Lake corridor is one of the most sought-after land markets in Northwest Arkansas, driven by lakeside lifestyle demand, major employer proximity, and constrained supply of large development-ready parcels.</p>
+    </div>
+    <div class="snapshot-grid">
+      <div class="snap-card">
+        <div class="snap-val">$151K</div>
+        <div class="snap-label">Avg Price / Acre (Active)</div>
+        <div class="snap-change growth-positive"><svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:3px"><path d="M6 2l4 5H2z" fill="#2e7d32"/></svg>Strong land demand</div>
+      </div>
+      <div class="snap-card">
+        <div class="snap-val">$290K</div>
+        <div class="snap-label">Median Sold Price</div>
+        <div class="snap-change growth-positive"><svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:3px"><path d="M6 2l4 5H2z" fill="#2e7d32"/></svg>89.9% sale-to-list</div>
+      </div>
+      <div class="snap-card">
+        <div class="snap-val">23</div>
+        <div class="snap-label">Total Land Listings</div>
+        <div class="snap-change" style="color:var(--navy);">17 active, 3 pending, 3 sold</div>
+      </div>
+      <div class="snap-card">
+        <div class="snap-val">$1,480</div>
+        <div class="snap-label">Annual Tax</div>
+        <div class="snap-change growth-positive"><svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:3px"><path d="M6 2l4 5H2z" fill="#2e7d32"/></svg>Minimal carry cost</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <h2>Request the Offering Package</h2>
+  <p>The Enclave at Beaver Lake is offered exclusively through Mason Capital Group. Qualified developers, builders, and investors can request the full package &mdash; entitlements, civil plans, lot matrix, and financials &mdash; or schedule a private site tour.</p>
+  <div class="cta-buttons">
+    <a href="tel:4799253333" class="btn btn-crimson">Call (479) 925-3333</a>
+    <a href="mailto:Info@MasonCapitalGroup.com?subject=The%20Enclave%20at%20Beaver%20Lake%20-%20Offering%20Package%20Request" class="btn btn-outline">Request the Package</a>
+  </div>
+  <p style="font-size:13px;color:var(--gray-400);margin-top:40px;">www.MasonCapitalGroup.com</p>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <a href="https://www.masoncapitalgroup.com" target="_blank" style="display:inline-flex;margin:0 auto;"><img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group" style="height:60px;width:auto;margin-bottom:12px;"></a>
+  <p>Cameron Torabi, Principal Broker<br>
+  Arkansas Real Estate License #PB00056565<br>
+  (479) 925-3333 &nbsp;|&nbsp; Info@MasonCapitalGroup.com</p>
+  <p class="disclaimer">This presentation contains data and information from public records, RPR, and third-party sources. Neither this presentation nor the estimated value of a property is an appraisal. Property valuations are approximate estimates generated using proprietary computer software and comparable market data. Mason Capital Group is not responsible for any claim or loss resulting from the content of, or errors or omissions in, this presentation. Equal Housing Opportunity.</p>
+  <p style="font-size:10px;color:var(--gray-500);margin-top:12px;">&copy; 2026 Mason Capital Group Real Estate Investment &amp; Trust. All rights reserved.</p>
+</footer>
+
+
+<!-- SCRIPTS -->
+<script>
+// Mobile Nav Toggle
+document.getElementById('navToggle').addEventListener('click', function() {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+// Close nav on link click
+document.querySelectorAll('.nav-links a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    document.getElementById('navLinks').classList.remove('open');
+  });
+});
+
+// Scroll Animations
+(function() {
+  var els = document.querySelectorAll('.animate');
+  if (!els.length) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  els.forEach(function(el) { observer.observe(el); });
+})();
+
+// Smooth scroll offset for fixed nav
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      var offset = 80;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+  });
+});
+
+// Animate bars on scroll
+(function() {
+  var bars = document.querySelectorAll('.bar');
+  bars.forEach(function(bar) {
+    var h = bar.style.height;
+    bar.style.height = '0%';
+    bar.dataset.target = h;
+  });
+  var barObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var bars = entry.target.querySelectorAll('.bar');
+        bars.forEach(function(bar, i) {
+          setTimeout(function() {
+            bar.style.height = bar.dataset.target;
+          }, i * 80);
+        });
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.bar-chart').forEach(function(chart) {
+    barObserver.observe(chart);
+  });
+})();
+
+</script>
+
+
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function() {
+  var map = L.map('compMap', { scrollWheelZoom: false, zoomControl: true }).setView([36.345, -94.045], 12);
+
+  // ESRI Satellite imagery
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri',
+    maxZoom: 19
+  }).addTo(map);
+
+  // Label overlay
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19, opacity: 0.6
+  }).addTo(map);
+
+  function makeIcon(color, size) {
+    return L.divIcon({
+      className: '',
+      html: '<div style="width:'+size+'px;height:'+size+'px;background:'+color+';border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.5);"></div>',
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2]
+    });
+  }
+
+  var subjectIcon = makeIcon('#ab012e', 28);
+  var soldIcon    = makeIcon('#2e7d32', 18);
+  var activeIcon  = makeIcon('#1565c0', 18);
+
+  // Subject Property
+  L.marker([36.34456, -94.05769], { icon: subjectIcon, zIndexOffset: 1000 })
+    .bindPopup('<div style="font-family:Lato,sans-serif;min-width:180px;"><strong style="font-size:14px;color:#ab012e;">N Park Rd (Subject)</strong><br><span style="font-size:12px;">42.54 acres &bull; 19 Lots<br><strong>Wholesale: $3,800,000</strong><br>Lots: $250K&ndash;$400K each</span></div>')
+    .addTo(map);
+
+  // Sold Comps
+  var sold = [
+    { lat: 36.36055, lng: -94.04884, name: 'Kindred Hollow Rd', acres: '1.10', price: '$375,000', date: '1/30/2026', saleList: '94%' },
+    { lat: 36.35500, lng: -94.06500, name: 'TBD Village', acres: '11.30', price: '$290,000', date: '2/6/2026', saleList: '96.7%' },
+    { lat: 36.32792, lng: -94.02638, name: 'TBD Beaver Shores Dr', acres: '2.31', price: '$95,000', date: '3/9/2026', saleList: '79.2%' },
+    { lat: 36.34537, lng: -94.13708, name: '1405 W Margaret Pl', acres: '&mdash;', price: '$50,500', date: '&mdash;', saleList: '&mdash;' }
+  ];
+  sold.forEach(function(c) {
+    L.marker([c.lat, c.lng], { icon: soldIcon })
+      .bindPopup('<div style="font-family:Lato,sans-serif;min-width:160px;"><strong style="font-size:13px;color:#2e7d32;">'+c.name+'</strong><br><span style="font-size:11px;">'+c.acres+' acres &bull; <strong>'+c.price+'</strong><br>Sold '+c.date+' &bull; '+c.saleList+' S/L</span></div>')
+      .addTo(map);
+  });
+
+  // Active Comps
+  var active = [
+    { lat: 36.38480, lng: -93.95955, name: 'Tbd Ventris Rd', acres: '5.28', price: '$1,000,000' },
+    { lat: 36.31821, lng: -94.03406, name: '15756 Cottonwood Ln', acres: '1.27', price: '$289,000' },
+    { lat: 36.32882, lng: -94.03234, name: 'Anchor Dr', acres: '2.21', price: '$274,999' },
+    { lat: 36.33408, lng: -94.03060, name: 'Serenity Point', acres: '0.62', price: '$295,000' },
+    { lat: 36.33313, lng: -93.99141, name: 'Edgewater Rd', acres: '1.49', price: '$349,000' }
+  ];
+  active.forEach(function(c) {
+    L.marker([c.lat, c.lng], { icon: activeIcon })
+      .bindPopup('<div style="font-family:Lato,sans-serif;min-width:160px;"><strong style="font-size:13px;color:#1565c0;">'+c.name+'</strong><br><span style="font-size:11px;">'+c.acres+' acres &bull; <strong>'+c.price+'</strong><br>Active Listing</span></div>')
+      .addTo(map);
+  });
+
+  // Fit bounds to show all markers
+  var allCoords = [[36.34456,-94.05769]];
+  sold.forEach(function(c){ allCoords.push([c.lat,c.lng]); });
+  active.forEach(function(c){ allCoords.push([c.lat,c.lng]); });
+  map.fitBounds(allCoords, { padding: [40, 40] });
+})();
+</script>
+
+<!-- Parallax for the Opportunity background image -->
+<script>
+(function(){
+  var bg=document.getElementById('oppBg'), sec=document.getElementById('opportunity');
+  if(!bg||!sec) return;
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ticking=false;
+  function update(){
+    var r=sec.getBoundingClientRect(), vh=window.innerHeight||800;
+    var prog=((r.top + r.height/2) - vh/2)/vh;
+    prog=Math.max(-1.2, Math.min(1.2, prog));
+    bg.style.transform='translate3d(0,'+(prog*-8).toFixed(2)+'%,0)';
+    ticking=false;
+  }
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+
+<!-- Embed adaptation: when shown inside the Webflow iframe, cap the hero to one screen and report full height so the parent can grow the iframe (no internal scroll needed) -->
+<script>
+(function(){
+  if (window.self === window.top) return; // standalone: do nothing
+  var vh = Math.min(window.innerHeight || 800, 1100);
+  var st = document.createElement('style');
+  st.textContent = '.hero{min-height:' + vh + 'px !important;height:' + vh + 'px !important;}'
+    + '.animate{opacity:1 !important;transform:none !important;}';
+  (document.head || document.documentElement).appendChild(st);
+  // The parent page scrolls (not this iframe), so in-iframe scroll observers never fire.
+  // Force the scroll-reveal content and bar charts to their final visible state.
+  function reveal(){
+    document.querySelectorAll('.animate').forEach(function(el){ el.classList.add('visible'); });
+    document.querySelectorAll('.bar').forEach(function(b){ if(b.dataset && b.dataset.target){ b.style.height = b.dataset.target; } });
+  }
+  reveal();
+  window.addEventListener('load', reveal);
+  setTimeout(reveal, 300); setTimeout(reveal, 1200);
+  var last = 0;
+  function send(){
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    if (h && h !== last){ last = h; try { parent.postMessage({ mcgPresHeight: h }, '*'); } catch(e){} }
+  }
+  window.addEventListener('load', send);
+  window.addEventListener('resize', send);
+  try { new ResizeObserver(send).observe(document.body); } catch(e){}
+  var n = 0, t = setInterval(function(){ send(); if (++n > 40) clearInterval(t); }, 500);
+  send();
+})();
+</script>
+
+</body>
+</html>
