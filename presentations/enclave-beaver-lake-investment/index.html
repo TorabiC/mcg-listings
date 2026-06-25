@@ -617,6 +617,9 @@ a { color: inherit; text-decoration: none; }
 /* Photo region: text pop + seamless fade into CTA */
 #photoRegion .photo-band p, #photoRegion .section-header .label, #photoRegion .section-header h2, #photoRegion .section-header p{ text-shadow:0 2px 22px rgba(0,0,0,0.6); }
 .cta-section::before{ display:none; }
+.cta-section h2, .cta-section p{ text-shadow:0 2px 18px rgba(0,0,0,0.55); }
+/* Footer matches the CTA color, seamless */
+.footer{ background:linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-top:none; }
 :root{ --line:#e8e2d8; --off-white:#f6f3ed; }
 
 /* Whitespace + heading scale */
@@ -1257,7 +1260,7 @@ a { color: inherit; text-decoration: none; }
 <!-- PHOTO BAND -->
 <div id="photoRegion" style="position:relative;overflow:hidden;">
   <div id="bandBg" style="position:absolute;left:0;top:-14%;width:100%;height:128%;background:url('band-1.jpg') center/cover no-repeat;z-index:0;will-change:transform;"></div>
-  <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(12,14,22,0.74) 0%, rgba(12,14,22,0.60) 30%, rgba(12,14,22,0.48) 47%, rgba(12,14,22,0.66) 60%, rgba(12,14,22,0.52) 74%, rgba(16,16,36,0.92) 93%, var(--navy) 100%);z-index:0;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(12,14,22,0.74) 0%, rgba(12,14,22,0.58) 22%, rgba(12,14,22,0.46) 32%, rgba(12,14,22,0.64) 42%, rgba(12,14,22,0.48) 56%, rgba(12,14,22,0.54) 72%, rgba(13,14,26,0.74) 88%, var(--navy) 100%);z-index:0;"></div>
 <section class="photo-band" style="position:relative;z-index:1;height:clamp(340px,46vh,480px);display:flex;align-items:center;justify-content:center;text-align:center;">
   <div style="position:relative;z-index:1;max-width:840px;padding:0 24px;">
     <div class="accent-line-gold" style="width:80px;height:3px;margin:0 auto 22px;"></div>
@@ -1299,10 +1302,9 @@ a { color: inherit; text-decoration: none; }
     </div>
   </div>
 </section>
-</div>
 
-<!-- CTA -->
-<section class="cta-section" id="contact">
+<!-- CTA (inside photo region — image fades through into this section) -->
+<section class="cta-section" id="contact" style="background:transparent;position:relative;z-index:1;">
   <h2>Request the Offering Package</h2>
   <p>The Enclave at Beaver Lake is offered exclusively through Mason Capital Group. Qualified developers, builders, and investors can request the full package &mdash; entitlements, civil plans, lot matrix, and financials &mdash; or schedule a private site tour.</p>
   <div class="cta-buttons">
@@ -1311,6 +1313,7 @@ a { color: inherit; text-decoration: none; }
   </div>
   <p style="font-size:13px;color:var(--gray-400);margin-top:40px;">www.MasonCapitalGroup.com</p>
 </section>
+</div>
 
 <!-- FOOTER -->
 <footer class="footer">
