@@ -1252,7 +1252,10 @@ a { color: inherit; text-decoration: none; }
 </section>
 
 <!-- PHOTO BAND -->
-<section class="photo-band" style="position:relative;height:clamp(360px,52vh,520px);background-image:linear-gradient(rgba(16,18,28,0.42), rgba(16,18,28,0.60)), url('band-1.jpg');background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+<div id="photoRegion" style="position:relative;overflow:hidden;">
+  <div id="bandBg" style="position:absolute;left:0;top:-14%;width:100%;height:128%;background:url('band-1.jpg') center/cover no-repeat;z-index:0;will-change:transform;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(rgba(16,18,28,0.48), rgba(16,18,28,0.66));z-index:0;"></div>
+<section class="photo-band" style="position:relative;z-index:1;height:clamp(340px,46vh,480px);display:flex;align-items:center;justify-content:center;text-align:center;">
   <div style="position:relative;z-index:1;max-width:840px;padding:0 24px;">
     <div class="accent-line-gold" style="width:80px;height:3px;margin:0 auto 22px;"></div>
     <p style="font-family:var(--font-serif);font-size:clamp(22px,3vw,34px);font-weight:700;color:#fff;line-height:1.32;letter-spacing:-0.3px;margin:0;">Nineteen gated estate homesites above one of the Ozarks&rsquo; great lakes.</p>
@@ -1260,14 +1263,14 @@ a { color: inherit; text-decoration: none; }
   </div>
 </section>
 
-<!-- MARKET SNAPSHOT -->
-<section class="section section-alt">
+<!-- MARKET SNAPSHOT (over photo region) -->
+<section class="section" style="position:relative;z-index:1;background:transparent;">
   <div class="container">
     <div class="section-header text-center centered mb-48">
-      <span class="label text-crimson">Market Snapshot</span>
-      <h2>Rogers / Beaver Lake Land Market at a Glance</h2>
+      <span class="label text-gold">Market Snapshot</span>
+      <h2 style="color:var(--white)">Rogers / Beaver Lake Land Market at a Glance</h2>
       <div class="accent-line accent-line-center mb-16" style="margin-top:12px"></div>
-      <p>The Rogers / Beaver Lake corridor is one of the most sought-after land markets in Northwest Arkansas, driven by lakeside lifestyle demand, major employer proximity, and constrained supply of large development-ready parcels.</p>
+      <p style="color:rgba(255,255,255,0.9)">The Rogers / Beaver Lake corridor is one of the most sought-after land markets in Northwest Arkansas, driven by lakeside lifestyle demand, major employer proximity, and constrained supply of large development-ready parcels.</p>
     </div>
     <div class="snapshot-grid">
       <div class="snap-card">
@@ -1293,6 +1296,7 @@ a { color: inherit; text-decoration: none; }
     </div>
   </div>
 </section>
+</div>
 
 <!-- CTA -->
 <section class="cta-section" id="contact">
@@ -1479,15 +1483,18 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 <!-- Parallax for the Opportunity background image -->
 <script>
 (function(){
-  var bg=document.getElementById('oppBg'), sec=document.getElementById('opportunity');
-  if(!bg||!sec) return;
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var pairs=[['oppBg','opportunity'],['bandBg','photoRegion']].map(function(p){return {bg:document.getElementById(p[0]), sec:document.getElementById(p[1])};}).filter(function(p){return p.bg && p.sec;});
+  if(!pairs.length) return;
   var ticking=false;
   function update(){
-    var r=sec.getBoundingClientRect(), vh=window.innerHeight||800;
-    var prog=((r.top + r.height/2) - vh/2)/vh;
-    prog=Math.max(-1.2, Math.min(1.2, prog));
-    bg.style.transform='translate3d(0,'+(prog*-8).toFixed(2)+'%,0)';
+    var vh=window.innerHeight||800;
+    pairs.forEach(function(p){
+      var r=p.sec.getBoundingClientRect();
+      var prog=((r.top + r.height/2) - vh/2)/vh;
+      prog=Math.max(-1.2, Math.min(1.2, prog));
+      p.bg.style.transform='translate3d(0,'+(prog*-8).toFixed(2)+'%,0)';
+    });
     ticking=false;
   }
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
