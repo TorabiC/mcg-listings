@@ -692,8 +692,10 @@ a { color: inherit; text-decoration: none; }
 </section>
 
 <!-- WHY MASON CAPITAL GROUP — VALUE PROPOSITIONS -->
-<section class="section" id="opportunity" style="position:relative;background-image:linear-gradient(rgba(16,18,28,0.68) 0%, rgba(16,18,28,0.46) 38%, rgba(16,18,28,0.34) 100%), url('opportunity-bg.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;">
-  <div class="container">
+<section class="section" id="opportunity" style="position:relative;overflow:hidden;">
+  <div id="oppBg" style="position:absolute;left:0;top:-12%;width:100%;height:128%;background:url('opportunity-bg.jpg') center/cover no-repeat;z-index:0;will-change:transform;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(rgba(16,18,28,0.68) 0%, rgba(16,18,28,0.46) 38%, rgba(16,18,28,0.34) 100%);z-index:0;"></div>
+  <div class="container" style="position:relative;z-index:1;">
     <div class="section-header text-center centered mb-48">
       <span class="label text-gold">The Opportunity</span>
       <h2 style="color:var(--white)">An Entitled, De-Risked<br>Lake Development Opportunity</h2>
@@ -1386,6 +1388,28 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   sold.forEach(function(c){ allCoords.push([c.lat,c.lng]); });
   active.forEach(function(c){ allCoords.push([c.lat,c.lng]); });
   map.fitBounds(allCoords, { padding: [40, 40] });
+})();
+</script>
+
+<!-- Parallax for the Opportunity background image -->
+<script>
+(function(){
+  var bg=document.getElementById('oppBg'), sec=document.getElementById('opportunity');
+  if(!bg||!sec) return;
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ticking=false;
+  function update(){
+    var r=sec.getBoundingClientRect(), vh=window.innerHeight||800;
+    var prog=((r.top + r.height/2) - vh/2)/vh;
+    prog=Math.max(-1.2, Math.min(1.2, prog));
+    bg.style.transform='translate3d(0,'+(prog*-8).toFixed(2)+'%,0)';
+    ticking=false;
+  }
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
+  window.addEventListener('load', update);
+  update();
 })();
 </script>
 
