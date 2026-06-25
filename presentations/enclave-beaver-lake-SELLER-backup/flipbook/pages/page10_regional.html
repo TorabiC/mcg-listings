@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1424px;height:1100px;font-family:'Lato',sans-serif;overflow:hidden}
+.pg{position:relative;width:1424px;height:1100px;background:#ffffff;display:flex;}
+.row{display:flex;align-items:baseline;justify-content:space-between;padding:20px 0;border-bottom:1px solid #eaebec;}
+.dest{font:700 22px/1.3 'Lato';color:#090000;}
+.note{font:400 15px/1.4 'Lato';color:#6f757c;margin-top:3px;}
+.time{font:900 30px/1 'Lato';color:#ab012e;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.unit{font:700 13px/1 'Lato';color:#6f757c;letter-spacing:.05em;}
+</style>
+</head>
+<body>
+<div class="pg">
+  <!-- left image -->
+  <div style="flex:none;width:560px;position:relative;overflow:hidden;">
+    <img src="../assets/bl-entry.jpg" style="width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block;" alt="Modern home at The Enclave">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,0,0,.3) 0%,rgba(9,0,0,0) 26%,rgba(9,0,0,0) 70%,rgba(9,0,0,.6) 100%);"></div>
+    <div style="position:absolute;left:44px;bottom:80px;color:#fff;max-width:420px;">
+      <div style="font:700 13px/1 'Lato';letter-spacing:.2em;text-transform:uppercase;color:#f0cccc;">Location &amp; access</div>
+      <div style="font:300 26px/1.32 'Lato';margin-top:12px;">At the center of Northwest Arkansas, on the quiet side of the lake.</div>
+    </div>
+  </div>
+
+  <!-- right content -->
+  <div style="flex:1;min-width:0;padding:72px 64px 0;position:relative;">
+    <div style="font:700 15px/1 'Lato';letter-spacing:.22em;text-transform:uppercase;color:#ab012e;">Northwest Arkansas · regional</div>
+    <h2 style="font:900 48px/1.05 'Lato';letter-spacing:-.02em;color:#090000;margin:16px 0 10px;">Everything close,<br>nothing crowding in.</h2>
+    <p style="font:400 18px/1.55 'Lato';color:#524c4c;max-width:640px;margin:0 0 28px;">Approximate drive times from the community off North Park Road.</p>
+
+    <div class="row"><div><div class="dest">Prairie Creek Marina</div><div class="note">Beaver Lake boat access &amp; fuel dock</div></div><div style="text-align:right;"><div class="time">2<span style="font-size:18px;"> min</span></div></div></div>
+    <div class="row"><div><div class="dest">Downtown Rogers</div><div class="note">Dining, shopping &amp; Walmart AMP</div></div><div style="text-align:right;"><div class="time">15<span style="font-size:18px;"> min</span></div></div></div>
+    <div class="row"><div><div class="dest">Bentonville &amp; Crystal Bridges</div><div class="note">Walmart HQ · Museum of American Art</div></div><div style="text-align:right;"><div class="time">25<span style="font-size:18px;"> min</span></div></div></div>
+    <div class="row"><div><div class="dest">XNA Regional Airport</div><div class="note">Northwest Arkansas National</div></div><div style="text-align:right;"><div class="time">30<span style="font-size:18px;"> min</span></div></div></div>
+    <div class="row"><div><div class="dest">Hobbs State Park</div><div class="note">Arkansas's largest state park</div></div><div style="text-align:right;"><div class="time">10<span style="font-size:18px;"> min</span></div></div></div>
+
+    <div style="font:300 13px/1.5 'Lato';color:#6f757c;margin-top:22px;max-width:640px;">Drive times are approximate and provided for orientation. Crystal Bridges Museum of American Art and the Walmart AMP amphitheater are regional cultural anchors in Bentonville and Rogers.</div>
+  </div>
+
+  <div style="position:absolute;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 56px;background:#14171b;">
+    <div style="font:700 13px/1 'Lato';letter-spacing:.22em;text-transform:uppercase;color:rgba(255,249,249,.7);">The Enclave at Beaver Lake</div>
+    <div style="font:700 13px/1 'Lato';letter-spacing:.18em;text-transform:uppercase;color:#cd4c4e;">Mason Capital Group · 10</div>
+  </div>
+</div>
+</body>
+</html>

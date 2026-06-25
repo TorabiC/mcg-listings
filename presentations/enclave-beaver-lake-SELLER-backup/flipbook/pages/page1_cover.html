@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1424px;height:1100px;font-family:'Lato',sans-serif;overflow:hidden;background:#14171b}
+.pg{position:relative;width:1424px;height:1100px;overflow:hidden}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%}
+.scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,0,0,.55) 0%,rgba(9,0,0,0) 26%,rgba(9,0,0,0) 48%,rgba(9,0,0,.45) 70%,rgba(9,0,0,.88) 100%)}
+</style>
+</head>
+<body>
+<div class="pg">
+  <img class="bg" src="../assets/bl-gate-entry.jpg" alt="The Enclave at Beaver Lake entry">
+  <div class="scrim"></div>
+
+  <!-- top bar -->
+  <div style="position:absolute;top:48px;left:64px;right:64px;display:flex;align-items:center;justify-content:space-between;">
+    <img src="../assets/mcg-logo-redwhite.png" style="height:40px;display:block;" alt="Mason Capital Group — Real Estate Investment & Trust">
+    <div style="font:700 15px/1 'Lato';letter-spacing:.26em;text-transform:uppercase;color:rgba(255,249,249,.86);">Offering Memorandum</div>
+  </div>
+
+  <!-- offered badge -->
+  <div style="position:absolute;top:128px;right:64px;background:#ab012e;color:#fff;padding:18px 26px 19px;border-radius:16px;text-align:right;box-shadow:0 10px 30px rgba(9,0,0,.4);">
+    <div style="font:700 13px/1 'Lato';letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.82);">Offered at</div>
+    <div style="font:900 40px/1 'Lato';letter-spacing:-.02em;margin-top:8px;font-variant-numeric:tabular-nums;">$3,800,000</div>
+  </div>
+
+  <!-- title block -->
+  <div style="position:absolute;left:64px;right:64px;bottom:80px;color:#fff;">
+    <div style="display:flex;align-items:center;gap:22px;">
+      <div style="width:64px;height:3px;background:#ab012e;"></div>
+      <div>
+        <div style="font:700 18px/1 'Lato';letter-spacing:.24em;text-transform:uppercase;color:#f0cccc;margin-bottom:12px;">Prairie Creek · Beaver Lake · Rogers, Arkansas</div>
+        <div style="font:300 28px/1.4 'Lato';color:rgba(255,249,249,.92);max-width:880px;">Nineteen gated estate homesites — modern architecture in the wooded hills above one of the Ozarks' great lakes.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
