@@ -605,6 +605,57 @@ a { color: inherit; text-decoration: none; }
 }
 
 </style>
+<style>
+/* ===== HIGH-END REFINEMENTS (additive) ===== */
+:root{ --line:#e8e2d8; --off-white:#f6f3ed; }
+
+/* Whitespace + heading scale */
+.section{ padding:114px 0; }
+.section-header{ margin-bottom:56px; }
+.section-header h2{ font-size:clamp(30px,4.2vw,48px); line-height:1.12; letter-spacing:-0.4px; }
+.section-header p{ max-width:680px; line-height:1.8; }
+
+/* Refined labels + gold-forward accents */
+.label{ font-weight:700; letter-spacing:5px; }
+.accent-line{ background:var(--gold); }
+.hero::before, .hero::after{ background:var(--gold); }
+
+/* Nav: transparent over hero, solid on scroll */
+.nav{ background:transparent; border-bottom-color:transparent; box-shadow:none; backdrop-filter:none; transition:background .45s ease, border-color .45s ease, box-shadow .45s ease; }
+.nav.scrolled{ background:rgba(22,22,42,0.96); border-bottom:1px solid rgba(196,163,90,0.22); box-shadow:0 8px 30px rgba(0,0,0,0.18); backdrop-filter:blur(12px); }
+.nav-links a{ letter-spacing:2.4px; }
+.nav-links a.active{ color:var(--gold); }
+
+/* Cards: refined hover + gold reveal bar */
+.value-card{ padding:44px 36px; transition:transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s, border-color .5s; }
+.value-card:hover{ transform:translateY(-6px); box-shadow:0 26px 55px rgba(22,22,42,0.12); border-color:rgba(196,163,90,0.55); }
+.value-card::before{ background:var(--gold); height:2px; transform:scaleX(0); transform-origin:left center; transition:transform .5s cubic-bezier(.2,.7,.2,1); }
+.value-card:hover::before{ transform:scaleX(1); }
+
+/* Opportunity: elegant numerals replace generic icons */
+#opportunity .value-grid{ counter-reset:opp; }
+#opportunity .value-card .icon svg{ display:none; }
+#opportunity .value-card .icon{ margin-bottom:12px; line-height:1; }
+#opportunity .value-card .icon::before{ counter-increment:opp; content:counter(opp,decimal-leading-zero); font-family:var(--font-serif); font-size:34px; font-weight:700; color:var(--gold); }
+
+/* Entitlement: balanced 2x2 */
+#entitlement .value-grid{ grid-template-columns:repeat(2,1fr); gap:24px; max-width:880px; margin-left:auto; margin-right:auto; }
+#entitlement .value-card{ padding:34px 32px; }
+
+/* Detail tables: air, right-aligned figures, hairline rules, hover */
+.detail-table td{ padding:14px 2px; }
+.detail-table td:last-child{ text-align:right; font-variant-numeric:tabular-nums; }
+.detail-table tr{ border-bottom:1px solid var(--line); transition:background .25s; }
+.detail-table tr:hover{ background:rgba(196,163,90,0.05); }
+
+/* Buttons + tabular figures */
+.btn{ transition:all .4s ease; letter-spacing:1.6px; }
+.btn-outline:hover{ box-shadow:0 12px 32px rgba(196,163,90,0.25); }
+.hero-price, .snap-val, .val-amount{ font-variant-numeric:tabular-nums; }
+
+@media (max-width:991px){ .section{ padding:80px 0; } #entitlement .value-grid{ grid-template-columns:1fr; } }
+@media (max-width:600px){ .section{ padding:56px 0; } .value-card{ padding:32px 24px; } }
+</style>
 </head>
 <body>
 
@@ -1388,6 +1439,24 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   sold.forEach(function(c){ allCoords.push([c.lat,c.lng]); });
   active.forEach(function(c){ allCoords.push([c.lat,c.lng]); });
   map.fitBounds(allCoords, { padding: [40, 40] });
+})();
+</script>
+
+<!-- Nav: solid-on-scroll + active section highlight -->
+<script>
+(function(){
+  var nav=document.querySelector('.nav');
+  function onScroll(){ if(nav) nav.classList.toggle('scrolled',(window.scrollY||window.pageYOffset||0)>60); }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  var links=[].slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
+  var map={};
+  links.forEach(function(a){ var id=a.getAttribute('href').slice(1); if(document.getElementById(id)) map[id]=a; });
+  if(window.IntersectionObserver){
+    var obs=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){ l.classList.remove('active'); }); if(map[e.target.id]) map[e.target.id].classList.add('active'); } });
+    }, { rootMargin:'-45% 0px -50% 0px', threshold:0 });
+    Object.keys(map).forEach(function(id){ obs.observe(document.getElementById(id)); });
+  }
 })();
 </script>
 
