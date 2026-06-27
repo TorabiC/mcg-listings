@@ -608,7 +608,7 @@ document.getElementById('xlate').addEventListener('click',function(){ isES=!isES
 
 // Report height to a parent frame (for responsive iframe embedding); harmless when standalone
 (function(){
-  function postH(){ try{ window.parent.postMessage({mcgPresoHeight: document.documentElement.scrollHeight}, '*'); }catch(e){} }
+  function postH(){ try{ var h=Math.max(document.body.scrollHeight, document.body.offsetHeight); window.parent.postMessage({mcgPresoHeight: h}, '*'); }catch(e){} }
   window.addEventListener('load', function(){ postH(); setTimeout(postH,500); setTimeout(postH,1500); });
   window.addEventListener('resize', postH);
 })();
