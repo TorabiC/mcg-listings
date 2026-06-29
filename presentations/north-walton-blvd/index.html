@@ -1508,10 +1508,18 @@ if (window.self !== window.top) {
     el.classList.add('visible');
   });
   // Report actual page height so parent iframe can resize correctly.
-  // Use body.scrollHeight (not documentElement.scrollHeight) — the html element's
-  // scrollHeight is clamped to the iframe viewport (25000px), body's is not.
+  // body.offsetHeight = the actual rendered height of the body — not clamped to
+  // the iframe viewport like documentElement.scrollHeight is.
   function reportHeight() {
-    var h = document.body.scrollHeight;
+    var h = document.body.offsetHeight;
+    // Sanity-check: if offsetHeight looks wrong, fall back to last-child bottom
+    if (!h || h < 500) {
+      var last = document.body.lastElementChild;
+      if (last) {
+        var r = last.getBoundingClientRect();
+        h = Math.ceil(r.bottom + window.pageYOffset) + 20;
+      }
+    }
     if (h > 100) {
       window.parent.postMessage({ type: 'listingHeight', height: h }, '*');
     }
