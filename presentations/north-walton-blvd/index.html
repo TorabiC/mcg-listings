@@ -426,15 +426,33 @@ p:last-child { margin-bottom: 0; }
 .concept-section {
   position: relative;
   padding: 96px 0;
-  background:
-    linear-gradient(180deg,
-      rgba(22,22,42,0.78) 0%,
-      rgba(22,22,42,0.62) 40%,
-      rgba(22,22,42,0.62) 60%,
-      rgba(22,22,42,0.78) 100%
-    ),
-    url('concept-bg.png') center 30%/cover no-repeat;
+  background: var(--navy);
   color: var(--white);
+  overflow: hidden;
+}
+.concept-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  display: block;
+  z-index: 0;
+}
+.concept-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(22,22,42,0.82) 0%,
+    rgba(22,22,42,0.65) 40%,
+    rgba(22,22,42,0.65) 60%,
+    rgba(22,22,42,0.82) 100%
+  );
+  z-index: 1;
+}
+.concept-section .container {
+  position: relative;
+  z-index: 2;
 }
 .concept-section .label { color: var(--gold); }
 .concept-section h2 { color: var(--white); }
@@ -652,6 +670,8 @@ p:last-child { margin-bottom: 0; }
 
 <!-- DEVELOPMENT CONCEPT (dark) -->
 <section id="concept" class="concept-section">
+  <img class="concept-bg-img" src="concept-bg.png" alt="">
+  <div class="concept-overlay"></div>
   <div class="container">
     <div class="section-header animate mb-40">
       <span class="label">Development Concept</span>
