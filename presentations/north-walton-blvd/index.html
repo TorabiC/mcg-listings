@@ -6,156 +6,353 @@
 <title>North Walton Boulevard — Investment Opportunity | Mason Capital Group</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#16162a;
-  --navy-mid:#1e1e35;
-  --navy-light:#252542;
-  --crimson:#ab012e;
-  --gold:#c4a35a;
-  --white:#ffffff;
-  --gray-100:#f5f5f0;
-  --gray-300:#d0cfc8;
-  --gray-400:#9a9992;
-  --gray-600:#555548;
-  --radius:6px;
-  --transition:0.3s ease;
-}
-html{scroll-behavior:smooth;font-size:16px}
-body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;overflow-x:hidden}
-
-/* ── NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:68px;background:rgba(22,22,42,0.95);backdrop-filter:blur(8px);border-bottom:1px solid rgba(196,163,90,0.18)}
-.nav-logo img{height:34px;width:auto}
-.nav-links{display:flex;gap:28px}
-.nav-links a{color:var(--gray-300);text-decoration:none;font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;transition:color var(--transition)}
-.nav-links a:hover{color:var(--gold)}
-.nav-toggle{display:none;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;padding:4px}
-@media(max-width:860px){
-  .nav-links{display:none;position:fixed;top:68px;left:0;right:0;background:var(--navy);flex-direction:column;gap:0;border-bottom:1px solid rgba(196,163,90,0.18)}
-  .nav-links.open{display:flex}
-  .nav-links a{padding:16px 40px;border-bottom:1px solid rgba(255,255,255,0.06)}
-  .nav-toggle{display:block}
-  .nav{padding:0 24px}
+/* ===== VARIABLES ===== */
+:root {
+  --navy: #16162a;
+  --navy-light: #1e1e3a;
+  --navy-card: #252542;
+  --crimson: #ab012e;
+  --crimson-dark: #8a0125;
+  --gold: #c4a35a;
+  --gold-light: #d4b96e;
+  --white: #ffffff;
+  --off-white: #f8f6f3;
+  --gray-50: #f0ede8;
+  --gray-200: #e0dbd3;
+  --gray-300: #bbb5aa;
+  --gray-400: #a09888;
+  --gray-500: #6b6560;
+  --gray-700: #3a3830;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+  --radius: 4px;
+  --transition: 0.3s ease;
 }
 
-/* ── HERO ── */
-.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background-image:url('hero-render.jpg');background-size:cover;background-position:center 35%;filter:brightness(0.38);z-index:0}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(22,22,42,0.35) 0%,rgba(22,22,42,0.05) 45%,rgba(22,22,42,0.75) 100%);z-index:1}
-.hero>.container{position:relative;z-index:2}
-.hero-badge{display:inline-block;background:var(--crimson);color:var(--white);font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;padding:6px 20px;border-radius:2px;margin-bottom:28px}
-.hero-title{font-size:clamp(40px,7vw,80px);font-weight:900;line-height:1.05;letter-spacing:-.02em;margin-bottom:10px}
-.hero-address{font-size:15px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:28px}
-.hero-price{font-size:clamp(36px,5vw,56px);font-weight:300;letter-spacing:-.01em;color:var(--white);margin-bottom:32px}
-.hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:0;margin-bottom:36px;border:1px solid rgba(196,163,90,0.3);display:inline-flex}
-.hero-stat{padding:18px 32px;text-align:center;border-right:1px solid rgba(196,163,90,0.3)}
-.hero-stat:last-child{border-right:none}
-.hero-stat .val{font-size:22px;font-weight:900;color:var(--gold);display:block}
-.hero-stat .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-300);display:block;margin-top:2px}
-.hero-tagline{font-size:14px;letter-spacing:.06em;color:var(--gray-300);margin-bottom:36px}
-.hero-logo img{height:44px;width:auto;opacity:.9}
-@media(max-width:600px){
-  .hero-stat{padding:14px 18px}
-  .hero-stat .val{font-size:18px}
+/* ===== RESET ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-sans); color: var(--navy); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ===== UTILITIES ===== */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 96px 0; }
+.section-alt { background: var(--off-white); }
+.section-dark { background: var(--navy); color: var(--white); }
+.section-dark p { color: var(--gray-300); }
+.section-dark .section-label { color: var(--crimson); }
+.label {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 12px;
+}
+.section-dark .label { color: var(--gold); }
+.accent-bar { width: 48px; height: 3px; background: var(--crimson); margin: 16px 0 28px; }
+.accent-bar-gold { background: var(--gold); }
+.accent-bar-center { margin-left: auto; margin-right: auto; }
+.text-center { text-align: center; }
+.text-gold { color: var(--gold); }
+.text-crimson { color: var(--crimson); }
+h1,h2,h3 { font-family: var(--font-serif); }
+h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 700; line-height: 1.15; }
+h3 { font-size: clamp(22px, 2.5vw, 30px); font-weight: 700; line-height: 1.2; }
+h4 { font-family: var(--font-sans); font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+p { line-height: 1.8; color: var(--gray-500); margin-bottom: 16px; font-size: 16px; }
+p:last-child { margin-bottom: 0; }
+.section-dark p { color: var(--gray-300); }
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-40 { margin-bottom: 40px; }
+.mb-56 { margin-bottom: 56px; }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 68px;
+  background: rgba(22,22,42,0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(196,163,90,0.18);
+}
+.nav-logo img { height: 34px; width: auto; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  color: var(--gray-300);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  transition: color var(--transition);
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 22px; cursor: pointer; padding: 4px; }
+@media(max-width:860px) {
+  .nav-links {
+    display: none; position: fixed; top: 68px; left: 0; right: 0;
+    background: var(--navy); flex-direction: column; gap: 0;
+    border-bottom: 1px solid rgba(196,163,90,0.18);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 16px 40px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .nav-toggle { display: block; }
+  .nav { padding: 0 24px; }
 }
 
-/* ── SHARED ── */
-.container{max-width:1100px;margin:0 auto;padding:0 24px}
-.section{padding:90px 0}
-.section-alt{background:var(--navy-mid)}
-.section-header{margin-bottom:52px}
-.section-header.text-center{text-align:center}
-.section-header.centered{max-width:680px;margin-left:auto;margin-right:auto;text-align:center}
-.label{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px}
-.text-crimson{color:var(--crimson)}
-.text-gold{color:var(--gold)}
-.accent-line{width:48px;height:3px;background:var(--crimson)}
-.accent-line-center{margin:0 auto}
-.mb-24{margin-bottom:24px}
-.mb-48{margin-bottom:48px}
-h2{font-size:clamp(28px,4vw,42px);font-weight:900;line-height:1.1;letter-spacing:-.02em;margin-bottom:16px}
-h3{font-size:22px;font-weight:700;margin-bottom:10px}
-h4{font-size:16px;font-weight:700;margin-bottom:8px}
-p{color:var(--gray-300);line-height:1.75;margin-bottom:16px}
-p:last-child{margin-bottom:0}
-
-/* ── OPPORTUNITY INTRO ── */
-.opp-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.opp-quote{font-size:clamp(28px,4vw,44px);font-weight:900;line-height:1.15;letter-spacing:-.02em;color:var(--white);margin-bottom:24px}
-.opp-quote span{color:var(--gold)}
-.opp-metrics{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(196,163,90,0.15);border:1px solid rgba(196,163,90,0.2);border-radius:var(--radius);overflow:hidden;margin-top:28px}
-.metric-cell{background:var(--navy-light);padding:20px 24px}
-.metric-cell .num{font-size:28px;font-weight:900;color:var(--gold)}
-.metric-cell .desc{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);margin-top:2px}
-.aerial-img{width:100%;border-radius:var(--radius);border:1px solid rgba(196,163,90,0.2);display:block}
-@media(max-width:760px){
-  .opp-grid{grid-template-columns:1fr;gap:40px}
+/* ===== HERO ===== */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 24px 80px; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('hero-render.jpg');
+  background-size: cover; background-position: center 35%;
+  filter: brightness(0.38); z-index: 0;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(22,22,42,0.35) 0%, rgba(22,22,42,0.05) 45%, rgba(22,22,42,0.8) 100%);
+  z-index: 1;
+}
+.hero > .container { position: relative; z-index: 2; }
+.hero-badge {
+  display: inline-block;
+  background: var(--crimson); color: var(--white);
+  font-size: 10px; font-weight: 900; letter-spacing: .22em; text-transform: uppercase;
+  padding: 7px 22px; border-radius: 2px; margin-bottom: 32px;
+}
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 900; line-height: 1.0; letter-spacing: -.02em;
+  color: var(--white); margin-bottom: 12px;
+}
+.hero-address {
+  font-family: var(--font-sans);
+  font-size: 13px; font-weight: 700; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 24px;
+}
+.hero-divider { width: 60px; height: 2px; background: var(--crimson); margin: 0 auto 28px; }
+.hero-price {
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 400; color: var(--white); margin-bottom: 36px;
+}
+.hero-stats {
+  display: inline-flex; flex-wrap: wrap; justify-content: center;
+  border: 1px solid rgba(196,163,90,0.35); margin-bottom: 32px;
+}
+.hero-stat { padding: 18px 36px; text-align: center; border-right: 1px solid rgba(196,163,90,0.25); }
+.hero-stat:last-child { border-right: none; }
+.hero-stat .val { font-size: 22px; font-weight: 900; color: var(--gold); display: block; font-family: var(--font-serif); }
+.hero-stat .lbl { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.6); display: block; margin-top: 4px; }
+.hero-tagline { font-size: 13px; letter-spacing: .08em; color: rgba(255,255,255,0.55); margin-bottom: 40px; font-family: var(--font-sans); }
+.hero-logo img { height: 40px; width: auto; opacity: .85; margin: 0 auto; }
+@media(max-width:600px) {
+  .hero-stat { padding: 14px 18px; }
+  .hero-stat .val { font-size: 18px; }
 }
 
-/* ── ADVANTAGES ── */
-.advantages-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
-.adv-card{background:var(--navy-light);border:1px solid rgba(196,163,90,0.12);border-radius:var(--radius);padding:32px 28px;transition:border-color var(--transition),transform var(--transition)}
-.adv-card:hover{border-color:rgba(196,163,90,0.4);transform:translateY(-3px)}
-.adv-icon{width:44px;height:44px;margin-bottom:18px}
-.adv-card h4{font-size:17px;margin-bottom:10px}
-.adv-card p{font-size:14px;line-height:1.65}
-
-/* ── CONCEPT ── */
-.concept-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:start}
-.concept-img{width:100%;border-radius:var(--radius);display:block;border:1px solid rgba(196,163,90,0.15)}
-.concept-bullets{list-style:none;margin:24px 0}
-.concept-bullets li{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;font-size:15px;color:var(--gray-300);line-height:1.6}
-.concept-bullets li::before{content:'';width:6px;height:6px;background:var(--crimson);border-radius:50%;flex-shrink:0;margin-top:8px}
-.concept-disclaimer{font-size:12px;color:var(--gray-400);border-left:2px solid rgba(196,163,90,0.3);padding-left:14px;margin-top:28px;line-height:1.6}
-@media(max-width:760px){
-  .concept-grid{grid-template-columns:1fr;gap:40px}
+/* ===== OPPORTUNITY (light) ===== */
+.opp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+.opp-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 4vw, 50px);
+  font-weight: 700; line-height: 1.1; color: var(--navy);
+  margin-bottom: 24px;
 }
-
-/* ── WHY MCG ── */
-.value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
-.value-card{background:var(--navy-light);border:1px solid rgba(196,163,90,0.1);border-radius:var(--radius);padding:28px 26px;transition:border-color var(--transition)}
-.value-card:hover{border-color:rgba(196,163,90,0.35)}
-.value-card .icon{margin-bottom:16px}
-.value-card h4{font-size:16px;margin-bottom:8px;color:var(--white)}
-.value-card p{font-size:14px;line-height:1.7}
-
-/* ── BROKER ── */
-.broker-grid{display:grid;grid-template-columns:320px 1fr;gap:60px;align-items:start}
-.broker-img-wrap{border-radius:var(--radius);overflow:hidden;border:2px solid rgba(196,163,90,0.25)}
-.broker-img-wrap img{width:100%;display:block}
-.broker-details .title{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:700}
-.broker-contact{display:flex;flex-direction:column;gap:10px;margin:24px 0;padding:24px;background:var(--navy-light);border-radius:var(--radius);border:1px solid rgba(196,163,90,0.15)}
-.broker-contact .item{font-size:14px;color:var(--gray-300)}
-.broker-contact .item strong{color:var(--gold);font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-right:10px}
-.credential-badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-.credential-badge{display:inline-block;border:1px solid rgba(196,163,90,0.3);padding:5px 14px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border-radius:2px}
-@media(max-width:760px){
-  .broker-grid{grid-template-columns:1fr;gap:36px}
-  .broker-img-wrap{max-width:260px}
+.opp-quote em { color: var(--crimson); font-style: italic; }
+.opp-metrics {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--gray-200); border: 1px solid var(--gray-200);
+  border-radius: var(--radius); overflow: hidden; margin-top: 32px;
 }
+.metric-cell { background: var(--white); padding: 20px 22px; }
+.metric-cell .num { font-family: var(--font-serif); font-size: 30px; font-weight: 700; color: var(--crimson); }
+.metric-cell .desc { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-400); margin-top: 3px; }
+.aerial-wrap { position: relative; border-radius: var(--radius); overflow: hidden; box-shadow: 0 20px 60px rgba(22,22,42,0.12); }
+.aerial-wrap img { width: 100%; display: block; }
+.aerial-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(0deg, rgba(22,22,42,0.85) 0%, transparent 100%);
+  padding: 24px 16px 14px;
+  font-size: 11px; color: rgba(255,255,255,0.7); text-align: center; letter-spacing: .08em;
+}
+@media(max-width:800px) { .opp-grid { grid-template-columns: 1fr; gap: 48px; } }
 
-/* ── CTA ── */
-.cta-section{background:var(--crimson);padding:90px 24px;text-align:center}
-.cta-section h2{color:var(--white);font-size:clamp(28px,4vw,44px);margin-bottom:16px}
-.cta-section p{color:rgba(255,255,255,0.85);max-width:600px;margin:0 auto 36px;font-size:16px}
-.cta-buttons{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
-.btn{display:inline-block;padding:14px 36px;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-radius:3px;transition:all var(--transition);cursor:pointer}
-.btn-navy{background:var(--navy);color:var(--white)}
-.btn-navy:hover{background:var(--navy-mid)}
-.btn-outline{background:transparent;color:var(--white);border:2px solid rgba(255,255,255,0.6)}
-.btn-outline:hover{background:rgba(255,255,255,0.1)}
+/* ===== ADVANTAGES (dark) ===== */
+.advantages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1px; background: rgba(255,255,255,0.06); border-radius: var(--radius); overflow: hidden; }
+.adv-card { background: rgba(255,255,255,0.04); padding: 36px 30px; transition: background var(--transition); }
+.adv-card:hover { background: rgba(255,255,255,0.07); }
+.adv-icon { width: 40px; height: 40px; margin-bottom: 20px; }
+.adv-card h4 { color: var(--white); font-size: 17px; margin-bottom: 12px; }
+.adv-card p { font-size: 14px; line-height: 1.75; color: var(--gray-300); }
 
-/* ── FOOTER ── */
-.footer{background:var(--navy-mid);border-top:1px solid rgba(196,163,90,0.12);padding:40px 24px;text-align:center}
-.footer img{height:30px;width:auto;margin-bottom:16px;opacity:.7}
-.footer p{font-size:12px;color:var(--gray-400);max-width:700px;margin:0 auto 8px}
+/* ===== COTTAGE COURT (light alt) ===== */
+.cottage-intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; margin-bottom: 64px; }
+.cottage-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 3.5vw, 40px);
+  font-weight: 700; line-height: 1.2; color: var(--navy); margin-bottom: 20px;
+}
+.cottage-quote em { color: var(--crimson); font-style: italic; }
+.regs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.reg-card {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius); padding: 24px 22px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.reg-card:hover { border-color: var(--crimson); box-shadow: 0 4px 24px rgba(171,1,46,0.08); }
+.reg-card .reg-num { font-family: var(--font-serif); font-size: 36px; font-weight: 900; color: var(--crimson); display: block; margin-bottom: 4px; }
+.reg-card h4 { font-size: 14px; color: var(--navy); margin-bottom: 8px; letter-spacing: .04em; text-transform: uppercase; }
+.reg-card p { font-size: 13px; line-height: 1.7; }
+.zoning-bar {
+  background: var(--navy); color: var(--white); border-radius: var(--radius);
+  padding: 32px 36px; margin-top: 40px;
+  display: flex; align-items: center; gap: 32px;
+}
+.zoning-bar-icon { width: 48px; height: 48px; flex-shrink: 0; }
+.zoning-bar h4 { font-size: 17px; color: var(--white); margin-bottom: 6px; }
+.zoning-bar p { font-size: 14px; color: var(--gray-300); margin: 0; line-height: 1.65; }
+.process-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 0; position: relative; margin-top: 56px; }
+.process-steps::before { content:''; position:absolute; top:28px; left:0; right:0; height:1px; background:var(--gray-200); }
+.process-step { text-align: center; padding: 0 16px; position: relative; }
+.step-num {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--white); border: 2px solid var(--crimson);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--crimson);
+  margin: 0 auto 20px; position: relative; z-index: 1;
+}
+.process-step h4 { font-size: 14px; color: var(--navy); margin-bottom: 8px; }
+.process-step p { font-size: 13px; color: var(--gray-500); }
+@media(max-width:800px) { .cottage-intro-grid { grid-template-columns: 1fr; gap: 40px; } .regs-grid { grid-template-columns: 1fr; } .process-steps::before { display:none; } .zoning-bar { flex-direction: column; gap: 16px; } }
 
-/* ── SCROLL REVEAL ── */
-.animate{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
-.animate.visible{opacity:1;transform:none}
+/* ===== DEVELOPMENT CONCEPT (dark) ===== */
+.concept-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: start; }
+.concept-img-wrap { border-radius: var(--radius); overflow: hidden; border: 1px solid rgba(196,163,90,0.2); }
+.concept-img-wrap img { width: 100%; display: block; }
+.concept-bullets { list-style: none; margin: 24px 0; }
+.concept-bullets li {
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-bottom: 20px; font-size: 15px; color: var(--gray-300); line-height: 1.65;
+}
+.concept-bullets li::before {
+  content: ''; width: 5px; height: 5px; background: var(--gold);
+  border-radius: 50%; flex-shrink: 0; margin-top: 9px;
+}
+.concept-bullets li strong { color: var(--white); }
+.concept-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(196,163,90,0.15); border: 1px solid rgba(196,163,90,0.2); border-radius: var(--radius); overflow: hidden; margin-top: 28px; }
+.cstat { background: rgba(255,255,255,0.04); padding: 18px 20px; }
+.cstat .n { font-family: var(--font-serif); font-size: 26px; font-weight: 700; color: var(--gold); }
+.cstat .d { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-400); margin-top: 2px; }
+.concept-disclaimer {
+  font-size: 12px; color: var(--gray-400);
+  border-left: 2px solid rgba(196,163,90,0.3);
+  padding-left: 14px; margin-top: 28px; line-height: 1.7;
+}
+@media(max-width:800px) { .concept-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+/* ===== INVESTMENT THESIS (light) ===== */
+.thesis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+.thesis-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 3.5vw, 40px);
+  font-weight: 700; line-height: 1.2; color: var(--navy); margin-bottom: 20px;
+}
+.thesis-quote em { color: var(--crimson); font-style: italic; }
+.thesis-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+.thesis-metric {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius); padding: 20px 18px;
+  border-top: 3px solid var(--crimson);
+}
+.thesis-metric .t-num { font-family: var(--font-serif); font-size: 26px; font-weight: 700; color: var(--navy); }
+.thesis-metric .t-label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-400); margin-top: 3px; }
+.thesis-metric .t-note { font-size: 12px; color: var(--gray-500); margin-top: 6px; }
+.thesis-case { display: flex; flex-direction: column; gap: 20px; }
+.thesis-item {
+  display: flex; gap: 20px; align-items: flex-start;
+  padding: 22px; background: var(--off-white); border-radius: var(--radius);
+  border-left: 4px solid var(--crimson);
+}
+.thesis-item-icon { width: 36px; height: 36px; flex-shrink: 0; }
+.thesis-item h4 { font-size: 15px; color: var(--navy); margin-bottom: 6px; }
+.thesis-item p { font-size: 13px; color: var(--gray-500); line-height: 1.7; margin: 0; }
+@media(max-width:800px) { .thesis-grid { grid-template-columns: 1fr; gap: 40px; } .thesis-metrics { grid-template-columns: 1fr 1fr; } }
+
+/* ===== WHY MCG (dark) ===== */
+.value-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 24px; }
+.value-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(196,163,90,0.1);
+  border-radius: var(--radius); padding: 32px 28px;
+  transition: border-color var(--transition), background var(--transition);
+}
+.value-card:hover { border-color: rgba(196,163,90,0.35); background: rgba(255,255,255,0.07); }
+.value-card .icon { margin-bottom: 18px; }
+.value-card h4 { font-size: 16px; color: var(--white); margin-bottom: 10px; }
+.value-card p { font-size: 14px; line-height: 1.75; }
+
+/* ===== BROKER (light alt) ===== */
+.broker-grid { display: grid; grid-template-columns: 340px 1fr; gap: 72px; align-items: start; }
+.broker-img-wrap {
+  position: relative; border-radius: var(--radius); overflow: hidden;
+  box-shadow: 0 16px 48px rgba(22,22,42,0.15);
+}
+.broker-img-wrap img { width: 100%; display: block; }
+.broker-img-wrap::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 5px; background: var(--crimson);
+}
+.broker-details h3 { font-family: var(--font-serif); font-size: clamp(26px, 3vw, 36px); color: var(--navy); margin-bottom: 4px; }
+.broker-title { color: var(--crimson); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; margin-bottom: 22px; display: block; }
+.broker-contact { display: flex; flex-direction: column; gap: 10px; margin: 24px 0; padding: 24px; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); }
+.broker-contact .item { font-size: 14px; color: var(--gray-700); }
+.broker-contact .item strong { color: var(--crimson); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; margin-right: 10px; }
+.credential-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.credential-badge {
+  border: 1px solid var(--gray-200); padding: 5px 14px;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--gray-500); border-radius: 2px;
+}
+@media(max-width:800px) { .broker-grid { grid-template-columns: 1fr; gap: 40px; } .broker-img-wrap { max-width: 280px; } }
+
+/* ===== CTA ===== */
+.cta-section { background: var(--crimson); padding: 96px 24px; text-align: center; }
+.cta-section h2 { font-family: var(--font-serif); color: var(--white); font-size: clamp(28px,4vw,48px); margin-bottom: 16px; }
+.cta-section p { color: rgba(255,255,255,0.85); max-width: 600px; margin: 0 auto 40px; font-size: 17px; }
+.cta-buttons { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+.btn {
+  display: inline-block; padding: 15px 40px;
+  font-family: var(--font-sans); font-size: 13px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; border-radius: 2px;
+  text-decoration: none; transition: all var(--transition); cursor: pointer;
+}
+.btn-navy { background: var(--navy); color: var(--white); }
+.btn-navy:hover { background: var(--navy-light); }
+.btn-outline { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,0.55); }
+.btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--white); }
+
+/* ===== FOOTER ===== */
+.footer { background: var(--navy-light); border-top: 1px solid rgba(196,163,90,0.1); padding: 48px 24px; text-align: center; }
+.footer img { height: 28px; width: auto; margin: 0 auto 18px; opacity: .65; }
+.footer p { font-size: 12px; color: var(--gray-400); max-width: 720px; margin: 0 auto 6px; line-height: 1.7; }
+
+/* ===== SCROLL REVEAL ===== */
+.animate { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+.animate.visible { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
@@ -164,10 +361,11 @@ p:last-child{margin-bottom:0}
 <nav class="nav">
   <div class="nav-logo"><a href="https://www.masoncapitalgroup.com" target="_blank"><img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group"></a></div>
   <div class="nav-links" id="navLinks">
-    <a href="#property">Overview</a>
+    <a href="#opportunity">Overview</a>
     <a href="#advantages">Advantages</a>
+    <a href="#framework">Framework</a>
     <a href="#concept">Concept</a>
-    <a href="#why-mcg">Why MCG</a>
+    <a href="#thesis">Investment</a>
     <a href="#broker">Advisor</a>
     <a href="#contact">Contact</a>
   </div>
@@ -175,153 +373,336 @@ p:last-child{margin-bottom:0}
 </nav>
 
 <!-- HERO -->
-<section class="hero" id="property">
+<section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="container">
     <div class="hero-badge">Investment Opportunity</div>
     <div class="hero-title">North Walton<br>Boulevard</div>
-    <div class="hero-address">Bentonville, Arkansas</div>
-    <div style="width:80px;height:3px;background:var(--crimson);margin:0 auto 28px"></div>
+    <div class="hero-address">Bentonville, Arkansas &nbsp;&middot;&nbsp; 72712</div>
+    <div class="hero-divider"></div>
     <div class="hero-price">$3,500,000</div>
     <div class="hero-stats">
-      <div class="hero-stat"><span class="val">6.5&plusmn; Acres</span><span class="lbl">Total Acreage</span></div>
-      <div class="hero-stat"><span class="val">90+ Units</span><span class="lbl">Planned Residences</span></div>
-      <div class="hero-stat"><span class="val">13.8/Acre</span><span class="lbl">Density</span></div>
-      <div class="hero-stat"><span class="val">Cottage PUD</span><span class="lbl">Development Type</span></div>
+      <div class="hero-stat"><span class="val">6.5&plusmn;</span><span class="lbl">Acres</span></div>
+      <div class="hero-stat"><span class="val">90+</span><span class="lbl">Planned Units</span></div>
+      <div class="hero-stat"><span class="val">13.8</span><span class="lbl">Units / Acre</span></div>
+      <div class="hero-stat"><span class="val">Cottage PUD</span><span class="lbl">Zoning Type</span></div>
     </div>
-    <div class="hero-tagline">6.5-Acre Wooded Infill Development Opportunity &nbsp;&bull;&nbsp; Bentonville, Arkansas</div>
+    <div class="hero-tagline">6.5-Acre Wooded Infill Development Opportunity &nbsp;&bull;&nbsp; Fronting North Walton Boulevard</div>
     <div class="hero-logo"><a href="https://www.masoncapitalgroup.com" target="_blank"><img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group"></a></div>
   </div>
 </section>
 
-<!-- THE OPPORTUNITY -->
-<section class="section" id="overview">
+<!-- THE OPPORTUNITY (light) -->
+<section class="section" id="opportunity">
   <div class="container">
     <div class="opp-grid">
       <div class="animate">
-        <span class="label text-crimson">The Opportunity</span>
-        <div class="opp-quote">A village in<br><span>the tree line.</span></div>
-        <div class="accent-line mb-24"></div>
-        <p>A rare 6.5-acre wooded, gently sloped parcel inside Bentonville &mdash; large enough for a genuine masterplanned community, not a handful of lots. The concept scatters ninety-plus residences across the site in intimate clusters of four, each sharing a landscaped courtyard, while retail and commercial space anchors the North Walton Boulevard frontage.</p>
-        <p>A central greenway runs the full length of the parcel. A bike and pedestrian loop traces its edge. The connective tissue of the community is parkland and path &mdash; not pavement and curb.</p>
-        <p>At roughly 13.8 units per acre, the plan delivers meaningful density while preserving the wooded character that defines the site and its surroundings &mdash; a development thesis that has demonstrated strong absorption in comparable NWA infill markets.</p>
-        <div class="opp-metrics animate">
-          <div class="metric-cell"><div class="num">6.5&plusmn;</div><div class="desc">Acres</div></div>
-          <div class="metric-cell"><div class="num">90+</div><div class="desc">Planned Residences</div></div>
-          <div class="metric-cell"><div class="num">13.8</div><div class="desc">Units / Acre</div></div>
-          <div class="metric-cell"><div class="num">$538K</div><div class="desc">Per Acre</div></div>
+        <span class="label">The Opportunity</span>
+        <div class="opp-quote">A village in<br><em>the tree line.</em></div>
+        <div class="accent-bar"></div>
+        <p>A rare 6.5-acre wooded parcel inside Bentonville &mdash; large enough for a genuine master-planned community, rare enough to be effectively non-replenishable. The concept scatters ninety-plus cottage residences across the site in intimate clusters, each oriented around a shared courtyard, while retail and commercial space anchors the North Walton Boulevard frontage.</p>
+        <p>A central greenway runs the full length of the parcel. A bike and pedestrian loop traces its perimeter. The connective tissue of the community is parkland and path &mdash; not pavement and curb. At 13.8 units per acre, the plan delivers meaningful density while preserving the wooded character that defines this site and its surroundings.</p>
+        <div class="opp-metrics">
+          <div class="metric-cell animate"><div class="num">6.5&plusmn;</div><div class="desc">Acres</div></div>
+          <div class="metric-cell animate"><div class="num">90+</div><div class="desc">Planned Residences</div></div>
+          <div class="metric-cell animate"><div class="num">13.8</div><div class="desc">Units per Acre</div></div>
+          <div class="metric-cell animate"><div class="num">$38.9K</div><div class="desc">Land Cost / Unit</div></div>
         </div>
       </div>
       <div class="animate">
-        <img src="site-aerial.png" alt="North Walton Boulevard &mdash; Aerial Site View" class="aerial-img">
-        <p style="font-size:12px;color:var(--gray-400);margin-top:10px;text-align:center;">Boundary survey overlaid on aerial &mdash; 6.5&plusmn; acres fronting N Walton Boulevard</p>
+        <div class="aerial-wrap">
+          <img src="site-aerial.png" alt="North Walton Boulevard &mdash; Aerial Site View with Boundary Survey">
+          <div class="aerial-caption">Boundary survey overlaid &mdash; 6.5&plusmn; acres fronting N Walton Blvd, Bentonville</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SITE ADVANTAGES -->
-<section class="section section-alt" id="advantages">
+<!-- SITE ADVANTAGES (dark) -->
+<section class="section section-dark" id="advantages">
   <div class="container">
-    <div class="section-header centered animate">
-      <span class="label text-crimson">Site Advantages</span>
-      <h2>An Established Address<br>With Room to Build</h2>
-      <div class="accent-line accent-line-center mb-24" style="margin-top:16px"></div>
-      <p>North Walton Boulevard sits at the intersection of Bentonville&rsquo;s proven demand, greenway connectivity, and a rare infill canvas &mdash; conditions that rarely converge at this scale inside a primary NWA city.</p>
+    <div class="section-header text-center animate mb-56">
+      <span class="label">Site Advantages</span>
+      <h2 style="color:var(--white);margin-top:8px;">An Established Address<br>With Room to Build</h2>
+      <div class="accent-bar accent-bar-gold accent-bar-center" style="margin-top:16px;margin-bottom:0;"></div>
     </div>
-    <div class="advantages-grid">
-      <div class="adv-card animate">
-        <svg class="adv-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4" y="8" width="36" height="28" rx="3" stroke="#ab012e" stroke-width="2" fill="none"/>
-          <path d="M4 18h36" stroke="#ab012e" stroke-width="1.5" opacity=".4"/>
-          <rect x="12" y="22" width="8" height="10" rx="1" fill="#c4a35a" opacity=".8"/>
-          <rect x="24" y="22" width="8" height="10" rx="1" fill="#c4a35a" opacity=".5"/>
-          <path d="M12 14h6M24 14h6" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/>
+    <div class="advantages-grid animate">
+      <div class="adv-card">
+        <svg class="adv-icon" viewBox="0 0 40 40" fill="none">
+          <rect x="4" y="8" width="32" height="24" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/>
+          <path d="M4 18h32" stroke="#ab012e" stroke-width="1.5" opacity=".4"/>
+          <rect x="11" y="22" width="7" height="8" rx="1" fill="#c4a35a" opacity=".8"/>
+          <rect x="22" y="22" width="7" height="8" rx="1" fill="#c4a35a" opacity=".5"/>
+          <path d="M11 13h5M22 13h5" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/>
         </svg>
         <h4>Hard Arterial Frontage</h4>
-        <p>Direct frontage on North Walton Boulevard &mdash; a primary north&ndash;south arterial through Bentonville, the Northwest Arkansas city anchored by Walmart&rsquo;s global headquarters. Maximum visibility, maximum access.</p>
+        <p>Direct frontage on North Walton Boulevard &mdash; a primary north&ndash;south arterial through Bentonville, the city anchored by Walmart&rsquo;s global headquarters. Maximum visibility from day one.</p>
       </div>
-      <div class="adv-card animate">
-        <svg class="adv-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="22" cy="20" r="10" stroke="#ab012e" stroke-width="2" fill="none"/>
-          <circle cx="22" cy="20" r="4" fill="#c4a35a" opacity=".7"/>
-          <path d="M22 6v4M22 30v4M6 20h4M30 20h4" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/>
-          <path d="M10 10l3 3M31 31l3 3M31 9l3-3M10 34l3-3" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+      <div class="adv-card">
+        <svg class="adv-icon" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="18" r="9" stroke="#ab012e" stroke-width="2" fill="none"/>
+          <circle cx="20" cy="18" r="3.5" fill="#c4a35a" opacity=".7"/>
+          <path d="M20 5v4M20 27v4M5 18h4M27 18h4" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/>
+          <path d="M9 9l2.5 2.5M28 28l2 2M28 8l2-2M9 31l2-2" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
         </svg>
         <h4>Proven Surrounding Demand</h4>
-        <p>Wrapped by mature, established neighborhoods &mdash; Princeton Square, Oxford Gate, and Oakwood &mdash; with infrastructure and schools already in place. This parcel inherits the equity of its surroundings from day one.</p>
+        <p>Wrapped by mature, established neighborhoods &mdash; Princeton Square, Oxford Gate, and Oakwood &mdash; with infrastructure and top-rated schools in place. This parcel inherits the equity of its surroundings from day one.</p>
       </div>
-      <div class="adv-card animate">
-        <svg class="adv-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 34c4-8 10-14 18-14s14 6 14 6" stroke="#ab012e" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <path d="M14 28c2-4 5-8 10-8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="32" cy="26" r="4" stroke="#ab012e" stroke-width="2" fill="none"/>
-          <circle cx="32" cy="26" r="1.5" fill="#c4a35a"/>
-          <path d="M10 18v-8h8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M10 18l8-8" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round"/>
+      <div class="adv-card">
+        <svg class="adv-icon" viewBox="0 0 40 40" fill="none">
+          <path d="M6 32c4-8 10-14 18-14s12 6 12 6" stroke="#ab012e" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M12 26c2-4 5-7 9-7" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="30" cy="24" r="3.5" stroke="#ab012e" stroke-width="2" fill="none"/>
+          <circle cx="30" cy="24" r="1.5" fill="#c4a35a"/>
+          <path d="M8 16v-7h7" stroke="#c4a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 16l7-7" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
-        <h4>Connected to the Greenway</h4>
-        <p>Minutes to the Razorback Regional Greenway and I-49 &mdash; the 40-mile trail and interstate spine linking Bentonville, Rogers, and Fayetteville. Greenway adjacency is a proven premium driver in NWA residential markets.</p>
+        <h4>Greenway &amp; I-49 Access</h4>
+        <p>Minutes to the Razorback Regional Greenway and Interstate 49 &mdash; the 40-mile trail and highway spine linking Bentonville, Rogers, and Fayetteville. Greenway adjacency commands a premium in NWA residential markets.</p>
       </div>
-      <div class="adv-card animate">
-        <svg class="adv-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="6" width="32" height="32" rx="3" stroke="#ab012e" stroke-width="2" fill="none"/>
-          <path d="M6 22h32" stroke="#ab012e" stroke-width="1.5" opacity=".4"/>
-          <path d="M22 6v32" stroke="#ab012e" stroke-width="1.5" opacity=".4"/>
-          <path d="M14 16l8 8 8-8" stroke="#c4a35a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M14 28h16" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/>
+      <div class="adv-card">
+        <svg class="adv-icon" viewBox="0 0 40 40" fill="none">
+          <rect x="4" y="4" width="32" height="32" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/>
+          <path d="M4 20h32M20 4v32" stroke="#ab012e" stroke-width="1.5" opacity=".3"/>
+          <path d="M12 15l8 7 8-7" stroke="#c4a35a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 26h16" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/>
         </svg>
-        <h4>Rare Infill Canvas</h4>
-        <p>A 6.5-acre wooded, gently sloped parcel inside Bentonville city limits &mdash; large enough for a genuine masterplanned community. Parcels of this size, this close to the core, are effectively non-replenishable.</p>
+        <h4>Non-Replenishable Infill Canvas</h4>
+        <p>A 6.5-acre wooded parcel inside Bentonville city limits &mdash; large enough for a master-planned community. Parcels of this size, this close to the city&rsquo;s economic core, are effectively impossible to replicate.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DEVELOPMENT CONCEPT -->
-<section class="section" id="concept">
+<!-- COTTAGE COURT FRAMEWORK (light alt) -->
+<section class="section section-alt" id="framework">
   <div class="container">
-    <div class="section-header animate">
-      <span class="label text-crimson">Development Concept</span>
-      <h2>Clusters of Four,<br>Threaded with Green</h2>
-      <div class="accent-line mb-24" style="margin-top:16px"></div>
+    <div class="section-header animate mb-40">
+      <span class="label">Regulatory Framework</span>
+      <h2 style="margin-top:8px;">Bentonville Cottage Court<br>Dwellings &mdash; What Builders Need to Know</h2>
+      <div class="accent-bar" style="margin-top:16px;margin-bottom:20px;"></div>
+      <p style="max-width:680px;">The City of Bentonville formally regulates cottage communities as <strong style="color:var(--navy)">&ldquo;Cottage Court Dwellings&rdquo;</strong> under its Development Code. The framework is purpose-built to enable missing-middle density in compact, walkable infill areas &mdash; exactly the context this site occupies. Here&rsquo;s the regulatory environment a developer enters on day one.</p>
+    </div>
+
+    <div class="cottage-intro-grid animate">
+      <div>
+        <div class="cottage-quote">A code built for<br><em>exactly this site.</em></div>
+        <p>Bentonville&rsquo;s Cottage Court Dwelling ordinance was drafted to encourage the &ldquo;missing middle&rdquo; &mdash; the range of compact, attainable housing types between single-family lots and mid-rise apartments. The North Walton parcel&rsquo;s size, location, and zoning context places it squarely within the target category.</p>
+        <p>The code permits cottage courts by right or through specific zoning designations in compact, walkable districts &mdash; reducing entitlement risk and timeline uncertainty for builders. Courtyard orientation requirements and shared open space mandates align naturally with the village-style masterplan already envisioned for this site.</p>
+        <p>With Bentonville actively seeking to increase housing supply in established neighborhoods, this offering carries less municipal headwind than comparable parcels in other jurisdictions.</p>
+      </div>
+      <div>
+        <div class="regs-grid">
+          <div class="reg-card">
+            <span class="reg-num">4–12</span>
+            <h4>Units Per Court</h4>
+            <p>Each cottage court must include a minimum of 4 and no more than 12 detached structures. The North Walton concept groups homes in courts of four &mdash; the minimum cluster, maximizing flexibility.</p>
+          </div>
+          <div class="reg-card">
+            <span class="reg-num">100%</span>
+            <h4>Courtyard Orientation</h4>
+            <p>Every home must have its primary entrance oriented toward the shared courtyard, which must be clearly visible from the street &mdash; creating a community identity that commands premium pricing.</p>
+          </div>
+          <div class="reg-card">
+            <span class="reg-num">PUD</span>
+            <h4>Planned Unit Development</h4>
+            <p>The PUD framework provides flexibility in lot configuration, setbacks, and shared infrastructure &mdash; enabling the greenway spine and courtyard layout without variance risk on each individual lot.</p>
+          </div>
+          <div class="reg-card">
+            <span class="reg-num">90+</span>
+            <h4>Planned Residences</h4>
+            <p>At 13.8 units per acre, the site comfortably exceeds the minimum density thresholds for cottage court zoning while remaining within the design parameters the city actively encourages.</p>
+          </div>
+        </div>
+        <div class="zoning-bar animate">
+          <svg class="zoning-bar-icon" viewBox="0 0 48 48" fill="none">
+            <rect x="4" y="10" width="40" height="32" rx="3" stroke="#c4a35a" stroke-width="2" fill="none"/>
+            <path d="M4 22h40" stroke="#c4a35a" stroke-width="1.5" opacity=".4"/>
+            <path d="M24 4v6" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 4v6M32 4v6" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="16" cy="30" r="3" fill="#ab012e" opacity=".7"/>
+            <circle cx="24" cy="30" r="3" fill="#c4a35a" opacity=".7"/>
+            <circle cx="32" cy="30" r="3" fill="#ab012e" opacity=".7"/>
+            <circle cx="16" cy="38" r="3" fill="#c4a35a" opacity=".5"/>
+            <circle cx="24" cy="38" r="3" fill="#ab012e" opacity=".5"/>
+          </svg>
+          <div>
+            <h4>Permitted in Compact &amp; Walkable Zones</h4>
+            <p>Bentonville&rsquo;s code permits cottage courts by right in walkable, infill zoning districts &mdash; reducing the entitlement timeline compared to rezoning or conditional-use-permit processes. The city&rsquo;s Current Planning division actively supports missing-middle density applications in corridors like North Walton Boulevard.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="animate">
+      <div class="text-center mb-24">
+        <span class="label">Typical Entitlement Path</span>
+        <h3 style="margin-top:8px;color:var(--navy);">From Acquisition to Shovel-Ready</h3>
+      </div>
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="step-num">1</div>
+          <h4>Site Due Diligence</h4>
+          <p>Survey, geotechnical, civil engineering review &mdash; 60&ndash;90 days concurrent with contract period</p>
+        </div>
+        <div class="process-step">
+          <div class="step-num">2</div>
+          <h4>PUD Application</h4>
+          <p>Submit Planned Unit Development application to Bentonville Current Planning &mdash; 30&ndash;45 day review period</p>
+        </div>
+        <div class="process-step">
+          <div class="step-num">3</div>
+          <h4>Planning Commission</h4>
+          <p>Public hearing before the Bentonville Planning Commission for PUD approval &mdash; typically 1 meeting cycle</p>
+        </div>
+        <div class="process-step">
+          <div class="step-num">4</div>
+          <h4>Final Plat &amp; Permits</h4>
+          <p>Final plat recording, utility design, and building permit submittal &mdash; 60&ndash;90 days to vertical</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVELOPMENT CONCEPT (dark) -->
+<section class="section section-dark" id="concept">
+  <div class="container">
+    <div class="section-header animate mb-40">
+      <span class="label">Development Concept</span>
+      <h2 style="color:var(--white);margin-top:8px;">Clusters of Four,<br>Threaded with Green</h2>
+      <div class="accent-bar accent-bar-gold" style="margin-top:16px;margin-bottom:0;"></div>
     </div>
     <div class="concept-grid">
       <div class="animate">
-        <img src="site-concept.png" alt="North Walton &mdash; Development Concept Render" class="concept-img">
+        <div class="concept-img-wrap">
+          <img src="site-concept.png" alt="North Walton &mdash; Development Concept Render">
+        </div>
       </div>
       <div class="animate">
-        <p>Rather than a conventional grid of lots, the plan scatters homes across the parcel in intimate courts of four. Each cluster shares a landscaped courtyard and a short walk to open space. Retail and commercial space anchors the North Walton Boulevard frontage &mdash; neighborhood-serving uses that activate the street edge and generate ground-floor revenue from day one.</p>
+        <p>Rather than a conventional grid of lots, the plan distributes homes across the parcel in intimate courts of four. Each cluster shares a landscaped courtyard and a short walk to open space. Retail and commercial anchors the North Walton Boulevard frontage &mdash; neighborhood-serving uses that activate the street edge and generate ground-floor revenue from opening day.</p>
         <ul class="concept-bullets">
-          <li><strong>Clusters of four</strong> &mdash; courtyard groupings that balance density with privacy, reducing perceived mass while maintaining yield.</li>
-          <li><strong>Greenway spine</strong> &mdash; shared parkland running the full length of the parcel, connecting every court end to end.</li>
-          <li><strong>Bike &amp; pedestrian loop</strong> &mdash; a car-light circuit around the community, tying into the regional trail network.</li>
-          <li><strong>Retail &amp; commercial frontage</strong> &mdash; neighborhood-serving space along North Walton, walkable from every residence.</li>
-          <li><strong>Retention pond</strong> &mdash; stormwater management integrated as an open-space amenity.</li>
+          <li><strong>Clusters of four</strong> &mdash; courtyard groupings that balance density with privacy, reducing perceived mass while maintaining yield and satisfying Bentonville&rsquo;s cottage court orientation requirement.</li>
+          <li><strong>Greenway spine</strong> &mdash; shared parkland running the full length of the parcel, connecting every court and meeting the city&rsquo;s open space mandate.</li>
+          <li><strong>Bike &amp; pedestrian loop</strong> &mdash; a car-light circuit around the community tying into the regional Razorback Greenway network.</li>
+          <li><strong>Retail &amp; commercial frontage</strong> &mdash; neighborhood-serving space along North Walton, walkable from every residence &mdash; a proven rent-generating anchor in NWA cottage communities.</li>
+          <li><strong>Retention pond</strong> &mdash; stormwater management integrated as an open-space amenity, reducing civil engineering cost while adding community character.</li>
         </ul>
-        <div style="background:var(--navy-light);border:1px solid rgba(196,163,90,0.15);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-            <div><div style="font-size:20px;font-weight:900;color:var(--gold)">90+</div><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400)">Planned Residences</div></div>
-            <div><div style="font-size:20px;font-weight:900;color:var(--gold)">13.8/ac</div><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400)">Density</div></div>
-            <div><div style="font-size:20px;font-weight:900;color:var(--gold)">4</div><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400)">Homes Per Cluster</div></div>
-            <div><div style="font-size:20px;font-weight:900;color:var(--gold)">Cottage</div><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400)">Zoning Framework</div></div>
-          </div>
+        <div class="concept-stats">
+          <div class="cstat"><div class="n">90+</div><div class="d">Planned Residences</div></div>
+          <div class="cstat"><div class="n">13.8/ac</div><div class="d">Density</div></div>
+          <div class="cstat"><div class="n">4</div><div class="d">Homes Per Court</div></div>
+          <div class="cstat"><div class="n">Cottage</div><div class="d">Zoning Type</div></div>
         </div>
-        <div class="concept-disclaimer">Design and concept follow the City of Bentonville&rsquo;s cottage zoning guidelines. Neither the plan nor the concept has been formally approved by the Bentonville Planning Commission. Unit counts are illustrative and subject to survey, geotechnical review, civil engineering, and municipal entitlement. Information believed reliable but not guaranteed &mdash; verify independently.</div>
+        <div class="concept-disclaimer">Design follows the City of Bentonville&rsquo;s Cottage Court Dwelling guidelines. Neither the plan nor the concept has been formally approved by the Bentonville Planning Commission. Unit counts are illustrative and subject to survey, geotechnical review, civil engineering, and municipal entitlement. Information believed reliable but not guaranteed &mdash; verify independently.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- WHY MCG -->
-<section class="section section-alt" id="why-mcg">
+<!-- INVESTMENT THESIS (light) -->
+<section class="section" id="thesis">
   <div class="container">
-    <div class="section-header centered animate mb-48">
-      <span class="label text-crimson">The MCG Advantage</span>
-      <h2>Why Mason Capital Group Is the<br>Right Partner for This Acquisition</h2>
-      <div class="accent-line accent-line-center mb-24" style="margin-top:16px"></div>
-      <p>Mason Capital Group is a full-service real estate investment and advisory firm with over 30 years of Northwest Arkansas market expertise. We bring institutional-level market intelligence, deal structuring, and transaction management that align with how sophisticated investors and developers evaluate and acquire high-value land assets.</p>
+    <div class="section-header text-center animate mb-56">
+      <span class="label">Investment Thesis</span>
+      <h2 style="margin-top:8px;">The Numbers Behind<br>the Opportunity</h2>
+      <div class="accent-bar accent-bar-center" style="margin-top:16px;margin-bottom:16px;"></div>
+      <p style="max-width:620px;margin:0 auto;">At $3,500,000, the acquisition delivers a land cost per planned unit that sits well inside the threshold where NWA cottage development pencils at current absorption prices.</p>
+    </div>
+    <div class="thesis-grid animate">
+      <div>
+        <div class="thesis-quote">Land cost that<br><em>leaves room for margin.</em></div>
+        <p>Northwest Arkansas cottage homes &mdash; the compact, detached, courtyard-oriented product type this site is designed to yield &mdash; have demonstrated consistent price performance in the $350,000&ndash;$500,000 range in established Bentonville addresses. At $38,889 per planned unit, this land acquisition sits at approximately 9% of gross development value &mdash; the sweet spot for residential land in primary NWA markets.</p>
+        <p>Bentonville continues to attract corporate relocation, Walmart supply-chain headquarters, and Walmart-adjacent technology firms at a pace that has sustained home price appreciation above national averages for six consecutive years. Missing-middle product in walkable, greenway-connected locations remains undersupplied relative to demand.</p>
+        <div class="thesis-metrics">
+          <div class="thesis-metric">
+            <div class="t-num">$38.9K</div>
+            <div class="t-label">Land Cost / Unit</div>
+            <div class="t-note">$3.5M &divide; 90 planned residences</div>
+          </div>
+          <div class="thesis-metric">
+            <div class="t-num">~9%</div>
+            <div class="t-label">Land-to-GDV Ratio</div>
+            <div class="t-note">At $400K avg sale price per cottage unit</div>
+          </div>
+          <div class="thesis-metric">
+            <div class="t-num">$31.5M+</div>
+            <div class="t-label">Gross Development Value</div>
+            <div class="t-note">90 units at $350K avg (conservative)</div>
+          </div>
+          <div class="thesis-metric">
+            <div class="t-num">6 yrs</div>
+            <div class="t-label">NWA Price Appreciation Run</div>
+            <div class="t-note">Consecutive years above national avg</div>
+          </div>
+        </div>
+      </div>
+      <div class="thesis-case">
+        <div class="thesis-item animate">
+          <svg class="thesis-item-icon" viewBox="0 0 36 36" fill="none">
+            <path d="M4 28L10 20L16 23L24 13L32 6" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M24 6H32V13" stroke="#ab012e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="10" cy="20" r="2.5" fill="#c4a35a" opacity=".6"/>
+            <circle cx="16" cy="23" r="2.5" fill="#c4a35a" opacity=".6"/>
+            <circle cx="24" cy="13" r="2.5" fill="#c4a35a" opacity=".6"/>
+          </svg>
+          <div>
+            <h4>Demand Outpaces Supply</h4>
+            <p>Bentonville adds net new corporate jobs faster than its housing stock can respond. Missing-middle product &mdash; specifically the cottage and compact detached typology &mdash; remains the market&rsquo;s most undersupplied segment, with typical absorption well under 90 days for completed product.</p>
+          </div>
+        </div>
+        <div class="thesis-item animate">
+          <svg class="thesis-item-icon" viewBox="0 0 36 36" fill="none">
+            <rect x="4" y="8" width="28" height="22" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/>
+            <path d="M4 16h28" stroke="#ab012e" stroke-width="1.5" opacity=".4"/>
+            <circle cx="12" cy="24" r="2" fill="#c4a35a"/>
+            <circle cx="18" cy="24" r="2" fill="#ab012e"/>
+            <circle cx="24" cy="24" r="2" fill="#c4a35a"/>
+            <path d="M18 4v4" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/>
+            <path d="M11 4v4M25 4v4" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <h4>Lower Entitlement Risk</h4>
+            <p>Bentonville&rsquo;s Cottage Court Dwelling code provides a clear, by-right pathway in compact walkable zones. No speculative rezoning required &mdash; this site fits an existing, approved framework, reducing timeline and approval risk for developers.</p>
+          </div>
+        </div>
+        <div class="thesis-item animate">
+          <svg class="thesis-item-icon" viewBox="0 0 36 36" fill="none">
+            <path d="M6 28c4-8 10-12 12-12s8 4 12 12" stroke="#ab012e" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <circle cx="18" cy="12" r="5" stroke="#ab012e" stroke-width="2" fill="none"/>
+            <circle cx="18" cy="12" r="2" fill="#c4a35a"/>
+            <path d="M10 20c1-2 4-4 8-4" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <h4>Greenway-Adjacent Premium</h4>
+            <p>Properties within walking distance of the Razorback Regional Greenway consistently transact at a premium above comparable non-greenway addresses in Bentonville and Rogers. This site&rsquo;s proximity is a structural price floor, not a marketing feature.</p>
+          </div>
+        </div>
+        <div class="thesis-item animate">
+          <svg class="thesis-item-icon" viewBox="0 0 36 36" fill="none">
+            <polygon points="18,4 22,14 32,14 24,20 27,31 18,24 9,31 12,20 4,14 14,14" stroke="#c4a35a" stroke-width="2" fill="none" stroke-linejoin="round"/>
+            <path d="M14 17L17 20L23 14" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div>
+            <h4>Retail Revenue Layer</h4>
+            <p>The North Walton Boulevard frontage creates a natural commercial edge &mdash; ground-floor retail and neighborhood-serving uses that generate immediate income upon completion, independent of residential absorption pace.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY MCG (dark) -->
+<section class="section section-dark" id="why-mcg">
+  <div class="container">
+    <div class="section-header text-center animate mb-56">
+      <span class="label">The MCG Advantage</span>
+      <h2 style="color:var(--white);margin-top:8px;">Why Mason Capital Group Is the<br>Right Partner for This Acquisition</h2>
+      <div class="accent-bar accent-bar-gold accent-bar-center" style="margin-top:16px;margin-bottom:16px;"></div>
+      <p style="max-width:620px;margin:0 auto;">A full-service real estate investment and advisory firm with over 30 years of Northwest Arkansas market expertise. We bring institutional-level deal structuring and transaction management to high-value land acquisitions.</p>
     </div>
     <div class="value-grid">
       <div class="value-card animate">
@@ -336,7 +717,7 @@ p:last-child{margin-bottom:0}
           <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="15" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="6" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="2" fill="#ab012e"/><line x1="18" y1="3" x2="18" y2="9" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="27" x2="18" y2="33" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="9" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="27" y1="18" x2="33" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
         <h4>Investment-Grade Marketing</h4>
-        <p>We market development opportunities the way institutional investors expect &mdash; with professional photography, digital offering memorandums, targeted ad campaigns, and syndication across nearly 100 platforms including Zillow, Realtor.com, Redfin, and Crexi.</p>
+        <p>We market development opportunities the way institutional investors expect &mdash; with professional photography, digital offering memorandums, targeted campaigns, and syndication across nearly 100 platforms including Zillow, Realtor.com, Redfin, and Crexi.</p>
       </div>
       <div class="value-card animate">
         <div class="icon">
@@ -350,14 +731,14 @@ p:last-child{margin-bottom:0}
           <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M4 28L12 20L18 24L26 14L32 8" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 8H32V14" stroke="#ab012e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="20" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="18" cy="24" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="26" cy="14" r="3" fill="#c4a35a" opacity="0.3"/></svg>
         </div>
         <h4>30 Years in Northwest Arkansas</h4>
-        <p>Over $2.4 billion in completed transactions across residential, commercial, land, and development categories. Deep market intelligence in the Bentonville corridor &mdash; combined with relationships that open doors no MLS listing can.</p>
+        <p>Over $2.4 billion in completed transactions across residential, commercial, land, and development categories. Deep market intelligence in the Bentonville corridor &mdash; with relationships that open doors no MLS listing can.</p>
       </div>
       <div class="value-card animate">
         <div class="icon">
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="4" y="8" width="28" height="24" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M4 16H32" stroke="#ab012e" stroke-width="2"/><path d="M18 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M11 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M25 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="22" r="2" fill="#ab012e"/><circle cx="18" cy="22" r="2" fill="#c4a35a"/><circle cx="24" cy="22" r="2" fill="#ab012e"/><circle cx="12" cy="28" r="2" fill="#c4a35a"/><circle cx="18" cy="28" r="2" fill="#ab012e"/></svg>
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="4" y="8" width="28" height="24" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M4 16H32" stroke="#ab012e" stroke-width="2"/><path d="M18 4V8M11 4V8M25 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="22" r="2" fill="#ab012e"/><circle cx="18" cy="22" r="2" fill="#c4a35a"/><circle cx="24" cy="22" r="2" fill="#ab012e"/><circle cx="12" cy="28" r="2" fill="#c4a35a"/><circle cx="18" cy="28" r="2" fill="#ab012e"/></svg>
         </div>
         <h4>Drone Aerials &amp; Site Video</h4>
-        <p>For land and development listings, we produce HD drone aerials, cinematic flyover video, and site plan overlays &mdash; giving buyers and developers a complete picture of the parcel before they visit.</p>
+        <p>For land and development listings, we produce HD drone aerials, cinematic flyover video, and site plan overlays &mdash; giving buyers and developers a complete picture of the parcel before their first site visit.</p>
       </div>
       <div class="value-card animate">
         <div class="icon">
@@ -370,20 +751,18 @@ p:last-child{margin-bottom:0}
   </div>
 </section>
 
-<!-- BROKER -->
-<section class="section" id="broker">
+<!-- BROKER (light alt) -->
+<section class="section section-alt" id="broker">
   <div class="container">
     <div class="broker-grid">
       <div class="broker-img-wrap animate">
         <img src="broker-headshot.jpg" alt="Cameron Torabi &mdash; Principal Broker, Mason Capital Group">
       </div>
       <div class="broker-details animate">
-        <div class="section-header">
-          <span class="label text-crimson">Exclusive Listing Broker</span>
-          <h2>Cameron Torabi</h2>
-        </div>
-        <div class="title">Principal Broker &mdash; Mason Capital Group</div>
-        <p>The North Walton Boulevard parcel is one of the most compelling infill development opportunities in Northwest Arkansas &mdash; a 6.5-acre wooded site inside Bentonville city limits, fronting a primary arterial, with a cottage-zoning framework capable of delivering ninety-plus residences in a community designed around greenways rather than streets.</p>
+        <span class="label" style="margin-bottom:8px;">Exclusive Listing Broker</span>
+        <h3 class="mb-8">Cameron Torabi</h3>
+        <span class="broker-title">Principal Broker &mdash; Mason Capital Group</span>
+        <p>The North Walton Boulevard parcel is one of the most compelling infill development opportunities in Northwest Arkansas &mdash; a 6.5-acre wooded site inside Bentonville city limits, fronting a primary arterial, structured under a Cottage Court zoning framework capable of delivering ninety-plus residences in a community designed around greenways rather than streets.</p>
         <p>With over 30 years in Northwest Arkansas real estate and $2.4 billion in completed transactions, Mason Capital Group brings the market intelligence, developer network, and institutional-grade marketing infrastructure to execute at the level this asset demands. This offering is available exclusively through our firm.</p>
         <div class="broker-contact">
           <div class="item"><strong>Phone</strong>(479) 925-3333</div>
@@ -393,6 +772,7 @@ p:last-child{margin-bottom:0}
         <div class="credential-badges">
           <span class="credential-badge">AR RE License #PB00056565</span>
           <span class="credential-badge">Principal Broker</span>
+          <span class="credential-badge">30+ Years NWA Market</span>
         </div>
       </div>
     </div>
@@ -405,40 +785,42 @@ p:last-child{margin-bottom:0}
   <p>North Walton Boulevard is available exclusively through Mason Capital Group. To request the full investment package, schedule a site tour, or discuss acquisition terms, contact our team directly.</p>
   <div class="cta-buttons">
     <a href="tel:4799253333" class="btn btn-navy">Call (479) 925-3333</a>
-    <a href="mailto:Info@MasonCapitalGroup.com?subject=North Walton Boulevard %E2%80%94 Investment Inquiry" class="btn btn-outline">Request Investment Package</a>
+    <a href="mailto:Info@MasonCapitalGroup.com?subject=North Walton Boulevard — Investment Inquiry" class="btn btn-outline">Request Investment Package</a>
   </div>
-  <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:40px;">www.MasonCapitalGroup.com</p>
+  <p style="font-size:13px;color:rgba(255,255,255,0.55);margin-top:40px;">www.MasonCapitalGroup.com</p>
 </section>
 
 <!-- FOOTER -->
 <footer class="footer">
   <a href="https://www.masoncapitalgroup.com" target="_blank"><img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group"></a>
-  <p>Mason Capital Group &middot; Real Estate Investment &amp; Trust &middot; AR RE License #PB00056565</p>
-  <p style="margin-top:8px;">Design and concept follow the City of Bentonville&rsquo;s cottage zoning guidelines. Neither the plan nor the concept has been formally approved by the Bentonville Planning Commission. Concept and unit counts are illustrative and subject to survey, geotechnical review, civil engineering, and municipal entitlement. Not an offer where prohibited. Information believed reliable but not guaranteed &mdash; verify independently.</p>
+  <p>Mason Capital Group &middot; Real Estate Investment &amp; Advisory &middot; AR RE License #PB00056565</p>
+  <p style="margin-top:8px;">Design and concept follow the City of Bentonville&rsquo;s Cottage Court Dwelling guidelines under the Bentonville Development Code. Neither the plan nor the concept has been formally approved by the Bentonville Planning Commission or any other municipal authority. Concept, unit counts, entitlement timelines, and financial projections are illustrative and subject to survey, geotechnical review, civil engineering, and municipal entitlement. Gross development value and investment metrics are estimates based on current market conditions and are not guaranteed. Information believed reliable but not guaranteed &mdash; verify independently. Not an offer where prohibited.</p>
   <p style="margin-top:16px;">&copy; 2026 Mason Capital Group. All rights reserved.</p>
 </footer>
 
 <script>
 // Mobile nav toggle
-document.getElementById('navToggle').addEventListener('click',function(){
+document.getElementById('navToggle').addEventListener('click', function() {
   document.getElementById('navLinks').classList.toggle('open');
 });
-document.querySelectorAll('.nav-links a').forEach(function(a){
-  a.addEventListener('click',function(){document.getElementById('navLinks').classList.remove('open')});
+document.querySelectorAll('.nav-links a').forEach(function(a) {
+  a.addEventListener('click', function() { document.getElementById('navLinks').classList.remove('open'); });
 });
+
 // Scroll reveal
-var observer=new IntersectionObserver(function(entries){
-  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')});
-},{threshold:0.12});
-document.querySelectorAll('.animate').forEach(function(el){observer.observe(el)});
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.animate').forEach(function(el) { observer.observe(el); });
+
 // Active nav highlight
-var sections=document.querySelectorAll('section[id]');
-var navLinks=document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll',function(){
-  var current='';
-  sections.forEach(function(s){if(window.scrollY>=s.offsetTop-120)current=s.id});
-  navLinks.forEach(function(a){
-    a.style.color=a.getAttribute('href')==='#'+current?'var(--gold)':'';
+var sections = document.querySelectorAll('section[id]');
+var navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', function() {
+  var current = '';
+  sections.forEach(function(s) { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navLinks.forEach(function(a) {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : '';
   });
 });
 </script>
