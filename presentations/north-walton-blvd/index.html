@@ -460,7 +460,7 @@ p:last-child { margin-bottom: 0; }
   inset: -40% 0;           /* extend so fixed bg has room to parallax */
   background-image: url('mcg-branded-render.jpg');
   background-size: cover;
-  background-position: center 10%;
+  background-position: center 65%;
   background-attachment: fixed;
   z-index: -3;
 }
@@ -686,7 +686,7 @@ p:last-child { margin-bottom: 0; }
   inset: 0;
   background-image: url('mcg-branded-render.jpg');
   background-size: cover;
-  background-position: center 10%;
+  background-position: center 65%;
   background-attachment: fixed;
   z-index: -2;
 }
@@ -695,7 +695,7 @@ p:last-child { margin-bottom: 0; }
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(10,14,26,0.42);
+  background: rgba(10,14,26,0.74);
   z-index: -1;
 }
 .footer img { height: 28px; width: auto; margin: 0 auto 18px; opacity: .65; }
@@ -954,6 +954,17 @@ p:last-child { margin-bottom: 0; }
   margin-bottom: 0;
 }
 
+
+/* Hover state — ensure text is white over dark navy background */
+.reason-card:hover h4 {
+  color: var(--white) !important;
+}
+.reason-card:hover p {
+  color: rgba(255,255,255,0.88) !important;
+}
+.reason-card:hover .rc-num {
+  color: var(--gold) !important;
+}
 </style>
 </head>
 <body>
@@ -1057,7 +1068,7 @@ p:last-child { margin-bottom: 0; }
           <path d="M8 16l7-7" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
         <h4>Greenway &amp; I-49 Access</h4>
-        <p>Minutes to the Razorback Regional Greenway and Interstate 49 &mdash; the 40-mile trail and highway spine linking Bentonville, Rogers, and Fayetteville. Greenway adjacency commands a premium in NWA residential markets.</p>
+        <p>Minutes to the Razorback Regional Greenway and Interstate 49 &mdash; the 40&plusmn;-mile trail and highway spine linking Bentonville, Rogers, and Fayetteville. Greenway adjacency commands a premium in NWA residential markets.</p>
       </div>
       <div class="adv-card">
         <svg class="adv-icon" viewBox="0 0 40 40" fill="none">
@@ -1226,11 +1237,15 @@ p:last-child { margin-bottom: 0; }
       <div class="thesis-case">
         <div class="thesis-item animate">
           <svg class="thesis-item-icon" viewBox="0 0 36 36" fill="none">
-            <path d="M4 28L10 20L16 23L24 13L32 6" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M24 6H32V13" stroke="#ab012e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="10" cy="20" r="2.5" fill="#c4a35a" opacity=".6"/>
-            <circle cx="16" cy="23" r="2.5" fill="#c4a35a" opacity=".6"/>
-            <circle cx="24" cy="13" r="2.5" fill="#c4a35a" opacity=".6"/>
+            <!-- Base rule -->
+            <line x1="3" y1="31" x2="33" y2="31" stroke="#ab012e" stroke-width="1.2" opacity=".25" stroke-linecap="round"/>
+            <!-- Rising bars -->
+            <rect x="4" y="23" width="5" height="8" rx="1" fill="#c4a35a" opacity=".4"/>
+            <rect x="12" y="17" width="5" height="14" rx="1" fill="#c4a35a" opacity=".6"/>
+            <rect x="20" y="11" width="5" height="20" rx="1" fill="#ab012e" opacity=".7"/>
+            <!-- Demand arrow -->
+            <line x1="29" y1="22" x2="29" y2="7" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M25 11l4-4 4 4" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <div>
             <h4>Demand Outpaces Supply</h4>
@@ -1239,13 +1254,12 @@ p:last-child { margin-bottom: 0; }
         </div>
         <div class="thesis-item animate">
           <svg class="thesis-item-icon" viewBox="0 0 36 36" fill="none">
-            <rect x="4" y="8" width="28" height="22" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/>
-            <path d="M4 16h28" stroke="#ab012e" stroke-width="1.5" opacity=".4"/>
-            <circle cx="12" cy="24" r="2" fill="#c4a35a"/>
-            <circle cx="18" cy="24" r="2" fill="#ab012e"/>
-            <circle cx="24" cy="24" r="2" fill="#c4a35a"/>
-            <path d="M18 4v4" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/>
-            <path d="M11 4v4M25 4v4" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/>
+            <!-- Shield body -->
+            <path d="M18 3.5 L6 8.5 V17.5 C6 24.5 11.5 30.5 18 33 C24.5 30.5 30 24.5 30 17.5 V8.5 Z"
+                  stroke="#ab012e" stroke-width="2" fill="none" stroke-linejoin="round"/>
+            <!-- Checkmark -->
+            <path d="M12 18.5 l4.5 4.5 7.5-8.5"
+                  stroke="#c4a35a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <div>
             <h4>Lower Entitlement Risk</h4>
@@ -1254,10 +1268,19 @@ p:last-child { margin-bottom: 0; }
         </div>
         <div class="thesis-item animate">
           <svg class="thesis-item-icon" viewBox="0 0 36 36" fill="none">
-            <path d="M6 28c4-8 10-12 12-12s8 4 12 12" stroke="#ab012e" stroke-width="2" stroke-linecap="round" fill="none"/>
-            <circle cx="18" cy="12" r="5" stroke="#ab012e" stroke-width="2" fill="none"/>
-            <circle cx="18" cy="12" r="2" fill="#c4a35a"/>
-            <path d="M10 20c1-2 4-4 8-4" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Tree canopy -->
+            <path d="M18 5 C13 5 10 9 10 13 C10 17 13 21 18 21 C23 21 26 17 26 13 C26 9 23 5 18 5 Z"
+                  stroke="#ab012e" stroke-width="2" fill="none"/>
+            <!-- Inner foliage hint -->
+            <path d="M14 13 C14 11 16 9.5 18 9.5 S22 11 22 13"
+                  stroke="#c4a35a" stroke-width="1.4" stroke-linecap="round" fill="none" opacity=".85"/>
+            <!-- Trunk -->
+            <line x1="18" y1="21" x2="18" y2="29" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/>
+            <!-- Ground -->
+            <line x1="12" y1="29" x2="24" y2="29" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round" opacity=".35"/>
+            <!-- Value up-arrow (top-right corner) -->
+            <line x1="30" y1="14" x2="30" y2="5" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/>
+            <path d="M27 8 l3-3 3 3" stroke="#c4a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <div>
             <h4>Greenway-Adjacent Premium</h4>
@@ -1266,8 +1289,18 @@ p:last-child { margin-bottom: 0; }
         </div>
         <div class="thesis-item animate">
           <svg class="thesis-item-icon" viewBox="0 0 36 36" fill="none">
-            <polygon points="18,4 22,14 32,14 24,20 27,31 18,24 9,31 12,20 4,14 14,14" stroke="#c4a35a" stroke-width="2" fill="none" stroke-linejoin="round"/>
-            <path d="M14 17L17 20L23 14" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Building body -->
+            <rect x="5" y="13" width="26" height="20" rx="1.5" stroke="#ab012e" stroke-width="2" fill="none"/>
+            <!-- Roofline / pediment -->
+            <path d="M3 13 L18 4 L33 13" stroke="#ab012e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Floor line -->
+            <line x1="5" y1="22" x2="31" y2="22" stroke="#ab012e" stroke-width="1.2" opacity=".35"/>
+            <!-- Left window -->
+            <rect x="8" y="15" width="6" height="5" rx="1" fill="#c4a35a" opacity=".5"/>
+            <!-- Right window -->
+            <rect x="22" y="15" width="6" height="5" rx="1" fill="#c4a35a" opacity=".5"/>
+            <!-- Door -->
+            <rect x="14" y="25" width="8" height="8" rx="1" fill="#ab012e" opacity=".35"/>
           </svg>
           <div>
             <h4>Retail Revenue Layer</h4>
