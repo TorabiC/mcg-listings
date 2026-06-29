@@ -439,8 +439,15 @@ p:last-child { margin-bottom: 0; }
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 280px;
-  background: linear-gradient(to bottom, transparent 0%, var(--navy) 100%);
+  height: 360px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(10,14,26,0.08) 30%,
+    rgba(10,14,26,0.40) 60%,
+    rgba(10,14,26,0.78) 85%,
+    var(--navy) 100%
+  );
   pointer-events: none;
   z-index: 2;
 }
@@ -501,27 +508,31 @@ p:last-child { margin-bottom: 0; }
   margin-bottom: 40px;
 }
 .reason-card {
-  background: rgba(255,255,255,0.94);
+  background: rgba(255,255,255,0.86);
   border: none;
   border-radius: 4px;
   padding: 32px 28px;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   box-shadow: 0 4px 24px rgba(0,0,0,0.14);
-  transition: transform .2s, box-shadow .2s;
+  transition: transform .22s, box-shadow .22s, background .22s;
+  position: relative;
 }
 .reason-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 40px rgba(0,0,0,0.22);
+  transform: translateY(-5px);
+  box-shadow: 0 18px 48px rgba(0,0,0,0.28);
+  background: rgba(255,255,255,0.99);
+  z-index: 5;
 }
 .reason-card .rc-num {
   display: block;
-  font-size: 11px;
-  letter-spacing: .14em;
+  font-size: 13px;
+  letter-spacing: .22em;
   text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 700;
-  margin-bottom: 14px;
+  color: #c4a35a;
+  font-weight: 800;
+  margin-bottom: 16px;
+  opacity: 1;
 }
 .reason-card h4 {
   color: var(--navy) !important;
@@ -815,6 +826,118 @@ p:last-child { margin-bottom: 0; }
   margin-top: 14px;
   margin-bottom: 0;
 }
+
+/* ── Unified broker + CTA card ─────────────────────────────────── */
+.buy-unified-card {
+  background: rgba(255,255,255,0.86);
+  border: none;
+  border-radius: 4px;
+  padding: 48px 44px;
+  box-shadow: 0 4px 28px rgba(0,0,0,0.16);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 0 44px;
+  align-items: start;
+  margin-top: 60px;
+}
+.buy-unified-left {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+.buy-unified-divider {
+  background: rgba(10,14,26,0.10);
+  align-self: stretch;
+}
+.buy-unified-right { }
+.buy-unified-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #c4a35a;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+.buy-unified-name {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--navy) !important;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+.buy-unified-cta-h {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  color: var(--navy) !important;
+  line-height: 1.2;
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+.buy-unified-card .broker-title {
+  color: var(--crimson) !important;
+  font-size: 11px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 16px;
+}
+.buy-unified-card p {
+  color: #3c3f50 !important;
+  font-size: 13.5px;
+  line-height: 1.78;
+}
+.buy-unified-card img {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  border: 2px solid rgba(196,163,90,0.5);
+  flex-shrink: 0;
+}
+.buy-unified-card .buy-broker-contacts {
+  margin-top: 18px;
+}
+.buy-unified-card .buy-broker-contacts a {
+  color: var(--navy) !important;
+  border-color: rgba(10,14,26,0.12) !important;
+  font-size: 13px;
+}
+.buy-unified-card .buy-broker-contacts a:hover {
+  color: var(--crimson) !important;
+}
+.buy-unified-card .btn-navy {
+  background: var(--navy) !important;
+  color: var(--white) !important;
+  border-color: var(--navy) !important;
+  text-align: center;
+}
+.buy-unified-card .btn-outline {
+  background: transparent !important;
+  color: var(--navy) !important;
+  border: 1.5px solid rgba(10,14,26,0.3) !important;
+  text-align: center;
+}
+.buy-unified-card .btn-outline:hover {
+  background: var(--navy) !important;
+  color: var(--white) !important;
+}
+.buy-unified-card .cta-buttons {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+.buy-unified-license {
+  font-size: 11px;
+  color: rgba(10,14,26,0.32) !important;
+  margin-top: 22px;
+  margin-bottom: 0;
+}
+
 </style>
 </head>
 <body>
@@ -1266,14 +1389,15 @@ p:last-child { margin-bottom: 0; }
 
     <hr class="why-buy-divider">
 
-    <!-- Broker + CTA -->
-    <div class="buy-bottom-grid">
+    <!-- Unified Broker + CTA card -->
+    <div class="buy-unified-card animate">
 
-      <div class="buy-broker-card animate">
+      <!-- Left: Broker -->
+      <div class="buy-unified-left">
         <img src="broker-headshot.jpg" alt="Cameron Torabi — Principal Broker, Mason Capital Group">
         <div class="buy-broker-info">
-          <span class="label" style="margin-bottom:6px;">Exclusive Listing Broker</span>
-          <h3>Cameron Torabi</h3>
+          <span class="buy-unified-label">Exclusive Listing Broker</span>
+          <h3 class="buy-unified-name">Cameron Torabi</h3>
           <span class="broker-title">Principal Broker &mdash; Mason Capital Group</span>
           <p>The North Walton Boulevard parcel is one of the most compelling infill development opportunities in Northwest Arkansas &mdash; 6.5 wooded acres inside Bentonville city limits, permitted for ninety-plus residences under a Cottage Court PUD framework, with Greenway proximity and boulevard commercial frontage that developers cannot manufacture elsewhere.</p>
           <div class="buy-broker-contacts">
@@ -1293,18 +1417,22 @@ p:last-child { margin-bottom: 0; }
         </div>
       </div>
 
-      <div class="buy-cta-card animate">
-        <span class="label" style="margin-bottom:12px;display:block;">Available Exclusively Through MCG</span>
-        <h2>Request the Full<br>Investment Package</h2>
+      <!-- Divider -->
+      <div class="buy-unified-divider"></div>
+
+      <!-- Right: CTA -->
+      <div class="buy-unified-right">
+        <span class="buy-unified-label">Available Exclusively Through MCG</span>
+        <h2 class="buy-unified-cta-h">Request the Full<br>Investment Package</h2>
         <p>Offering memorandum, site survey, Cottage Court entitlement documentation, development pro forma, and site tour available upon request. Contact our team to begin the conversation.</p>
-        <div class="cta-buttons" style="flex-direction:column;align-items:stretch;">
-          <a href="tel:4799253333" class="btn btn-navy" style="text-align:center;">Call (479) 925-3333</a>
-          <a href="mailto:Info@MasonCapitalGroup.com?subject=North Walton Boulevard — Investment Inquiry" class="btn btn-outline" style="text-align:center;">Request Investment Package</a>
+        <div class="cta-buttons" style="flex-direction:column;align-items:stretch;margin-top:24px;">
+          <a href="tel:4799253333" class="btn btn-navy">Call (479) 925-3333</a>
+          <a href="mailto:Info@MasonCapitalGroup.com?subject=North Walton Boulevard — Investment Inquiry" class="btn btn-outline">Request Investment Package</a>
         </div>
-        <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:28px;margin-bottom:0;">AR RE License #PB00056565 &middot; Mason Capital Group</p>
+        <p class="buy-unified-license">AR RE License #PB00056565 &middot; Mason Capital Group</p>
       </div>
 
-    </div><!-- /buy-bottom-grid -->
+    </div><!-- /buy-unified-card -->
 
   </div><!-- /why-buy-inner -->
 </section>
