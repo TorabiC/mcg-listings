@@ -425,27 +425,51 @@ p:last-child { margin-bottom: 0; }
 
 /* ===== COMMUNITY RENDER — shared background for Framework + Concept ===== */
 .community-bg-img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
+  position: absolute;
+  top: -15%; left: 0;
+  width: 100%; height: 130%;
   object-fit: cover;
   display: block;
   z-index: 0;
+  will-change: transform;
+}
+.framework-section .container *,
+.concept-section .container * {
+  text-shadow: 0 2px 12px rgba(0,0,0,0.75);
+}
+.framework-section .reg-card,
+.framework-section .zoning-bar {
+  text-shadow: none;
+  background: rgba(10,10,25,0.60) !important;
+  border-color: rgba(196,163,90,0.35) !important;
+  backdrop-filter: blur(8px);
+}
+.framework-section .reg-card *,
+.framework-section .zoning-bar * { text-shadow: none; }
+.framework-section .cottage-intro-grid > div:first-child > p,
+.framework-section .cottage-intro-grid > div:first-child > .cottage-quote {
+  background: rgba(10,10,25,0.45);
+  border-radius: 4px;
+  padding: 16px 20px;
+  text-shadow: none;
 }
 .framework-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(180deg,
-    #16162a 0%,
-    rgba(22,22,42,0.82) 18%,
-    rgba(22,22,42,0.74) 100%
+    rgba(22,22,42,0.92) 0%,
+    rgba(22,22,42,0.58) 15%,
+    rgba(22,22,42,0.52) 55%,
+    rgba(22,22,42,0.62) 100%
   );
   z-index: 1;
 }
 .concept-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(180deg,
-    rgba(22,22,42,0.74) 0%,
-    rgba(22,22,42,0.74) 55%,
-    rgba(255,255,255,0.92) 92%,
+    rgba(22,22,42,0.62) 0%,
+    rgba(22,22,42,0.52) 40%,
+    rgba(22,22,42,0.60) 75%,
+    rgba(255,255,255,0.94) 93%,
     #ffffff 100%
   );
   z-index: 1;
@@ -576,7 +600,7 @@ p:last-child { margin-bottom: 0; }
 
 <!-- COTTAGE COURT FRAMEWORK (light alt) -->
 <section id="framework" class="framework-section">
-  <img class="community-bg-img" src="community-render.jpg" alt="" style="object-position:center 25%;">
+  <img class="community-bg-img" src="community-render.jpg" alt="" style="object-position:center 35%;">
   <div class="framework-overlay"></div>
   <div class="container">
     <div class="section-header animate mb-40">
@@ -669,7 +693,7 @@ p:last-child { margin-bottom: 0; }
 
 <!-- DEVELOPMENT CONCEPT (dark) -->
 <section id="concept" class="concept-section">
-  <img class="community-bg-img" src="community-render.jpg" alt="" style="object-position:center 68%;">
+  <img class="community-bg-img" src="community-render.jpg" alt="" style="object-position:center 55%;">
   <div class="concept-overlay"></div>
   <div class="container">
     <div class="section-header animate mb-40">
@@ -925,6 +949,31 @@ window.addEventListener('scroll', function() {
     a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : '';
   });
 });
+</script>
+
+<script>
+(function() {
+  var fwImg = document.querySelector('#framework .community-bg-img');
+  var csImg = document.querySelector('#concept .community-bg-img');
+  var fwSec = document.getElementById('framework');
+  var csSec = document.getElementById('concept');
+  if (!fwImg && !csImg) return;
+
+  function onScroll() {
+    var scrollY = window.pageYOffset;
+    if (fwImg && fwSec) {
+      var delta = (scrollY - fwSec.offsetTop) * 0.25;
+      fwImg.style.transform = 'translateY(' + delta + 'px)';
+    }
+    if (csImg && csSec) {
+      var delta2 = (scrollY - csSec.offsetTop) * 0.25;
+      csImg.style.transform = 'translateY(' + delta2 + 'px)';
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
 </script>
 </body>
 </html>
