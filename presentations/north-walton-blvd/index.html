@@ -110,59 +110,48 @@ p:last-child { margin-bottom: 0; }
 }
 
 /* ===== HERO ===== */
+/* ===== HERO ===== */
 .hero {
-  position: relative; min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  text-align: center; padding: 120px 24px 80px; overflow: hidden;
+  position: relative; min-height: 100vh; display: flex; align-items: flex-end;
+  background:
+    linear-gradient(180deg, rgba(22,22,42,0.80) 0%, rgba(22,22,42,0.45) 35%, rgba(22,22,42,0.40) 55%, rgba(22,22,42,0.65) 75%, rgba(22,22,42,0.95) 100%),
+    url('hero-render.jpg') center 35%/cover no-repeat;
+  padding: 120px 0 80px; overflow: hidden;
 }
-.hero-bg {
-  position: absolute; inset: 0;
-  background-image: url('hero-render.jpg');
-  background-size: cover; background-position: center 35%;
-  filter: brightness(0.38); z-index: 0;
-}
-.hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(22,22,42,0.35) 0%, rgba(22,22,42,0.05) 45%, rgba(22,22,42,0.8) 100%);
-  z-index: 1;
-}
-.hero > .container { position: relative; z-index: 2; }
+.hero::before { content:''; position:absolute; top:0; left:0; right:0; height:5px; background:var(--crimson); z-index:2; }
+.hero::after  { content:''; position:absolute; bottom:0; left:0; right:0; height:5px; background:var(--crimson); z-index:2; }
+.hero .container { position:relative; z-index:1; width:100%; }
 .hero-badge {
-  display: inline-block;
-  background: var(--crimson); color: var(--white);
-  font-size: 10px; font-weight: 900; letter-spacing: .22em; text-transform: uppercase;
-  padding: 7px 22px; border-radius: 2px; margin-bottom: 32px;
+  display: inline-block; background: var(--crimson); color: var(--white);
+  font-size: 11px; font-weight: 900; letter-spacing: 5px; padding: 10px 24px;
+  margin-bottom: 32px;
 }
 .hero-title {
   font-family: var(--font-serif);
-  font-size: clamp(48px, 8vw, 96px);
-  font-weight: 900; line-height: 1.0; letter-spacing: -.02em;
-  color: var(--white); margin-bottom: 12px;
+  font-size: clamp(40px, 7vw, 72px);
+  font-weight: 900; color: var(--white); line-height: 1.05; margin-bottom: 12px;
 }
 .hero-address {
-  font-family: var(--font-sans);
-  font-size: 13px; font-weight: 700; letter-spacing: .22em;
-  text-transform: uppercase; color: var(--gold); margin-bottom: 24px;
+  font-size: clamp(14px, 2.5vw, 20px); color: var(--gold);
+  letter-spacing: 4px; font-weight: 300; margin-bottom: 24px; text-transform: uppercase;
 }
-.hero-divider { width: 60px; height: 2px; background: var(--crimson); margin: 0 auto 28px; }
+.hero-divider { width: 80px; height: 3px; background: var(--crimson); margin-bottom: 28px; }
 .hero-price {
   font-family: var(--font-serif);
-  font-size: clamp(36px, 5vw, 60px);
-  font-weight: 400; color: var(--white); margin-bottom: 36px;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700; color: var(--white); margin-bottom: 32px;
 }
-.hero-stats {
-  display: inline-flex; flex-wrap: wrap; justify-content: center;
-  border: 1px solid rgba(196,163,90,0.35); margin-bottom: 32px;
-}
-.hero-stat { padding: 18px 36px; text-align: center; border-right: 1px solid rgba(196,163,90,0.25); }
-.hero-stat:last-child { border-right: none; }
-.hero-stat .val { font-size: 22px; font-weight: 900; color: var(--gold); display: block; font-family: var(--font-serif); }
-.hero-stat .lbl { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.6); display: block; margin-top: 4px; }
-.hero-tagline { font-size: 13px; letter-spacing: .08em; color: rgba(255,255,255,0.55); margin-bottom: 40px; font-family: var(--font-sans); }
-.hero-logo img { height: 40px; width: auto; opacity: .85; margin: 0 auto; }
+.hero-stats { display: flex; flex-wrap: wrap; gap: 40px; margin-bottom: 24px; }
+.hero-stat .val { font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: var(--white); display: block; }
+.hero-stat .lbl { font-size: 10px; color: var(--gray-300); letter-spacing: 1.5px; margin-top: 2px; text-transform: uppercase; display: block; }
+.hero-tagline { font-size: 13px; color: var(--gray-400); letter-spacing: 1.5px; }
+.hero-logo { position: absolute; bottom: 16px; right: 24px; }
+.hero-logo img { height: 44px; width: auto; }
 @media(max-width:600px) {
-  .hero-stat { padding: 14px 18px; }
-  .hero-stat .val { font-size: 18px; }
+  .hero-stats { gap: 20px; }
+  .hero-stat .val { font-size: 16px; }
+  .hero-logo { position: static; margin-top: 28px; }
+  .hero-logo img { height: 36px; }
 }
 
 /* ===== OPPORTUNITY (light) ===== */
@@ -373,23 +362,23 @@ p:last-child { margin-bottom: 0; }
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-overlay"></div>
+<section class="hero" id="property">
   <div class="container">
-    <div class="hero-badge">Investment Opportunity</div>
+    <div class="hero-badge">INVESTMENT OPPORTUNITY</div>
     <div class="hero-title">North Walton<br>Boulevard</div>
-    <div class="hero-address">Bentonville, Arkansas &nbsp;&middot;&nbsp; 72712</div>
+    <div class="hero-address">Bentonville, Arkansas</div>
     <div class="hero-divider"></div>
     <div class="hero-price">$3,500,000</div>
     <div class="hero-stats">
-      <div class="hero-stat"><span class="val">6.5&plusmn;</span><span class="lbl">Acres</span></div>
-      <div class="hero-stat"><span class="val">90+</span><span class="lbl">Planned Units</span></div>
-      <div class="hero-stat"><span class="val">13.8</span><span class="lbl">Units / Acre</span></div>
-      <div class="hero-stat"><span class="val">Cottage PUD</span><span class="lbl">Zoning Type</span></div>
+      <div class="hero-stat"><div class="val">6.5&plusmn; Acres</div><div class="lbl">Total Acreage</div></div>
+      <div class="hero-stat"><div class="val">90+ Units</div><div class="lbl">Planned Residences</div></div>
+      <div class="hero-stat"><div class="val">13.8 / Acre</div><div class="lbl">Density</div></div>
+      <div class="hero-stat"><div class="val">Cottage PUD</div><div class="lbl">Development Type</div></div>
     </div>
-    <div class="hero-tagline">6.5-Acre Wooded Infill Development Opportunity &nbsp;&bull;&nbsp; Fronting North Walton Boulevard</div>
-    <div class="hero-logo"><a href="https://www.masoncapitalgroup.com" target="_blank"><img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group"></a></div>
+    <div class="hero-tagline">6.5-Acre Wooded Infill Development Opportunity &nbsp;&bull;&nbsp; Bentonville, Arkansas</div>
+    <div class="hero-logo">
+      <a href="https://www.masoncapitalgroup.com" target="_blank"><img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group"></a>
+    </div>
   </div>
 </section>
 
