@@ -403,8 +403,8 @@ p:last-child { margin-bottom: 0; }
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 220px;
-  background: linear-gradient(to bottom, transparent 0%, var(--navy) 100%);
+  height: 260px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(10,14,26,0.74) 100%);
   pointer-events: none;
   z-index: 2;
 }
@@ -414,7 +414,6 @@ p:last-child { margin-bottom: 0; }
   z-index: 0;
   padding: 0;
   overflow: hidden;
-  background: var(--navy); /* fallback matches #thesis::after fade target */
 }
 .why-buy-parallax {
   position: absolute;
@@ -432,14 +431,14 @@ p:last-child { margin-bottom: 0; }
   background: rgba(10, 14, 26, 0.74);
   z-index: -2;
 }
-/* top fade into preceding section */
+/* top fade — matches #thesis::after color at boundary */
 .why-buy-section::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 180px;
-  background: linear-gradient(to bottom, var(--navy) 0%, transparent 100%);
-  z-index: -1;
+  height: 160px;
+  background: linear-gradient(to bottom, rgba(10,14,26,0.74) 0%, transparent 100%);
+  z-index: 1;
   pointer-events: none;
 }
 /* bottom fade into footer */
