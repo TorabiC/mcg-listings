@@ -395,6 +395,20 @@ p:last-child { margin-bottom: 0; }
 .cta-buttons { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
 
 /* ── COMBINED WHY-BUY + BROKER + CTA ─────────────────────────────────────── */
+/* Fade #thesis (Investment section) bottom into the dark why-buy section */
+#thesis {
+  position: relative;
+}
+#thesis::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 220px;
+  background: linear-gradient(to bottom, transparent 0%, var(--navy) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
 .why-buy-section {
   position: relative;
   z-index: 0;
