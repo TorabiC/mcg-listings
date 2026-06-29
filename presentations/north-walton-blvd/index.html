@@ -158,7 +158,7 @@ p:last-child { margin-bottom: 0; }
 /* ===== OPPORTUNITY SPLIT ===== */
 .opp-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 43fr 57fr;
   min-height: 85vh;
   align-items: stretch;
   overflow: hidden;
@@ -169,7 +169,18 @@ p:last-child { margin-bottom: 0; }
 }
 .opp-image-col {
   position: relative; overflow: hidden;
+  margin-right: -32px;
 }
+/* left fade — mirrors right fade but stays clear of the survey polygon */
+.opp-image-col::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #ffffff 0%, transparent 22%);
+  pointer-events: none;
+  z-index: 2;
+}
+/* right fade — fades out to white towards page edge */
 .opp-image-col::after {
   content: '';
   position: absolute;
@@ -181,7 +192,9 @@ p:last-child { margin-bottom: 0; }
 .opp-image-col img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: cover; object-position: center;
+  object-fit: cover;
+  /* shift content slightly right so the left edge reveals road/tree before survey */
+  object-position: 38% center;
   display: block;
 }
 .aerial-caption {
