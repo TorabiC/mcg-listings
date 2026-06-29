@@ -377,15 +377,9 @@ p:last-child { margin-bottom: 0; }
 .framework-section {
   position: relative;
   padding: 96px 0 0;
-  background:
-    linear-gradient(180deg,
-      rgba(22,22,42,0.88) 0%,
-      rgba(22,22,42,0.80) 40%,
-      rgba(22,22,42,0.88) 75%,
-      #16162a 100%
-    ),
-    url('cottage-bg.jpg') center 40%/cover no-repeat;
+  background: var(--navy);
   color: var(--white);
+  overflow: hidden;
 }
 .framework-section .label { color: var(--gold); }
 .framework-section h2 { color: var(--white); }
@@ -415,12 +409,7 @@ p:last-child { margin-bottom: 0; }
 .framework-section .process-steps::before { background: rgba(196,163,90,0.25); }
 .framework-section .section-header p { color: rgba(255,255,255,0.85); }
 .framework-section h3 { color: var(--white); }
-/* fade-out spacer at bottom */
-.framework-fade {
-  height: 80px;
-  background: linear-gradient(180deg, transparent 0%, #16162a 100%);
-  margin-top: 64px;
-}
+
 
 /* ===== CONCEPT SECTION ===== */
 .concept-section {
@@ -430,33 +419,42 @@ p:last-child { margin-bottom: 0; }
   color: var(--white);
   overflow: hidden;
 }
-.concept-bg-img {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center 40%;
-  display: block;
-  z-index: 0;
-}
-.concept-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg,
-    rgba(22,22,42,0.82) 0%,
-    rgba(22,22,42,0.65) 40%,
-    rgba(22,22,42,0.65) 60%,
-    rgba(22,22,42,0.82) 100%
-  );
-  z-index: 1;
-}
-.concept-section .container {
-  position: relative;
-  z-index: 2;
-}
 .concept-section .label { color: var(--gold); }
 .concept-section h2 { color: var(--white); }
 .concept-section p { color: var(--gray-300); }
+
+/* ===== COMMUNITY RENDER — shared background for Framework + Concept ===== */
+.community-bg-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 0;
+}
+.framework-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg,
+    #16162a 0%,
+    rgba(22,22,42,0.82) 18%,
+    rgba(22,22,42,0.74) 100%
+  );
+  z-index: 1;
+}
+.concept-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg,
+    rgba(22,22,42,0.74) 0%,
+    rgba(22,22,42,0.74) 55%,
+    rgba(255,255,255,0.92) 92%,
+    #ffffff 100%
+  );
+  z-index: 1;
+}
+.framework-section > .container,
+.concept-section > .container {
+  position: relative;
+  z-index: 2;
+}
 </style>
 </head>
 <body>
@@ -578,6 +576,8 @@ p:last-child { margin-bottom: 0; }
 
 <!-- COTTAGE COURT FRAMEWORK (light alt) -->
 <section id="framework" class="framework-section">
+  <img class="community-bg-img" src="community-render.jpg" alt="" style="object-position:center 25%;">
+  <div class="framework-overlay"></div>
   <div class="container">
     <div class="section-header animate mb-40">
       <span class="label">Regulatory Framework</span>
@@ -665,12 +665,11 @@ p:last-child { margin-bottom: 0; }
       </div>
     </div>
   </div>
-  <div class="framework-fade"></div>
 </section>
 
 <!-- DEVELOPMENT CONCEPT (dark) -->
 <section id="concept" class="concept-section">
-  <img class="concept-bg-img" src="concept-bg.png" alt="">
+  <img class="community-bg-img" src="community-render.jpg" alt="" style="object-position:center 68%;">
   <div class="concept-overlay"></div>
   <div class="container">
     <div class="section-header animate mb-40">
