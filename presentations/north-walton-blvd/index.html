@@ -456,7 +456,7 @@ p:last-child { margin-bottom: 0; }
   inset: -40% 0;           /* extend so fixed bg has room to parallax */
   background-image: url('mcg-street-render.jpg');
   background-size: cover;
-  background-position: center 68%;
+  background-position: center 85%;
   background-attachment: fixed;
   z-index: -3;
 }
@@ -524,18 +524,21 @@ p:last-child { margin-bottom: 0; }
   margin-bottom: 14px;
 }
 .reason-card h4 {
-  color: var(--navy);
+  color: var(--navy) !important;
   font-size: 17px;
   font-weight: 700;
   line-height: 1.3;
   margin-bottom: 10px;
 }
 .reason-card p {
-  color: #3c3f50;
+  color: #3c3f50 !important;
   font-size: 13.5px;
   line-height: 1.78;
   margin: 0;
 }
+.buy-broker-info h3 { color: var(--navy) !important; }
+.buy-broker-info p { color: #3c3f50 !important; font-size: 13.5px; line-height: 1.78; }
+.buy-broker-contacts a { color: var(--navy) !important; }
 .reason-card:hover { border-color: rgba(196,163,90,0.55); background: rgba(10,14,26,0.70); }
 .reason-card .rc-icon {
   display: none !important;
