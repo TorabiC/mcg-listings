@@ -280,14 +280,16 @@ p:last-child { margin-bottom: 0; }
 @media(max-width:800px) { .cottage-intro-grid { grid-template-columns: 1fr; gap: 40px; } .regs-grid { grid-template-columns: 1fr; } .process-steps::before { display:none; } .zoning-bar { flex-direction: column; gap: 16px; } }
 
 /* ===== DEVELOPMENT CONCEPT (dark) ===== */
-.concept-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: start; }
+.concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 56px; align-items: start; }
+/* Image spans full container width — sits above the 2-column text row */
+.concept-grid > div:first-child { grid-column: 1 / -1; }
 .concept-img-wrap {
   border-radius: 6px;
-  /* 3D lift: drop-shadow follows the masked image alpha for a floating effect */
+  /* Stronger 3D lift on full-width render */
   filter:
-    drop-shadow(0 36px 52px rgba(0,0,0,0.55))
-    drop-shadow(0 10px 20px rgba(0,0,0,0.32))
-    drop-shadow(0 2px 6px rgba(0,0,0,0.20));
+    drop-shadow(0 52px 80px rgba(0,0,0,0.75))
+    drop-shadow(0 18px 36px rgba(0,0,0,0.52))
+    drop-shadow(0 4px 12px rgba(0,0,0,0.34));
 }
 .concept-img-wrap img {
   width: 100%;
@@ -295,12 +297,12 @@ p:last-child { margin-bottom: 0; }
   border-radius: 4px;
   /* All-edge fade — gentle dissolve on every margin */
   -webkit-mask-image:
-    linear-gradient(to right,  transparent 0%, black 9%, black 91%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+    linear-gradient(to right,  transparent 0%, black 18%, black 82%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 10%, black 70%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-image:
-    linear-gradient(to right,  transparent 0%, black 9%, black 91%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+    linear-gradient(to right,  transparent 0%, black 18%, black 82%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 10%, black 70%, transparent 100%);
   mask-composite: intersect;
 }
 .concept-bullets { list-style: none; margin: 24px 0; }
