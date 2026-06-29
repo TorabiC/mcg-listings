@@ -211,13 +211,20 @@ p:last-child { margin-bottom: 0; }
 }
 .opp-quote em { color: var(--crimson); font-style: italic; }
 .opp-metrics {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-  background: var(--gray-200); border: 1px solid var(--gray-200);
-  border-radius: var(--radius); overflow: hidden; margin-top: 32px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  background: transparent; border: none;
+  overflow: visible; margin-top: 32px;
 }
-.metric-cell { background: var(--white); padding: 20px 22px; }
-.metric-cell .num { font-family: var(--font-serif); font-size: 30px; font-weight: 700; color: var(--crimson); }
-.metric-cell .desc { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-400); margin-top: 3px; }
+.metric-cell {
+  background: var(--white); padding: 24px 26px;
+  border-radius: 6px;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.13),
+    0 2px 8px  rgba(0,0,0,0.09),
+    0 0px 2px  rgba(0,0,0,0.06);
+}
+.metric-cell .num { font-family: var(--font-serif); font-size: 38px; font-weight: 700; color: var(--crimson); line-height: 1; }
+.metric-cell .desc { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-400); margin-top: 6px; }
 @media(max-width:900px) {
   .opp-split { grid-template-columns: 1fr; min-height: auto; }
   .opp-text-col { padding: 64px 24px; }
