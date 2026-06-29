@@ -364,6 +364,55 @@ p:last-child { margin-bottom: 0; }
 /* ===== SCROLL REVEAL ===== */
 .animate { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
 .animate.visible { opacity: 1; transform: none; }
+
+/* ===== FRAMEWORK SECTION ===== */
+.framework-section {
+  position: relative;
+  padding: 96px 0 0;
+  background:
+    linear-gradient(180deg,
+      rgba(22,22,42,0.82) 0%,
+      rgba(22,22,42,0.70) 40%,
+      rgba(22,22,42,0.82) 75%,
+      #16162a 100%
+    ),
+    url('cottage-bg.jpg') center 40%/cover no-repeat;
+  color: var(--white);
+}
+.framework-section .label { color: var(--gold); }
+.framework-section h2 { color: var(--white); }
+.framework-section p { color: var(--gray-300); }
+.framework-section .accent-bar { background: var(--gold); }
+.framework-section strong { color: var(--white); }
+.framework-section .cottage-quote { color: var(--white); }
+.framework-section .reg-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(196,163,90,0.25);
+  backdrop-filter: blur(4px);
+}
+.framework-section .reg-card:hover {
+  border-color: rgba(196,163,90,0.55);
+  background: rgba(255,255,255,0.10);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+.framework-section .reg-card h4 { color: var(--white); }
+.framework-section .reg-card p { color: var(--gray-300); font-size: 13px; }
+.framework-section .step-num {
+  background: rgba(255,255,255,0.08);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.framework-section .process-step h4 { color: var(--white); }
+.framework-section .process-step p { color: var(--gray-300); }
+.framework-section .process-steps::before { background: rgba(196,163,90,0.25); }
+.framework-section .section-header p { color: var(--gray-300); }
+.framework-section h3 { color: var(--white); }
+/* fade-out spacer at bottom */
+.framework-fade {
+  height: 80px;
+  background: linear-gradient(180deg, transparent 0%, #16162a 100%);
+  margin-top: 64px;
+}
 </style>
 </head>
 <body>
@@ -484,7 +533,7 @@ p:last-child { margin-bottom: 0; }
 </section>
 
 <!-- COTTAGE COURT FRAMEWORK (light alt) -->
-<section class="section section-alt" id="framework">
+<section id="framework" class="framework-section">
   <div class="container">
     <div class="section-header animate mb-40">
       <span class="label">Regulatory Framework</span>
@@ -572,6 +621,7 @@ p:last-child { margin-bottom: 0; }
       </div>
     </div>
   </div>
+  <div class="framework-fade"></div>
 </section>
 
 <!-- DEVELOPMENT CONCEPT (dark) -->
