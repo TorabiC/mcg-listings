@@ -332,15 +332,50 @@ p:last-child { margin-bottom: 0; }
   font-weight: 700; line-height: 1.2; color: var(--navy); margin-bottom: 20px;
 }
 .thesis-quote em { color: var(--crimson); font-style: italic; }
-.thesis-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
-.thesis-metric {
-  background: var(--white); border: 1px solid var(--gray-200);
-  border-radius: var(--radius); padding: 20px 18px;
-  border-top: 3px solid var(--crimson);
+.thesis-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 56px;
+  border-top: 1px solid var(--gray-200);
 }
-.thesis-metric .t-num { font-family: var(--font-serif); font-size: 26px; font-weight: 700; color: var(--navy); }
-.thesis-metric .t-label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-400); margin-top: 3px; }
-.thesis-metric .t-note { font-size: 12px; color: var(--gray-500); margin-top: 6px; }
+.thesis-metric {
+  padding: 30px 28px 26px;
+  border-right: 1px solid var(--gray-200);
+  position: relative;
+  background: var(--white);
+}
+.thesis-metric:last-child { border-right: none; }
+.thesis-metric::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 0;
+  width: 44px; height: 3px;
+  background: linear-gradient(to right, var(--gold), var(--crimson));
+}
+.thesis-metric .t-num {
+  font-family: var(--font-serif);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+.thesis-metric .t-label {
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  font-weight: 700;
+  margin-top: 10px;
+  display: block;
+}
+.thesis-metric .t-note {
+  font-size: 12.5px;
+  color: var(--gray-500);
+  margin-top: 6px;
+  line-height: 1.5;
+}
 .thesis-case { display: flex; flex-direction: column; gap: 20px; }
 .thesis-item {
   display: flex; gap: 20px; align-items: flex-start;
@@ -398,6 +433,7 @@ p:last-child { margin-bottom: 0; }
 /* Fade #thesis (Investment section) bottom into the dark why-buy section */
 #thesis {
   position: relative;
+  padding-bottom: 320px; /* clears the 280px ::after gradient overlay */
 }
 #thesis::after {
   content: '';
@@ -991,28 +1027,7 @@ p:last-child { margin-bottom: 0; }
         <div class="thesis-quote">Land cost that<br><em>leaves room for margin.</em></div>
         <p>Northwest Arkansas cottage homes &mdash; the compact, detached, courtyard-oriented product type this site is designed to yield &mdash; are conceived as 1,500&ndash;2,400 sq ft residential units, targeting the mid-$500s per square foot &mdash; a price point strongly supported by recent Bentonville comps. At $38,889 per planned unit, this land acquisition sits at approximately 9% of gross development value &mdash; the sweet spot for residential land in primary NWA markets.</p>
         <p>Bentonville continues to attract corporate relocation, Walmart supply-chain headquarters, and Walmart-adjacent technology firms at a pace that has sustained home price appreciation above national averages for six consecutive years. Missing-middle product in walkable, greenway-connected locations remains undersupplied relative to demand.</p>
-        <div class="thesis-metrics">
-          <div class="thesis-metric">
-            <div class="t-num">$38.9K</div>
-            <div class="t-label">Land Cost / Unit</div>
-            <div class="t-note">$3.5M &divide; 90 planned residences</div>
-          </div>
-          <div class="thesis-metric">
-            <div class="t-num">~9%</div>
-            <div class="t-label">Land-to-GDV Ratio</div>
-            <div class="t-note">At $400K avg sale price per cottage unit</div>
-          </div>
-          <div class="thesis-metric">
-            <div class="t-num">$31.5M+</div>
-            <div class="t-label">Gross Development Value</div>
-            <div class="t-note">90 units at $350K avg (conservative)</div>
-          </div>
-          <div class="thesis-metric">
-            <div class="t-num">6 yrs</div>
-            <div class="t-label">NWA Price Appreciation Run</div>
-            <div class="t-note">Consecutive years above national avg</div>
-          </div>
-        </div>
+        
       </div>
       <div class="thesis-case">
         <div class="thesis-item animate">
@@ -1067,6 +1082,30 @@ p:last-child { margin-bottom: 0; }
         </div>
       </div>
     </div>
+    <!-- Investment Metrics — full-width stat bar -->
+    <div class="thesis-metrics">
+          <div class="thesis-metric">
+            <div class="t-num">$38.9K</div>
+            <div class="t-label">Land Cost / Unit</div>
+            <div class="t-note">$3.5M &divide; 90 planned residences</div>
+          </div>
+          <div class="thesis-metric">
+            <div class="t-num">~9%</div>
+            <div class="t-label">Land-to-GDV Ratio</div>
+            <div class="t-note">At $400K avg sale price per cottage unit</div>
+          </div>
+          <div class="thesis-metric">
+            <div class="t-num">$31.5M+</div>
+            <div class="t-label">Gross Development Value</div>
+            <div class="t-note">90 units at $350K avg (conservative)</div>
+          </div>
+          <div class="thesis-metric">
+            <div class="t-num">6 yrs</div>
+            <div class="t-label">NWA Price Appreciation Run</div>
+            <div class="t-note">Consecutive years above national avg</div>
+          </div>
+        </div>
+
   </div>
 </section>
 
