@@ -439,14 +439,11 @@ p:last-child { margin-bottom: 0; }
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 360px;
+  height: 120px;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(10,14,26,0.08) 30%,
-    rgba(10,14,26,0.40) 60%,
-    rgba(10,14,26,0.78) 85%,
-    var(--navy) 100%
+    rgba(10,14,26,0.28) 100%
   );
   pointer-events: none;
   z-index: 2;
@@ -474,25 +471,19 @@ p:last-child { margin-bottom: 0; }
   background: rgba(10, 14, 26, 0.74);
   z-index: -2;
 }
-/* top fade — full-opacity navy at top matches #thesis::after end color */
+/* top fade — very subtle entry from thesis */
 .why-buy-section::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 200px;
-  background: linear-gradient(to bottom, var(--navy) 0%, transparent 100%);
+  height: 80px;
+  background: linear-gradient(to bottom, rgba(10,14,26,0.28) 0%, transparent 100%);
   z-index: 1;
   pointer-events: none;
 }
-/* bottom fade into footer */
+/* bottom — no fade, image flows into footer */
 .why-buy-section::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 200px;
-  background: linear-gradient(to top, var(--navy) 0%, transparent 100%);
-  z-index: 1;
-  pointer-events: none;
+  display: none;
 }
 .why-buy-inner {
   position: relative;
@@ -681,7 +672,32 @@ p:last-child { margin-bottom: 0; }
 .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--white); }
 
 /* ===== FOOTER ===== */
-.footer { background: var(--navy-light); border-top: 1px solid rgba(196,163,90,0.1); padding: 48px 24px; text-align: center; }
+.footer {
+  position: relative;
+  background: transparent;
+  border-top: none;
+  padding: 48px 24px;
+  text-align: center;
+}
+/* Fixed parallax behind footer text — same image, seamless with why-buy */
+.footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('mcg-branded-render.jpg');
+  background-size: cover;
+  background-position: center 25%;
+  background-attachment: fixed;
+  z-index: -2;
+}
+/* Tinted overlay for legibility */
+.footer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10,14,26,0.72);
+  z-index: -1;
+}
 .footer img { height: 28px; width: auto; margin: 0 auto 18px; opacity: .65; }
 .footer p { font-size: 12px; color: var(--gray-400); max-width: 720px; margin: 0 auto 6px; line-height: 1.7; }
 
