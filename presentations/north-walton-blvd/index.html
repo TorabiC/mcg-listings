@@ -1507,10 +1507,19 @@ if (window.self !== window.top) {
   document.querySelectorAll('.animate').forEach(function(el) {
     el.classList.add('visible');
   });
-  // Report actual page height so parent iframe can resize correctly
+  // Report actual page height so parent iframe can resize correctly.
+  // Use body.scrollHeight (not documentElement.scrollHeight) — the html element's
+  // scrollHeight is clamped to the iframe viewport (25000px), body's is not.
+  function reportHeight() {
+    var h = document.body.scrollHeight;
+    if (h > 100) {
+      window.parent.postMessage({ type: 'listingHeight', height: h }, '*');
+    }
+  }
   window.addEventListener('load', function() {
-    var h = document.documentElement.scrollHeight;
-    window.parent.postMessage({ type: 'listingHeight', height: h }, '*');
+    reportHeight();
+    setTimeout(reportHeight, 300);   // re-check after images settle
+    setTimeout(reportHeight, 1200);  // final check for late-loading assets
   });
 } else {
   var observer = new IntersectionObserver(function(entries) {
