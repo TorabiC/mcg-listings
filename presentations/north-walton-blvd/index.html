@@ -281,8 +281,9 @@ p:last-child { margin-bottom: 0; }
 
 /* ===== DEVELOPMENT CONCEPT (dark) ===== */
 .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 56px; align-items: start; }
-/* Image spans full container width — sits above the 2-column text row */
+/* Image and text both span full width — stacked editorial layout */
 .concept-grid > div:first-child { grid-column: 1 / -1; }
+.concept-grid > div:last-child { grid-column: 1 / -1; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px 64px; align-items: start; }
 .concept-img-wrap {
   border-radius: 6px;
   /* Stronger 3D lift on full-width render */
