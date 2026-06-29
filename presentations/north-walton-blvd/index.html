@@ -158,18 +158,18 @@ p:last-child { margin-bottom: 0; }
 /* ===== OPPORTUNITY SPLIT ===== */
 .opp-split {
   display: grid;
-  grid-template-columns: 43fr 57fr;
+  grid-template-columns: 50fr 50fr;
   min-height: 85vh;
   align-items: stretch;
   overflow: hidden;
 }
 .opp-text-col {
-  padding: 96px clamp(32px, 4vw, 64px) 96px max(calc((100vw - 1100px) / 2 + 24px), 32px);
+  padding: 96px clamp(24px, 3vw, 48px) 96px max(calc((100vw - 1100px) / 2), 32px);
   display: flex; flex-direction: column; justify-content: center;
 }
 .opp-image-col {
   position: relative; overflow: hidden;
-  margin-right: -32px;
+  margin-right: -64px;
 }
 /* left fade — mirrors right fade but stays clear of the survey polygon */
 .opp-image-col::before {
