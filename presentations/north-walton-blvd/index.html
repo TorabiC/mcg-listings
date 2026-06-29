@@ -393,6 +393,189 @@ p:last-child { margin-bottom: 0; }
 .cta-section h2 { font-family: var(--font-serif); color: var(--white); font-size: clamp(28px,4vw,48px); margin-bottom: 16px; }
 .cta-section p { color: rgba(255,255,255,0.85); max-width: 600px; margin: 0 auto 40px; font-size: 17px; }
 .cta-buttons { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+
+/* ── COMBINED WHY-BUY + BROKER + CTA ─────────────────────────────────────── */
+.why-buy-section {
+  position: relative;
+  z-index: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.why-buy-parallax {
+  position: absolute;
+  inset: -40% 0;           /* extend so fixed bg has room to parallax */
+  background-image: url('mcg-street-render.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+  z-index: -3;
+}
+/* dark tint over the photo */
+.why-buy-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 14, 26, 0.74);
+  z-index: -2;
+}
+/* top fade into preceding section */
+.why-buy-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 180px;
+  background: linear-gradient(to bottom, var(--navy) 0%, transparent 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+/* bottom fade into footer */
+.why-buy-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 180px;
+  background: linear-gradient(to top, #0a0e1a 0%, transparent 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+.why-buy-inner {
+  position: relative;
+  z-index: 2;
+  padding: 120px 24px 140px;
+}
+/* reason cards */
+.reason-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+  margin-bottom: 72px;
+}
+.reason-card {
+  background: rgba(10,14,26,0.55);
+  border: 1px solid rgba(196,163,90,0.28);
+  border-radius: 8px;
+  padding: 28px 24px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: border-color .25s, background .25s;
+}
+.reason-card:hover { border-color: rgba(196,163,90,0.55); background: rgba(10,14,26,0.70); }
+.reason-card .rc-icon {
+  width: 40px; height: 40px;
+  margin-bottom: 16px;
+}
+.reason-card h4 {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  color: var(--gold);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.reason-card p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.80);
+  line-height: 1.7;
+  margin: 0;
+}
+/* divider */
+.why-buy-divider {
+  border: none;
+  border-top: 1px solid rgba(196,163,90,0.22);
+  margin: 0 0 64px;
+}
+/* broker + cta bottom row */
+.buy-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.buy-broker-card {
+  background: rgba(10,14,26,0.55);
+  border: 1px solid rgba(196,163,90,0.22);
+  border-radius: 8px;
+  padding: 36px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+.buy-broker-card img {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  border: 2px solid rgba(196,163,90,0.5);
+  flex-shrink: 0;
+}
+.buy-broker-info h3 {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.buy-broker-info .broker-title {
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 12px;
+}
+.buy-broker-info p {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+.buy-broker-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.buy-broker-contacts a {
+  font-size: 13px;
+  color: rgba(255,255,255,0.72);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color .2s;
+}
+.buy-broker-contacts a:hover { color: var(--gold); }
+.buy-cta-card {
+  background: rgba(171,1,46,0.20);
+  border: 1px solid rgba(171,1,46,0.45);
+  border-radius: 8px;
+  padding: 48px 40px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: center;
+}
+.buy-cta-card h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(22px,2.6vw,34px);
+  color: var(--white);
+  margin-bottom: 16px;
+  line-height: 1.25;
+}
+.buy-cta-card p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.80);
+  margin-bottom: 32px;
+  line-height: 1.65;
+}
+.buy-cta-card .cta-buttons { margin-bottom: 0; }
+@media(max-width:960px) {
+  .reason-grid { grid-template-columns: repeat(2,1fr); }
+  .buy-bottom-grid { grid-template-columns: 1fr; }
+}
+@media(max-width:600px) {
+  .reason-grid { grid-template-columns: 1fr; }
+  .buy-broker-card { flex-direction: column; }
+}
 .btn {
   display: inline-block; padding: 15px 40px;
   font-family: var(--font-sans); font-size: 13px; font-weight: 700;
@@ -873,99 +1056,136 @@ p:last-child { margin-bottom: 0; }
   </div>
 </section>
 
-<!-- WHY MCG (dark) -->
-<section class="section section-dark" id="why-mcg">
-  <div class="container">
-    <div class="section-header text-center animate mb-56">
-      <span class="label">The MCG Advantage</span>
-      <h2 style="color:var(--white);margin-top:8px;">Why Mason Capital Group Is the<br>Right Partner for This Acquisition</h2>
+<!-- COMBINED: WHY BUY + BROKER + CTA ───────────────────────────────────── -->
+<section class="why-buy-section" id="contact">
+  <div class="why-buy-parallax"></div>
+  <div class="why-buy-overlay"></div>
+  <div class="container why-buy-inner">
+
+    <!-- Header -->
+    <div class="section-header text-center animate mb-40">
+      <span class="label">Why This Acquisition</span>
+      <h2 style="color:var(--white);margin-top:8px;">North Walton Boulevard:<br>A Rare Convergence</h2>
       <div class="accent-bar accent-bar-gold accent-bar-center" style="margin-top:16px;margin-bottom:16px;"></div>
-      <p style="max-width:620px;margin:0 auto;">A full-service real estate investment and advisory firm with over 30 years of Northwest Arkansas market expertise. We bring institutional-level deal structuring and transaction management to high-value land acquisitions.</p>
+      <p style="max-width:640px;margin:0 auto;color:rgba(255,255,255,0.82);font-size:17px;">
+        Few infill sites in Northwest Arkansas offer this combination of scale, location, entitlement clarity, and market timing. Here is why serious capital is looking at this parcel.
+      </p>
     </div>
-    <div class="value-grid">
-      <div class="value-card animate">
-        <div class="icon">
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="2" y="4" width="32" height="28" rx="3" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M10 26V18" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M18 26V14" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M26 26V10" stroke="#ab012e" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="16" r="2" fill="#ab012e"/><circle cx="18" cy="12" r="2" fill="#ab012e"/><circle cx="26" cy="8" r="2" fill="#ab012e"/><line x1="10" y1="16" x2="18" y2="12" stroke="#ab012e" stroke-width="1.5"/><line x1="18" y1="12" x2="26" y2="8" stroke="#ab012e" stroke-width="1.5"/></svg>
-        </div>
-        <h4>Licensed Principal Broker</h4>
-        <p>As a Principal Broker in Arkansas, Mason Capital Group brings executive-level expertise and fiduciary precision to every transaction &mdash; from initial valuation through closing. Every detail of this offering has been underwritten with real market data.</p>
-      </div>
-      <div class="value-card animate">
-        <div class="icon">
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="15" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="6" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="2" fill="#ab012e"/><line x1="18" y1="3" x2="18" y2="9" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="27" x2="18" y2="33" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="9" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="27" y1="18" x2="33" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/></svg>
-        </div>
-        <h4>Investment-Grade Marketing</h4>
-        <p>We market development opportunities the way institutional investors expect &mdash; with professional photography, digital offering memorandums, targeted campaigns, and syndication across nearly 100 platforms including Zillow, Realtor.com, Redfin, and Crexi.</p>
-      </div>
-      <div class="value-card animate">
-        <div class="icon">
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="10" r="5" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="8" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="28" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><path d="M18 15V20" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><path d="M18 20L8 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/><path d="M18 20L28 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </div>
-        <h4>Developer &amp; Investor Network</h4>
-        <p>Our active network spans local builders, regional developers, and national investment groups. This opportunity reaches serious, qualified capital from day one &mdash; not casual browsers. We connect high-value land assets with the right buyers.</p>
-      </div>
-      <div class="value-card animate">
-        <div class="icon">
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M4 28L12 20L18 24L26 14L32 8" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 8H32V14" stroke="#ab012e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="20" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="18" cy="24" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="26" cy="14" r="3" fill="#c4a35a" opacity="0.3"/></svg>
-        </div>
-        <h4>30 Years in Northwest Arkansas</h4>
-        <p>Over $2.4 billion in completed transactions across residential, commercial, land, and development categories. Deep market intelligence in the Bentonville corridor &mdash; with relationships that open doors no MLS listing can.</p>
-      </div>
-      <div class="value-card animate">
-        <div class="icon">
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="4" y="8" width="28" height="24" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M4 16H32" stroke="#ab012e" stroke-width="2"/><path d="M18 4V8M11 4V8M25 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="22" r="2" fill="#ab012e"/><circle cx="18" cy="22" r="2" fill="#c4a35a"/><circle cx="24" cy="22" r="2" fill="#ab012e"/><circle cx="12" cy="28" r="2" fill="#c4a35a"/><circle cx="18" cy="28" r="2" fill="#ab012e"/></svg>
-        </div>
-        <h4>Drone Aerials &amp; Site Video</h4>
-        <p>For land and development listings, we produce HD drone aerials, cinematic flyover video, and site plan overlays &mdash; giving buyers and developers a complete picture of the parcel before their first site visit.</p>
-      </div>
-      <div class="value-card animate">
-        <div class="icon">
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4L22 14H32L24 20L27 31L18 24L9 31L12 20L4 14H14L18 4Z" stroke="#c4a35a" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M14 18L17 21L23 15" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <h4>Data-Driven Pricing Strategy</h4>
-        <p>Every offering is underwritten with a comprehensive CMA, AVM analysis, and refined value assessment across comparable transactions, tax records, and current market trends &mdash; ensuring this asset is priced at optimal market value from day one.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- BROKER (light alt) -->
-<section class="section section-alt" id="broker">
-  <div class="container">
-    <div class="broker-grid">
-      <div class="broker-img-wrap animate">
-        <img src="broker-headshot.jpg" alt="Cameron Torabi &mdash; Principal Broker, Mason Capital Group">
-      </div>
-      <div class="broker-details animate">
-        <span class="label" style="margin-bottom:8px;">Exclusive Listing Broker</span>
-        <h3 class="mb-8">Cameron Torabi</h3>
-        <span class="broker-title">Principal Broker &mdash; Mason Capital Group</span>
-        <p>The North Walton Boulevard parcel is one of the most compelling infill development opportunities in Northwest Arkansas &mdash; a 6.5-acre wooded site inside Bentonville city limits, fronting a primary arterial, structured under a Cottage Court zoning framework capable of delivering ninety-plus residences in a community designed around greenways rather than streets.</p>
-        <p>With over 30 years in Northwest Arkansas real estate and $2.4 billion in completed transactions, Mason Capital Group brings the market intelligence, developer network, and institutional-grade marketing infrastructure to execute at the level this asset demands. This offering is available exclusively through our firm.</p>
-        <div class="broker-contact">
-          <div class="item"><strong>Phone</strong>(479) 925-3333</div>
-          <div class="item"><strong>Email</strong>Info@MasonCapitalGroup.com</div>
-          <div class="item"><strong>Web</strong>www.MasonCapitalGroup.com</div>
-        </div>
-        <div class="credential-badges">
-          <span class="credential-badge">AR RE License #PB00056565</span>
-          <span class="credential-badge">Principal Broker</span>
-          <span class="credential-badge">30+ Years NWA Market</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- Reason Cards -->
+    <div class="reason-grid">
 
-<!-- CTA -->
-<section class="cta-section" id="contact">
-  <h2>Request the Full Investment Package</h2>
-  <p>North Walton Boulevard is available exclusively through Mason Capital Group. To request the full investment package, schedule a site tour, or discuss acquisition terms, contact our team directly.</p>
-  <div class="cta-buttons">
-    <a href="tel:4799253333" class="btn btn-navy">Call (479) 925-3333</a>
-    <a href="mailto:Info@MasonCapitalGroup.com?subject=North Walton Boulevard — Investment Inquiry" class="btn btn-outline">Request Investment Package</a>
-  </div>
-  <p style="font-size:13px;color:rgba(255,255,255,0.55);margin-top:40px;">www.MasonCapitalGroup.com</p>
+      <div class="reason-card animate">
+        <svg class="rc-icon" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="18" stroke="#c4a35a" stroke-width="1.5" fill="none"/>
+          <path d="M20 8v12l8 4" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="20" cy="20" r="2.5" fill="#c4a35a"/>
+        </svg>
+        <h4>America's Fastest-Growing Market</h4>
+        <p>NWA has grown 34% in population over the last decade, driven by Walmart, Tyson, JB Hunt, and 1,200+ supplier companies. Housing demand is structurally outpacing supply across every price point — and shows no sign of slowing.</p>
+      </div>
+
+      <div class="reason-card animate">
+        <svg class="rc-icon" viewBox="0 0 40 40" fill="none">
+          <rect x="4" y="4" width="32" height="32" rx="3" stroke="#c4a35a" stroke-width="1.5" fill="none"/>
+          <path d="M12 28V20M20 28V14M28 28V10" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="12" cy="18" r="2" fill="#c4a35a"/>
+          <circle cx="20" cy="12" r="2" fill="#c4a35a"/>
+          <circle cx="28" cy="8" r="2" fill="#c4a35a"/>
+        </svg>
+        <h4>Irreplaceable Infill Location</h4>
+        <p>6.5 wooded acres inside Bentonville city limits, fronting a primary arterial. This caliber of infill land does not come back to market. The wooded canopy and Greenway proximity deliver natural amenity no raw lot can replicate.</p>
+      </div>
+
+      <div class="reason-card animate">
+        <svg class="rc-icon" viewBox="0 0 40 40" fill="none">
+          <path d="M20 4l4 12h12l-10 8 4 12-10-8-10 8 4-12L4 16h12L20 4z" stroke="#c4a35a" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+          <path d="M15 20l4 4 7-8" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h4>Permitted for 90+ Residences</h4>
+        <p>The Cottage Court PUD framework unlocks a density conventional zoning will not allow on 6.5 acres. The entitlement pathway is already defined — dramatically reducing the execution risk developers price into raw land acquisitions.</p>
+      </div>
+
+      <div class="reason-card animate">
+        <svg class="rc-icon" viewBox="0 0 40 40" fill="none">
+          <path d="M8 32c6-12 10-14 12-14s6 2 12 14" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <circle cx="20" cy="14" r="6" stroke="#ab012e" stroke-width="1.5" fill="none"/>
+          <circle cx="20" cy="14" r="2.5" fill="#c4a35a"/>
+          <path d="M14 24c2-3 5-5 6-5" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <h4>Greenway-Adjacent Premium</h4>
+        <p>Properties within walking distance of the Razorback Regional Greenway consistently transact above comparable addresses — through up cycles and down. That premium is structural, not cyclical, because the amenity cannot be moved or replicated.</p>
+      </div>
+
+      <div class="reason-card animate">
+        <svg class="rc-icon" viewBox="0 0 40 40" fill="none">
+          <rect x="4" y="12" width="32" height="24" rx="2" stroke="#c4a35a" stroke-width="1.5" fill="none"/>
+          <path d="M4 20h32" stroke="#ab012e" stroke-width="1.5"/>
+          <path d="M14 6h12M20 6v6" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="14" cy="28" r="2" fill="#ab012e"/>
+          <circle cx="20" cy="28" r="2" fill="#c4a35a"/>
+          <circle cx="26" cy="28" r="2" fill="#ab012e"/>
+        </svg>
+        <h4>Commercial Revenue from Day One</h4>
+        <p>North Walton Boulevard frontage supports ground-floor retail and neighborhood-serving commercial uses. This mixed-use layer generates project income independent of residential absorption pace — a true yield diversification built into the site.</p>
+      </div>
+
+      <div class="reason-card animate">
+        <svg class="rc-icon" viewBox="0 0 40 40" fill="none">
+          <rect x="4" y="20" width="10" height="16" rx="1" stroke="#c4a35a" stroke-width="1.5" fill="none"/>
+          <rect x="15" y="14" width="10" height="22" rx="1" stroke="#ab012e" stroke-width="1.5" fill="none"/>
+          <rect x="26" y="8" width="10" height="28" rx="1" stroke="#c4a35a" stroke-width="1.5" fill="none"/>
+          <path d="M6 20L20 12L34 6" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <h4>Lower Cost Per Unit to Build</h4>
+        <p>Clustering four homes around shared courtyards reduces street footage, utility runs, and per-unit infrastructure cost versus conventional subdivision layouts — while delivering the premium product NWA buyers are actively paying above asking for.</p>
+      </div>
+
+    </div><!-- /reason-grid -->
+
+    <hr class="why-buy-divider">
+
+    <!-- Broker + CTA -->
+    <div class="buy-bottom-grid">
+
+      <div class="buy-broker-card animate">
+        <img src="broker-headshot.jpg" alt="Cameron Torabi — Principal Broker, Mason Capital Group">
+        <div class="buy-broker-info">
+          <span class="label" style="margin-bottom:6px;">Exclusive Listing Broker</span>
+          <h3>Cameron Torabi</h3>
+          <span class="broker-title">Principal Broker &mdash; Mason Capital Group</span>
+          <p>The North Walton Boulevard parcel is one of the most compelling infill development opportunities in Northwest Arkansas &mdash; 6.5 wooded acres inside Bentonville city limits, permitted for ninety-plus residences under a Cottage Court PUD framework, with Greenway proximity and boulevard commercial frontage that developers cannot manufacture elsewhere.</p>
+          <div class="buy-broker-contacts">
+            <a href="tel:4799253333">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" stroke="#c4a35a" stroke-width="1.8" fill="none"/></svg>
+              (479) 925-3333
+            </a>
+            <a href="mailto:Info@MasonCapitalGroup.com">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" stroke="#c4a35a" stroke-width="1.8" fill="none"/><path d="M2 8l10 7 10-7" stroke="#c4a35a" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Info@MasonCapitalGroup.com
+            </a>
+            <a href="https://www.masoncapitalgroup.com" target="_blank">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c4a35a" stroke-width="1.8" fill="none"/><path d="M2 12h20M12 2c-3 4-3 14 0 20M12 2c3 4 3 14 0 20" stroke="#c4a35a" stroke-width="1.8" stroke-linecap="round"/></svg>
+              MasonCapitalGroup.com
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="buy-cta-card animate">
+        <span class="label" style="margin-bottom:12px;display:block;">Available Exclusively Through MCG</span>
+        <h2>Request the Full<br>Investment Package</h2>
+        <p>Offering memorandum, site survey, Cottage Court entitlement documentation, development pro forma, and site tour available upon request. Contact our team to begin the conversation.</p>
+        <div class="cta-buttons" style="flex-direction:column;align-items:stretch;">
+          <a href="tel:4799253333" class="btn btn-navy" style="text-align:center;">Call (479) 925-3333</a>
+          <a href="mailto:Info@MasonCapitalGroup.com?subject=North Walton Boulevard — Investment Inquiry" class="btn btn-outline" style="text-align:center;">Request Investment Package</a>
+        </div>
+        <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:28px;margin-bottom:0;">AR RE License #PB00056565 &middot; Mason Capital Group</p>
+      </div>
+
+    </div><!-- /buy-bottom-grid -->
+
+  </div><!-- /why-buy-inner -->
 </section>
 
 <!-- FOOTER -->
