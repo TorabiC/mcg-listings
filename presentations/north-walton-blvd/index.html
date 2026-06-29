@@ -373,111 +373,119 @@ p:last-child { margin-bottom: 0; }
 .animate { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
 .animate.visible { opacity: 1; transform: none; }
 
+/* ===== COMMUNITY BAND — single parallax band spanning Framework + Concept ===== */
+.community-band {
+  position: relative;
+  overflow: hidden;
+}
+.community-band-bg {
+  position: absolute;
+  top: -25%; left: 0;
+  width: 100%; height: 150%;
+  object-fit: cover;
+  object-position: center 45%;
+  display: block;
+  z-index: 0;
+  will-change: transform;
+  pointer-events: none;
+}
+/* dark overlay covering the whole band for text legibility */
+.community-band-overlay {
+  position: absolute; inset: 0;
+  background: rgba(14,14,28,0.52);
+  z-index: 1;
+  pointer-events: none;
+}
+/* top fade: blend from the dark Advantages section above */
+.band-top-fade {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 140px;
+  background: linear-gradient(180deg, #16162a 0%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+/* bottom fade: melt into the white Thesis section below */
+.band-bottom-fade {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 160px;
+  background: linear-gradient(0deg, #ffffff 0%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
 /* ===== FRAMEWORK SECTION ===== */
 .framework-section {
   position: relative;
   padding: 96px 0 0;
-  background: var(--navy);
+  background: transparent;
   color: var(--white);
-  overflow: hidden;
 }
 .framework-section .label { color: var(--gold); }
 .framework-section h2 { color: var(--white); }
-.framework-section p { color: rgba(255,255,255,0.85); }
+.framework-section p { color: rgba(255,255,255,0.88); }
 .framework-section .accent-bar { background: var(--gold); }
 .framework-section strong { color: var(--white); }
 .framework-section .cottage-quote { color: var(--white); }
 .framework-section .reg-card {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(196,163,90,0.25);
-  backdrop-filter: blur(4px);
+  background: rgba(10,10,25,0.62);
+  border: 1px solid rgba(196,163,90,0.35);
+  backdrop-filter: blur(10px);
 }
 .framework-section .reg-card:hover {
-  border-color: rgba(196,163,90,0.55);
-  background: rgba(255,255,255,0.10);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  border-color: rgba(196,163,90,0.60);
+  background: rgba(10,10,25,0.75);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
 }
 .framework-section .reg-card h4 { color: var(--white); }
-.framework-section .reg-card p { color: rgba(255,255,255,0.82); font-size: 13px; }
+.framework-section .reg-card p { color: rgba(255,255,255,0.85); font-size: 13px; }
 .framework-section .step-num {
   background: rgba(255,255,255,0.08);
   border-color: var(--gold);
   color: var(--gold);
 }
 .framework-section .process-step h4 { color: var(--white); }
-.framework-section .process-step p { color: rgba(255,255,255,0.82); }
+.framework-section .process-step p { color: rgba(255,255,255,0.85); }
 .framework-section .process-steps::before { background: rgba(196,163,90,0.25); }
-.framework-section .section-header p { color: rgba(255,255,255,0.85); }
+.framework-section .section-header p { color: rgba(255,255,255,0.88); }
 .framework-section h3 { color: var(--white); }
-
+.framework-section .zoning-bar {
+  background: rgba(10,10,25,0.62) !important;
+  border-color: rgba(196,163,90,0.35) !important;
+  backdrop-filter: blur(10px);
+}
+.framework-section .cottage-intro-grid > div:first-child > p,
+.framework-section .cottage-intro-grid > div:first-child > .cottage-quote {
+  background: rgba(10,10,25,0.50);
+  border-radius: 4px;
+  padding: 16px 20px;
+}
 
 /* ===== CONCEPT SECTION ===== */
 .concept-section {
   position: relative;
   padding: 96px 0;
-  background: var(--navy);
+  background: transparent;
   color: var(--white);
-  overflow: hidden;
 }
 .concept-section .label { color: var(--gold); }
 .concept-section h2 { color: var(--white); }
-.concept-section p { color: var(--gray-300); }
+.concept-section p { color: rgba(255,255,255,0.88); }
 
-/* ===== COMMUNITY RENDER — shared background for Framework + Concept ===== */
-.community-bg-img {
-  position: absolute;
-  top: -15%; left: 0;
-  width: 100%; height: 130%;
-  object-fit: cover;
-  display: block;
-  z-index: 0;
-  will-change: transform;
-}
+/* All text inside band sections gets a subtle shadow for legibility */
 .framework-section .container *,
 .concept-section .container * {
-  text-shadow: 0 2px 12px rgba(0,0,0,0.75);
-}
-.framework-section .reg-card,
-.framework-section .zoning-bar {
-  text-shadow: none;
-  background: rgba(10,10,25,0.60) !important;
-  border-color: rgba(196,163,90,0.35) !important;
-  backdrop-filter: blur(8px);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.70);
 }
 .framework-section .reg-card *,
 .framework-section .zoning-bar * { text-shadow: none; }
-.framework-section .cottage-intro-grid > div:first-child > p,
-.framework-section .cottage-intro-grid > div:first-child > .cottage-quote {
-  background: rgba(10,10,25,0.45);
-  border-radius: 4px;
-  padding: 16px 20px;
-  text-shadow: none;
-}
-.framework-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg,
-    rgba(22,22,42,0.92) 0%,
-    rgba(22,22,42,0.58) 15%,
-    rgba(22,22,42,0.52) 55%,
-    rgba(22,22,42,0.62) 100%
-  );
-  z-index: 1;
-}
-.concept-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg,
-    rgba(22,22,42,0.62) 0%,
-    rgba(22,22,42,0.52) 40%,
-    rgba(22,22,42,0.60) 75%,
-    rgba(255,255,255,0.94) 93%,
-    #ffffff 100%
-  );
-  z-index: 1;
-}
+
+/* Containers are above overlays */
 .framework-section > .container,
 .concept-section > .container {
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
 </style>
 </head>
@@ -598,10 +606,15 @@ p:last-child { margin-bottom: 0; }
   </div>
 </section>
 
-<!-- COTTAGE COURT FRAMEWORK (light alt) -->
+<!-- COMMUNITY BAND — single image spanning Framework + Concept -->
+<div class="community-band">
+  <img class="community-band-bg" id="bandBg" src="band-render.jpg" alt="">
+  <div class="community-band-overlay"></div>
+  <div class="band-top-fade"></div>
+  <div class="band-bottom-fade"></div>
+
+<!-- COTTAGE COURT FRAMEWORK -->
 <section id="framework" class="framework-section">
-  <img class="community-bg-img" src="community-render.jpg" alt="" style="object-position:center 35%;">
-  <div class="framework-overlay"></div>
   <div class="container">
     <div class="section-header animate mb-40">
       <span class="label">Regulatory Framework</span>
@@ -691,10 +704,8 @@ p:last-child { margin-bottom: 0; }
   </div>
 </section>
 
-<!-- DEVELOPMENT CONCEPT (dark) -->
+<!-- DEVELOPMENT CONCEPT -->
 <section id="concept" class="concept-section">
-  <img class="community-bg-img" src="community-render.jpg" alt="" style="object-position:center 55%;">
-  <div class="concept-overlay"></div>
   <div class="container">
     <div class="section-header animate mb-40">
       <span class="label">Development Concept</span>
@@ -727,6 +738,7 @@ p:last-child { margin-bottom: 0; }
     </div>
   </div>
 </section>
+</div><!-- /.community-band -->
 
 <!-- INVESTMENT THESIS (light) -->
 <section class="section" id="thesis">
@@ -953,22 +965,15 @@ window.addEventListener('scroll', function() {
 
 <script>
 (function() {
-  var fwImg = document.querySelector('#framework .community-bg-img');
-  var csImg = document.querySelector('#concept .community-bg-img');
-  var fwSec = document.getElementById('framework');
-  var csSec = document.getElementById('concept');
-  if (!fwImg && !csImg) return;
+  var bg = document.getElementById('bandBg');
+  var band = bg && bg.closest('.community-band');
+  if (!bg || !band) return;
 
   function onScroll() {
     var scrollY = window.pageYOffset;
-    if (fwImg && fwSec) {
-      var delta = (scrollY - fwSec.offsetTop) * 0.25;
-      fwImg.style.transform = 'translateY(' + delta + 'px)';
-    }
-    if (csImg && csSec) {
-      var delta2 = (scrollY - csSec.offsetTop) * 0.25;
-      csImg.style.transform = 'translateY(' + delta2 + 'px)';
-    }
+    var bandTop = band.offsetTop;
+    var delta = (scrollY - bandTop) * 0.40;
+    bg.style.transform = 'translateY(' + delta + 'px)';
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
