@@ -155,7 +155,33 @@ p:last-child { margin-bottom: 0; }
 }
 
 /* ===== OPPORTUNITY (light) ===== */
-.opp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+/* ===== OPPORTUNITY SPLIT ===== */
+.opp-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 85vh;
+  align-items: stretch;
+  overflow: hidden;
+}
+.opp-text-col {
+  padding: 96px clamp(32px, 4vw, 64px) 96px max(calc((100vw - 1100px) / 2 + 24px), 32px);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.opp-image-col {
+  position: relative; overflow: hidden;
+}
+.opp-image-col img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+.aerial-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(0deg, rgba(22,22,42,0.85) 0%, transparent 100%);
+  padding: 32px 20px 16px;
+  font-size: 11px; color: rgba(255,255,255,0.7); text-align: center; letter-spacing: .08em;
+}
 .opp-quote {
   font-family: var(--font-serif);
   font-size: clamp(32px, 4vw, 50px);
@@ -171,15 +197,11 @@ p:last-child { margin-bottom: 0; }
 .metric-cell { background: var(--white); padding: 20px 22px; }
 .metric-cell .num { font-family: var(--font-serif); font-size: 30px; font-weight: 700; color: var(--crimson); }
 .metric-cell .desc { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-400); margin-top: 3px; }
-.aerial-wrap { position: relative; border-radius: var(--radius); overflow: hidden; box-shadow: 0 20px 60px rgba(22,22,42,0.12); }
-.aerial-wrap img { width: 100%; display: block; }
-.aerial-caption {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: linear-gradient(0deg, rgba(22,22,42,0.85) 0%, transparent 100%);
-  padding: 24px 16px 14px;
-  font-size: 11px; color: rgba(255,255,255,0.7); text-align: center; letter-spacing: .08em;
+@media(max-width:900px) {
+  .opp-split { grid-template-columns: 1fr; min-height: auto; }
+  .opp-text-col { padding: 64px 24px; }
+  .opp-image-col { min-height: 55vw; position: relative; }
 }
-@media(max-width:800px) { .opp-grid { grid-template-columns: 1fr; gap: 48px; } }
 
 /* ===== ADVANTAGES (dark) ===== */
 .advantages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1px; background: rgba(255,255,255,0.06); border-radius: var(--radius); overflow: hidden; }
@@ -383,28 +405,24 @@ p:last-child { margin-bottom: 0; }
 </section>
 
 <!-- THE OPPORTUNITY (light) -->
-<section class="section" id="opportunity">
-  <div class="container">
-    <div class="opp-grid">
-      <div class="animate">
-        <span class="label">The Opportunity</span>
-        <div class="opp-quote">A village in<br><em>the tree line.</em></div>
-        <div class="accent-bar"></div>
-        <p>A rare 6.5-acre wooded parcel inside Bentonville &mdash; large enough for a genuine master-planned community, rare enough to be effectively non-replenishable. The concept scatters ninety-plus cottage residences across the site in intimate clusters, each oriented around a shared courtyard, while retail and commercial space anchors the North Walton Boulevard frontage.</p>
-        <p>A central greenway runs the full length of the parcel. A bike and pedestrian loop traces its perimeter. The connective tissue of the community is parkland and path &mdash; not pavement and curb. At 13.8 units per acre, the plan delivers meaningful density while preserving the wooded character that defines this site and its surroundings.</p>
-        <div class="opp-metrics">
-          <div class="metric-cell animate"><div class="num">6.5&plusmn;</div><div class="desc">Acres</div></div>
-          <div class="metric-cell animate"><div class="num">90+</div><div class="desc">Planned Residences</div></div>
-          <div class="metric-cell animate"><div class="num">13.8</div><div class="desc">Units per Acre</div></div>
-          <div class="metric-cell animate"><div class="num">$38.9K</div><div class="desc">Land Cost / Unit</div></div>
-        </div>
+<section id="opportunity" style="overflow:hidden;">
+  <div class="opp-split">
+    <div class="opp-text-col animate">
+      <span class="label">The Opportunity</span>
+      <div class="opp-quote">A village in<br><em>the tree line.</em></div>
+      <div class="accent-bar"></div>
+      <p>A rare 6.5-acre wooded parcel inside Bentonville &mdash; large enough for a genuine master-planned community, rare enough to be effectively non-replenishable. The concept scatters ninety-plus cottage residences across the site in intimate clusters, each oriented around a shared courtyard, while retail and commercial space anchors the North Walton Boulevard frontage.</p>
+      <p>A central greenway runs the full length of the parcel. A bike and pedestrian loop traces its perimeter. The connective tissue of the community is parkland and path &mdash; not pavement and curb. At 13.8 units per acre, the plan delivers meaningful density while preserving the wooded character that defines this site and its surroundings.</p>
+      <div class="opp-metrics">
+        <div class="metric-cell"><div class="num">6.5&plusmn;</div><div class="desc">Acres</div></div>
+        <div class="metric-cell"><div class="num">90+</div><div class="desc">Planned Residences</div></div>
+        <div class="metric-cell"><div class="num">13.8</div><div class="desc">Units per Acre</div></div>
+        <div class="metric-cell"><div class="num">$38.9K</div><div class="desc">Land Cost / Unit</div></div>
       </div>
-      <div class="animate">
-        <div class="aerial-wrap">
-          <img src="opportunity-aerial.jpg" alt="North Walton Boulevard &mdash; Aerial Site View with Boundary Survey">
-          <div class="aerial-caption">Boundary survey overlaid &mdash; 6.5&plusmn; acres fronting N Walton Blvd, Bentonville</div>
-        </div>
-      </div>
+    </div>
+    <div class="opp-image-col animate">
+      <img src="opportunity-aerial.jpg" alt="North Walton Boulevard &mdash; Aerial Site View with Boundary Survey">
+      <div class="aerial-caption">Boundary survey overlaid &mdash; 6.5&plusmn; acres fronting N Walton Blvd, Bentonville</div>
     </div>
   </div>
 </section>
