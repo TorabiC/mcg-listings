@@ -519,7 +519,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ===== ANIMATIONS ===== */
-.animate { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.animate { opacity: 0; transform: translateY(30px); transition: opacity 0.85s cubic-bezier(.2,.7,.2,1), transform 0.85s cubic-bezier(.2,.7,.2,1); }
 .animate.visible { opacity: 1; transform: translateY(0); }
 
 /* ===== RESPONSIVE ===== */
@@ -605,6 +605,70 @@ a { color: inherit; text-decoration: none; }
 }
 
 </style>
+<style>
+/* ===== HIGH-END REFINEMENTS (additive) ===== */
+/* Staggered scroll reveal within grids */
+.value-grid .value-card:nth-child(2){ transition-delay:.07s; }
+.value-grid .value-card:nth-child(3){ transition-delay:.14s; }
+.value-grid .value-card:nth-child(4){ transition-delay:.21s; }
+.value-grid .value-card:nth-child(5){ transition-delay:.28s; }
+.value-grid .value-card:nth-child(6){ transition-delay:.35s; }
+.bar{ border-radius:4px 4px 0 0; }
+/* Photo region: text pop + seamless fade into CTA */
+#photoRegion .photo-band p, #photoRegion .section-header .label, #photoRegion .section-header h2, #photoRegion .section-header p{ text-shadow:0 2px 22px rgba(0,0,0,0.6); }
+.cta-section::before{ display:none; }
+.cta-section h2, .cta-section p{ text-shadow:0 2px 18px rgba(0,0,0,0.55); }
+/* Footer matches the CTA color, seamless */
+.footer{ background:linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-top:none; }
+:root{ --line:#e8e2d8; --off-white:#f6f3ed; }
+
+/* Whitespace + heading scale */
+.section{ padding:114px 0; }
+.section-header{ margin-bottom:56px; }
+.section-header h2{ font-size:clamp(30px,4.2vw,48px); line-height:1.12; letter-spacing:-0.4px; }
+.section-header p{ max-width:680px; line-height:1.8; }
+
+/* Refined labels + gold-forward accents */
+.label{ font-weight:700; letter-spacing:5px; }
+.accent-line{ background:var(--gold); }
+.hero::before, .hero::after{ background:var(--gold); }
+
+/* Nav: transparent over hero, solid on scroll */
+.nav{ background:transparent; border-bottom-color:transparent; box-shadow:none; backdrop-filter:none; transition:background .45s ease, border-color .45s ease, box-shadow .45s ease; }
+.nav.scrolled{ background:rgba(22,22,42,0.96); border-bottom:1px solid rgba(196,163,90,0.22); box-shadow:0 8px 30px rgba(0,0,0,0.18); backdrop-filter:blur(12px); }
+.nav-links a{ letter-spacing:2.4px; }
+.nav-links a.active{ color:var(--gold); }
+
+/* Cards: refined hover + gold reveal bar */
+.value-card{ padding:44px 36px; transition:transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s, border-color .5s; }
+.value-card:hover{ transform:translateY(-6px); box-shadow:0 26px 55px rgba(22,22,42,0.12); border-color:rgba(196,163,90,0.55); }
+.value-card::before{ background:var(--gold); height:2px; transform:scaleX(0); transform-origin:left center; transition:transform .5s cubic-bezier(.2,.7,.2,1); }
+.value-card:hover::before{ transform:scaleX(1); }
+
+/* Opportunity: elegant numerals replace generic icons */
+#opportunity .value-grid{ counter-reset:opp; }
+#opportunity .value-card .icon svg{ display:none; }
+#opportunity .value-card .icon{ margin-bottom:12px; line-height:1; }
+#opportunity .value-card .icon::before{ counter-increment:opp; content:counter(opp,decimal-leading-zero); font-family:var(--font-serif); font-size:34px; font-weight:700; color:var(--gold); }
+
+/* Entitlement: balanced 2x2 */
+#entitlement .value-grid{ grid-template-columns:repeat(2,1fr); gap:24px; max-width:880px; margin-left:auto; margin-right:auto; }
+#entitlement .value-card{ padding:34px 32px; }
+
+/* Detail tables: air, right-aligned figures, hairline rules, hover */
+.detail-table td{ padding:14px 2px; }
+.detail-table td:last-child{ text-align:right; font-variant-numeric:tabular-nums; }
+.detail-table tr{ border-bottom:1px solid var(--line); transition:background .25s; }
+.detail-table tr:hover{ background:rgba(196,163,90,0.05); }
+
+/* Buttons + tabular figures */
+.btn{ transition:all .4s ease; letter-spacing:1.6px; }
+.btn-outline:hover{ box-shadow:0 12px 32px rgba(196,163,90,0.25); }
+.hero-price, .snap-val, .val-amount{ font-variant-numeric:tabular-nums; }
+
+@media (max-width:991px){ .section{ padding:80px 0; } #entitlement .value-grid{ grid-template-columns:1fr; } }
+@media (max-width:600px){ .section{ padding:56px 0; } .value-card{ padding:32px 24px; } }
+</style>
 </head>
 <body>
 
@@ -612,15 +676,12 @@ a { color: inherit; text-decoration: none; }
 <nav class="nav">
   <div class="nav-logo" style="display:flex;align-items:center;gap:10px;"><a href="https://www.masoncapitalgroup.com" target="_blank" style="display:inline-flex;"><img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group" style="height:36px;width:auto;"></a></div>
   <div class="nav-links" id="navLinks">
-    <a href="#property">Property</a>
-    <a href="#why-mcg-intro">Why MCG</a>
-    <a href="#details">Details</a>
-    <a href="#valuation">Valuation</a>
-    <a href="#syndication">Marketing</a>
-    <a href="#matterport">Aerial</a>
-    <a href="#homes">Platform</a>
-    <a href="#web-signage">Digital</a>
-    <a href="#contact">Contact</a>
+    <a href="#property">Overview</a>
+    <a href="#opportunity">Opportunity</a>
+    <a href="#details">The Asset</a>
+    <a href="#valuation">The Numbers</a>
+    <a href="#cma">Comps</a>
+    <a href="#contact">Inquire</a>
   </div>
   <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">&#9776;</button>
 </nav>
@@ -640,10 +701,28 @@ a { color: inherit; text-decoration: none; }
       <div class="hero-stat"><div class="val">$250K&ndash;$400K</div><div class="lbl">Per Lot (Developed)</div></div>
       <div class="hero-stat"><div class="val">Gated PUD</div><div class="lbl">Development Type</div></div>
     </div>
-    <div class="hero-tagline">42.54-Acre PUD-Designated Development Opportunity &nbsp;&bull;&nbsp; Benton County, Arkansas</div>
+    <div class="hero-tagline">Approved 19-Lot Gated PUD &nbsp;&bull;&nbsp; Fully Entitled &nbsp;&bull;&nbsp; Benton County, Arkansas</div>
     <div class="hero-logo">
       <a href="https://www.masoncapitalgroup.com" target="_blank" style="display:inline-flex;"><img src="mcg-logo-horizontal-white.png" alt="Mason Capital Group" style="height:48px;width:auto;"></a>
     </div>
+  </div>
+</section>
+
+<!-- INVESTMENT SUMMARY -->
+<section class="section section-alt" id="summary">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-crimson">Investment Summary</span>
+      <h2>The Opportunity at a Glance</h2>
+      <div class="accent-line accent-line-center mb-16" style="margin-top:12px"></div>
+    </div>
+    <div class="snapshot-grid">
+      <div class="snap-card"><div class="snap-val">$3.8M</div><div class="snap-label">Offering Price (Wholesale)</div><div class="snap-change" style="color:var(--navy);">$89,365 / acre</div></div>
+      <div class="snap-card"><div class="snap-val">42.54 ac</div><div class="snap-label">Entitled Gated PUD</div><div class="snap-change" style="color:var(--navy);">Benton Co. #25-463</div></div>
+      <div class="snap-card"><div class="snap-val">19 Lots</div><div class="snap-label">Engineered Homesites</div><div class="snap-change" style="color:var(--navy);">1.00&ndash;5.19 ac each</div></div>
+      <div class="snap-card"><div class="snap-val">$4.25&ndash;5.2M</div><div class="snap-label">Projected Lot Sell-Out</div><div class="snap-change growth-positive"><svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:3px"><path d="M6 2l4 5H2z" fill="#2e7d32"/></svg>Gross proceeds</div></div>
+    </div>
+    <p style="text-align:center;max-width:760px;margin:32px auto 0;color:var(--gray-500);font-size:14px;">A fully entitled, development-ready lake community above Beaver Lake in Rogers, Arkansas &mdash; offered exclusively to qualified developers, builders, and investors.</p>
   </div>
 </section>
 
@@ -656,12 +735,12 @@ a { color: inherit; text-decoration: none; }
       </div>
       <div class="broker-details">
         <div class="section-header">
-          <span class="label text-crimson">Exclusive Listing Broker</span>
+          <span class="label text-crimson">Exclusively Represented By</span>
           <h2>Cameron Torabi</h2>
         </div>
         <div class="title">Principal Broker</div>
-        <p>The Enclave at Beaver Lake represents one of the most compelling development-ready land opportunities in Northwest Arkansas — 42.54 acres with approved civil plans, 19 engineered homesites, and a PUD designation that transforms this parcel from raw acreage into a premium gated community ready for vertical construction. Proximity to Beaver Lake and sustained demand in the Benton County corridor make this a rare, high-conviction asset for developers, builders, and investment groups.</p>
-        <p>With over 30 years in Northwest Arkansas real estate and $2.4 billion in completed transactions, Mason Capital Group brings the market intelligence, buyer network, and institutional marketing infrastructure to execute at the level this asset warrants.</p>
+        <p>The Enclave at Beaver Lake is offered exclusively through Mason Capital Group &mdash; a rare opportunity to acquire a fully entitled, development-ready lake community in one of the country's fastest-growing corridors. Approved civil plans, 19 engineered homesites, gated infrastructure, and a PUD designation are already in place. The hard, time-consuming entitlement work is done.</p>
+        <p>With over 30 years in Northwest Arkansas real estate and $2.4 billion in completed transactions, we represent this asset to qualified developers, builders, and investment groups &mdash; and provide the diligence materials, site access, and deal structuring to move from interest to close.</p>
         <div class="broker-contact">
           <div class="item"><strong>PHONE</strong> (479) 925-3333</div>
           <div class="item"><strong>EMAIL</strong> Info@MasonCapitalGroup.com</div>
@@ -677,44 +756,46 @@ a { color: inherit; text-decoration: none; }
 </section>
 
 <!-- WHY MASON CAPITAL GROUP — VALUE PROPOSITIONS -->
-<section class="section section-alt" id="why-mcg-intro">
-  <div class="container">
+<section class="section" id="opportunity" style="position:relative;overflow:hidden;">
+  <div id="oppBg" style="position:absolute;left:0;top:-12%;width:100%;height:128%;background:url('opportunity-bg.jpg') center/cover no-repeat;z-index:0;will-change:transform;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(rgba(16,18,28,0.68) 0%, rgba(16,18,28,0.46) 38%, rgba(16,18,28,0.34) 100%);z-index:0;"></div>
+  <div class="container" style="position:relative;z-index:1;">
     <div class="section-header text-center centered mb-48">
-      <span class="label text-crimson">The MCG Advantage</span>
-      <h2>Why Mason Capital Group Is the<br>Right Partner for This Acquisition</h2>
+      <span class="label text-gold">The Opportunity</span>
+      <h2 style="color:var(--white)">An Entitled, De-Risked<br>Lake Development Opportunity</h2>
       <div class="accent-line accent-line-center mb-24" style="margin-top:16px"></div>
-      <p>Mason Capital Group is a full-service real estate investment and advisory firm with over 30 years of Northwest Arkansas market expertise. We bring institutional-level market intelligence, deal structuring, and transaction management that align with how sophisticated investors and developers evaluate and acquire high-value land assets.</p>
+      <p style="color:rgba(255,255,255,0.92)">The Enclave is not raw land. It is a fully entitled, engineered, 19-lot gated community above Beaver Lake &mdash; acquired development-ready, with proven lakeside demand and multiple paths to return.</p>
     </div>
     <div class="value-grid">
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="32" height="28" rx="3" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M10 26V18" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M18 26V14" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M26 26V10" stroke="#ab012e" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="16" r="2" fill="#ab012e"/><circle cx="18" cy="12" r="2" fill="#ab012e"/><circle cx="26" cy="8" r="2" fill="#ab012e"/><line x1="10" y1="16" x2="18" y2="12" stroke="#ab012e" stroke-width="1.5"/><line x1="18" y1="12" x2="26" y2="8" stroke="#ab012e" stroke-width="1.5"/></svg></div>
-        <h4>Licensed Principal Broker</h4>
-        <p>As a Principal Broker in Arkansas, Mason Capital Group brings executive-level expertise and fiduciary precision to every transaction — from initial valuation through closing. Every detail of this offering has been underwritten with real market data, not guesswork.</p>
+        <h4>Fully Entitled &amp; De-Risked</h4>
+        <p>Approved Prairie Creek PUD (Benton Co. Case #25-463), 19 engineered homesites, completed civil plans and infrastructure engineering. The entitlement risk and timeline are already behind you &mdash; acquire a development-ready asset, not raw acreage.</p>
       </div>
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="15" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="6" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="2" fill="#ab012e"/><line x1="18" y1="3" x2="18" y2="9" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="27" x2="18" y2="33" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="9" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="27" y1="18" x2="33" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/></svg></div>
-        <h4>Investment-Grade Marketing</h4>
-        <p>We market development opportunities the way institutional investors expect — with professional site photography, digital offering memorandums, targeted ad campaigns, and syndication across nearly 100 platforms including Zillow, Realtor.com, Redfin, and Crexi.</p>
+        <h4>Proven Lakeside Demand</h4>
+        <p>Comparable Beaver Lake homesites are trading at $250K&ndash;$400K each at roughly 90% of list. The absorption case is established by recent market activity, not projected &mdash; finished lots in this corridor sell.</p>
       </div>
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="10" r="5" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="8" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="28" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><path d="M18 15V20" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><path d="M18 20L8 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/><path d="M18 20L28 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <h4>Buyer &amp; Investor Network</h4>
-        <p>Our active investor network and relationships with local, regional, and national developers mean this opportunity reaches serious, qualified capital from day one. We connect high-value land assets with the right buyers and development groups.</p>
+        <h4>Northwest Arkansas Growth</h4>
+        <p>Minutes from Bentonville and Rogers &mdash; anchored by Walmart's global headquarters, sustained corporate relocation, and one of the nation's fastest-growing regional economies. The demand drivers here are structural, not cyclical.</p>
       </div>
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 4L22 14H32L24 20L27 31L18 24L9 31L12 20L4 14H14L18 4Z" stroke="#c4a35a" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M14 18L17 21L23 15" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h4>Premium Portal Placement</h4>
-        <p>As a premium member on the nation's top real estate portals, this offering receives priority placement, a larger display, and 25X more qualified buyer exposure — translating to 540% more saves and 515% more shares versus standard listings.</p>
+        <h4>Scarcity of Large Lake Parcels</h4>
+        <p>A 42.5-acre contiguous, gated, lake-proximate parcel is a rare acquisition in a supply-constrained corridor. Assembling comparable acreage near Beaver Lake is difficult and costly &mdash; the basis here is defensible.</p>
       </div>
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="8" width="28" height="24" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M4 16H32" stroke="#ab012e" stroke-width="2"/><path d="M18 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M11 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M25 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="22" r="2" fill="#ab012e"/><circle cx="18" cy="22" r="2" fill="#c4a35a"/><circle cx="24" cy="22" r="2" fill="#ab012e"/><circle cx="12" cy="28" r="2" fill="#c4a35a"/><circle cx="18" cy="28" r="2" fill="#ab012e"/><path d="M9 12L13 12" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <h4>Professional Drone Aerials &amp; Video</h4>
-        <p>For land and development listings, we produce HD drone aerials, cinematic flyover video, and site plan overlays — giving buyers and developers a complete picture of the parcel, lot configuration, and surrounding area before they visit.</p>
+        <h4>Multiple Exit Paths</h4>
+        <p>Acquire and hold, build and sell 19 finished lots (projected $4.25M&ndash;$5.2M gross), or wholesale the entitled package. The asset supports developer, builder, and investor strategies &mdash; flexibility that protects the downside.</p>
       </div>
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 28L12 20L18 24L26 14L32 8" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 8H32V14" stroke="#ab012e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="20" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="18" cy="24" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="26" cy="14" r="3" fill="#c4a35a" opacity="0.3"/><line x1="4" y1="32" x2="32" y2="32" stroke="#16162a" stroke-width="1.5" opacity="0.3"/></svg></div>
-        <h4>Data-Driven Pricing Strategy</h4>
-        <p>Every offering is underwritten with a comprehensive CMA, AVM analysis, and refined value assessment across comparable transactions, tax records, and current market trends — ensuring this asset is priced at optimal market value from day one.</p>
+        <h4>Diligence-Ready Offering</h4>
+        <p>Civil plans, lot matrix, comparable analysis, tax history, and site detail are assembled and available to qualified parties. Represented by a Principal Broker with 30+ years and $2.4B in Northwest Arkansas transactions.</p>
       </div>
     </div>
   </div>
@@ -738,7 +819,7 @@ a { color: inherit; text-decoration: none; }
         <tr><td>Lot Description</td><td>Sloped, Wooded</td></tr>
         <tr><td>Address</td><td>Apx. 9105 N Park Road, Rogers, AR 72756</td></tr>
         <tr><td>MLS #</td><td>1084951</td></tr>
-        <tr><td>List Price</td><td>$950,000</td></tr>
+        <tr><td>Offering Price</td><td>$3,800,000 &mdash; Wholesale, As-Is</td></tr>
         <tr><td>Flood Zone</td><td>FEMA Zone X (Not in flood zone)</td></tr>
       </table>
       <table class="detail-table">
@@ -780,14 +861,62 @@ a { color: inherit; text-decoration: none; }
   </div>
 </section>
 
+<!-- ENTITLEMENT & SITE READINESS -->
+<section class="section section-dark" id="entitlement">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-gold">De-Risked &amp; Development-Ready</span>
+      <h2 style="color:var(--white)">Entitlement &amp; Site Readiness</h2>
+      <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
+      <p style="color:var(--gray-300)">The work that typically takes a developer years and significant capital is already complete. The Enclave transfers as an entitled, engineered, development-ready asset.</p>
+    </div>
+    <div class="value-grid">
+      <div class="value-card animate" style="background:rgba(255,255,255,0.04);border-color:rgba(196,163,90,0.25);">
+        <h4 style="color:var(--white)">PUD Approved</h4>
+        <p style="color:var(--gray-300)">Prairie Creek PUD designation in place &mdash; Benton County Case #25-463. Density and gated configuration approved.</p>
+      </div>
+      <div class="value-card animate" style="background:rgba(255,255,255,0.04);border-color:rgba(196,163,90,0.25);">
+        <h4 style="color:var(--white)">Civil Plans Complete</h4>
+        <p style="color:var(--gray-300)">Engineered civil plans for 19 homesites, roads, and gated entry &mdash; ready for construction permitting.</p>
+      </div>
+      <div class="value-card animate" style="background:rgba(255,255,255,0.04);border-color:rgba(196,163,90,0.25);">
+        <h4 style="color:var(--white)">Infrastructure Engineered</h4>
+        <p style="color:var(--gray-300)">Water via Rogers Water Utility, septic approved by the AR Dept. of Health, 2-way asphalt streets, and a siren-activated 20&rsquo; gate.</p>
+      </div>
+      <div class="value-card animate" style="background:rgba(255,255,255,0.04);border-color:rgba(196,163,90,0.25);">
+        <h4 style="color:var(--white)">Buildable &amp; Low-Risk</h4>
+        <p style="color:var(--gray-300)">5.94-acre limits of disturbance across 42.54 acres, FEMA Zone X (not in a flood zone), sloped and wooded lake-view terrain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIGITAL OFFERING MEMORANDUM (FLIP BOOK) -->
+<section class="section" id="digital-om">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-crimson">Digital Offering Memorandum</span>
+      <h2>Explore the Full Vision</h2>
+      <div class="accent-line accent-line-center mb-16" style="margin-top:12px"></div>
+      <p>Page through the complete digital offering memorandum for The Enclave at Beaver Lake &mdash; the vision, architecture, site plan, amenities, and the surrounding Northwest Arkansas market. Use the on-screen arrows or your keyboard arrow keys to turn each page.</p>
+    </div>
+    <div class="om-flipbook-frame" style="position:relative;width:100%;max-width:1180px;margin:0 auto;border:1px solid rgba(196,163,90,0.35);border-radius:14px;overflow:hidden;background:#0a0a18;box-shadow:0 18px 50px rgba(8,8,22,0.45);">
+      <iframe src="./flipbook/?v=4" title="The Enclave at Beaver Lake &mdash; Digital Offering Memorandum" loading="lazy" allowfullscreen style="display:block;width:100%;height:min(78vh,720px);min-height:440px;border:0;"></iframe>
+    </div>
+    <div style="text-align:center;margin-top:18px;">
+      <a href="./flipbook/" target="_blank" rel="noopener" style="display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--crimson);text-decoration:none;border-bottom:1px solid var(--crimson);padding-bottom:2px;">Open the OM full-screen &nbsp;&#8599;</a>
+    </div>
+  </div>
+</section>
+
 <!-- VALUATION -->
 <section class="section section-dark" id="valuation">
   <div class="container">
     <div class="section-header text-center centered mb-48">
-      <span class="label text-gold">Valuation &amp; Pricing Strategy</span>
-      <h2 style="color:var(--white)">Your Property&rsquo;s Market Position</h2>
+      <span class="label text-gold">The Numbers</span>
+      <h2 style="color:var(--white)">Acquisition Basis &amp; Return Scenarios</h2>
       <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
-      <p style="color:var(--gray-300)">The 2018 listing at $995,000 reflected unentitled acreage. Since then, you&rsquo;ve added approved civil plans, a gated PUD designation with 19 homesites, and full infrastructure engineering &mdash; materially repositioning the asset. Two disposition strategies present themselves, each with distinct risk and return profiles.</p>
+      <p style="color:var(--gray-300)">The asset is offered fully entitled &mdash; approved civil plans, a gated PUD with 19 homesites, and completed infrastructure engineering. Two paths to return present themselves, each with a distinct risk and profile.</p>
     </div>
 
     <!-- Two Strategy Cards -->
@@ -835,7 +964,7 @@ a { color: inherit; text-decoration: none; }
         <div class="val-sub">Range: $30K &ndash; $1M<br>Does not reflect PUD value</div>
       </div>
       <div class="val-card featured">
-        <div class="val-label">MCG Recommended &mdash; Wholesale</div>
+        <div class="val-label">Offering Price &mdash; Wholesale</div>
         <div class="val-amount">$3,800,000</div>
         <div class="val-sub">Approved PUD + civil plans<br>19-lot gated development</div>
       </div>
@@ -857,7 +986,7 @@ a { color: inherit; text-decoration: none; }
         </div>
         <div class="bar-group">
           <div class="bar-value" style="color:var(--gray-300)">$375K</div>
-          <div class="bar" style="height:9.9%; background:linear-gradient(180deg, #5a8fd4, #3a6bb0);"></div>
+          <div class="bar" style="height:9.9%; background:linear-gradient(180deg, var(--gray-300), var(--gray-400));"></div>
           <div class="bar-label" style="color:var(--gray-300)">Kindred<br><span style="font-size:9px;font-weight:400">Hollow (Sold)</span></div>
         </div>
         <div class="bar-group">
@@ -886,7 +1015,7 @@ a { color: inherit; text-decoration: none; }
 
     <div style="text-align:center;">
       <p style="color:var(--gray-300);font-size:14px;max-width:750px;margin:0 auto;">
-        <strong style="color:var(--gold)">Key Insight:</strong> The 2018 listing at $995,000 priced this as unentitled acreage. The asset has changed materially &mdash; approved civil plans (Case #25-463), a gated PUD with 19 engineered homesites, and direct proximity to Beaver Lake with easy road access. Comparable lakeside lots are trading at $250K&ndash;$400K each. <strong style="color:var(--white)">Wholesale at $3.8M reflects the entitled value; full lot disposition projects $4.25M&ndash;$5.2M in gross proceeds.</strong>
+        <strong style="color:var(--gold)">The basis:</strong> Entitled and engineered &mdash; approved civil plans (Case #25-463), a gated PUD with 19 homesites, and direct proximity to Beaver Lake with road access. Comparable lakeside lots trade at $250K&ndash;$400K each. <strong style="color:var(--white)">Acquiring the entitled package at $3.8M positions a developer below projected gross proceeds of $4.25M&ndash;$5.2M from full lot disposition.</strong>
       </p>
     </div>
   </div>
@@ -896,10 +1025,10 @@ a { color: inherit; text-decoration: none; }
 <section class="section section-alt" id="cma">
   <div class="container">
     <div class="section-header mb-48">
-      <span class="label text-crimson">Comparative Market Analysis</span>
-      <h2>Comparable Sales &amp; Active Listings</h2>
+      <span class="label text-crimson">Proof of Demand</span>
+      <h2>What the Market Is Paying</h2>
       <div class="accent-line mb-16" style="margin-top:12px"></div>
-      <p>From our review of RPR CMA data and Quick CMA Market Analysis, we selected 9 representative comparable land parcels in the Rogers/Beaver Lake area to establish market context for The Enclave. The aerial map and table below highlight the most relevant comparables relative to the subject property.</p>
+      <p>Nine representative land sales and active listings in the Rogers/Beaver Lake corridor frame the demand and pricing case for finished homesites at The Enclave. Recent sold comps are clearing near list &mdash; evidence that lots in this market absorb.</p>
     </div>
 
     <!-- AERIAL COMP MAP -->
@@ -941,7 +1070,7 @@ a { color: inherit; text-decoration: none; }
         </div>
         <div class="bar-group">
           <div class="bar-value" style="color:var(--navy)">$189K</div>
-          <div class="bar" style="height:100%; background:linear-gradient(180deg, #5a8fd4, #3a6bb0);"></div>
+          <div class="bar" style="height:100%; background:var(--navy);"></div>
           <div class="bar-label">Ventris<br>Rd 5.3 ac</div>
         </div>
         <div class="bar-group">
@@ -1128,380 +1257,26 @@ a { color: inherit; text-decoration: none; }
   </div>
 </section>
 
-<!-- GLOBAL MARKETING / SYNDICATION -->
-<section class="section section-dark" id="syndication">
-  <div class="container">
-    <div class="section-header text-center centered mb-48">
-      <span class="label text-gold">Global Marketing Reach</span>
-      <h2 style="color:var(--white)">Your Property Advertised on<br>Nearly 100 Platforms</h2>
-      <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
-      <p style="color:var(--gray-300)">When you list with Mason Capital Group, your property doesn't just sit on the MLS. We syndicate your listing across nearly 100 platforms — reaching residential buyers, investors, builders, and developers both nationally and internationally.</p>
-    </div>
-
-    <div class="synd-hero-grid mb-48">
-      <div style="text-align:center;">
-        <div class="synd-number" style="color:var(--gold)">~100<span class="synd-plus" style="color:var(--crimson)"></span></div>
-        <div class="synd-subtitle" style="color:var(--white);">Syndication Platforms</div>
-        <p style="color:var(--gray-300);font-size:14px;line-height:1.7;">Your listing is pushed to consumer real estate portals, investor marketplaces, social media networks, international property sites, and builder/developer platforms — ensuring maximum visibility across every buyer category.</p>
-      </div>
-      <div>
-        <div class="platform-grid" style="gap:12px;">
-          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
-            <div class="p-name" style="color:var(--white)">Homes.com</div>
-            <div class="p-type" style="color:var(--gold)">Premium Partner</div>
-          </div>
-          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
-            <div class="p-name" style="color:var(--white)">Zillow</div>
-            <div class="p-type" style="color:var(--gold)">Consumer</div>
-          </div>
-          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
-            <div class="p-name" style="color:var(--white)">Realtor.com</div>
-            <div class="p-type" style="color:var(--gold)">Consumer</div>
-          </div>
-          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
-            <div class="p-name" style="color:var(--white)">Redfin</div>
-            <div class="p-type" style="color:var(--gold)">Consumer</div>
-          </div>
-          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
-            <div class="p-name" style="color:var(--white)">Crexi</div>
-            <div class="p-type" style="color:var(--crimson)">Investor</div>
-          </div>
-          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
-            <div class="p-name" style="color:var(--white)">LoopNet</div>
-            <div class="p-type" style="color:var(--crimson)">Investor</div>
-          </div>
-          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
-            <div class="p-name" style="color:var(--white)">LandWatch</div>
-            <div class="p-type" style="color:var(--crimson)">Developer</div>
-          </div>
-          <div class="platform-card" style="background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.3);">
-            <div class="p-name" style="color:var(--white)">Juwai.com</div>
-            <div class="p-type" style="color:#5a8fd4">International</div>
-          </div>
-        </div>
-        <p style="text-align:center;font-size:11px;color:var(--gray-400);margin-top:12px;letter-spacing:0.5px;">+ Homes.com, Trulia, Facebook Marketplace, Instagram Ads, Land.com, Apartments.com, Investorist, CBRE, Ten-X, and 80+ more</p>
-      </div>
-    </div>
-
-    <!-- Investor / Builder / Developer Targeting -->
-    <div class="investor-cards">
-      <div class="investor-card animate">
-        <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="6" width="26" height="22" rx="2" stroke="#c4a35a" stroke-width="2"/><path d="M11 6V3a1 1 0 011-1h8a1 1 0 011 1v3" stroke="#c4a35a" stroke-width="2"/><path d="M3 14h26" stroke="rgba(196,163,90,0.4)" stroke-width="1.5"/><circle cx="16" cy="14" r="3" fill="#c4a35a"/></svg></div>
-        <h4>Investor Targeting</h4>
-        <p>Your property is showcased on platforms like Crexi, LoopNet, and other commercial real estate portals where active investors search for acquisition opportunities. We also leverage our private investor network for off-market introductions.</p>
-      </div>
-      <div class="investor-card animate">
-        <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 28h24" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M8 28V16l8-10 8 10v12" stroke="#c4a35a" stroke-width="2" stroke-linejoin="round" fill="none"/><rect x="13" y="20" width="6" height="8" stroke="#c4a35a" stroke-width="1.5" fill="none"/><path d="M2 16l14-12 14 12" stroke="#c4a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
-        <h4>Builder &amp; Developer Outreach</h4>
-        <p>Targeted advertising on LandWatch, Land.com, and builder-focused MLS feeds ensures developers evaluating sites in Bentonville's growing neighborhoods see your property as a development opportunity.</p>
-      </div>
-      <div class="investor-card animate">
-        <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="#c4a35a" stroke-width="2"/><ellipse cx="16" cy="16" rx="6" ry="13" stroke="#c4a35a" stroke-width="1.5" fill="none"/><path d="M3 12h26M3 20h26" stroke="rgba(196,163,90,0.5)" stroke-width="1.5"/><path d="M16 3v26" stroke="rgba(196,163,90,0.3)" stroke-width="1"/></svg></div>
-        <h4>International Exposure</h4>
-        <p>Through platforms like Juwai.com, Investorist, and global MLS syndication networks, your property reaches qualified international buyers — particularly those targeting Northwest Arkansas for its economic growth and proximity to Beaver Lake.</p>
-      </div>
-    </div>
+<!-- PHOTO BAND -->
+<div id="photoRegion" style="position:relative;overflow:hidden;">
+  <div id="bandBg" style="position:absolute;left:0;top:-14%;width:100%;height:128%;background:url('band-hero.jpg') center/cover no-repeat;z-index:0;will-change:transform;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(12,14,22,0.74) 0%, rgba(12,14,22,0.58) 22%, rgba(12,14,22,0.46) 32%, rgba(12,14,22,0.64) 42%, rgba(12,14,22,0.48) 56%, rgba(12,14,22,0.54) 72%, rgba(13,14,26,0.74) 88%, var(--navy) 100%);z-index:0;"></div>
+<section class="photo-band" style="position:relative;z-index:1;height:clamp(340px,46vh,480px);display:flex;align-items:center;justify-content:center;text-align:center;">
+  <div style="position:relative;z-index:1;max-width:840px;padding:0 24px;">
+    <div class="accent-line-gold" style="width:80px;height:3px;margin:0 auto 22px;"></div>
+    <p style="font-family:var(--font-serif);font-size:clamp(22px,3vw,34px);font-weight:700;color:#fff;line-height:1.32;letter-spacing:-0.3px;margin:0;">Nineteen gated estate homesites above one of the Ozarks&rsquo; great lakes.</p>
+    <p style="font-family:var(--font-sans);font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-top:18px;">Prairie Creek &bull; Beaver Lake &bull; Rogers, Arkansas</p>
   </div>
 </section>
 
-<!-- AERIAL & SITE SURVEY EXPERIENCE -->
-<section class="section matterport-section" id="matterport">
+<!-- MARKET SNAPSHOT (over photo region) -->
+<section class="section" style="position:relative;z-index:1;background:transparent;">
   <div class="container">
-    <div class="section-header text-center centered mb-64">
-      <span class="label text-gold">Aerial &amp; Site Intelligence</span>
-      <h2 style="color:var(--white)">Professional Drone Aerials<br>&amp; Development Visualization</h2>
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-gold">Market Snapshot</span>
+      <h2 style="color:var(--white)">Rogers / Beaver Lake Land Market at a Glance</h2>
       <div class="accent-line accent-line-center mb-16" style="margin-top:12px"></div>
-      <p style="color:var(--gray-300)">For land and development listings, we deploy a suite of aerial and visual marketing tools specifically designed to showcase acreage, topography, lake proximity, and lot layout &mdash; giving buyers and developers the full picture before ever setting foot on the property.</p>
-    </div>
-    <div class="matterport-grid">
-      <!-- Aerial Visual with CTA -->
-      <div class="animate" style="position:relative;border-radius:8px;overflow:hidden;border:2px solid rgba(196,163,90,0.2);box-shadow:0 20px 60px rgba(0,0,0,0.5);background:var(--navy-light);">
-        <div style="width:100%;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, rgba(22,22,42,0.9), rgba(30,30,58,0.95));position:relative;overflow:hidden;">
-          <!-- Stylized drone/aerial graphic -->
-          <div style="text-align:center;position:relative;z-index:1;">
-            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" style="margin-bottom:16px;">
-              <circle cx="40" cy="40" r="30" stroke="#c4a35a" stroke-width="2" fill="none" opacity="0.3"/>
-              <circle cx="40" cy="40" r="18" stroke="#c4a35a" stroke-width="2" fill="none" opacity="0.5"/>
-              <circle cx="40" cy="40" r="6" fill="#c4a35a" opacity="0.8"/>
-              <path d="M40 10v12M40 58v12M10 40h12M58 40h12" stroke="#c4a35a" stroke-width="1.5" opacity="0.4"/>
-              <path d="M20 20l8 8M52 52l8 8M52 20l-8 8M20 52l8-8" stroke="#c4a35a" stroke-width="1" opacity="0.3"/>
-            </svg>
-            <div style="font-family:var(--font-serif);font-size:22px;font-weight:700;color:var(--white);margin-bottom:8px;">42.54 Acres</div>
-            <div style="font-size:12px;color:var(--gold);letter-spacing:3px;font-weight:700;">19 HOMESITES &bull; GATED PUD</div>
-            <div style="margin-top:24px;background:var(--crimson);color:var(--white);font-size:12px;font-weight:900;letter-spacing:3px;padding:14px 32px;border-radius:4px;display:inline-block;">DRONE AERIALS &amp; VIDEO IN PRODUCTION</div>
-          </div>
-          <!-- Background grid lines for land feel -->
-          <div style="position:absolute;inset:0;opacity:0.06;background-image:linear-gradient(rgba(196,163,90,1) 1px, transparent 1px),linear-gradient(90deg, rgba(196,163,90,1) 1px, transparent 1px);background-size:40px 40px;"></div>
-        </div>
-      </div>
-      <!-- Land-Specific Features -->
-      <div class="matterport-features">
-        <div class="mp-feature animate">
-          <div class="mp-feature-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3L3 9v10l11 6 11-6V9L14 3z" stroke="#c4a35a" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M14 15V25M3 9l11 6 11-6" stroke="#c4a35a" stroke-width="1.5"/></svg></div>
-          <div>
-            <h4>HD Drone Aerial Photography</h4>
-            <p>Professional 4K drone footage captures the full 42.54-acre parcel from above &mdash; showing lot boundaries, tree canopy, terrain, and the property&rsquo;s relationship to Beaver Lake and surrounding landmarks.</p>
-          </div>
-        </div>
-        <div class="mp-feature animate">
-          <div class="mp-feature-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="3" width="22" height="22" rx="2" stroke="#c4a35a" stroke-width="2" fill="none"/><path d="M3 14h22M14 3v22" stroke="#c4a35a" stroke-width="1.5"/><rect x="5" y="5" width="7" height="7" rx="1" fill="rgba(196,163,90,0.15)" stroke="rgba(196,163,90,0.5)" stroke-width="1"/><rect x="16" y="16" width="7" height="7" rx="1" fill="rgba(196,163,90,0.15)" stroke="rgba(196,163,90,0.5)" stroke-width="1"/></svg></div>
-          <div>
-            <h4>Lot Layout &amp; Site Plan Overlay</h4>
-            <p>We overlay the approved civil plans (19 lots, roads, gated entry) onto aerial imagery &mdash; so buyers and developers instantly understand the PUD configuration and lot positions.</p>
-          </div>
-        </div>
-        <div class="mp-feature animate">
-          <div class="mp-feature-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M4 24c4-6 6-14 10-16s8 2 10 8" stroke="#c4a35a" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="8" cy="18" r="2" fill="#c4a35a" opacity="0.5"/><circle cx="18" cy="10" r="2" fill="#c4a35a" opacity="0.5"/><circle cx="24" cy="16" r="2" fill="#c4a35a" opacity="0.5"/></svg></div>
-          <div>
-            <h4>Topographic &amp; Elevation Mapping</h4>
-            <p>Detailed topographic data shows elevation changes, buildable areas, and the 5.94-acre limits of disturbance &mdash; critical information for developers evaluating infrastructure costs.</p>
-          </div>
-        </div>
-        <div class="mp-feature animate">
-          <div class="mp-feature-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="12" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><path d="M14 4c5 0 10 5 10 8s-5 8-10 8S4 15 4 12s5-8 10-8z" stroke="#c4a35a" stroke-width="1.5" fill="none"/><path d="M14 16v6M10 25h8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/></svg></div>
-          <div>
-            <h4>Proximity &amp; Amenity Mapping</h4>
-            <p>Interactive maps highlight the property&rsquo;s proximity to Beaver Lake, Prairie Park, downtown Rogers, retail corridors, and major employers &mdash; telling the location story that drives premium pricing.</p>
-          </div>
-        </div>
-        <div class="mp-feature animate">
-          <div class="mp-feature-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="5" width="22" height="18" rx="2" stroke="#c4a35a" stroke-width="2" fill="none"/><path d="M3 17l6-5 4 3 6-6 6 5" stroke="#c4a35a" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M19 2l3 3-3 3" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
-          <div>
-            <h4>AI-Rendered Development Visualization</h4>
-            <p>AI rendering tools generate photorealistic visualizations of the completed development &mdash; showing potential home styles, landscaping, streetscapes, and gated entry &mdash; helping buyers envision the finished community.</p>
-          </div>
-        </div>
-        <div class="mp-feature animate">
-          <div class="mp-feature-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3v22M3 14h22" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="14" r="10" stroke="#c4a35a" stroke-width="1.5" fill="none"/><path d="M7 7l14 14M21 7L7 21" stroke="rgba(196,163,90,0.3)" stroke-width="1"/></svg></div>
-          <div>
-            <h4>Cinematic Property Video</h4>
-            <p>A professionally edited aerial video tour set to music &mdash; showcasing the land from sunrise to sunset, the lake views, road access, and the natural beauty that makes this parcel irreplaceable.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- MCG DIGITAL MARKETING PLATFORM -->
-<section class="section section-alt" id="homes">
-  <div class="container">
-    <div class="section-header text-center centered mb-48">
-      <span class="label text-crimson">MCG Digital Marketing Platform</span>
-      <h2>Your Listing Gets<br>Unmatched Digital Exposure</h2>
-      <div class="accent-line accent-line-center mb-16" style="margin-top:12px"></div>
-      <p>Through our exclusive premium platform partnerships, I bring your listing a level of digital exposure and buyer engagement that other agents in this market simply cannot offer.</p>
-    </div>
-
-    <!-- Reach Stats Banner -->
-    <div class="reach-banner animate">
-      <div class="reach-cell">
-        <div class="reach-num">110M+</div>
-        <div class="reach-unit">Monthly Visitors</div>
-        <div class="reach-desc">Our primary listing platform reaches over 110 million unique visitors per month — the #2 most-visited real estate portal in America</div>
-      </div>
-      <div class="reach-cell">
-        <div class="reach-num">143M+</div>
-        <div class="reach-unit">Network Reach</div>
-        <div class="reach-desc">Our full partner network reaches 143 million+ unique monthly visitors across residential, commercial, investment, and rental platforms</div>
-      </div>
-      <div class="reach-cell">
-        <div class="reach-num">14K+</div>
-        <div class="reach-unit">Buyers Reached</div>
-        <div class="reach-desc">Boosted listings reach over 14,000 active homebuyers with an average of 32 views per buyer — driving real engagement</div>
-      </div>
-    </div>
-
-    <!-- Features Grid -->
-    <div class="homes-grid mb-48">
-      <div class="homes-feature-list">
-        <div class="homes-feature">
-          <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2l3 6h6l-5 4 2 6-6-4-6 4 2-6-5-4h6l3-6z" fill="white"/></svg></div>
-          <div>
-            <h4>Priority Search Placement</h4>
-            <p>Your listing sorts above non-member listings in search results with a larger, attention-grabbing display featuring your property's best photos and my contact information as your listing agent.</p>
-          </div>
-        </div>
-        <div class="homes-feature">
-          <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="white" stroke-width="2" fill="none"/><ellipse cx="11" cy="11" rx="4" ry="9" stroke="white" stroke-width="1.5" fill="none"/><path d="M2 8h18M2 14h18" stroke="white" stroke-width="1" opacity="0.6"/></svg></div>
-          <div>
-            <h4>Strategic Retargeting</h4>
-            <p>Your property follows interested buyers across 1,000+ websites and social platforms including Facebook and Instagram — keeping your home top-of-mind as they browse the internet.</p>
-          </div>
-        </div>
-        <div class="homes-feature">
-          <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="2" stroke="white" stroke-width="2" fill="none"/><circle cx="8" cy="8" r="2.5" fill="white" opacity="0.7"/><path d="M2 16l5-4 3 2 5-5 5 4" stroke="white" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg></div>
-          <div>
-            <h4>Drone Aerials &amp; Site Plans</h4>
-            <p>Complimentary professional 3D virtual tours, interactive floor plans, and AI-powered virtual staging are included — buyers from anywhere in the world can walk through your home 24/7.</p>
-          </div>
-        </div>
-        <div class="homes-feature">
-          <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 18V10" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M9 18V7" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M14 18V12" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M19 18V4" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></div>
-          <div>
-            <h4>Listing Performance Reports</h4>
-            <p>Full transparency with detailed performance reports showing views, favorites, shares, and buyer engagement data so you always know exactly how your listing is performing.</p>
-          </div>
-        </div>
-        <div class="homes-feature">
-          <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="4" width="18" height="14" rx="2" stroke="white" stroke-width="2" fill="none"/><path d="M2 8l9 5 9-5" stroke="white" stroke-width="1.5" fill="none"/></svg></div>
-          <div>
-            <h4>Automated Buyer Emails</h4>
-            <p>Your listing is automatically featured in new listing and price change emails sent to active buyers searching in your area — ensuring immediate exposure to motivated buyers.</p>
-          </div>
-        </div>
-        <div class="homes-feature">
-          <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="5" stroke="white" stroke-width="2" fill="none"/><circle cx="11" cy="8" r="1.5" fill="white"/><path d="M6 18c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M16 4l2-2M6 4L4 2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-          <div>
-            <h4>AI-Powered Buyer Intelligence</h4>
-            <p>AI-powered tools guide buyers through your 3D tour, answer their questions in real time, and provide instant virtual staging — creating a personalized, high-tech showing experience.</p>
-          </div>
-        </div>
-      </div>
-      <div class="homes-visual">
-        <a href="https://www.masoncapitalgroup.com" target="_blank" style="display:inline-flex;"><img src="mcg-logo-horizontal.png" alt="Mason Capital Group" style="height:60px;width:auto;margin-bottom:16px;"></a>
-        <div class="homes-tagline">Digital Marketing Platform</div>
-        <div class="feature-pills">
-          <span class="feature-pill">Priority Placement</span>
-          <span class="feature-pill">3D Matterport Tours</span>
-          <span class="feature-pill">Retargeting Ads</span>
-          <span class="feature-pill">Performance Reports</span>
-          <span class="feature-pill">Buyer Email Alerts</span>
-          <span class="feature-pill">AI Virtual Guide</span>
-          <span class="feature-pill">Agent Branding</span>
-          <span class="feature-pill">Lead Vetting</span>
-          <span class="feature-pill">Virtual Staging</span>
-          <span class="feature-pill">110M+ Reach</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Stats Row -->
-    <div class="homes-stats-row">
-      <div class="homes-stat">
-        <div class="big">540%</div>
-        <div class="sm">More Favorites</div>
-      </div>
-      <div class="homes-stat">
-        <div class="big">515%</div>
-        <div class="sm">More Shares</div>
-      </div>
-      <div class="homes-stat">
-        <div class="big">25X</div>
-        <div class="sm">More Buyer Reach</div>
-      </div>
-      <div class="homes-stat">
-        <div class="big">25%</div>
-        <div class="sm">Faster Under Contract</div>
-      </div>
-    </div>
-
-    <!-- Target Marketing Section -->
-    <div style="margin-top:64px;">
-      <div class="section-header text-center centered mb-48">
-        <span class="label text-crimson">Precision Targeting</span>
-        <h2>How We Find<br>Your Buyer</h2>
-        <div class="accent-line accent-line-center mb-16" style="margin-top:12px"></div>
-        <p>We don't just list your property — we actively market to qualified buyers through precision-targeted campaigns across multiple channels.</p>
-      </div>
-      <div class="target-marketing-grid">
-        <div class="target-card animate">
-          <div class="tc-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="4" y="6" width="28" height="20" rx="3" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M4 10h28" stroke="#ab012e" stroke-width="1.5"/><polygon points="15,14 15,22 23,18" fill="#ab012e"/><path d="M12 30h12" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M18 26v4" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/></svg></div>
-          <h4>Primetime TV &amp; Streaming</h4>
-          <p>Our platform partners invest heavily in top TV networks and streaming platforms — driving millions of high-intent buyers to search for properties like yours through Super Bowl and primetime campaigns with massive brand awareness.</p>
-        </div>
-        <div class="target-card animate">
-          <div class="tc-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="10" y="4" width="16" height="28" rx="3" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M10 8h16M10 26h16" stroke="#ab012e" stroke-width="1.5"/><circle cx="18" cy="29" r="1.5" fill="#ab012e"/><path d="M15 14l3 3 5-5" stroke="#c4a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <h4>Social Media Retargeting</h4>
-          <p>After viewing your listing, buyers see your property follow them across Facebook, Instagram, and 1,000+ websites — a persistent, targeted ad campaign that keeps your home top-of-mind until they're ready to act.</p>
-        </div>
-        <div class="target-card animate">
-          <div class="tc-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="9" stroke="#c4a35a" stroke-width="1.5" fill="none"/><circle cx="18" cy="18" r="4" stroke="#ab012e" stroke-width="1.5" fill="none"/><circle cx="18" cy="18" r="1.5" fill="#ab012e"/></svg></div>
-          <h4>Intent-Based Buyer Matching</h4>
-          <p>Advanced algorithms analyze buyer search behavior, price range, location preferences, and browsing patterns — then proactively serve your listing to the most qualified, high-intent buyers in real time.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Partner Network Visual -->
-    <div class="network-visual">
-      <div class="network-center">
-        <div class="nc-label">Your Listing Reaches</div>
-        <div class="nc-brand">Our Exclusive Partner Network</div>
-        <div class="nc-sub">143 million+ monthly unique visitors across all platforms</div>
-      </div>
-      <div class="network-brands">
-        <span class="network-brand-pill highlight">Homes.com</span>
-        <span class="network-brand-pill highlight">Premium Portals</span>
-        <span class="network-brand-pill">Zillow</span>
-        <span class="network-brand-pill">Realtor.com</span>
-        <span class="network-brand-pill">Redfin</span>
-        <span class="network-brand-pill">LoopNet</span>
-        <span class="network-brand-pill">Crexi</span>
-        <span class="network-brand-pill">Land.com</span>
-        <span class="network-brand-pill">Ten-X</span>
-        <span class="network-brand-pill">BizBuySell</span>
-        <span class="network-brand-pill">Apartments.com</span>
-        <span class="network-brand-pill">Commercial Platforms</span>
-        <span class="network-brand-pill">Investment Portals</span>
-        <span class="network-brand-pill">Rental Networks</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- WHY MCG (DARK) -->
-<section class="section section-dark" id="why-mcg">
-  <div class="container">
-    <div class="section-header text-center centered mb-48">
-      <span class="label text-gold">Superior to the Competition</span>
-      <h2 style="color:var(--white)">What Sets Mason Capital Group<br>Apart from Other Firms</h2>
-      <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
-      <p style="color:var(--gray-300)">When comparing Mason Capital Group to traditional brokerages in Northwest Arkansas, the differences are clear. Here's what you get with us that you won't find anywhere else.</p>
-    </div>
-    <div class="why-grid">
-      <div class="why-card animate">
-        <div class="num">01</div>
-        <h4>Full-Service Investment Firm, Not Just a Brokerage</h4>
-        <p>Most agents work for a traditional brokerage and follow a cookie-cutter approach. Mason Capital Group operates as a real estate investment and trust firm — meaning we bring institutional-level market analysis, negotiation leverage, and marketing sophistication to every residential listing.</p>
-      </div>
-      <div class="why-card animate">
-        <div class="num">02</div>
-        <h4>Principal Broker Expertise</h4>
-        <p>As a licensed Principal Broker, I personally oversee every aspect of your transaction with the highest standard of care. This means expert pricing, strategic negotiation, and full accountability — you're working directly with the decision-maker, not a junior agent.</p>
-      </div>
-      <div class="why-card animate">
-        <div class="num">03</div>
-        <h4>Technology-Forward Marketing</h4>
-        <p>From premium portal priority placement and Matterport 3D tours to digital retargeting across 1,000+ websites, custom offering memorandums, and AI-powered market analysis — we deploy a marketing technology stack that most traditional agents don't have access to.</p>
-      </div>
-      <div class="why-card animate">
-        <div class="num">04</div>
-        <h4>Nearly 100 Platform Syndication</h4>
-        <p>Your listing doesn't just go on the MLS. We syndicate across Zillow, Realtor.com, Redfin, Crexi, LoopNet, and nearly 100 additional platforms — targeting residential buyers, investors, builders, and developers nationally and internationally.</p>
-      </div>
-      <div class="why-card animate">
-        <div class="num">05</div>
-        <h4>Proven Track Record in Bentonville</h4>
-        <p>From listing investment properties at premium pricing on Central Avenue in Downtown Bentonville to residential homes across Benton County — we have the local market expertise and the transaction history to back up our strategies.</p>
-      </div>
-      <div class="why-card animate">
-        <div class="num">06</div>
-        <h4>Transparent Communication &amp; Reporting</h4>
-        <p>You'll receive regular performance reports, market updates, and showing feedback. No black box. You'll always know exactly where your listing stands and what actions we're taking to move it toward a successful closing.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- MARKET SNAPSHOT -->
-<section class="section section-alt">
-  <div class="container">
-    <div class="section-header text-center centered mb-48">
-      <span class="label text-crimson">Market Snapshot</span>
-      <h2>Rogers / Beaver Lake Land Market at a Glance</h2>
-      <div class="accent-line accent-line-center mb-16" style="margin-top:12px"></div>
-      <p>The Rogers / Beaver Lake corridor is one of the most sought-after land markets in Northwest Arkansas, driven by lakeside lifestyle demand, major employer proximity, and constrained supply of large development-ready parcels.</p>
+      <p style="color:rgba(255,255,255,0.9)">The Rogers / Beaver Lake corridor is one of the most sought-after land markets in Northwest Arkansas, driven by lakeside lifestyle demand, major employer proximity, and constrained supply of large development-ready parcels.</p>
     </div>
     <div class="snapshot-grid">
       <div class="snap-card">
@@ -1520,7 +1295,7 @@ a { color: inherit; text-decoration: none; }
         <div class="snap-change" style="color:var(--navy);">17 active, 3 pending, 3 sold</div>
       </div>
       <div class="snap-card">
-        <div class="snap-val">$49</div>
+        <div class="snap-val">$1,480</div>
         <div class="snap-label">Annual Tax</div>
         <div class="snap-change growth-positive"><svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:3px"><path d="M6 2l4 5H2z" fill="#2e7d32"/></svg>Minimal carry cost</div>
       </div>
@@ -1528,111 +1303,17 @@ a { color: inherit; text-decoration: none; }
   </div>
 </section>
 
-<!-- WEBSITE GLOBAL REACH & SMART SIGNAGE -->
-<section class="section section-dark" id="web-signage">
-  <div class="container">
-    <div class="section-header text-center centered mb-48">
-      <span class="label text-gold">Digital Infrastructure</span>
-      <h2 style="color:var(--white)">A Website Built for<br>Global Reach</h2>
-      <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
-      <p style="color:var(--gray-300)">Our state-of-the-art website isn't just a local listing page — it's a global marketing engine optimized to attract buyers, investors, and developers from around the world.</p>
-    </div>
-
-    <div class="web-global-grid mb-48">
-      <div class="web-feature-list">
-        <div class="web-feature animate">
-          <div class="web-feature-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="white" stroke-width="2" fill="none"/><ellipse cx="11" cy="11" rx="4" ry="9" stroke="white" stroke-width="1.5" fill="none"/><path d="M2 8h18M2 14h18" stroke="white" stroke-width="1" opacity="0.6"/></svg></div>
-          <div>
-            <h4 style="color:var(--white)">SEO-Optimized for Global Discovery</h4>
-            <p style="color:var(--gray-300)">Our website is engineered with advanced SEO practices — structured data, schema markup, and geo-targeted landing pages — so your listing ranks in search results for buyers searching from anywhere in the world.</p>
-          </div>
-        </div>
-        <div class="web-feature animate">
-          <div class="web-feature-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="2" stroke="white" stroke-width="2" fill="none"/><path d="M2 7h18" stroke="white" stroke-width="1.5"/><circle cx="5" cy="4.5" r="1" fill="white" opacity="0.5"/><circle cx="8" cy="4.5" r="1" fill="white" opacity="0.5"/><path d="M6 12h10M6 15h7" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg></div>
-          <div>
-            <h4 style="color:var(--white)">Mobile-First, Lightning-Fast Design</h4>
-            <p style="color:var(--gray-300)">Over 70% of buyers start their home search on mobile. Our site is fully responsive with sub-second load times, ensuring a seamless experience across every device and connection speed.</p>
-          </div>
-        </div>
-        <div class="web-feature animate">
-          <div class="web-feature-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 18V10" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M9 18V7" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M14 18V12" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M19 18V4" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></div>
-          <div>
-            <h4 style="color:var(--white)">Integrated Analytics &amp; Lead Capture</h4>
-            <p style="color:var(--gray-300)">Every visitor interaction is tracked. Built-in lead capture forms, click-to-call functionality, and real-time analytics mean we know exactly who's engaging with your listing and how to convert them.</p>
-          </div>
-        </div>
-        <div class="web-feature animate">
-          <div class="web-feature-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2v4M11 16v4M2 11h4M16 11h4" stroke="white" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="11" r="4" stroke="white" stroke-width="2" fill="none"/><path d="M5 5l2.5 2.5M14.5 14.5L17 17M5 17l2.5-2.5M14.5 7.5L17 5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-          <div>
-            <h4 style="color:var(--white)">Multi-Language &amp; International Accessibility</h4>
-            <p style="color:var(--gray-300)">Our digital infrastructure is designed to serve international buyers — with translation-ready pages and integration with global property search platforms like Juwai.com and Investorist.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Smart Signage Visual -->
-      <div class="sign-visual animate">
-        <div style="margin-bottom:24px;">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="margin:0 auto 16px;">
-            <rect x="8" y="4" width="32" height="24" rx="3" stroke="#c4a35a" stroke-width="2.5" fill="none"/>
-            <path d="M24 28v12" stroke="#c4a35a" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M16 40h16" stroke="#c4a35a" stroke-width="2.5" stroke-linecap="round"/>
-            <rect x="16" y="10" width="16" height="12" rx="2" fill="rgba(196,163,90,0.15)" stroke="rgba(196,163,90,0.5)" stroke-width="1"/>
-            <path d="M20 14l2 2 4-4" stroke="#c4a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <div style="font-family:var(--font-serif);font-size:24px;font-weight:700;color:var(--white);margin-bottom:8px;">Smart Signage Technology</div>
-          <div style="font-size:12px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;">Links Built Into Every Sign</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(196,163,90,0.15);border-radius:4px;padding:24px;text-align:left;">
-          <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:20px;">
-            <div style="flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--crimson);display:flex;align-items:center;justify-content:center;">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="2" stroke="white" stroke-width="2" fill="none"/><rect x="5" y="5" width="4" height="4" fill="white"/><rect x="11" y="5" width="2" height="2" fill="white"/><rect x="5" y="11" width="2" height="2" fill="white"/><rect x="9" y="9" width="4" height="4" fill="white" opacity="0.7"/></svg>
-            </div>
-            <div>
-              <div style="font-family:var(--font-serif);font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px;">QR Codes &amp; Smart Links</div>
-              <div style="font-size:12px;color:var(--gray-300);line-height:1.6;">Every yard sign, directional sign, and marketing piece includes QR codes and short-links that drive traffic directly to your property's dedicated landing page — complete with photos, 3D tour, and instant contact options.</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:20px;">
-            <div style="flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="4" stroke="#16162a" stroke-width="2" fill="none"/><path d="M4 16c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="#16162a" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
-            </div>
-            <div>
-              <div style="font-family:var(--font-serif);font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px;">Drive-By to Digital Lead</div>
-              <div style="font-size:12px;color:var(--gray-300);line-height:1.6;">When a prospective buyer drives by your property, they scan the sign and instantly land on a rich, immersive listing page. No searching, no calling — they're engaged immediately and we capture their information.</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:16px;align-items:flex-start;">
-            <div style="flex-shrink:0;width:36px;height:36px;border-radius:50%;background:rgba(196,163,90,0.2);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 14l4-4 3 2 5-6" stroke="#c4a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 6h4v4" stroke="#c4a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div>
-              <div style="font-family:var(--font-serif);font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px;">Trackable ROI</div>
-              <div style="font-size:12px;color:var(--gray-300);line-height:1.6;">Every scan and click is tracked — we know exactly how many buyers engaged from the physical sign, giving you measurable data on the value of every marketing touchpoint.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="text-align:center;">
-      <p style="color:var(--gray-300);font-size:14px;max-width:700px;margin:0 auto;">
-        <strong style="color:var(--gold)">The Bottom Line:</strong> The sign in front of your property isn't just a "For Sale" notice — it's a direct-response marketing piece that drives qualified traffic to your listing 24/7, bridging the physical and digital worlds.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section" id="contact">
-  <h2>Request the Full Investment Package</h2>
-  <p>The Enclave at Beaver Lake is available exclusively through Mason Capital Group. To request the full investment package, schedule a site tour, or discuss acquisition terms, contact our team directly.</p>
+<!-- CTA (inside photo region — image fades through into this section) -->
+<section class="cta-section" id="contact" style="background:transparent;position:relative;z-index:1;">
+  <h2>Request the Offering Package</h2>
+  <p>The Enclave at Beaver Lake is offered exclusively through Mason Capital Group. Qualified developers, builders, and investors can request the full package &mdash; entitlements, civil plans, lot matrix, and financials &mdash; or schedule a private site tour.</p>
   <div class="cta-buttons">
     <a href="tel:4799253333" class="btn btn-crimson">Call (479) 925-3333</a>
-    <a href="mailto:Info@MasonCapitalGroup.com?subject=The Enclave at Beaver Lake — Investment Inquiry" class="btn btn-outline">Request Investment Package</a>
+    <a href="mailto:Info@MasonCapitalGroup.com?subject=The%20Enclave%20at%20Beaver%20Lake%20-%20Offering%20Package%20Request" class="btn btn-outline">Request the Package</a>
   </div>
   <p style="font-size:13px;color:var(--gray-400);margin-top:40px;">www.MasonCapitalGroup.com</p>
 </section>
+</div>
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -1721,7 +1402,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (function() {
-  var map = L.map('compMap', { scrollWheelZoom: false, zoomControl: true }).setView([36.3830, -93.9250], 13);
+  var map = L.map('compMap', { scrollWheelZoom: false, zoomControl: true }).setView([36.345, -94.045], 12);
 
   // ESRI Satellite imagery
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -1748,16 +1429,16 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   var activeIcon  = makeIcon('#1565c0', 18);
 
   // Subject Property
-  L.marker([36.3855, -93.9280], { icon: subjectIcon, zIndexOffset: 1000 })
+  L.marker([36.34456, -94.05769], { icon: subjectIcon, zIndexOffset: 1000 })
     .bindPopup('<div style="font-family:Lato,sans-serif;min-width:180px;"><strong style="font-size:14px;color:#ab012e;">N Park Rd (Subject)</strong><br><span style="font-size:12px;">42.54 acres &bull; 19 Lots<br><strong>Wholesale: $3,800,000</strong><br>Lots: $250K&ndash;$400K each</span></div>')
     .addTo(map);
 
   // Sold Comps
   var sold = [
-    { lat: 36.3720, lng: -93.8950, name: 'Kindred Hollow Rd', acres: '1.10', price: '$375,000', date: '1/30/2026', saleList: '94%' },
-    { lat: 36.3950, lng: -93.9520, name: 'TBD Village', acres: '11.30', price: '$290,000', date: '2/6/2026', saleList: '96.7%' },
-    { lat: 36.4010, lng: -93.9080, name: 'TBD Beaver Shores Dr', acres: '2.31', price: '$95,000', date: '3/9/2026', saleList: '79.2%' },
-    { lat: 36.3680, lng: -93.9480, name: '1405 W Margaret Pl', acres: '&mdash;', price: '$50,500', date: '&mdash;', saleList: '&mdash;' }
+    { lat: 36.36055, lng: -94.04884, name: 'Kindred Hollow Rd', acres: '1.10', price: '$375,000', date: '1/30/2026', saleList: '94%' },
+    { lat: 36.35500, lng: -94.06500, name: 'TBD Village', acres: '11.30', price: '$290,000', date: '2/6/2026', saleList: '96.7%' },
+    { lat: 36.32792, lng: -94.02638, name: 'TBD Beaver Shores Dr', acres: '2.31', price: '$95,000', date: '3/9/2026', saleList: '79.2%' },
+    { lat: 36.34537, lng: -94.13708, name: '1405 W Margaret Pl', acres: '&mdash;', price: '$50,500', date: '&mdash;', saleList: '&mdash;' }
   ];
   sold.forEach(function(c) {
     L.marker([c.lat, c.lng], { icon: soldIcon })
@@ -1767,11 +1448,11 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 
   // Active Comps
   var active = [
-    { lat: 36.3640, lng: -93.9150, name: 'Tbd Ventris Rd', acres: '5.28', price: '$1,000,000' },
-    { lat: 36.3780, lng: -93.9450, name: '15756 Cottonwood Ln', acres: '1.27', price: '$289,000' },
-    { lat: 36.3890, lng: -93.9380, name: 'Anchor Dr', acres: '2.21', price: '$274,999' },
-    { lat: 36.4050, lng: -93.8980, name: 'Serenity Point', acres: '0.62', price: '$295,000' },
-    { lat: 36.3930, lng: -93.9150, name: 'Edgewater Rd', acres: '1.49', price: '$349,000' }
+    { lat: 36.38480, lng: -93.95955, name: 'Tbd Ventris Rd', acres: '5.28', price: '$1,000,000' },
+    { lat: 36.31821, lng: -94.03406, name: '15756 Cottonwood Ln', acres: '1.27', price: '$289,000' },
+    { lat: 36.32882, lng: -94.03234, name: 'Anchor Dr', acres: '2.21', price: '$274,999' },
+    { lat: 36.33408, lng: -94.03060, name: 'Serenity Point', acres: '0.62', price: '$295,000' },
+    { lat: 36.33313, lng: -93.99141, name: 'Edgewater Rd', acres: '1.49', price: '$349,000' }
   ];
   active.forEach(function(c) {
     L.marker([c.lat, c.lng], { icon: activeIcon })
@@ -1780,10 +1461,84 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   });
 
   // Fit bounds to show all markers
-  var allCoords = [[36.3855,-93.9280]];
+  var allCoords = [[36.34456,-94.05769]];
   sold.forEach(function(c){ allCoords.push([c.lat,c.lng]); });
   active.forEach(function(c){ allCoords.push([c.lat,c.lng]); });
   map.fitBounds(allCoords, { padding: [40, 40] });
+})();
+</script>
+
+<!-- Nav: solid-on-scroll + active section highlight -->
+<script>
+(function(){
+  var nav=document.querySelector('.nav');
+  function onScroll(){ if(nav) nav.classList.toggle('scrolled',(window.scrollY||window.pageYOffset||0)>60); }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  var links=[].slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
+  var map={};
+  links.forEach(function(a){ var id=a.getAttribute('href').slice(1); if(document.getElementById(id)) map[id]=a; });
+  if(window.IntersectionObserver){
+    var obs=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){ l.classList.remove('active'); }); if(map[e.target.id]) map[e.target.id].classList.add('active'); } });
+    }, { rootMargin:'-45% 0px -50% 0px', threshold:0 });
+    Object.keys(map).forEach(function(id){ obs.observe(document.getElementById(id)); });
+  }
+})();
+</script>
+
+<!-- Parallax for the Opportunity background image -->
+<script>
+(function(){
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var pairs=[['oppBg','opportunity'],['bandBg','photoRegion']].map(function(p){return {bg:document.getElementById(p[0]), sec:document.getElementById(p[1])};}).filter(function(p){return p.bg && p.sec;});
+  if(!pairs.length) return;
+  var ticking=false;
+  function update(){
+    var vh=window.innerHeight||800;
+    pairs.forEach(function(p){
+      var r=p.sec.getBoundingClientRect();
+      var prog=((r.top + r.height/2) - vh/2)/vh;
+      prog=Math.max(-1.2, Math.min(1.2, prog));
+      p.bg.style.transform='translate3d(0,'+(prog*-8).toFixed(2)+'%,0)';
+    });
+    ticking=false;
+  }
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
+  window.addEventListener('load', update);
+  update();
+})();
+</script>
+
+<!-- Embed adaptation: when shown inside the Webflow iframe, cap the hero to one screen and report full height so the parent can grow the iframe (no internal scroll needed) -->
+<script>
+(function(){
+  if (window.self === window.top) return; // standalone: do nothing
+  var vh = Math.min(window.innerHeight || 800, 1100);
+  var st = document.createElement('style');
+  st.textContent = '.hero{min-height:' + vh + 'px !important;height:' + vh + 'px !important;}'
+    + '.animate{opacity:1 !important;transform:none !important;}';
+  (document.head || document.documentElement).appendChild(st);
+  // The parent page scrolls (not this iframe), so in-iframe scroll observers never fire.
+  // Force the scroll-reveal content and bar charts to their final visible state.
+  function reveal(){
+    document.querySelectorAll('.animate').forEach(function(el){ el.classList.add('visible'); });
+    document.querySelectorAll('.bar').forEach(function(b){ if(b.dataset && b.dataset.target){ b.style.height = b.dataset.target; } });
+  }
+  reveal();
+  window.addEventListener('load', reveal);
+  setTimeout(reveal, 300); setTimeout(reveal, 1200);
+  var last = 0;
+  function send(){
+    var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    if (h && h !== last){ last = h; try { parent.postMessage({ mcgPresHeight: h }, '*'); } catch(e){} }
+  }
+  window.addEventListener('load', send);
+  window.addEventListener('resize', send);
+  try { new ResizeObserver(send).observe(document.body); } catch(e){}
+  var n = 0, t = setInterval(function(){ send(); if (++n > 40) clearInterval(t); }, 500);
+  send();
 })();
 </script>
 
