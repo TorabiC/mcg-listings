@@ -1581,10 +1581,11 @@ if (window.self !== window.top) {
   // scrollHeight is more reliable than offsetHeight in embedded iframe contexts.
   // Fire on multiple paths — the load event can race with browser cache.
   function reportHeight() {
+    // document.documentElement.scrollHeight equals the iframe viewport height (25000px)
+    // inside a fixed-height iframe — omit it; use body measurements only.
     var h = Math.max(
       document.body.scrollHeight || 0,
-      document.body.offsetHeight || 0,
-      document.documentElement.scrollHeight || 0
+      document.body.offsetHeight || 0
     );
     if (!h || h < 500) {
       var last = document.body.lastElementChild;
