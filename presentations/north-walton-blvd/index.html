@@ -1508,48 +1508,76 @@ if (window.self !== window.top) {
     el.classList.add('visible');
   });
 
-  // Position the presentation nav directly below the MCG global nav (72px tall, position:fixed).
-  // Inside a non-scrolling iframe, position:fixed is relative to the iframe, so we shift
-  // it down by the parent nav height so both navs stack cleanly.
+  // ─── Nav setup ────────────────────────────────────────────
+  // Position presentation nav directly below the MCG global nav (72px, position:fixed).
   var navEl = document.querySelector('.nav');
   if (navEl) {
     navEl.style.top = '72px';
-    // Also update mobile dropdown top to match
     var style = document.createElement('style');
     style.textContent = '@media(max-width:860px){.nav-links{top:136px !important;}}';
     document.head.appendChild(style);
   }
 
-  // Size the hero to fill the visible viewport like the Enclave page does.
-  // We can't read the parent's window.innerHeight cross-origin, so we use
-  // screen.availHeight (physical screen minus OS chrome) as a reliable proxy,
-  // then subtract browser chrome + both nav bars.
+  // ─── White nav-top strip ──────────────────────────────────────────
+  // The MCG Webflow global nav (navbar4_component) is fully transparent (rgba 0 0 0 0).
+  // Its top 24px shows whatever page content is behind it. On Enclave (native Webflow
+  // page) that 24px is the white page background — so the nav top looks white. On
+  // North Walton the iframe hero fills y=0 making the top dark. Fix: inject a fixed
+  // 24px white strip so both pages look identical at the top of the Webflow nav.
+  var whiteStrip = document.createElement('div');
+  whiteStrip.style.cssText = 'position:fixed;top:0;left:0;right:0;height:24px;background:#ffffff;z-index:900;pointer-events:none;';
+  document.body.appendChild(whiteStrip);
+
+  // ─── Background-attachment: fixed fix ────────────────────────────────────────
+  // In the ~10000px-tall iframe, background-attachment:fixed positions the image
+  // relative to the full iframe height (not the screen), causing extreme zoom and
+  // making mcg-branded-render.jpg appear twice (why-buy section + footer). Force
+  // scroll immediately — CDN may not have propagated the committed CSS fix yet.
+  var whyParallax = document.querySelector('.why-buy-parallax');
+  if (whyParallax) {
+    whyParallax.style.backgroundAttachment = 'scroll';
+    whyParallax.style.inset = '0';
+    whyParallax.style.backgroundPosition = 'center 30%';
+  }
+  var fxStyle = document.createElement('style');
+  fxStyle.textContent = '.footer::before{background-attachment:scroll!important;background-position:center 30%!important;inset:0!important;}';
+  document.head.appendChild(fxStyle);
+
+  // ─── Hero sizing ───────────────────────────────────────────────────────
   var heroEl = document.querySelector('.hero');
   if (heroEl) {
     var screenH = window.screen.availHeight || window.screen.height || 900;
-    // screenH ≈ 1416 on 5K iMac; subtract ~180px for browser UI + both navs
     var heroH = Math.max(720, screenH - 180);
     heroEl.style.minHeight = heroH + 'px';
-    // Push hero content clear of both navs: MCG nav (72px) + presentation nav (64px) + 20px breathing
     heroEl.style.paddingTop = '156px';
   }
 
-  // Listen for parent sending exact viewport height (if Webflow embed is updated)
+  // ─── Parent messages ──────────────────────────────────────────────────
+  var bandBg = document.getElementById('bandBg');
+  var bandEl = bandBg && bandBg.closest('.community-band');
+
   window.addEventListener('message', function(e) {
-    if (e.data && e.data.type === 'parentViewportHeight' && heroEl) {
+    if (!e.data) return;
+
+    // Exact viewport height from parent → resize hero precisely
+    if (e.data.type === 'parentViewportHeight' && heroEl) {
       var vph = e.data.height;
-      // Fill viewport minus MCG nav (72px) and presentation nav (64px)
       heroEl.style.minHeight = Math.max(720, vph - 136) + 'px';
       setTimeout(reportHeight, 50);
     }
+
+    // Parent scroll position → drive bandBg parallax (restores effect in embedded mode)
+    if (e.data.type === 'parentScroll' && bandBg && bandEl) {
+      var scrollY = e.data.scrollY;
+      var bandTop = bandEl.offsetTop;
+      var delta = (scrollY - bandTop) * 0.40;
+      bandBg.style.transform = 'translateY(' + delta + 'px)';
+    }
   });
 
-  // Report actual page height so parent iframe can resize correctly.
-  // body.offsetHeight = the actual rendered height of the body — not clamped to
-  // the iframe viewport like documentElement.scrollHeight is.
+  // ─── Height reporting ───────────────────────────────────────────────────
   function reportHeight() {
     var h = document.body.offsetHeight;
-    // Sanity-check: if offsetHeight looks wrong, fall back to last-child bottom
     if (!h || h < 500) {
       var last = document.body.lastElementChild;
       if (last) {
@@ -1563,8 +1591,8 @@ if (window.self !== window.top) {
   }
   window.addEventListener('load', function() {
     reportHeight();
-    setTimeout(reportHeight, 300);   // re-check after images settle
-    setTimeout(reportHeight, 1200);  // final check for late-loading assets
+    setTimeout(reportHeight, 300);
+    setTimeout(reportHeight, 1200);
   });
 } else {
   var observer = new IntersectionObserver(function(entries) {
