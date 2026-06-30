@@ -79,12 +79,12 @@ p:last-child { margin-bottom: 0; }
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px; height: 68px;
-  background: rgba(22,22,42,0.96);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(196,163,90,0.18);
+  padding: 0 24px; height: 64px;
+  background: rgba(22,22,42,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(196,163,90,0.2);
 }
-.nav-logo img { height: 34px; width: auto; }
+.nav-logo img { height: 36px; width: auto; }
 .nav-links { display: flex; gap: 28px; }
 .nav-links a {
   color: var(--gray-300);
@@ -99,7 +99,7 @@ p:last-child { margin-bottom: 0; }
 .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 22px; cursor: pointer; padding: 4px; }
 @media(max-width:860px) {
   .nav-links {
-    display: none; position: fixed; top: 68px; left: 0; right: 0;
+    display: none; position: fixed; top: 64px; left: 0; right: 0;
     background: var(--navy); flex-direction: column; gap: 0;
     border-bottom: 1px solid rgba(196,163,90,0.18);
   }
@@ -1516,7 +1516,7 @@ if (window.self !== window.top) {
     navEl.style.top = '72px';
     // Also update mobile dropdown top to match
     var style = document.createElement('style');
-    style.textContent = '@media(max-width:860px){.nav-links{top:140px !important;}}';
+    style.textContent = '@media(max-width:860px){.nav-links{top:136px !important;}}';
     document.head.appendChild(style);
   }
 
@@ -1530,16 +1530,16 @@ if (window.self !== window.top) {
     // screenH ≈ 1416 on 5K iMac; subtract ~180px for browser UI + both navs
     var heroH = Math.max(720, screenH - 180);
     heroEl.style.minHeight = heroH + 'px';
-    // Push hero content clear of both navs: MCG nav (72px) + presentation nav (68px) + 20px breathing
-    heroEl.style.paddingTop = '160px';
+    // Push hero content clear of both navs: MCG nav (72px) + presentation nav (64px) + 20px breathing
+    heroEl.style.paddingTop = '156px';
   }
 
   // Listen for parent sending exact viewport height (if Webflow embed is updated)
   window.addEventListener('message', function(e) {
     if (e.data && e.data.type === 'parentViewportHeight' && heroEl) {
       var vph = e.data.height;
-      // Fill viewport minus MCG nav (72px) and presentation nav (68px)
-      heroEl.style.minHeight = Math.max(720, vph - 140) + 'px';
+      // Fill viewport minus MCG nav (72px) and presentation nav (64px)
+      heroEl.style.minHeight = Math.max(720, vph - 136) + 'px';
       setTimeout(reportHeight, 50);
     }
   });
@@ -1587,6 +1587,11 @@ window.addEventListener('scroll', function() {
 
 <script>
 (function() {
+  // Parallax requires the window to scroll. Inside an iframe the parent scrolls,
+  // not window, so window.pageYOffset is always 0 — the initial onScroll() call
+  // would shift the image ~1000px off-screen. Disable entirely in iframe mode.
+  if (window.self !== window.top) return;
+
   var bg = document.getElementById('bandBg');
   var band = bg && bg.closest('.community-band');
   if (!bg || !band) return;
