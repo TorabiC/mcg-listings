@@ -451,11 +451,16 @@ p:last-child { margin-bottom: 0; }
   z-index: 2;
 }
 
+/* Shared wrapper: one background behind why-buy-section + footer */
+.final-bg-wrap {
+  position: relative;
+  overflow: hidden;   /* clips the abs-positioned parallax/overlay */
+}
 .why-buy-section {
   position: relative;
   z-index: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: visible;  /* wrapper handles clipping now */
 }
 .why-buy-parallax {
   position: absolute;
@@ -676,10 +681,8 @@ p:last-child { margin-bottom: 0; }
 /* ===== FOOTER ===== */
 .footer {
   position: relative;
-  /* Solid dark navy — same effective colour as the 74%-overlaid render in why-buy.
-     Using a pseudo-element background-image here restarts the image at footer top,
-     making mcg-branded-render.jpg appear twice inside the non-scrolling iframe. */
-  background: rgb(10, 14, 26);
+  z-index: 2;          /* sits above the shared parallax/overlay in .final-bg-wrap */
+  background: transparent;
   border-top: none;
   padding: 48px 24px;
   text-align: center;
@@ -1325,9 +1328,10 @@ p:last-child { margin-bottom: 0; }
 </section>
 
 <!-- COMBINED: WHY BUY + BROKER + CTA ───────────────────────────────────── -->
+<div class="final-bg-wrap">
+<div class="why-buy-parallax"></div>
+<div class="why-buy-overlay"></div>
 <section class="why-buy-section" id="contact">
-  <div class="why-buy-parallax"></div>
-  <div class="why-buy-overlay"></div>
   <div class="container why-buy-inner">
 
     <!-- Italic serif tagline — Enclave style -->
@@ -1479,6 +1483,7 @@ p:last-child { margin-bottom: 0; }
   <p style="margin-top:8px;">Design and concept follow the City of Bentonville&rsquo;s Cottage Court Dwelling guidelines under the Bentonville Development Code. Neither the plan nor the concept has been formally approved by the Bentonville Planning Commission or any other municipal authority. Concept, unit counts, entitlement timelines, and financial projections are illustrative and subject to survey, geotechnical review, civil engineering, and municipal entitlement. Gross development value and investment metrics are estimates based on current market conditions and are not guaranteed. Information believed reliable but not guaranteed &mdash; verify independently. Not an offer where prohibited.</p>
   <p style="margin-top:16px;">&copy; 2026 Mason Capital Group. All rights reserved.</p>
 </footer>
+</div><!-- /.final-bg-wrap -->
 
 <script>
 // Mobile nav toggle
