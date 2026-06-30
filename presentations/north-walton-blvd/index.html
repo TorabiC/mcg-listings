@@ -457,11 +457,11 @@ p:last-child { margin-bottom: 0; }
 }
 .why-buy-parallax {
   position: absolute;
-  inset: -40% 0;           /* extend so fixed bg has room to parallax */
+  inset: 0;
   background-image: url('mcg-branded-render.jpg');
   background-size: cover;
-  background-position: center 65%;
-  background-attachment: fixed;
+  background-position: center 30%;
+  background-attachment: scroll;  /* fixed is broken inside iframes */
   z-index: -3;
 }
 /* dark tint over the photo */
@@ -679,15 +679,15 @@ p:last-child { margin-bottom: 0; }
   padding: 48px 24px;
   text-align: center;
 }
-/* Fixed parallax behind footer text — same image, seamless with why-buy */
+/* Background behind footer text — same image, seamless with why-buy */
 .footer::before {
   content: '';
   position: absolute;
   inset: 0;
   background-image: url('mcg-branded-render.jpg');
   background-size: cover;
-  background-position: center 65%;
-  background-attachment: fixed;
+  background-position: center 30%;
+  background-attachment: scroll;  /* fixed is broken inside iframes */
   z-index: -2;
 }
 /* Tinted overlay for legibility */
