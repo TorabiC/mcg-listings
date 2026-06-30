@@ -1509,24 +1509,25 @@ if (window.self !== window.top) {
   });
 
   // ─── Nav setup ────────────────────────────────────────────
-  // Position presentation nav directly below the MCG global nav (72px, position:fixed).
+  // Position presentation nav below the MCG Webflow global nav (fixed, 72px) and
+  // remove its opaque background so the hero image shows through — matching the
+  // Enclave design where the nav floats transparently over the hero background image.
   var navEl = document.querySelector('.nav');
   if (navEl) {
     navEl.style.top = '72px';
-    var style = document.createElement('style');
-    style.textContent = '@media(max-width:860px){.nav-links{top:136px !important;}}';
-    document.head.appendChild(style);
+    navEl.style.background = 'transparent';
+    navEl.style.backdropFilter = 'none';
+    navEl.style.webkitBackdropFilter = 'none';
+    navEl.style.borderBottom = 'none';
+    var navStyle = document.createElement('style');
+    navStyle.textContent = [
+      '.nav-links a { color: rgba(255,255,255,0.9) !important; text-shadow: 0 1px 4px rgba(0,0,0,0.7); }',
+      '.nav-links a:hover { color: var(--gold) !important; }',
+      '@media(max-width:860px){.nav-links{top:136px !important; background:rgba(22,22,42,0.95) !important; backdrop-filter:blur(12px) !important;}}'
+    ].join('
+');
+    document.head.appendChild(navStyle);
   }
-
-  // ─── White nav-top strip ──────────────────────────────────────────
-  // The MCG Webflow global nav (navbar4_component) is fully transparent (rgba 0 0 0 0).
-  // Its top 24px shows whatever page content is behind it. On Enclave (native Webflow
-  // page) that 24px is the white page background — so the nav top looks white. On
-  // North Walton the iframe hero fills y=0 making the top dark. Fix: inject a fixed
-  // 24px white strip so both pages look identical at the top of the Webflow nav.
-  var whiteStrip = document.createElement('div');
-  whiteStrip.style.cssText = 'position:fixed;top:0;left:0;right:0;height:24px;background:#ffffff;z-index:900;pointer-events:none;';
-  document.body.appendChild(whiteStrip);
 
   // ─── Background-attachment: fixed fix ────────────────────────────────────────
   // In the ~10000px-tall iframe, background-attachment:fixed positions the image
