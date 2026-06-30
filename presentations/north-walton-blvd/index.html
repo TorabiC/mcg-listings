@@ -1577,8 +1577,14 @@ if (window.self !== window.top) {
   });
 
   // ─── Height reporting ───────────────────────────────────────────────────
+  // scrollHeight is more reliable than offsetHeight in embedded iframe contexts.
+  // Fire on multiple paths — the load event can race with browser cache.
   function reportHeight() {
-    var h = document.body.offsetHeight;
+    var h = Math.max(
+      document.body.scrollHeight || 0,
+      document.body.offsetHeight || 0,
+      document.documentElement.scrollHeight || 0
+    );
     if (!h || h < 500) {
       var last = document.body.lastElementChild;
       if (last) {
@@ -1590,10 +1596,14 @@ if (window.self !== window.top) {
       window.parent.postMessage({ type: 'listingHeight', height: h }, '*');
     }
   }
+  // Absolute timeouts: fire regardless of load event (handles cache-race edge case)
+  setTimeout(reportHeight, 300);
+  setTimeout(reportHeight, 800);
+  setTimeout(reportHeight, 2000);
+  // Load event: additional signal covering late-loading images
   window.addEventListener('load', function() {
     reportHeight();
-    setTimeout(reportHeight, 300);
-    setTimeout(reportHeight, 1200);
+    setTimeout(reportHeight, 500);
   });
 } else {
   var observer = new IntersectionObserver(function(entries) {
