@@ -1507,6 +1507,43 @@ if (window.self !== window.top) {
   document.querySelectorAll('.animate').forEach(function(el) {
     el.classList.add('visible');
   });
+
+  // Position the presentation nav directly below the MCG global nav (72px tall, position:fixed).
+  // Inside a non-scrolling iframe, position:fixed is relative to the iframe, so we shift
+  // it down by the parent nav height so both navs stack cleanly.
+  var navEl = document.querySelector('.nav');
+  if (navEl) {
+    navEl.style.top = '72px';
+    // Also update mobile dropdown top to match
+    var style = document.createElement('style');
+    style.textContent = '@media(max-width:860px){.nav-links{top:140px !important;}}';
+    document.head.appendChild(style);
+  }
+
+  // Size the hero to fill the visible viewport like the Enclave page does.
+  // We can't read the parent's window.innerHeight cross-origin, so we use
+  // screen.availHeight (physical screen minus OS chrome) as a reliable proxy,
+  // then subtract browser chrome + both nav bars.
+  var heroEl = document.querySelector('.hero');
+  if (heroEl) {
+    var screenH = window.screen.availHeight || window.screen.height || 900;
+    // screenH ≈ 1416 on 5K iMac; subtract ~180px for browser UI + both navs
+    var heroH = Math.max(720, screenH - 180);
+    heroEl.style.minHeight = heroH + 'px';
+    // Push hero content clear of both navs: MCG nav (72px) + presentation nav (68px) + 20px breathing
+    heroEl.style.paddingTop = '160px';
+  }
+
+  // Listen for parent sending exact viewport height (if Webflow embed is updated)
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'parentViewportHeight' && heroEl) {
+      var vph = e.data.height;
+      // Fill viewport minus MCG nav (72px) and presentation nav (68px)
+      heroEl.style.minHeight = Math.max(720, vph - 140) + 'px';
+      setTimeout(reportHeight, 50);
+    }
+  });
+
   // Report actual page height so parent iframe can resize correctly.
   // body.offsetHeight = the actual rendered height of the body — not clamped to
   // the iframe viewport like documentElement.scrollHeight is.
