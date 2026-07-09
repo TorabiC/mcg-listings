@@ -83,6 +83,49 @@ td.b{font-weight:700;color:var(--navy)}
 </head>
 <body>
 
+<!-- ================= PASSWORD GATE ================= -->
+<style>
+#gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#13294B 0%,#0d1d36 100%);display:flex;align-items:center;justify-content:center;padding:24px}
+#gate .box{max-width:420px;width:100%;text-align:center}
+#gate .ey{color:var(--gold);font-weight:900;letter-spacing:.28em;font-size:11px;text-transform:uppercase;margin-bottom:14px}
+#gate h1{color:#fff;font-weight:900;font-size:28px;margin-bottom:6px}
+#gate p{color:#b9c3d4;font-size:14.5px;margin-bottom:22px}
+#gate input{width:100%;padding:14px 16px;border-radius:4px;border:1px solid rgba(197,162,83,.6);background:rgba(255,255,255,.07);color:#fff;font-family:inherit;font-size:16px;text-align:center;letter-spacing:.06em;outline:none}
+#gate input:focus{border-color:var(--gold)}
+#gate button{margin-top:14px;width:100%;padding:14px;border-radius:4px;border:none;background:var(--gold);color:#13294B;font-family:inherit;font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:13px;cursor:pointer}
+#gate button:hover{background:#d4b46a}
+#gate .err{color:#e88;font-size:13px;margin-top:10px;min-height:18px}
+body.locked > *:not(#gate){display:none!important}
+</style>
+<div id="gate" hidden>
+  <div class="box">
+    <div class="ey">Mason Capital Group</div>
+    <h1>46 Northfleet Drive</h1>
+    <p>This analysis is confidential. Please enter the access password provided by Mason Capital Group.</p>
+    <input id="gate-pw" type="password" placeholder="Password" autocomplete="off" onkeydown="if(event.key==='Enter')gateTry()">
+    <button onclick="gateTry()">View Analysis</button>
+    <div class="err" id="gate-err"></div>
+  </div>
+</div>
+<script>
+(function(){
+  if(sessionStorage.getItem('mcg_nf_ok')==='1'){return;}
+  document.body.classList.add('locked');
+  document.getElementById('gate').hidden=false;
+})();
+function gateTry(){
+  var v=(document.getElementById('gate-pw').value||'').trim().toLowerCase();
+  if(v==='northfleet'){
+    sessionStorage.setItem('mcg_nf_ok','1');
+    document.getElementById('gate').remove();
+    document.body.classList.remove('locked');
+    if(typeof postHeight==='function'){setTimeout(postHeight,60);}
+  }else{
+    document.getElementById('gate-err').textContent='Incorrect password. Please try again.';
+  }
+}
+</script>
+
 <!-- ================= HERO ================= -->
 <header class="hero">
   <div class="hero-inner">
