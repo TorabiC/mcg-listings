@@ -105,8 +105,18 @@ td.b{font-weight:700;color:var(--navy)}
   h3{font-size:15.5px}
   p{font-size:14.5px}
   .lead{font-size:15.5px}
-  table{font-size:12.5px;min-width:540px}
-  th,td{padding:8px 9px}
+  /* Stacked cards instead of horizontal-scroll tables */
+  .tblwrap{border:none;border-radius:0;overflow:visible}
+  table.resp{min-width:0;width:100%;font-size:13.5px}
+  table.resp tr:first-child{display:none}
+  table.resp tr{display:block;border:1px solid #d5d9e0;border-radius:8px;margin:0 0 10px;overflow:hidden;background:#fff}
+  table.resp td{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-top:1px solid #eceff3;background:#fff!important;padding:9px 12px;text-align:right}
+  table.resp td:first-child{border-top:none;background:var(--row)!important;font-weight:700;color:var(--navy)}
+  table.resp td::before{content:attr(data-label);font-weight:700;color:var(--grey);font-size:11px;letter-spacing:.05em;text-transform:uppercase;text-align:left;flex:0 0 44%}
+  table.resp td[data-label=""]::before{display:none}
+  table.resp td[data-label=""]{justify-content:flex-start;text-align:left}
+  table.resp tr.hl{border-color:var(--gold)}
+  table.resp tr.hl td{background:var(--hilite)!important}
   .callout{padding:14px 16px}
   .optcard .opthead{font-size:14px;padding:12px 14px}
   .optcard .optbody{padding:13px 14px}
@@ -507,6 +517,16 @@ window.addEventListener('load',postHeight);
 window.addEventListener('resize',postHeight);
 if(window.ResizeObserver){new ResizeObserver(postHeight).observe(document.body);}
 setTimeout(postHeight,800);
+/* Label every data cell with its column header so tables can stack into cards on mobile */
+document.querySelectorAll('.tblwrap table').forEach(function(t){
+  var ths=[].map.call(t.querySelectorAll('tr:first-child th'),function(th){return th.textContent.trim();});
+  var rows=t.querySelectorAll('tr');
+  for(var i=1;i<rows.length;i++){
+    var cells=rows[i].children;
+    for(var j=0;j<cells.length;j++){cells[j].setAttribute('data-label',ths[j]||'');}
+  }
+  t.classList.add('resp');
+});
 </script>
 </body>
 </html>
