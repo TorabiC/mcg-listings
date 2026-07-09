@@ -397,6 +397,9 @@ td.b{font-weight:700;color:var(--navy)}
 </footer>
 
 <script>
+function postHeight(){
+  try{parent.postMessage({type:'listingHeight',height:document.documentElement.scrollHeight+40},'*');}catch(e){}
+}
 function showTab(which){
   document.getElementById('report-seller').classList.toggle('active', which==='seller');
   document.getElementById('report-investor').classList.toggle('active', which==='investor');
@@ -405,7 +408,12 @@ function showTab(which){
   var bar=document.getElementById('tabbar');
   var y=bar.getBoundingClientRect().top+window.pageYOffset;
   if(window.pageYOffset>y) window.scrollTo({top:y,behavior:'instant'});
+  setTimeout(postHeight,50);
 }
+window.addEventListener('load',postHeight);
+window.addEventListener('resize',postHeight);
+if(window.ResizeObserver){new ResizeObserver(postHeight).observe(document.body);}
+setTimeout(postHeight,800);
 </script>
 </body>
 </html>
