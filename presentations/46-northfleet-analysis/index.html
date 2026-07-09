@@ -85,7 +85,8 @@ td.b{font-weight:700;color:var(--navy)}
 
 <!-- ================= PASSWORD GATE ================= -->
 <style>
-#gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#13294B 0%,#0d1d36 100%);display:flex;align-items:center;justify-content:center;padding:24px}
+#gate{position:absolute;top:0;left:0;right:0;height:720px;z-index:9999;background:linear-gradient(180deg,#13294B 0%,#0d1d36 100%);display:flex;align-items:center;justify-content:center;padding:24px}
+body.locked{min-height:720px;overflow:hidden}
 #gate .box{max-width:420px;width:100%;text-align:center}
 #gate .ey{color:var(--gold);font-weight:900;letter-spacing:.28em;font-size:11px;text-transform:uppercase;margin-bottom:14px}
 #gate h1{color:#fff;font-weight:900;font-size:28px;margin-bottom:6px}
@@ -112,6 +113,7 @@ body.locked > *:not(#gate){display:none!important}
   if(sessionStorage.getItem('mcg_nf_ok')==='1'){return;}
   document.body.classList.add('locked');
   document.getElementById('gate').hidden=false;
+  try{parent.postMessage({type:'listingHeight',height:720},'*');}catch(e){}
 })();
 function gateTry(){
   var v=(document.getElementById('gate-pw').value||'').trim().toLowerCase();
@@ -441,7 +443,10 @@ function gateTry(){
 
 <script>
 function postHeight(){
-  try{parent.postMessage({type:'listingHeight',height:document.documentElement.scrollHeight+40},'*');}catch(e){}
+  try{
+    var h=document.body.classList.contains('locked')?720:document.documentElement.scrollHeight+40;
+    parent.postMessage({type:'listingHeight',height:h},'*');
+  }catch(e){}
 }
 function showTab(which){
   document.getElementById('report-seller').classList.toggle('active', which==='seller');
