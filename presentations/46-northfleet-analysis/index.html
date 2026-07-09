@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>46 Northfleet Drive — Full Analysis | Mason Capital Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#13294B;--crimson:#A6192E;--gold:#C5A253;--light:#F4F1EA;--grey:#5A6472;--row:#EDF0F5;--hilite:#F8EDE0;--ink:#222}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Lato',sans-serif;color:var(--ink);background:#fff;line-height:1.55}
+/* ---------- HERO ---------- */
+.hero{position:relative;min-height:66vh;display:flex;align-items:center;justify-content:center;text-align:center;
+background:url('images/hero.jpg') center 62%/cover no-repeat;}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(19,41,75,.90) 0%,rgba(19,41,75,.74) 55%,rgba(19,41,75,.88) 100%)}
+.hero-inner{position:relative;z-index:2;padding:72px 24px;max-width:960px}
+.eyebrow{color:var(--gold);font-weight:900;letter-spacing:.28em;font-size:12px;text-transform:uppercase;margin-bottom:18px}
+.hero h1{color:#fff;font-weight:900;font-size:clamp(34px,5.4vw,58px);letter-spacing:.01em;line-height:1.08}
+.hero .sub{color:#dfe5ee;font-size:clamp(15px,1.9vw,19px);font-weight:300;margin-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
+.chip{border:1px solid rgba(197,162,83,.65);color:#fff;background:rgba(19,41,75,.35);backdrop-filter:blur(2px);
+padding:8px 16px;border-radius:999px;font-size:13.5px;font-weight:700;letter-spacing:.03em}
+.chip b{color:var(--gold)}
+.hero-cta{display:flex;gap:14px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+.hero-cta button{cursor:pointer;font-family:inherit;font-weight:900;letter-spacing:.06em;text-transform:uppercase;font-size:13px;
+padding:14px 26px;border-radius:4px;border:1px solid var(--gold);transition:.2s}
+.hero-cta .primary{background:var(--gold);color:var(--navy)}
+.hero-cta .primary:hover{background:#d4b46a}
+.hero-cta .ghost{background:transparent;color:#fff}
+.hero-cta .ghost:hover{background:rgba(197,162,83,.18)}
+.conf{position:relative;z-index:2}
+/* ---------- TABS ---------- */
+.tabbar{position:sticky;top:0;z-index:50;background:var(--navy);border-bottom:3px solid var(--gold);display:flex;justify-content:center}
+.tabbar button{flex:0 1 380px;background:none;border:none;color:#b9c3d4;font-family:inherit;font-weight:900;letter-spacing:.06em;
+text-transform:uppercase;font-size:13px;padding:17px 12px;cursor:pointer;border-bottom:4px solid transparent;transition:.2s}
+.tabbar button.active{color:#fff;border-bottom-color:var(--gold)}
+.tabbar button:hover{color:#fff}
+/* ---------- LAYOUT ---------- */
+.wrap{max-width:1060px;margin:0 auto;padding:48px 22px 20px}
+section.report{display:none}
+section.report.active{display:block}
+h2{color:var(--navy);font-weight:900;font-size:26px;margin:44px 0 12px;line-height:1.2}
+h2:first-child{margin-top:0}
+h3{color:var(--crimson);font-weight:700;font-size:17px;margin:26px 0 8px}
+p{margin:0 0 14px;font-size:15.5px;color:#2b2f36}
+p b{color:var(--navy)}
+.lead{font-size:17px;color:#3a3f47}
+.rule{height:3px;background:var(--gold);width:64px;border-radius:2px;margin:6px 0 22px}
+/* ---------- TABLES ---------- */
+.tblwrap{overflow-x:auto;margin:14px 0 20px;border:1px solid #d5d9e0;border-radius:6px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th{background:var(--navy);color:#fff;text-align:left;font-weight:700;padding:11px 13px;white-space:nowrap}
+td{padding:10px 13px;border-top:1px solid #dde1e8;vertical-align:top}
+tr:nth-child(even) td{background:var(--row)}
+tr.hl td{background:var(--hilite);font-weight:700;color:var(--navy)}
+td.b{font-weight:700;color:var(--navy)}
+/* ---------- CARDS / CALLOUTS ---------- */
+.callout{background:var(--light);border-left:5px solid var(--gold);padding:18px 22px;border-radius:0 6px 6px 0;margin:20px 0}
+.callout.crimson{border-left-color:var(--crimson)}
+.callout p:last-child{margin-bottom:0}
+.optcard{border:1px solid #d5d9e0;border-radius:8px;margin:18px 0;overflow:hidden}
+.optcard .opthead{background:var(--navy);color:#fff;padding:14px 20px;font-weight:900;font-size:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.optcard .opthead span{color:var(--gold)}
+.optcard .optbody{padding:16px 20px}
+.optstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.stat{background:var(--light);border-radius:6px;padding:10px 12px}
+.stat .k{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.stat .v{font-size:18px;font-weight:900;color:var(--navy);margin-top:2px}
+.stat .v.gold{color:var(--crimson)}
+/* ---------- FOOTER ---------- */
+.foot{background:var(--navy);color:#c9d1de;margin-top:56px;padding:40px 22px}
+.foot .inner{max-width:1060px;margin:0 auto}
+.foot .name{color:#fff;font-weight:900;font-size:17px}
+.foot .gold{color:var(--gold)}
+.foot p{color:#c9d1de;font-size:14px}
+.foot .fine{font-size:11.5px;line-height:1.6;color:#8fa0b8;margin-top:18px;border-top:1px solid rgba(197,162,83,.35);padding-top:16px}
+.foot a{color:var(--gold);text-decoration:none}
+@media (max-width:600px){.hero{min-height:78vh}.tabbar button{font-size:11px;padding:14px 6px}}
+@media print{.tabbar,.hero-cta{display:none}section.report{display:block!important}.hero{min-height:34vh}}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Mason Capital Group &nbsp;·&nbsp; Confidential Analysis</div>
+    <h1>46 Northfleet Drive</h1>
+    <div class="sub">Bella Vista, Arkansas 72714 &nbsp;·&nbsp; Full Pricing, Market &amp; Investment Analysis &nbsp;·&nbsp; Prepared July 9, 2026</div>
+    <div class="chips">
+      <span class="chip"><b>$590,000</b> List Price</span>
+      <span class="chip"><b>2,135</b> SF</span>
+      <span class="chip"><b>$276</b> / SF</span>
+      <span class="chip"><b>3</b> Bed · <b>2.5</b> Bath</span>
+      <span class="chip"><b>Nudura ICF</b> · CO Issued</span>
+    </div>
+    <div class="hero-cta">
+      <button class="primary" onclick="showTab('seller')">Pricing &amp; Market Report</button>
+      <button class="ghost" onclick="showTab('investor')">Investment Analysis</button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= TABS ================= -->
+<nav class="tabbar" id="tabbar">
+  <button id="tab-seller" class="active" onclick="showTab('seller')">Pricing Strategy &amp; Market Position</button>
+  <button id="tab-investor" onclick="showTab('investor')">ICF Build Program — Investment Analysis</button>
+</nav>
+
+<!-- ================= REPORT 1 : SELLER ================= -->
+<section class="report active" id="report-seller">
+<div class="wrap">
+
+<h2>Pricing Strategy &amp; Market Position Report</h2>
+<div class="rule"></div>
+<p class="lead">This report consolidates two comparative market analyses prepared July 8–9, 2026 — a broad survey of 46 new-construction listings across Bella Vista and a curated set of 27 direct comparables — into a single view of where 46 Northfleet Drive stands in the current market. It presents three defensible pricing bands with the considerations attached to each, places the days-on-market figure in its proper context, and addresses a strategic dimension unique to this property: as the only new residential ICF construction in Bella Vista, this sale will set the benchmark for every ICF home that follows it.</p>
+<p>This report presents the data and the trade-offs. The pricing decision remains yours, and Mason Capital Group will execute whichever path aligns with your objectives.</p>
+
+<h2>Where the Market Stands</h2>
+<div class="rule"></div>
+<p>Both analyses tell a consistent story. New construction in Bella Vista is transacting — sellers are achieving 99.8% of list price on average — but the market clears within a defined price-per-square-foot range, and it clears quickly when pricing falls inside it.</p>
+<div class="tblwrap"><table>
+<tr><th>Segment</th><th>Median Price</th><th>Median $/SF</th><th>Median DOM</th></tr>
+<tr><td>Active new construction (21 listings)</td><td>$529,000</td><td>$239</td><td>47</td></tr>
+<tr><td>Pending (6 listings)</td><td>$552,450</td><td>$242</td><td>19</td></tr>
+<tr><td>Sold, last 6 months (19 closings)</td><td>$475,000</td><td>$230 (sold)</td><td>59</td></tr>
+<tr class="hl"><td>46 Northfleet Drive (subject)</td><td>$590,000</td><td>$276</td><td>139*</td></tr>
+</table></div>
+<p style="font-size:12.5px;color:var(--grey)">*See “Days on Market in Proper Context” below — the displayed figure materially overstates this home's exposure as a completed product.</p>
+<p>At $276 per square foot, 46 Northfleet is the highest-priced active listing on a per-square-foot basis in both comparable sets. The homes attracting contracts fastest are clustered between $228 and $255 per square foot — 22 Hessle Circle and 32 Sheffield Drive (both 1,900 SF at $255/SF) sold at full price in 3 and 6 days respectively; 3 Morganshire went in 6 days; 14 Dickenshire sold at 103.8% of list in 23 days. One sale demonstrates the ceiling for differentiated product: 18 Grimsby Circle, 1,923 SF, closed at $310 per square foot ($597,000) — evidence that Bella Vista buyers will pay a substantial premium for the right home, though its immediate sale suggests a pre-arranged buyer rather than open-market exposure.</p>
+
+<h2>Days on Market in Proper Context</h2>
+<div class="rule"></div>
+<p>The MLS shows 139 days on market for 46 Northfleet. Taken at face value, that number invites the wrong conclusion. Two facts materially change its meaning.</p>
+<h3>1. This home was listed before it was finished — and is only now truly on the market</h3>
+<p>46 Northfleet was listed February 20, 2026, while still under construction. For most of the recorded 139 days, buyers could not walk a finished home, and financing-contingent buyers could not close on one. Construction is now complete and the Certificate of Occupancy has been issued by the City of Bella Vista. As a completed, move-in-ready product — the only condition in which most buyers will transact — this home's effective market exposure is just beginning. The comparable listings it is measured against were, in many cases, listed after completion, making their DOM figures an apples-to-oranges comparison.</p>
+<h3>2. Several comparables have been on the market far longer than their displayed DOM suggests</h3>
+<p>MLS days-on-market resets when a listing is withdrawn and relisted. Several comparables in these analyses have been listed multiple times, so their displayed DOM understates their true cumulative market time. Even within the visible data, the pattern is clear: 13 Chichester Circle originally listed at $549,000 and closed at $499,500 after 168 displayed days; 6 Marionet Circle came to market at $649,900 and closed at $575,000 after 220 days; and the broader survey includes listings showing 246 and 345 days on a single listing period alone. The honest comparison is not 139 days versus 47 — it is a just-completed home entering a market where extended and repeated listing periods are common for new construction.</p>
+<p>One practical note: regardless of cause, consumer portals display accumulated days, and buyers use that figure in negotiation. Perspective on DOM is the right analytical posture; managing its perception is a marketing task, and the completion of construction and issuance of the CO is precisely the kind of event that legitimately resets the conversation with the market.</p>
+
+<h2>Three Defensible Pricing Bands</h2>
+<div class="rule"></div>
+<p>Applied to the subject's 2,135 heated square feet, the comparable data supports three distinct positioning bands. Each is defensible; each carries different trade-offs in time, negotiating posture, and strategic value.</p>
+<div class="tblwrap"><table>
+<tr><th>Band</th><th>$ / SF Basis</th><th>Price Range</th><th>Data Support</th></tr>
+<tr><td class="b">A — Market-Clearing</td><td>$228–242</td><td class="b">$487,000–$517,000</td><td>Where the majority of sold comps closed and where contracts arrive in days, not months. Median sold $/SF across both analyses: $230–234.</td></tr>
+<tr><td class="b">B — Premium New Construction</td><td>$245–262</td><td class="b">$523,000–$559,000</td><td>The band for high-spec builds: $255/SF sales in 3–6 days (22 Hessle, 32 Sheffield); 18 Reading at $255/SF; 50 Claxton at $246/SF sold.</td></tr>
+<tr class="hl"><td>C — Benchmark / Current Position</td><td>$265–280</td><td>$566,000–$598,000</td><td>Top of market. Supported by the 18 Grimsby sale at $310/SF and the subject's ICF differentiation; requires patience and buyer education.</td></tr>
+</table></div>
+<h3>Considerations attached to each band</h3>
+<p><b>Band A</b> maximizes speed and certainty. It is where the market transacts without hesitation, but it prices the ICF construction at parity with conventional stick-built homes — conceding the premium the product was built to command, and setting the lowest possible benchmark for future ICF construction.</p>
+<p><b>Band B</b> balances premium positioning with demonstrated demand. Homes in this band with strong specifications have sold quickly and at full price. It preserves a meaningful premium over conventional construction while re-entering the range where buyers are actively writing contracts. At this level the subject would no longer compete directly against larger homes at the same asking price — a dynamic worth noting, since the single pending comparable at $589,900 (14 Sheffield Drive) offers buyers 2,629 square feet.</p>
+<p><b>Band C</b> holds the current position and asks the market to recognize the full value of ICF construction. The Grimsby sale proves a ceiling above $300/SF exists for differentiated product. With the CO now in hand and the home finally showable as a finished product, this band has a stronger case today than at any point since the February listing — but it requires sustained marketing of the ICF story and tolerance for additional market time.</p>
+
+<h2>The Strategic Dimension: Setting the ICF Benchmark</h2>
+<div class="rule"></div>
+<p>This consideration extends beyond the current transaction. 46 Northfleet is the only new residential ICF (Insulated Concrete Form) construction in Bella Vista. There is no existing comp set for this product type here — which means this sale will create it.</p>
+<p>If the intent is to continue building ICF homes in this market, the closing price of this home becomes the reference point for every appraisal, every buyer negotiation, and every lender conversation on the ICF homes that follow. Appraisers will reach for the nearest comparable ICF sale — and for the foreseeable future, this will be the only one. A closing at $255/SF establishes ICF at a modest premium to conventional construction; a closing at $270+/SF establishes it as a distinct premium category, the way the Grimsby sale established that a $300+/SF transaction is possible in this market.</p>
+<p>This cuts both ways and deserves honest treatment. Pricing for a fast sale surrenders benchmark value that future projects would inherit. Holding for the benchmark carries genuine carrying costs — taxes, insurance, capital tied up, and portal-displayed market time — with no guaranteed timeline. The right answer depends on the weight you place on the future ICF pipeline relative to the economics of this individual sale. That weighting is a business decision only you can make; the data above is intended to make it a well-informed one.</p>
+
+<h2>Net Proceeds &amp; Builder Economics</h2>
+<div class="rule"></div>
+<p>Pricing bands describe what the market will pay; this section describes what each price returns to you after transaction costs. Net proceeds equal 93.4% of sale price: a 6% brokerage commission plus approximately 0.6% in seller closing costs — a figure verified against an actual July 2026 Waco Title Company seller settlement statement (title, settlement, and owner's policy charges of 0.396% of sale price, plus the seller's half of the Arkansas transfer tax at 0.165%). Against a stated hard construction cost of approximately $470,000, the sale price required to achieve standard spec-builder returns is as follows.</p>
+<div class="tblwrap"><table>
+<tr><th>Profit Target</th><th>Profit ($)</th><th>Required Sale Price</th><th>Falls Within</th></tr>
+<tr><td>Break even (recover cost)</td><td>$0</td><td class="b">$503,200</td><td>Band A (mid)</td></tr>
+<tr><td>10% on cost</td><td>$47,000</td><td class="b">$553,500</td><td>Band B (upper)</td></tr>
+<tr><td>15% on cost — typical spec-builder floor</td><td>$70,500</td><td class="b">$578,700</td><td>Band C</td></tr>
+<tr><td>20% on cost — healthy spec-builder target</td><td>$94,000</td><td class="b">$603,900</td><td>Above current list</td></tr>
+</table></div>
+<h3>What each pricing band returns</h3>
+<p><b>Band A ($487,000–$517,000)</b> nets $454,900–$482,900 — from a loss of approximately $15,100 at the low end to a profit of $12,900 at the top. This band recovers the capital only in its upper half and returns little to no profit on the project.</p>
+<p><b>Band B ($523,000–$559,000)</b> nets $488,500–$522,100 — a profit of $18,500 to $52,100, or roughly 4% to 11% on cost. The project exits whole with a real return, though still below the level a continuing spec-building program would require.</p>
+<p><b>Band C ($566,000–$598,000)</b> nets $528,600–$558,500 — a profit of $58,600 to $88,500, or roughly 12.5% to 18.8% on cost. The 15%-on-cost threshold that spec builders conventionally treat as the floor for taking construction risk is crossed at a sale price near $578,700. The current list price of $590,000 corresponds to a 17.2% return on cost — sound spec-builder economics with a modest cushion, not aspirational pricing.</p>
+<div class="callout"><p>The practical significance: the price at which this market clears fastest does not support the economics of building ICF homes here. If the intent is a continuing ICF program, the commercial logic favors marketing the premium rather than competing on price — which is also the path that establishes the benchmark discussed in the previous section. These figures assume the $470,000 hard-cost basis is fully loaded; if lot acquisition, financing carry, or holding costs sit outside that number, each required price above moves up accordingly (each additional $10,000 of cost requires roughly $10,700 of additional sale price to recover).</p></div>
+
+<h2>Marketing Posture Following the Certificate of Occupancy</h2>
+<div class="rule"></div>
+<p>Whichever band you select, the issuance of the CO is the moment to re-launch this listing rather than let it drift. For the first time the home can be photographed and marketed as a finished product: new photography, a completed-construction remarks update leading with the ICF story and immediate occupancy, and a full re-targeting of the market with the new assets across MLS, syndication, and digital channels. If the market needs encouragement, buyer incentives — an allowance for fencing or landscaping, or a credit toward the buyer's closing costs — can be offered in place of a price reduction, preserving the closing price per square foot that anchors both your return and any future ICF comparable. Mason Capital Group's syndication and marketing platform is prepared to execute this within days of your decision.</p>
+
+</div>
+</section>
+
+<!-- ================= REPORT 2 : INVESTOR ================= -->
+<section class="report" id="report-investor">
+<div class="wrap">
+
+<h2>ICF Build Program — Investment Analysis</h2>
+<div class="rule"></div>
+<p class="lead">This analysis draws on four comparative market analyses — 169 comparable data points across every relevant slice of the Bella Vista new-construction market: 46 listings at 1,900 SF and above, 27 curated comparables for 46 Northfleet Drive, 57 listings under 1,900 SF, and 39 listings within three miles of the subject at 1,900–2,375 SF (the subject's true size class) — together with an actual cost basis of approximately $470,000 on the current 2,135 SF build. Transaction costs are modeled from an actual July 2026 seller settlement statement: 6% commission plus approximately 0.6% in seller closing costs, for net proceeds of 93.4% of sale price.</p>
+<p>The market findings are consistent across all four analyses. New construction has been clearing at a baseline of $228–242 per square foot in every size class, sellers have achieved 99.8–99.9% of list price, and absorption speed has run inverse to price. Differentiated product has closed at $255–310/SF — including open-market sales at $263/SF and $279/SF that went under contract in 10–12 days. Price per square foot compresses as footage grows: no home over 2,000 SF in the three-mile set has closed above $255/SF.</p>
+<div class="callout"><p>The strategic conclusion is that the right exit for 46 Northfleet depends on one question: <b>will you build more ICF homes?</b> If yes, the closing price of this home becomes the appraisal benchmark for the entire program, and holding for a premium exit ($560,000–$590,000) purchases durable pricing power for every build that follows. If no, three exit options — detailed below — recover capital plus $15,600 to $52,900 of profit at price levels where comparable homes have historically transacted. One caution applies throughout: the interest-rate environment is volatile, and the absorption periods cited are the recorded marketing times of closed comparables — historical fact, not a forecast or commitment.</p></div>
+
+<h2>Market Evidence: Four Analyses, One Consistent Picture</h2>
+<div class="rule"></div>
+<p>All data is NWARMLS new construction in Bella Vista, current as of July 8–9, 2026. The four analyses overlap by design — each tests the market from a different angle, and they agree.</p>
+
+<h3>CMA 1 — New construction, 1,900 SF and above (46 listings)</h3>
+<div class="tblwrap"><table>
+<tr><th>Segment</th><th>Median Price</th><th>Median $/SF</th><th>Median DOM</th><th>Sale / List</th></tr>
+<tr><td>Active (21)</td><td>$529,000</td><td>$239</td><td>47</td><td>—</td></tr>
+<tr><td>Pending (6)</td><td>$552,450</td><td>$242</td><td>19</td><td>—</td></tr>
+<tr><td>Sold (19)</td><td>$475,000</td><td>$230 (sold)</td><td>59</td><td>99.8%</td></tr>
+</table></div>
+<p>The premium segment has transacted reliably at $210–255/SF. Larger premium homes have carried longer marketing periods, and several comparables required price reductions or multiple listing periods to sell.</p>
+
+<h3>CMA 2 — Curated comparables for 46 Northfleet Drive (27 listings)</h3>
+<div class="tblwrap"><table>
+<tr><th>Segment</th><th>Avg Price</th><th>Avg $/SF</th><th>Avg DOM</th></tr>
+<tr><td>Active (7)</td><td>$574,648</td><td>$233</td><td>93</td></tr>
+<tr><td>Pending (1) — 14 Sheffield, 2,629 SF</td><td>$589,900</td><td>$224</td><td>24</td></tr>
+<tr><td>Sold (18)</td><td>$512,215</td><td>$234 (sold)</td><td>67</td></tr>
+</table></div>
+<p>Quality builds at $255/SF sold at full price in 3–6 days (22 Hessle, 32 Sheffield); one differentiated sale reached $310/SF ($597,000 — 18 Grimsby Circle). Displayed DOM understates true market time for several comparables that were listed multiple times: visible evidence includes 13 Chichester ($549,000 original list, closed $499,500 after 168 displayed days) and 6 Marionet ($649,900 to $575,000 over 220 days).</p>
+
+<h3>CMA 3 — New construction under 1,900 SF (57 listings)</h3>
+<div class="tblwrap"><table>
+<tr><th>Segment</th><th>Median Price</th><th>Median $/SF</th><th>Median DOM</th><th>Sale / List</th></tr>
+<tr><td>Active (34)</td><td>$382,450</td><td>$233</td><td>37</td><td>—</td></tr>
+<tr><td>Pending (8)</td><td>$341,425</td><td>$237</td><td>19</td><td>—</td></tr>
+<tr><td>Sold (15)</td><td>$359,950</td><td>$228 (sold)</td><td>28</td><td>99.9%</td></tr>
+</table></div>
+<p>The velocity segment: pendings at a median of 19 days, three of fifteen recent sales above asking (49 Letchworth at 102.2% of list with 1 day on market), and a premium tail at $260–272/SF (32 Murphy $272/SF at $399,900; 49 Headley $268/SF; 49 Letchworth $260/SF).</p>
+
+<h3>CMA 4 — All new construction within 3 miles of the subject, 1,900–2,375 SF (39 listings)</h3>
+<div class="tblwrap"><table>
+<tr><th>Segment</th><th>Avg Price</th><th>Avg $/SF</th><th>Avg DOM</th></tr>
+<tr><td>Active (9)</td><td>$491,423</td><td>$237.54</td><td>70</td></tr>
+<tr><td>Pending (1) — 20 Bridlington, 2,312 SF</td><td>$549,900</td><td>$237.85</td><td>7</td></tr>
+<tr><td>Sold (28)</td><td>$488,576</td><td>$237.52 (sold)</td><td>54</td></tr>
+</table></div>
+<p>The tightest and most reliable set — the subject's exact size class and location radius. Actives, pendings, and solds all center on $237.5/SF. This set adds open-market premium sales the earlier analyses lacked: 15 Reading Ln (1,900 SF, $263/SF, $499,900, 10 days on market) and 8 Borle Circle (1,915 SF, $279/SF, $535,000, 12 days). In total, six sales closed at or above $255/SF, five of them with 12 or fewer days on market.</p>
+
+<h3>The size-compression finding</h3>
+<div class="tblwrap"><table>
+<tr><th>Size Band (sold, within 3 mi)</th><th>Sold $/SF Range</th><th>Highest Recorded Sale</th></tr>
+<tr><td class="b">Under 2,000 SF (12 sales)</td><td>$214 – $310</td><td>$310 (18 Grimsby, 1,923 SF); $263–279 on open market</td></tr>
+<tr><td class="b">2,000–2,170 SF (11 sales)</td><td>$195 – $255</td><td>$255 (18 Reading, 2,069 SF)</td></tr>
+<tr><td class="b">2,300–2,375 SF (5 sales)</td><td>$211 – $240</td><td>$240 (9 Cockerham, 2,354 SF)</td></tr>
+</table></div>
+<p><b>No home over 2,000 SF has closed above $255/SF in this radius; every sale beyond that level occurred below 1,925 square feet.</b> Price per square foot compresses as footage grows, because the market pays for kitchens, baths, and finish quality — which do not scale with area. This finding shapes both halves of the strategy: it defines the size-adjusted evidence ceiling for the 2,135 SF subject ($255/SF, roughly $544,000), and it is the quantitative argument for concentrating future builds in compact footprints where the market has paid its highest $/SF.</p>
+
+<h3>Citywide market context (Homes.com, trailing 12 months, all housing stock)</h3>
+<div class="tblwrap"><table>
+<tr><th>Metric</th><th>Bella Vista</th><th>Metric</th><th>Bella Vista</th></tr>
+<tr><td>Median sale price</td><td>$375,000 (+4% YoY)</td><td>Average $/SF</td><td>$216</td></tr>
+<tr><td>Median single-family sale</td><td>$379,900</td><td>Average DOM</td><td>53 days (national: 57)</td></tr>
+<tr><td>Median list price</td><td>$396,620</td><td>Median discount from first list</td><td>2%</td></tr>
+<tr><td>Homes sold, last 12 mo</td><td>1,417</td><td>Months of supply</td><td>4.0 (467 active)</td></tr>
+<tr><td>Avg single-family size</td><td>1,939 SF</td><td>Median year built</td><td>2004</td></tr>
+</table></div>
+<p>The citywide data independently corroborates the CMAs — a 53-day average DOM against our three-mile sold average of 54, and a 2% median list-price concession against our 99.8–99.9% sale-to-list ratios — and adds three strategic facts. First, the subject at $590,000 sits 57% above the citywide median sale price and 28% above the citywide average $/SF: the buyer pool at that altitude is a thin slice of 1,417 annual transactions, which is a structural reason premium exits take longer regardless of the home's merits. Second, the small-footprint program at $371,000–$386,000 lands almost exactly on the citywide median sale and list prices — the deepest demand pool in Bella Vista, in a market carrying four months of supply. Third, the market appreciated 4% over the trailing year; if that pace were to continue it would accrue roughly $1,900–2,000 per month on a $590,000 asset, though past appreciation is no guarantee of future performance, particularly in the current rate environment. (Homes.com blends resale and new construction; these figures are context, not pricing basis.)</p>
+
+<h2>The Current Asset: 46 Northfleet Drive</h2>
+<div class="rule"></div>
+<p>3 bed / 2.5 bath · 2,135 SF · 0.30-acre cul-de-sac lot · Nudura ICF construction · Listed at $590,000 ($276/SF) · Hard cost approximately $470,000 ($220/SF).</p>
+<h3>Days on market, in proper context</h3>
+<p>The MLS shows 139 days. Two facts change what that number means. First, the home was listed February 20, 2026 while under construction; it is only now complete, with the Certificate of Occupancy issued by the City of Bella Vista — its effective exposure as a finished, move-in-ready product is just beginning, while most comparables were listed after completion. Second, several comparables have been listed multiple times, so their displayed DOM understates true cumulative market time (single listing periods of 246 and 345 days appear in the broad survey). The honest comparison is a just-completed home entering a market where extended marketing periods are routine for premium new construction.</p>
+<h3>Exit economics at the current cost basis</h3>
+<p>Net proceeds equal 93.4% of sale price: a 6% commission plus approximately 0.6% in seller closing costs, verified against an actual July 2026 Waco Title seller settlement statement (title charges 0.396% of sale price; seller's half of the Arkansas transfer tax at 0.165%; property-tax prorations excluded). Against the $470,000 cost basis:</p>
+<div class="tblwrap"><table>
+<tr><th>Exit Scenario</th><th>Sale Price Range</th><th>Net Proceeds</th><th>Profit</th><th>Return on Cost</th></tr>
+<tr><td>Market-clearing ($228–242/SF)</td><td>$487,000–517,000</td><td>$454,900–482,900</td><td>−$15,100 to +$12,900</td><td>−3.2% to +2.7%</td></tr>
+<tr><td>Size-adjusted evidence ($245–262/SF)</td><td>$523,000–559,000</td><td>$488,500–522,100</td><td>+$18,500 to +$52,100</td><td>3.9% – 11.1%</td></tr>
+<tr><td>Benchmark ask ($265–280/SF)</td><td>$566,000–598,000</td><td>$528,600–558,500</td><td>+$58,600 to +$88,500</td><td>12.5% – 18.8%</td></tr>
+<tr class="hl"><td>Current list — $590,000</td><td>$590,000</td><td>$551,100</td><td>+$81,100</td><td>17.2%</td></tr>
+</table></div>
+<p>Three facts frame every option that follows. The bottom of the market-clearing band loses money on this asset — below a sale price of roughly $503,200, net proceeds fall under the $470,000 it cost to build. The current list price is not far above standard spec economics: a conventional 15% return on cost requires a sale near $578,700, and $590,000 corresponds to 17.2%. And the size-compression data bounds the evidence: no home the subject's size has closed above $255/SF in this radius, so every dollar above roughly $544,000 must be earned by the ICF differentiation itself — the strength, efficiency, and quiet that no comparable offers — rather than by size-matched precedent.</p>
+
+<h2>The Decision That Sets the Strategy: Will You Build Again?</h2>
+<div class="rule"></div>
+<p>46 Northfleet is the only new residential ICF construction in Bella Vista. Its closing price becomes the reference comparable for every ICF appraisal that follows — an asset in its own right, but only if there is a program to inherit it. The exit strategy therefore forks on a single question, and the two paths are detailed below.</p>
+
+<h2>Path A — Future ICF Builds Are Intended: Sell the Benchmark, Not the House</h2>
+<div class="rule"></div>
+<p>If the program below proceeds, the Northfleet closing price is worth more than its own margin. The arithmetic: on a 1,400 SF future build, every $10/SF of appraisable comp value is $14,000 of defensible sale price. A Northfleet close at $276/SF rather than $255/SF carries roughly $21/SF of benchmark value — about $29,000 per future home, or $120,000–175,000 across a four-to-six-home program — before counting its effect on appraisals, lender confidence, and buyer negotiations. Underselling this home surrenders that to save weeks now.</p>
+<p>The recommended posture under Path A: hold the ask in the $575,000–$590,000 range and treat the Certificate of Occupancy as the re-launch event. For the first time, the home can be photographed and marketed as a finished product — new photography, remarks rewritten around the completed ICF home and immediate occupancy, and a full re-targeting of the market with the new assets across MLS, syndication, and digital channels. The buyer this home has been waiting for could never walk it finished until now.</p>
+<div class="callout"><p>If the market needs encouragement, the preferred lever is buyer incentives rather than price: an allowance for fencing or landscaping, or a credit toward the buyer's closing costs. A $10,000 incentive costs the same as a $10,000 price cut but preserves the recorded closing price per square foot — which is precisely the number the benchmark strategy exists to protect. The carrying cost of patience — roughly $3,000–3,500 per month in taxes, insurance, utilities, and cost of capital — is partially offset if the market's recent 4% appreciation continues, though that is not assured. Hold with a pre-agreed review point (for example, 60 days post-relaunch) at which Path B pricing takes over if the market has not responded.</p></div>
+
+<h2>Path B — No Future Builds: Three Exit Options</h2>
+<div class="rule"></div>
+<p>If this is a one-time project, the benchmark has no future value and the objective simplifies to maximizing net proceeds per unit of time. Three options, each fully costed against the $470,000 basis at the verified 93.4% net. A note on timing: the interest-rate environment is volatile and absorption can shift quickly. The absorption figures cited with each option are the recorded days on market of closed comparables at that price level — historical observations, not predictions. Carrying cost of roughly $3,000–3,500 per month narrows the spread between the options as time passes.</p>
+
+<div class="optcard">
+  <div class="opthead">Option 1 — Evidence-Priced Exit <span>$559,900 &nbsp;($262/SF)</span></div>
+  <div class="optbody">
+    <div class="optstats">
+      <div class="stat"><div class="k">Net Proceeds (93.4%)</div><div class="v">$522,947</div></div>
+      <div class="stat"><div class="k">Profit vs $470,000</div><div class="v gold">+$52,947</div></div>
+      <div class="stat"><div class="k">Return on Cost</div><div class="v">11.3%</div></div>
+      <div class="stat"><div class="k">Comparable Absorption</div><div class="v" style="font-size:14px">Premium comps: 10–59 DOM</div></div>
+    </div>
+    <p>Priced at the top of what the sales evidence supports: 15 Reading Ln closed at $263/SF with 10 days on market and 8 Borle at $279/SF with 12 (both compact homes), while 18 Reading proved $255/SF at 2,069 SF — nearly the subject's size — with 59 days on market. This option asks a $7/SF ICF premium over the size-matched ceiling: the most defensible premium ask short of the full benchmark, preserving roughly two-thirds of the full-price profit.</p>
+  </div>
+</div>
+
+<div class="optcard">
+  <div class="opthead">Option 2 — Ceiling-Priced Exit <span>$539,900 &nbsp;($253/SF)</span></div>
+  <div class="optbody">
+    <div class="optstats">
+      <div class="stat"><div class="k">Net Proceeds (93.4%)</div><div class="v">$504,267</div></div>
+      <div class="stat"><div class="k">Profit vs $470,000</div><div class="v gold">+$34,267</div></div>
+      <div class="stat"><div class="k">Return on Cost</div><div class="v">7.3%</div></div>
+      <div class="stat"><div class="k">Comparable Absorption</div><div class="v" style="font-size:14px">$255/SF comps: 3–59 DOM</div></div>
+    </div>
+    <p>Priced just inside the proven size-matched ceiling — the level at which 22 Hessle and 32 Sheffield sold at full price with 3–6 days on market and 18 Reading closed at 2,069 SF. At $253/SF the subject becomes the best-value premium home in the radius rather than the most expensive one: a buyer comparing finished new construction sees ICF walls at a conventional-build price point. The ICF story remains the lead — here it functions as the tiebreaker rather than the premium that must be argued for.</p>
+  </div>
+</div>
+
+<div class="optcard">
+  <div class="opthead">Option 3 — Market-Core Exit <span>$519,900 &nbsp;($244/SF)</span></div>
+  <div class="optbody">
+    <div class="optstats">
+      <div class="stat"><div class="k">Net Proceeds (93.4%)</div><div class="v">$485,587</div></div>
+      <div class="stat"><div class="k">Profit vs $470,000</div><div class="v gold">+$15,587</div></div>
+      <div class="stat"><div class="k">Return on Cost</div><div class="v">3.3%</div></div>
+      <div class="stat"><div class="k">Comparable Absorption</div><div class="v" style="font-size:14px">Core comps: 0–21 DOM</div></div>
+    </div>
+    <p>Priced at the segment's transactional core — $244/SF sits alongside 10 Knebworth ($245 sold) and 12 Radcliffe ($244, active with 8 days on market), just above the three-mile average of $237.5. At this level the home is priced like the conventional builds around it while being materially better built — the configuration in which over-list outcomes have occurred (14 Dickenshire closed at 103.8% of list). This is the capital-recovery option: profit is modest, but it is the pricing most consistent with a fast release of capital, and every month of carry avoided preserves $3,000–3,500 relative to a slower exit.</p>
+  </div>
+</div>
+
+<h3>Path B comparison</h3>
+<div class="tblwrap"><table>
+<tr><th></th><th>Option 1 — $559,900</th><th>Option 2 — $539,900</th><th>Option 3 — $519,900</th></tr>
+<tr><td class="b">List $/SF</td><td>$262</td><td>$253</td><td>$244</td></tr>
+<tr><td class="b">Net proceeds</td><td>$522,947</td><td>$504,267</td><td>$485,587</td></tr>
+<tr><td class="b">Profit / return</td><td>+$52,947 (11.3%)</td><td>+$34,267 (7.3%)</td><td>+$15,587 (3.3%)</td></tr>
+<tr><td class="b">Historical comp absorption</td><td>10–59 DOM</td><td>3–59 DOM</td><td>0–21 DOM</td></tr>
+<tr><td class="b">Evidence basis</td><td>Premium prints $263–279/SF</td><td>Size-matched ceiling $255/SF</td><td>Segment core $237–245/SF</td></tr>
+<tr><td class="b">Primary risk</td><td>ICF premium must persuade</td><td>Modest — thin precedent gap</td><td>Leaving money on the table</td></tr>
+</table></div>
+<p>Time-adjusted, the options converge more than the headline profits suggest: if Option 1 were to take three months longer to close than Option 3, roughly $10,000 of its $37,400 advantage would be consumed by carry. No option's timeline can be promised in the current rate environment; what the data supports is that each step down in price moves the home into a tier where comparables have historically transacted faster. The choice is ultimately about certainty preference — under Path B, Option 2 offers the strongest balance of price support and historical absorption.</p>
+
+<h2>The Small-Footprint Program (Path A Continued): Framework</h2>
+<div class="rule"></div>
+<p>Every scenario below nets 93.4% of sale price and models hard cost two ways: $220/SF (the implied basis of the current build) and $230/SF (a prudent allowance for smaller homes, whose kitchens, baths, garages, and site work do not scale down with footage). One number governs the program: <b>$246 per square foot is the break-even line at the $230/SF modeled cost</b> — at $246/SF, the 93.4% net equals the cost of the build. Holding $250/SF as the practical floor preserves a small margin of safety; below $246/SF a small ICF build loses money at the modeled cost.</p>
+<h3>The numbers that work: 1,300–1,400 square feet</h3>
+<p>Across every price point analyzed, the margin lives at 1,300–1,400 square feet; at 1,500 SF and above, added cost outruns what the segment has paid for added space. The size-compression finding from CMA 4 supports the placement: the market's highest recorded $/SF and its shortest marketing times both sit in the compact footprint.</p>
+<h3>Full ICF pricing — $276 per square foot</h3>
+<div class="tblwrap"><table>
+<tr><th>Size</th><th>Sale Price</th><th>Net (93.4%)</th><th>Profit @ $230/SF cost</th><th>Profit @ $220/SF cost</th></tr>
+<tr><td class="b">1,300 SF</td><td>$358,800</td><td>$335,100</td><td>+$36,100 (12.1%)</td><td>+$49,100 (17.2%)</td></tr>
+<tr><td class="b">1,400 SF</td><td>$386,400</td><td>$360,900</td><td>+$38,900 (12.1%)</td><td>+$52,900 (17.2%)</td></tr>
+</table></div>
+<h3>Break-even reference — $246 per square foot</h3>
+<div class="tblwrap"><table>
+<tr><th>Size</th><th>Sale Price</th><th>Net (93.4%)</th><th>Profit @ $230/SF cost</th><th>Profit @ $220/SF cost</th></tr>
+<tr><td class="b">1,300 SF</td><td>$319,800</td><td>$298,700</td><td>≈ $0 — break-even</td><td>+$12,700 (4.4%)</td></tr>
+<tr><td class="b">1,400 SF</td><td>$344,400</td><td>$321,700</td><td>≈ $0 — break-even</td><td>+$13,700 (4.4%)</td></tr>
+</table></div>
+<h3>Pricing lower for speed: the margin ladder</h3>
+<p>Each tier on a 1,400 SF build ($322,000 cost at $230/SF; $308,000 at $220/SF). Returns are identical for the 1,300 SF plan — the economics scale linearly.</p>
+<div class="tblwrap"><table>
+<tr><th>List $/SF</th><th>Sale Price (1,400 SF)</th><th>Net (93.4%)</th><th>Return @ $230/SF cost</th><th>Return @ $220/SF cost</th></tr>
+<tr><td class="b">$246 — break-even</td><td>$344,400</td><td>$321,700</td><td>≈ $0 (0%)</td><td>+$13,700 (4.4%)</td></tr>
+<tr><td class="b">$250 — practical floor</td><td>$350,000</td><td>$326,900</td><td>+$4,900 (1.5%)</td><td>+$18,900 (6.1%)</td></tr>
+<tr><td class="b">$255</td><td>$357,000</td><td>$333,400</td><td>+$11,400 (3.6%)</td><td>+$25,400 (8.3%)</td></tr>
+<tr><td class="b">$260</td><td>$364,000</td><td>$340,000</td><td>+$18,000 (5.6%)</td><td>+$32,000 (10.4%)</td></tr>
+<tr class="hl"><td>$265</td><td>$371,000</td><td>$346,500</td><td>+$24,500 (7.6%)</td><td>+$38,500 (12.5%)</td></tr>
+<tr class="hl"><td>$270</td><td>$378,000</td><td>$353,100</td><td>+$31,100 (9.6%)</td><td>+$45,100 (14.6%)</td></tr>
+<tr><td class="b">$276 — full</td><td>$386,400</td><td>$360,900</td><td>+$38,900 (12.1%)</td><td>+$52,900 (17.2%)</td></tr>
+</table></div>
+<p>The reasonable-profit window for velocity pricing is <b>$265–270 per square foot</b>: at or just below the compact-home sales already recorded ($263–279/SF in CMA 4; $260–272/SF in CMA 3), a 1,400 SF home lists at $371,000–$378,000 — under the psychologically important $380,000 line — and returns roughly 8–15% per project depending on where the builder's final cost lands. Below $260/SF the margin thins toward the floor; below $246/SF the home should not be built at the modeled cost.</p>
+
+<h2>Why a Smaller Margin Can Be the Better Investment</h2>
+<div class="rule"></div>
+<p>Per-project return understates the case for the smaller product, because capital is the constrained resource and these homes have turned faster. Sub-$400,000 pendings have arrived at a median of 19 days versus multi-month marketing at the premium end — and CMA 4 shows the pattern holds within three miles of the subject: the fastest premium sales in the radius were the compact ones. The table below models a full cycle (construction, marketing, closing); the cycle lengths are working assumptions for comparison, not commitments.</p>
+<div class="tblwrap"><table>
+<tr><th>Scenario</th><th>Capital / Project</th><th>Profit / Project</th><th>Modeled Cycle</th><th>Indicative Annualized</th></tr>
+<tr><td class="b">1,400 SF @ $270/SF (velocity)</td><td>~$322,000</td><td>$31,100–45,100</td><td>6–7 months</td><td>~17–29%</td></tr>
+<tr><td class="b">1,400 SF @ $276/SF (full)</td><td>~$322,000</td><td>$38,900–52,900</td><td>7–8 months</td><td>~18–30%</td></tr>
+<tr><td class="b">2,135 SF @ $590,000 (premium)</td><td>~$470,000</td><td>$81,100 at full price</td><td>10–12+ months</td><td>~17–21%</td></tr>
+</table></div>
+<p>Under these assumptions the annualized returns converge — but not in quality. The small program deploys less capital per position, diversifies across multiple homes rather than concentrating in one, can run two or three builds simultaneously, and exits into the deepest buyer pool in Bella Vista. Similar indicative return, materially less risk per dollar deployed.</p>
+<p>The program also generates an asset no spreadsheet line captures: every fast-selling ICF spec is a model home. Custom-build contracts converted from that buyer traffic carry no market risk — buyer-funded construction with margin locked at signing, no carry, and no capital at risk. Even a small number of custom conversions per year would meaningfully outperform the spec margins that produced them. The specs acquire the customers; the customs compound the return.</p>
+
+<h2>Overall Analysis: One Decision, Two Coherent Strategies</h2>
+<div class="rule"></div>
+<p><b>If future ICF builds are intended (Path A):</b> hold 46 Northfleet at $575,000–$590,000 and re-launch on the Certificate of Occupancy with finished-product marketing assets; use buyer incentives rather than price reductions to protect the recorded $/SF if encouragement is needed. The benchmark is worth roughly $29,000 per future home and $120,000–175,000 across a program. Redeploy into 1,300–1,400 SF product at $360,000–$390,000, where the size-compression data shows the market has paid its highest $/SF and transacted fastest. Target $265–276/SF supported by the Northfleet comp; break-even is $246/SF at the modeled cost, with $250/SF as the practical floor. Drive cost out of repeatable plans — each $5/SF removed adds roughly five points of margin — and convert spec traffic into zero-market-risk custom contracts. Set a review point (60 days post-relaunch) at which Path B pricing takes over if the premium buyer has not appeared.</p>
+<p><b>If this is a one-time project (Path B):</b> the benchmark has no inheritor, so weight certainty over premium. Option 2 ($539,900, $253/SF) offers the strongest balance — priced inside the proven size-matched ceiling at a level where comparables have historically moved quickly, returning $34,300. Option 1 ($559,900) preserves $18,700 more if the premium buyer materializes; Option 3 ($519,900) prices at the segment core for maximum certainty at a modest 3.3% return. All three exit profitably, and none requires the market to do anything it has not already done — though in the current rate environment, no timeline is guaranteed at any price.</p>
+<div class="callout crimson"><p>Either way, the pricing floor discipline is identical: below roughly $503,200 this asset sells at a loss, and below $246/SF no future ICF home should be built at the modeled cost. The market data across 169 comparables is unambiguous about where the floors are — the remaining choice is how much of the ICF premium to monetize now versus bank as the benchmark for what comes next.</p></div>
+
+</div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="foot">
+  <div class="inner">
+    <div class="name">Cameron Torabi &nbsp;<span class="gold">·</span>&nbsp; Principal Broker</div>
+    <p style="margin-top:4px">Mason Capital Group Real Estate Investment &amp; Trust<br>
+    609 SW 8th St, Bentonville, Arkansas 72712 &nbsp;·&nbsp; <a href="tel:4799253333">479-925-3333</a> &nbsp;·&nbsp; <a href="mailto:Torabi@MasonCapitalGroup.com">Torabi@MasonCapitalGroup.com</a></p>
+    <p class="fine">This is a broker price opinion / comparative market analysis and broker work product prepared for strategic planning purposes. It should not be considered an appraisal or opinion of value; the guidelines for development of an appraisal or analysis contained in the Uniform Standards of Professional Appraisal Practice of the Appraisal Foundation have not been followed. Cost figures are as provided. Fee assumptions: 6% real estate commission plus approximately 0.6% seller closing costs, derived from a July 2026 Waco Title Company ALTA seller settlement statement on a $570,000 Benton County transaction (title charges 0.396% of sale price; seller's half of the Arkansas real property transfer tax at 0.165%; property-tax prorations and mortgage payoffs excluded); actual title fees contain fixed components and vary slightly with sale price. Market data: NWARMLS comparable analyses dated July 8–9, 2026 — 46 new-construction listings at 1,900+ SF; 27 curated comparables for 46 Northfleet Drive; 57 new-construction listings under 1,900 SF; and 39 new-construction listings within 3 miles of the subject at 1,900–2,375 SF, all Bella Vista (analyses overlap by design). Citywide context figures are from the Homes.com Bella Vista local guide as of July 9, 2026 and blend resale with new construction. All days-on-market figures are historical observations from closed or active listings, not forecasts; market conditions, including interest rates, are subject to change. Cycle times and annualized figures are modeling assumptions, not projections of future performance. Mason Capital Group is not a financial advisor; investment decisions should be made in consultation with your own advisors. Information deemed reliable but not guaranteed. &copy; 2026 Mason Capital Group. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+function showTab(which){
+  document.getElementById('report-seller').classList.toggle('active', which==='seller');
+  document.getElementById('report-investor').classList.toggle('active', which==='investor');
+  document.getElementById('tab-seller').classList.toggle('active', which==='seller');
+  document.getElementById('tab-investor').classList.toggle('active', which==='investor');
+  var bar=document.getElementById('tabbar');
+  var y=bar.getBoundingClientRect().top+window.pageYOffset;
+  if(window.pageYOffset>y) window.scrollTo({top:y,behavior:'instant'});
+}
+</script>
+</body>
+</html>
