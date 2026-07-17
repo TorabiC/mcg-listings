@@ -1,0 +1,238 @@
+{
+  "listings": [
+    {
+      "slug": "1715-n-garland",
+      "address": "1715 N Garland Ave, Fayetteville, AR",
+      "type": "residential",
+      "county": "Washington",
+      "price": 650000,
+      "price_type": "sale",
+      "beds": 4,
+      "baths": 3.5,
+      "status": "active",
+      "list_date": null,
+      "mls_id": null,
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "6c7b8b8d",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "homes.com"
+        ]
+      },
+      "notes": "1916 Folk-Victorian + studio. MLS sheet at $650K (Webflow card discrepancy showed $750K per 2026-07-15 audit; detail-page iframe wrongly points at 1716 W Holly)."
+    },
+    {
+      "slug": "46-northfleet",
+      "address": "46 Northfleet Dr, Bentonville, AR",
+      "type": "residential",
+      "county": "Benton",
+      "price": 590000,
+      "price_type": "sale",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": "1336350",
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "569528b3",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "homes.com"
+        ]
+      },
+      "notes": "Certificate of Occupancy completed; CC campaign 'Now Complete - CO' sent 2026-07-15. Virtual staging done. Address verification pending (Dr vs Ln / Bentonville vs Bella Vista discrepancy noted in source)."
+    },
+    {
+      "slug": "18772-davis-rd",
+      "address": "18772 Davis Rd, Fayetteville, AR",
+      "type": "residential",
+      "county": "Washington",
+      "price": 675000,
+      "price_type": "sale",
+      "beds": 4,
+      "baths": 3,
+      "status": "active",
+      "list_date": null,
+      "mls_id": "1340381",
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "2910c2fb",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "homes.com"
+        ]
+      },
+      "notes": "3,096 SF on 7.74 AC. Price reduced $20K to $675K on 2026-07-15; owner financing offered; agent CC campaign sent 2026-07-15."
+    },
+    {
+      "slug": "407-old-forge",
+      "address": "407 Old Forge Dr, AR",
+      "type": "residential",
+      "county": null,
+      "price": 728000,
+      "price_type": "sale",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": null,
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "71fecc51",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "homes.com"
+        ]
+      },
+      "notes": "Featured listing. City/county not specified in source material -- confirm with Cameron."
+    },
+    {
+      "slug": "1716-w-holly",
+      "address": "1716 W Holly St, Fayetteville, AR",
+      "type": "land",
+      "county": "Washington",
+      "price": 1800000,
+      "price_type": "sale",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": null,
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "b4b40a8b",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "crexi",
+          "loopnet"
+        ]
+      },
+      "notes": "Land + 4-unit building, 2.34 AC. R-O zoning (~56-unit envelope). Opportunity Zone. 0.1 mi to Razorback Stadium. On CoStar/LoopNet (19 photos)."
+    },
+    {
+      "slug": "3300-blue-hill",
+      "address": "3300 Blue Hill Rd, Rogers, AR",
+      "type": "commercial",
+      "county": "Benton",
+      "price": 900000,
+      "price_type": "sale",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": null,
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "3fdf164f",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "crexi",
+          "loopnet"
+        ]
+      },
+      "notes": "Mobile home park, 14 pads (11 leased). NOI $90,903. 10.1% cap in place, 12.6% pro forma (lease 2 pads + water submetering)."
+    },
+    {
+      "slug": "401-n-2nd",
+      "address": "401 N 2nd St, Rogers, AR",
+      "type": "commercial",
+      "county": "Benton",
+      "price": 3725,
+      "price_type": "lease_monthly",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": null,
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "eb341019",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "crexi",
+          "loopnet"
+        ]
+      },
+      "notes": "'Downtown Rogers Corner' lease at $3,725/mo, 2,972 SF RBA (correction pending CoStar review). Sorts first on featured grid."
+    }
+  ]
+}

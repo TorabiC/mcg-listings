@@ -1,0 +1,28 @@
+{
+  "listings": [
+    {
+      "slug": "1715-n-garland",
+      "address": "1715 N Garland Ave, Fayetteville, AR",
+      "type": "residential",
+      "price": 650000,
+      "beds": 4,
+      "baths": 3.5,
+      "status": "active",
+      "list_date": "2026-06-19",
+      "seller": { "name": null, "email": null },
+      "report_token": "a1b2c3d4",
+      "links": {
+        "idx": "https://masoncapitalgroup.com/listing/1715-n-garland-ave",
+        "webflow_page": "https://masoncapitalgroup.com/listing/1715-n-garland-ave",
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": ["homes.com"]
+      }
+    }
+  ]
+}

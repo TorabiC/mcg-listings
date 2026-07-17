@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ hero.address }} &mdash; Seller Activity Report &mdash; {{ period.id }}</title>
+<meta name="description" content="Seller activity report for {{ hero.address }}, {{ period_label }} period {{ period_range_display }}.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2A4A;
+    --navy-light:#2E4270;
+    --navy-tint:#EEF1F7;
+    --crimson:#A6192E;
+    --crimson-tint:#FBEAEC;
+    --gold:#C9A227;
+    --gold-tint:#FBF4DE;
+    --slate:#5C7290;
+    --gray-900:#1D2333;
+    --gray-700:#3F4759;
+    --gray-500:#6B7280;
+    --gray-300:#D6DAE2;
+    --gray-100:#F4F5F8;
+    --surface:#FCFCFB;
+    --white:#FFFFFF;
+    --good:#1E7B4D;
+    --warn:#B4790E;
+    --radius:10px;
+    --font: 'Lato', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --shadow: 0 1px 2px rgba(27,42,74,0.06), 0 4px 16px rgba(27,42,74,0.08);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--font);
+    color:var(--gray-900);
+    background:var(--gray-100);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  a{color:var(--navy);}
+  img{max-width:100%;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px;}
+
+  /* ---------- Skip link / a11y ---------- */
+  .skip-link{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;z-index:200;}
+  .skip-link:focus{left:8px;top:8px;}
+
+  /* ---------- Header ---------- */
+  .site-header{background:var(--navy);color:#fff;}
+  .site-header .wrap{padding-top:20px;padding-bottom:20px;}
+  .brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .wordmark{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:0.02em;font-size:18px;}
+  .wordmark .mark{
+    width:34px;height:34px;border-radius:8px;background:var(--gold);
+    color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;
+  }
+  .wordmark small{display:block;font-weight:400;font-size:11px;letter-spacing:0.08em;color:#C7CFE0;text-transform:uppercase;}
+  .badge-print{display:none;}
+  .period-chip{
+    background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.24);
+    color:#fff;padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:700;letter-spacing:0.02em;
+  }
+
+  .hero{margin-top:18px;}
+  .hero h1{font-size:24px;margin:0 0 6px;font-weight:900;letter-spacing:-0.01em;}
+  .hero-facts{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;color:#DCE2F0;margin-top:6px;}
+  .hero-facts strong{color:#fff;font-weight:700;}
+  .hero-status{
+    display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--navy);
+    font-weight:800;font-size:12px;letter-spacing:0.04em;text-transform:uppercase;padding:4px 10px;border-radius:6px;
+  }
+
+  /* ---------- Period switcher ---------- */
+  .switcher{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;}
+  .switcher a, .switcher span{
+    font-size:13px;font-weight:700;padding:7px 14px;border-radius:8px;text-decoration:none;
+    border:1px solid rgba(255,255,255,0.28);color:#EDF0F8;
+  }
+  .switcher a:hover{background:rgba(255,255,255,0.14);}
+  .switcher .active{background:#fff;color:var(--navy);border-color:#fff;}
+  .switcher .disabled{opacity:0.4;cursor:default;}
+
+  /* ---------- Section nav ---------- */
+  .section-nav{
+    position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--gray-300);
+    box-shadow:var(--shadow);
+  }
+  .section-nav .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:0;padding-bottom:0;-ms-overflow-style:none;scrollbar-width:none;}
+  .section-nav .wrap::-webkit-scrollbar{display:none;}
+  .section-nav a{
+    white-space:nowrap;display:inline-block;padding:13px 14px;font-size:13.5px;font-weight:700;
+    color:var(--gray-700);text-decoration:none;border-bottom:3px solid transparent;
+  }
+  .section-nav a:hover{color:var(--navy);}
+  .section-nav a.is-active{color:var(--navy);border-bottom-color:var(--crimson);}
+
+  /* ---------- Sample / quality badges ---------- */
+  .qbadge{
+    display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;letter-spacing:0.04em;
+    text-transform:uppercase;padding:3px 9px;border-radius:999px;
+  }
+  .qbadge.sample{background:var(--gold-tint);color:#7A5E10;border:1px solid #E9D68C;}
+  .qbadge.missing{background:var(--gray-100);color:var(--gray-500);border:1px solid var(--gray-300);}
+  .banner-sample{
+    background:var(--gold-tint);border:1px solid #E9D68C;color:#6B520C;border-radius:var(--radius);
+    padding:10px 16px;font-size:13.5px;font-weight:600;margin:18px 0;
+  }
+
+  /* ---------- Sections ---------- */
+  main{padding-bottom:40px;}
+  section{padding:36px 0;border-bottom:1px solid var(--gray-300);scroll-margin-top:52px;}
+  section:last-of-type{border-bottom:none;}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+  .section-head h2{font-size:20px;margin:0;font-weight:900;color:var(--navy);}
+  .section-sub{color:var(--gray-500);font-size:13.5px;margin:2px 0 0;}
+  .card{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);box-shadow:var(--shadow);}
+  .empty-note{
+    background:var(--gray-100);border:1px dashed var(--gray-300);border-radius:var(--radius);
+    padding:18px;color:var(--gray-500);font-size:13.5px;
+  }
+
+  /* ---------- Stat tiles ---------- */
+  .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+  .stat-tile{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);}
+  .stat-tile .label{font-size:12px;color:var(--gray-500);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}
+  .stat-tile .value{font-size:30px;font-weight:900;color:var(--navy);margin:6px 0 2px;}
+  .stat-tile .sub{font-size:12.5px;color:var(--gray-500);}
+  .delta{display:inline-flex;align-items:center;gap:3px;font-weight:800;font-size:12.5px;margin-left:6px;}
+  .delta.up{color:var(--good);}
+  .delta.down{color:var(--crimson);}
+
+  /* ---------- Timeline ---------- */
+  .timeline{list-style:none;margin:0;padding:0;}
+  .timeline li{
+    display:grid;grid-template-columns:70px 1fr;gap:14px;padding:12px 0;border-top:1px solid var(--gray-300);
+  }
+  .timeline li:first-child{border-top:none;}
+  .timeline .t-date{font-size:12.5px;font-weight:800;color:var(--slate);white-space:nowrap;padding-top:2px;}
+  .timeline .t-body{display:flex;gap:10px;align-items:flex-start;}
+  .t-chan{
+    flex:none;width:8px;height:8px;border-radius:50%;margin-top:6px;background:var(--gold);
+  }
+  .t-chan.email{background:var(--navy);}
+  .t-chan.showing{background:var(--crimson);}
+  .t-chan.inquiry{background:var(--gold);}
+  .t-chan.portal{background:var(--slate);}
+  .t-chan.social{background:#8A8580;}
+  .t-desc{font-size:14px;color:var(--gray-900);}
+  .t-desc .chan-label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--gray-500);font-weight:800;margin-bottom:2px;}
+
+  /* ---------- Charts ---------- */
+  .chart-card{padding:18px;margin-bottom:16px;}
+  .chart-card h3{font-size:14.5px;margin:0 0 3px;color:var(--navy);font-weight:800;}
+  .chart-card .chart-caption{font-size:12.5px;color:var(--gray-500);margin:0 0 14px;}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:12.5px;color:var(--gray-700);}
+  .legend .sw{display:inline-flex;align-items:center;gap:6px;}
+  .legend .dot{width:9px;height:9px;border-radius:2px;display:inline-block;}
+  .bar-row{display:grid;grid-template-columns:104px 1fr 56px;align-items:center;gap:10px;margin:9px 0;}
+  .bar-row .b-label{font-size:12.5px;color:var(--gray-700);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .bar-track{background:var(--gray-100);border-radius:4px;height:14px;position:relative;}
+  .bar-fill{height:14px;border-radius:4px;min-width:4px;}
+  .bar-row .b-value{font-size:12.5px;font-weight:800;color:var(--gray-900);text-align:right;font-variant-numeric:tabular-nums;}
+  table.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+  table.tbl caption{text-align:left;font-size:11px;color:var(--gray-500);padding-bottom:6px;}
+  table.tbl th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.03em;color:var(--gray-500);padding:6px 8px;border-bottom:1px solid var(--gray-300);}
+  table.tbl td{padding:8px 8px;border-bottom:1px solid var(--gray-100);font-variant-numeric:tabular-nums;}
+  .sr-only-toggle{background:none;border:1px solid var(--gray-300);color:var(--gray-700);font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:6px;cursor:pointer;}
+  .sr-only-toggle:hover{background:var(--gray-100);}
+  .table-view{display:none;margin-top:10px;}
+  .table-view.shown{display:block;}
+
+  svg text{font-family:var(--font);}
+  .tooltip{
+    position:absolute;pointer-events:none;background:var(--navy);color:#fff;font-size:12px;font-weight:600;
+    padding:6px 9px;border-radius:6px;transform:translate(-50%,-115%);white-space:nowrap;opacity:0;
+    transition:opacity .12s ease;z-index:20;box-shadow:var(--shadow);
+  }
+  .tooltip.shown{opacity:1;}
+  .chart-relative{position:relative;}
+
+  /* ---------- DOM Gauge ---------- */
+  .gauge-wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+  .gauge-numbers{flex:1;min-width:180px;}
+  .gauge-numbers .g-big{font-size:30px;font-weight:900;color:var(--navy);}
+  .gauge-numbers .g-note{font-size:13px;color:var(--gray-700);margin-top:4px;}
+  .pace-badge{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:12.5px;padding:4px 10px;border-radius:999px;margin-top:8px;}
+  .pace-badge.good{background:#E4F3EA;color:var(--good);}
+  .pace-badge.slow{background:var(--crimson-tint);color:var(--crimson);}
+
+  /* ---------- Market ---------- */
+  .positioning-note{font-size:14.5px;color:var(--gray-900);background:var(--navy-tint);border-left:4px solid var(--navy);padding:14px 16px;border-radius:6px;margin-bottom:16px;}
+  .overpriced-note{font-size:13.5px;color:var(--crimson);background:var(--crimson-tint);border-left:4px solid var(--crimson);padding:12px 16px;border-radius:6px;margin-bottom:16px;font-weight:700;}
+  .status-pill{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.03em;padding:3px 8px;border-radius:999px;}
+  .status-active{background:#E4F3EA;color:var(--good);}
+  .status-pending{background:var(--gold-tint);color:#7A5E10;}
+  .status-sold{background:var(--gray-100);color:var(--gray-500);}
+
+  /* ---------- Showings ---------- */
+  .showing-card{padding:14px 16px;margin-bottom:10px;}
+  .showing-card .s-date{font-size:12px;font-weight:800;color:var(--slate);text-transform:uppercase;letter-spacing:0.03em;}
+  .showing-card .s-feedback{font-size:14.5px;color:var(--gray-900);margin-top:5px;font-style:italic;}
+  .showing-card .s-source{font-size:11.5px;color:var(--gray-500);margin-top:6px;}
+
+  /* ---------- Insights / Next ---------- */
+  .insight-summary{font-size:15px;color:var(--gray-900);line-height:1.65;}
+  .plan-cols{display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px;}
+  .plan-card{padding:16px;}
+  .plan-card h3{font-size:13.5px;text-transform:uppercase;letter-spacing:0.03em;color:var(--navy);margin:0 0 10px;}
+  .plan-card ul{margin:0;padding-left:18px;}
+  .plan-card li{font-size:14px;margin-bottom:8px;color:var(--gray-900);}
+  .plan-card.recs{border-top:3px solid var(--gold);}
+  .plan-card.next{border-top:3px solid var(--crimson);}
+
+  /* ---------- Footer ---------- */
+  .site-footer{background:var(--navy);color:#DCE2F0;padding:36px 0 26px;}
+  .footer-proof{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:26px;}
+  .proof-tile{text-align:center;}
+  .proof-tile .p-num{font-size:22px;font-weight:900;color:var(--gold);}
+  .proof-tile .p-label{font-size:11.5px;color:#B9C2DA;margin-top:2px;text-transform:uppercase;letter-spacing:0.03em;}
+  .footer-brand{font-weight:900;font-size:16px;color:#fff;}
+  .footer-tagline{font-size:12.5px;color:#B9C2DA;margin-top:6px;max-width:520px;}
+  .footer-meta{font-size:11.5px;color:#8E9AC0;margin-top:20px;border-top:1px solid rgba(255,255,255,0.15);padding-top:16px;}
+  .footer-meta a{color:#CBD5EC;}
+
+  .print-btn{
+    background:var(--gold);color:var(--navy);border:none;font-weight:800;font-size:12.5px;
+    padding:8px 14px;border-radius:8px;cursor:pointer;
+  }
+
+  @media (min-width:640px){
+    .hero h1{font-size:28px;}
+    .stat-grid{grid-template-columns:repeat(4,1fr);}
+    .plan-cols{grid-template-columns:1fr 1fr;}
+    .footer-proof{grid-template-columns:repeat(4,1fr);}
+  }
+  @media (min-width:760px){
+    .timeline li{grid-template-columns:110px 1fr;}
+  }
+
+  @media print{
+    body{background:#fff;}
+    .section-nav,.switcher,.print-btn,.skip-link,.sr-only-toggle{display:none !important;}
+    .badge-print{display:inline-block;}
+    section{border-bottom:none;page-break-inside:avoid;padding:18px 0;}
+    #overview{page-break-before:auto;}
+    #analytics,#market,#showings,#next{page-break-before:always;}
+    .wrap{max-width:100%;}
+    .site-header{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .site-footer{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .stat-tile,.card{box-shadow:none;}
+    a[href]:after{content:"";}
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#overview">Skip to report content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand-row">
+      <div class="wordmark">
+        <span class="mark">MCG</span>
+        <span>Mason Capital Group<br><small>Seller Activity Report</small></span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <span class="period-chip">{{ period_label }} &middot; {{ period_range_display }}</span>
+        <button class="print-btn" onclick="window.print()" aria-label="Print or save as PDF">Print / Save PDF</button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <span class="hero-status">{{ hero.status_display }}</span>
+      <h1>{{ hero.address }}</h1>
+      <div class="hero-facts">
+        <span><strong>{{ hero.price_display }}</strong></span>
+        {% if hero.beds %}<span>{{ hero.beds }} bd</span>{% endif %}
+        {% if hero.baths %}<span>{{ hero.baths }} ba</span>{% endif %}
+        <span>{{ hero.type_display }}</span>
+        {% if listing.list_date %}<span>Listed {{ listing.list_date }}</span>{% endif %}
+      </div>
+    </div>
+
+    <nav class="switcher" aria-label="Report period switcher">
+      {% for link in period_links %}
+        {% if link.active %}
+          <span class="active">{{ link.label }} &middot; {{ link.id }}</span>
+        {% elif link.available %}
+          <a href="{{ link.url }}">{{ link.label }} &middot; {{ link.id }}</a>
+        {% else %}
+          <span class="disabled">{{ link.label }} report unavailable</span>
+        {% endif %}
+      {% endfor %}
+    </nav>
+  </div>
+</header>
+
+<nav class="section-nav" aria-label="Report sections">
+  <div class="wrap">
+    <a href="#overview">Overview</a>
+    <a href="#activity">Activity</a>
+    <a href="#analytics">Analytics</a>
+    <a href="#market">Market</a>
+    <a href="#showings">Showings</a>
+    <a href="#next">What's Next</a>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+  {% if any_sample %}
+  <div class="banner-sample">Sample data &mdash; this report contains demonstration figures for illustration. Live figures replace these once source connections are confirmed.</div>
+  {% endif %}
+
+  <section id="overview">
+    <div class="section-head">
+      <h2>Period summary</h2>
+      <p class="section-sub">Headline activity for {{ period_range_display }}</p>
+    </div>
+    <div class="stat-grid">
+      {% for s in stats %}
+      <div class="stat-tile">
+        <div class="label">{{ s.label }}</div>
+        <div class="value">{{ s.value_display }}{% if s.delta_display %}<span class="delta {{ s.delta_dir }}">{{ s.delta_display }}</span>{% endif %}</div>
+        <div class="sub">{{ s.sub }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section id="activity">
+    <div class="section-head">
+      <h2>Activity timeline</h2>
+      <p class="section-sub">Marketing and outreach touches logged this period</p>
+    </div>
+    {% if activity %}
+    <ul class="timeline">
+      {% for a in activity %}
+      <li>
+        <div class="t-date">{{ a.date }}</div>
+        <div class="t-body">
+          <span class="t-chan {{ a.channel }}" aria-hidden="true"></span>
+          <div class="t-desc"><span class="chan-label">{{ a.channel }}</span>{{ a.desc }}</div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty-note">No marketing activity logged for this period.</div>
+    {% endif %}
+  </section>
+
+  <section id="analytics">
+    <div class="section-head">
+      <h2>Marketing analytics</h2>
+      <p class="section-sub">Traffic, sources, and email engagement</p>
+    </div>
+
+    {% if analytics_all_missing %}
+    <div class="empty-note">Analytics sources are unavailable for this period. Figures will populate once source connections are restored.</div>
+    {% else %}
+
+    <div class="card chart-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+        <h3>Views: this period vs prior period</h3>
+        {% if quality.idx == 'sample' or quality.portals == 'sample' %}<span class="qbadge sample">Sample data</span>{% endif %}
+      </div>
+      {% if charts.views_comparison.available %}
+      <p class="chart-caption">Combined IDX profile and portal syndication views.</p>
+      <div class="chart-relative">
+        <svg viewBox="0 0 400 110" width="100%" height="110" role="img" aria-label="Views comparison bar chart">
+          <line x1="8" y1="95" x2="392" y2="95" stroke="var(--gray-300)" stroke-width="1"/>
+          <rect x="40" y="{{ 88 - (charts.views_comparison.prior_pct * 0.7) }}" width="26" rx="4"
+                height="{{ charts.views_comparison.prior_pct * 0.7 }}" fill="var(--slate)"
+                class="hoverable" data-tip="Prior period: {{ '{:,}'.format(charts.views_comparison.prior) }} views"/>
+          <text x="53" y="106" text-anchor="middle" font-size="10" fill="var(--gray-500)">Prior</text>
+          <text x="53" y="{{ 78 - (charts.views_comparison.prior_pct * 0.7) }}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--navy)">{{ '{:,}'.format(charts.views_comparison.prior) }}</text>
+
+          <rect x="140" y="{{ 88 - (charts.views_comparison.current_pct * 0.7) }}" width="26" rx="4"
+                height="{{ charts.views_comparison.current_pct * 0.7 }}" fill="var(--navy)"
+                class="hoverable" data-tip="This period: {{ '{:,}'.format(charts.views_comparison.current) }} views"/>
+          <text x="153" y="106" text-anchor="middle" font-size="10" fill="var(--gray-500)">Current</text>
+          <text x="153" y="{{ 78 - (charts.views_comparison.current_pct * 0.7) }}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--navy)">{{ '{:,}'.format(charts.views_comparison.current) }}</text>
+        </svg>
+        <div class="tooltip" id="tip-views"></div>
+      </div>
+      <div class="legend">
+        <span class="sw"><span class="dot" style="background:var(--slate)"></span>Prior period</span>
+        <span class="sw"><span class="dot" style="background:var(--navy)"></span>Current period</span>
+      </div>
+      {% elif charts.views_comparison.reason == 'missing' %}
+      <div class="empty-note">View data unavailable this period.</div>
+      {% else %}
+      <div class="empty-note">No view activity recorded this period.</div>
+      {% endif %}
+    </div>
+
+    <div class="card chart-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+        <h3>Traffic sources</h3>
+        {% if quality.ga4 == 'sample' %}<span class="qbadge sample">Sample data</span>{% elif quality.ga4 == 'missing' %}<span class="qbadge missing">Unavailable</span>{% endif %}
+      </div>
+      {% if charts.traffic_sources.available %}
+      <p class="chart-caption">Website sessions by acquisition source.</p>
+      {% for b in charts.traffic_sources.bars %}
+      <div class="bar-row">
+        <div class="b-label">{{ b.label }}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:{{ b.pct }}%;background:{{ b.color }};"></div></div>
+        <div class="b-value">{{ '{:,}'.format(b.value) }}</div>
+      </div>
+      {% endfor %}
+      <div class="legend">
+        {% for b in charts.traffic_sources.bars %}
+        <span class="sw"><span class="dot" style="background:{{ b.color }}"></span>{{ b.label }}</span>
+        {% endfor %}
+      </div>
+      {% elif charts.traffic_sources.reason == 'missing' %}
+      <div class="empty-note">Website analytics unavailable this period.</div>
+      {% else %}
+      <div class="empty-note">No website sessions recorded this period.</div>
+      {% endif %}
+    </div>
+
+    <div class="card chart-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+        <h3>Email engagement</h3>
+        {% if quality.cc == 'sample' %}<span class="qbadge sample">Sample data</span>{% elif quality.cc == 'missing' %}<span class="qbadge missing">Unavailable</span>{% endif %}
+      </div>
+      {% if charts.email_engagement.available %}
+      <p class="chart-caption">Sent vs opened, by campaign.</p>
+      {% for r in charts.email_engagement.rows %}
+      <div class="bar-row">
+        <div class="b-label" title="{{ r.name }}">{{ r.name }}</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:{{ r.sent_pct }}%;background:var(--navy-tint);"></div>
+          <div class="bar-fill" style="width:{{ r.opens_pct }}%;background:var(--gold);margin-top:-14px;"></div>
+        </div>
+        <div class="b-value">{{ (r.open_rate * 100) | round(1) }}%</div>
+      </div>
+      {% endfor %}
+      <div class="legend">
+        <span class="sw"><span class="dot" style="background:var(--navy-tint);border:1px solid var(--gray-300)"></span>Sent</span>
+        <span class="sw"><span class="dot" style="background:var(--gold)"></span>Opened</span>
+      </div>
+      <button class="sr-only-toggle" type="button" onclick="mcgToggleTable('email-table')">View as table</button>
+      <div class="table-view" id="email-table">
+        <table class="tbl">
+          <caption>Email campaign detail</caption>
+          <thead><tr><th>Campaign</th><th>Sent</th><th>Opens</th><th>Clicks</th><th>Open rate</th></tr></thead>
+          <tbody>
+          {% for r in charts.email_engagement.rows %}
+            <tr><td>{{ r.name }}</td><td>{{ '{:,}'.format(r.sent) }}</td><td>{{ '{:,}'.format(r.opens) }}</td><td>{{ '{:,}'.format(r.clicks) }}</td><td>{{ (r.open_rate * 100) | round(1) }}%</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% elif charts.email_engagement.reason == 'missing' %}
+      <div class="empty-note">Email campaign data unavailable this period.</div>
+      {% else %}
+      <div class="empty-note">No campaigns sent this period.</div>
+      {% endif %}
+    </div>
+
+    {% endif %}
+  </section>
+
+  <section id="market">
+    <div class="section-head">
+      <h2>Market positioning</h2>
+      <p class="section-sub">{{ market.county }} County comparables and pacing</p>
+    </div>
+
+    {% if market.positioning %}
+    <p class="positioning-note">{{ market.positioning }}</p>
+    {% endif %}
+    {% if market.overpriced_note %}
+    <p class="overpriced-note">{{ market.overpriced_note }}</p>
+    {% endif %}
+
+    <div class="card chart-card" style="margin-bottom:16px;">
+      <h3>Days on market vs {{ market.county }} County average</h3>
+      {% if charts.dom_gauge.available %}
+      <div class="gauge-wrap">
+        <svg width="140" height="90" viewBox="0 0 140 90" role="img" aria-label="Days on market gauge">
+          <path d="M 15 80 A 55 55 0 0 1 125 80" fill="none" stroke="var(--gray-300)" stroke-width="14" stroke-linecap="round"/>
+          <path d="M 15 80 A 55 55 0 0 1 125 80" fill="none" stroke="{{ 'var(--good)' if charts.dom_gauge.pacing_good else 'var(--crimson)' }}"
+                stroke-width="14" stroke-linecap="round"
+                stroke-dasharray="{{ (charts.dom_gauge.pct/100*172.8) | round(1) }} 999"/>
+          <text x="70" y="72" text-anchor="middle" font-size="22" font-weight="900" fill="var(--navy)">{{ charts.dom_gauge.listing_dom }}</text>
+          <text x="70" y="86" text-anchor="middle" font-size="9" fill="var(--gray-500)">days on market</text>
+        </svg>
+        <div class="gauge-numbers">
+          <div class="g-note">{{ market.county }} County average: <strong>{{ charts.dom_gauge.area_dom }} days</strong></div>
+          {% if charts.dom_gauge.pacing_good %}
+          <span class="pace-badge good">{{ charts.dom_gauge.ahead_days }} days ahead of pace</span>
+          {% else %}
+          <span class="pace-badge slow">{{ -charts.dom_gauge.ahead_days }} days behind pace</span>
+          {% endif %}
+        </div>
+      </div>
+      {% else %}
+      <div class="empty-note">List date not available; days-on-market comparison omitted. {{ market.county }} County average is {{ market.area_dom_days }} days.</div>
+      {% endif %}
+    </div>
+
+    <div class="card chart-card">
+      <h3>Comparable listings</h3>
+      {% if market.comps %}
+      <table class="tbl">
+        <thead><tr><th>Address</th><th>Price</th><th>Status</th><th>DOM</th><th>Note</th></tr></thead>
+        <tbody>
+        {% for c in market.comps %}
+          <tr>
+            <td>{{ c.address }}</td>
+            <td>{{ c.price_display }}</td>
+            <td><span class="status-pill {{ c.status_class }}">{{ c.status }}</span></td>
+            <td>{{ c.dom }}</td>
+            <td>{{ c.note }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-note">No comparable listings on file for this period.</div>
+      {% endif %}
+    </div>
+  </section>
+
+  <section id="showings">
+    <div class="section-head">
+      <h2>Showings &amp; feedback</h2>
+      <p class="section-sub">Buyer and agent feedback logged this period</p>
+    </div>
+    {% if showings %}
+    {% for s in showings %}
+    <div class="card showing-card">
+      <div class="s-date">{{ s.date }}</div>
+      <div class="s-feedback">&ldquo;{{ s.feedback }}&rdquo;</div>
+      <div class="s-source">Source: {{ s.source }}</div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="empty-note">No showings logged for this period.</div>
+    {% endif %}
+  </section>
+
+  <section id="next">
+    <div class="section-head">
+      <h2>Portfolio summary &amp; what's next</h2>
+    </div>
+    {% if insights.summary %}
+    <p class="insight-summary">{{ insights.summary }}</p>
+    {% endif %}
+    <div class="plan-cols">
+      <div class="card plan-card recs">
+        <h3>Recommendations</h3>
+        {% if insights.recommendations %}
+        <ul>{% for r in insights.recommendations %}<li>{{ r }}</li>{% endfor %}</ul>
+        {% else %}
+        <p class="section-sub">No recommendations logged this period.</p>
+        {% endif %}
+      </div>
+      <div class="card plan-card next">
+        <h3>Next period plan</h3>
+        {% if insights.next_period_plan %}
+        <ul>{% for n in insights.next_period_plan %}<li>{{ n }}</li>{% endfor %}</ul>
+        {% else %}
+        <p class="section-sub">No plan items logged this period.</p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-proof">
+      <div class="proof-tile"><div class="p-num">{{ mcg_proof.transactions }}</div><div class="p-label">Transactions closed</div></div>
+      <div class="proof-tile"><div class="p-num">{{ mcg_proof.years }}</div><div class="p-label">Years in Northwest Arkansas</div></div>
+      <div class="proof-tile"><div class="p-num">{{ mcg_proof.featured_sites }}</div><div class="p-label">Syndication sites, one platform</div></div>
+      <div class="proof-tile"><div class="p-num">{{ mcg_proof.views_90d_compact }}</div><div class="p-label">Views, first 90 days</div></div>
+    </div>
+    <div class="footer-brand">Mason Capital Group</div>
+    <p class="footer-tagline">{{ mcg_proof.tagline }} Every listing is syndicated across a national network of consumer, commercial, and MLS-connected sites &mdash; positioned for the right buyer, not just any buyer. Exposure figures as of {{ mcg_proof.as_of }}, drawn from one of several syndication partners.</p>
+    <div class="footer-meta">
+      Report generated {{ generated_display }} for {{ hero.address }}. This report is prepared for the seller of record and is not intended for public distribution.
+      <span class="badge-print">&nbsp;Printed {{ generated_display }}.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Section-nav active state on scroll
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.section-nav a'));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll(){
+    var y = window.scrollY + 90;
+    var current = sections[0];
+    sections.forEach(function(sec){ if (sec.offsetTop <= y) current = sec; });
+    navLinks.forEach(function(a){
+      a.classList.toggle('is-active', a.getAttribute('href') === '#' + (current && current.id));
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // Hoverable SVG tooltips
+  document.querySelectorAll('.chart-relative').forEach(function(wrap){
+    var tip = wrap.querySelector('.tooltip');
+    if (!tip) return;
+    wrap.querySelectorAll('.hoverable').forEach(function(el){
+      el.addEventListener('mouseenter', function(e){
+        tip.textContent = el.getAttribute('data-tip') || '';
+        tip.classList.add('shown');
+      });
+      el.addEventListener('mousemove', function(e){
+        var rect = wrap.getBoundingClientRect();
+        tip.style.left = (e.clientX - rect.left) + 'px';
+        tip.style.top = (e.clientY - rect.top) + 'px';
+      });
+      el.addEventListener('mouseleave', function(){ tip.classList.remove('shown'); });
+    });
+  });
+})();
+
+function mcgToggleTable(id){
+  var el = document.getElementById(id);
+  if (el) el.classList.toggle('shown');
+}
+</script>
+</body>
+</html>

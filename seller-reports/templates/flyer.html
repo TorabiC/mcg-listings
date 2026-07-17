@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ hero.address }} &mdash; Activity Report &mdash; {{ period.id }}</title>
+<!--[if mso]>
+<noscript>
+<xml>
+<o:OfficeDocumentSettings>
+<o:PixelsPerInch>96</o:PixelsPerInch>
+</o:OfficeDocumentSettings>
+</xml>
+</noscript>
+<![endif]-->
+<style type="text/css">
+  body,table,td,a{ -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+  table,td{ mso-table-lspace:0pt; mso-table-rspace:0pt; }
+  img{ -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; }
+  body{ margin:0; padding:0; width:100% !important; background-color:#F4F5F8; font-family:Lato, Arial, Helvetica, sans-serif; }
+  a{ color:#1B2A4A; }
+  @media only screen and (max-width:600px){
+    .mcg-container{ width:100% !important; }
+    .mcg-px{ padding-left:16px !important; padding-right:16px !important; }
+    .mcg-stat{ display:block !important; width:100% !important; padding-bottom:10px !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#F4F5F8;">
+<!-- preheader -->
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
+  {{ hero.address }} &mdash; {{ period_label }} activity report: {{ stats[0].value_display }} views, {{ stats[2].value_display }} showings this period.
+</div>
+
+<center>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F4F5F8;">
+  <tr>
+    <td align="center" style="padding:24px 12px;">
+      <table role="presentation" class="mcg-container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background-color:#FFFFFF;border-radius:10px;overflow:hidden;">
+
+        <!-- Header -->
+        <tr>
+          <td class="mcg-px" style="background-color:#1B2A4A;padding:22px 28px;" bgcolor="#1B2A4A">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="font-family:Lato,Arial,sans-serif;color:#ffffff;font-size:16px;font-weight:900;letter-spacing:0.02em;">
+                  MASON CAPITAL GROUP
+                  <div style="font-family:Lato,Arial,sans-serif;color:#C7CFE0;font-size:10.5px;font-weight:400;letter-spacing:0.08em;text-transform:uppercase;margin-top:2px;">Seller Activity Report</div>
+                </td>
+                <td align="right" style="font-family:Lato,Arial,sans-serif;color:#ffffff;font-size:11.5px;">
+                  <span style="background-color:#C9A227;color:#1B2A4A;font-weight:800;padding:5px 10px;border-radius:20px;font-size:11px;">{{ period_label }}</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Hero property -->
+        <tr>
+          <td class="mcg-px" style="padding:26px 28px 10px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="font-family:Lato,Arial,sans-serif;font-size:20px;font-weight:900;color:#1B2A4A;">
+                  {{ hero.address }}
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#5C7290;padding-top:4px;">
+                  {{ hero.price_display }} &middot; {% if hero.beds %}{{ hero.beds }} bd / {% endif %}{% if hero.baths %}{{ hero.baths }} ba &middot; {% endif %}{{ hero.type_display }} &middot; {{ period_range_display }}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Stat row -->
+        <tr>
+          <td class="mcg-px" style="padding:16px 28px 6px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                {% for s in stats %}
+                <td class="mcg-stat" align="center" width="25%" style="padding:10px 4px;border:1px solid #D6DAE2;border-radius:8px;" bgcolor="#F4F5F8">
+                  <div style="font-family:Lato,Arial,sans-serif;font-size:22px;font-weight:900;color:#1B2A4A;line-height:1.1;">{{ s.value_display }}</div>
+                  <div style="font-family:Lato,Arial,sans-serif;font-size:10.5px;color:#5C7290;text-transform:uppercase;letter-spacing:0.03em;margin-top:3px;">{{ s.label }}</div>
+                </td>
+                {% if not loop.last %}<td width="8" style="font-size:0;line-height:0;">&nbsp;</td>{% endif %}
+                {% endfor %}
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Highlights -->
+        <tr>
+          <td class="mcg-px" style="padding:20px 28px 4px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="font-family:Lato,Arial,sans-serif;font-size:13px;font-weight:800;color:#1B2A4A;text-transform:uppercase;letter-spacing:0.03em;padding-bottom:8px;border-bottom:2px solid #C9A227;">
+                  This period&rsquo;s highlights
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td class="mcg-px" style="padding:12px 28px 4px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              {% if market.positioning %}
+              <tr>
+                <td style="padding:0 0 12px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#1D2333;line-height:1.55;">
+                  <strong style="color:#A6192E;">Market position &mdash;</strong> {{ market.positioning }}
+                </td>
+              </tr>
+              {% endif %}
+              {% if showings %}
+              <tr>
+                <td style="padding:0 0 12px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#1D2333;line-height:1.55;">
+                  <strong style="color:#A6192E;">Showing feedback &mdash;</strong> &ldquo;{{ showings[-1].feedback }}&rdquo;
+                </td>
+              </tr>
+              {% endif %}
+              {% if insights.next_period_plan %}
+              <tr>
+                <td style="padding:0 0 4px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#1D2333;line-height:1.55;">
+                  <strong style="color:#A6192E;">Next up &mdash;</strong> {{ insights.next_period_plan[0] }}
+                </td>
+              </tr>
+              {% endif %}
+            </table>
+          </td>
+        </tr>
+
+        <!-- CTA -->
+        <tr>
+          <td align="center" style="padding:22px 28px 26px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" bgcolor="#A6192E" style="border-radius:8px;">
+                  <a href="{{ report_url }}" target="_blank" style="display:inline-block;padding:14px 28px;font-family:Lato,Arial,sans-serif;font-size:14px;font-weight:800;color:#ffffff;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">
+                    View Your Full Activity Report
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td class="mcg-px" style="background-color:#1B2A4A;padding:22px 28px;" bgcolor="#1B2A4A">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="font-family:Lato,Arial,sans-serif;font-size:12px;color:#DCE2F0;font-weight:700;">
+                  Mason Capital Group &middot; Northwest Arkansas
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family:Lato,Arial,sans-serif;font-size:11px;color:#B9C2DA;padding-top:6px;line-height:1.5;">
+                  {{ mcg_proof.transactions }} in transactions closed &middot; {{ mcg_proof.years }} years in Northwest Arkansas &middot; listings featured on {{ mcg_proof.featured_sites }} syndication sites through a single platform partner ({{ mcg_proof.views_90d }} views in the first 90 days, as of {{ mcg_proof.as_of }}).
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family:Lato,Arial,sans-serif;font-size:10.5px;color:#8E9AC0;padding-top:14px;">
+                  This report was prepared for the seller of record for {{ hero.address }} and is not intended for public distribution.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+</center>
+</body>
+</html>
