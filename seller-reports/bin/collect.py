@@ -379,26 +379,52 @@ class ConstantContactAdapter:
         access_token = self._refresh_access_token(token_blob)
         headers = {"Authorization": f"Bearer {access_token}"}
 
-        resp = requests.get(
-            "https://api.cc.email/v3/emails/activities",
-            headers=headers,
-            params={"created_since": start.isoformat(), "created_before": (end + timedelta(days=1)).isoformat()},
-            timeout=HTTP_TIMEOUT,
-        )
-        resp.raise_for_status()
-        activities = (resp.json() or {}).get("campaign_activities", [])
-        matched = self._match_campaigns(activities, listing)
+        # Verified against Cameron's live account 2026-07-17: the campaign
+        # list lives at GET /v3/emails (paginated, newest first); activity
+        # stats live at GET /v3/reports/stats/email_campaign_activities/{id}.
+        # We page through campaigns updated in/after the window, match by
+        # listing street/slug/MLS in the campaign name, then pull unique
+        # counts for each matched campaign's primary_email activity.
+        base = "https://api.cc.email/v3"
+        all_campaigns, url, params = [], f"{base}/emails", {"limit": 50}
+        for _ in range(10):  # hard page cap
+            resp = requests.get(url, headers=headers, params=params, timeout=HTTP_TIMEOUT)
+            resp.raise_for_status()
+            body = resp.json() or {}
+            page = body.get("campaigns", [])
+            all_campaigns.extend(page)
+            # stop early once campaigns predate the window (list is newest-first)
+            if page and str(page[-1].get("created_at", ""))[:10] < start.isoformat():
+                break
+            nxt = (body.get("_links", {}).get("next", {}) or {}).get("href")
+            if not nxt:
+                break
+            url, params = f"https://api.cc.email{nxt}", None
+
+        matched = self._match_campaigns(all_campaigns, listing)
 
         campaigns, totals = [], {"sent": 0, "opens": 0, "clicks": 0}
         for a in matched:
+            # resolve the primary_email campaign_activity_id
+            detail = requests.get(
+                f"{base}/emails/{a.get('campaign_id')}", headers=headers, timeout=HTTP_TIMEOUT,
+            )
+            detail.raise_for_status()
+            acts = (detail.json() or {}).get("campaign_activities", [])
+            primary = next((x for x in acts if x.get("role") == "primary_email"), None)
+            if not primary:
+                continue
             stats_resp = requests.get(
-                f"https://api.cc.email/v3/reports/campaign_tracking_stats/{a.get('campaign_activity_id')}",
+                f"{base}/reports/stats/email_campaign_activities/{primary.get('campaign_activity_id')}",
                 headers=headers,
                 timeout=HTTP_TIMEOUT,
             )
             stats_resp.raise_for_status()
-            s = stats_resp.json() or {}
-            sent, opens, clicks = int(s.get("sends", 0)), int(s.get("opens", 0)), int(s.get("clicks", 0))
+            results = (stats_resp.json() or {}).get("results", [])
+            st = (results[0].get("stats", {}) if results else {}) or {}
+            sent = int(st.get("em_sends", 0) or 0)
+            opens = int(st.get("em_opens_all_unique", st.get("em_opens", 0)) or 0)
+            clicks = int(st.get("em_clicks_all_unique", st.get("em_clicks", 0)) or 0)
             campaigns.append({
                 "name": a.get("name", ""),
                 "sent": sent,
