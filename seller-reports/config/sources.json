@@ -18,7 +18,8 @@
   "tawk": {
     "enabled": true,
     "credential_env_or_path": "/mnt/user-data/uploads/Second Brain/.secrets/tawk-api-key.txt",
-    "notes": "tawk.to REST API (Property/Widget level API key from tawk.to Dashboard > Administration > Property Settings > REST API, per-widget). Endpoints used: GET https://api.tawk.to/v3/chat/{chat_id} and GET https://api.tawk.to/v3/property/{property_id}/chats (or /chat/history) with 'Authorization: Bearer <key>'. Chats are matched to a listing by scanning chat transcript/tags for the listing address or slug (see collect.py TawkAdapter._chat_mentions_listing). Set env var TAWK_API_KEY to activate. Missing key => zeros + data_quality 'missing'."
+    "notes": "PARTIAL 2026-07-17: property_id 56a434c0942843aa26ec82bf captured; JS API key saved in .secrets/tawk-api-key.txt but tawk REST (/v1/chat.list) returns 401 with it - REST needs a separate tawk API key (Admin > Settings, may be an add-on). Adapter degrades to data_quality 'missing' until a REST key replaces the file contents. tawk.to REST API (Property/Widget level API key from tawk.to Dashboard > Administration > Property Settings > REST API, per-widget). Endpoints used: GET https://api.tawk.to/v3/chat/{chat_id} and GET https://api.tawk.to/v3/property/{property_id}/chats (or /chat/history) with 'Authorization: Bearer <key>'. Chats are matched to a listing by scanning chat transcript/tags for the listing address or slug (see collect.py TawkAdapter._chat_mentions_listing). Set env var TAWK_API_KEY to activate. Missing key => zeros + data_quality 'missing'.",
+    "property_id": "56a434c0942843aa26ec82bf"
   },
   "portals": {
     "enabled": true,

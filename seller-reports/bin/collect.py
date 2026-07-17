@@ -252,35 +252,56 @@ class IdxAdapter:
         headers = {"accesskey": accesskey, "outputtype": "json"}
         base = "https://api.idxbroker.com"
 
-        # Listing view/lead stats. IDX Broker's Listing Stats add-on exposes
-        # per-listing counters; exact route/params vary by plan, so this
-        # calls the documented clients endpoint and degrades to zeros on
-        # any shape we don't recognize rather than raising past this point.
-        resp = requests.get(
-            f"{base}/clients/listingstat",
-            headers=headers,
-            params={"mlsid": mls_id, "startdate": start.isoformat(), "enddate": end.isoformat()},
-            timeout=HTTP_TIMEOUT,
-        )
-        resp.raise_for_status()
-        stat = resp.json() or {}
-
+        # Verified against Cameron's live account 2026-07-17: per-listing
+        # view counters are NOT exposed on this plan (/clients/listingstat
+        # is 400, /clients/listing/{id} needs a partner ancillarykey, and
+        # /clients/featured returns 204 for this account). Views come from
+        # GA4/portals instead. What IS real here is /leads/lead: full lead
+        # records. We pull all leads, filter to the reporting window by
+        # subscribeDate/lastActive, and attribute to this listing when the
+        # lead record mentions its MLS number, street, or slug.
         leads_resp = requests.get(
-            f"{base}/leads/lead",
-            headers=headers,
-            params={"mlsid": mls_id, "startdate": start.isoformat(), "enddate": end.isoformat()},
-            timeout=HTTP_TIMEOUT,
+            f"{base}/leads/lead", headers=headers, timeout=HTTP_TIMEOUT,
         )
         leads_resp.raise_for_status()
         leads_data = leads_resp.json() or []
         if isinstance(leads_data, dict):
             leads_data = list(leads_data.values())
+        if not isinstance(leads_data, list):
+            leads_data = []
+
+        def _in_window(lead):
+            for f in ("subscribeDate", "lastActivityDate", "lastLoginDate"):
+                v = str(lead.get(f, ""))[:10]
+                try:
+                    d = date.fromisoformat(v)
+                    return start <= d <= end
+                except ValueError:
+                    continue
+            return False
+
+        street = listing["address"].split(",")[0].lower()
+        slug_words = listing["slug"].replace("-", " ")
+        mls_ids = {str(mls_id)} | {
+            str(e.get("mls")) for e in listing.get("mls_entries", []) if e.get("mls")
+        }
+
+        def _mentions(lead):
+            blob = json.dumps(lead).lower()
+            return (
+                any(m and m in blob for m in mls_ids)
+                or street in blob
+                or slug_words in blob
+            )
+
+        window_leads = [l for l in leads_data if _in_window(l)]
+        listing_leads = [l for l in window_leads if _mentions(l)]
 
         return {
-            "views": int(stat.get("views", 0) or 0),
-            "leads": len(leads_data) if isinstance(leads_data, list) else int(leads_data or 0),
-            "saved_searches_matching": int(stat.get("savedSearchMatches", stat.get("saved_searches", 0)) or 0),
-            "favorites": int(stat.get("favorites", 0) or 0),
+            "views": 0,  # not available on this IDX plan; GA4/portals cover views
+            "leads": len(listing_leads),
+            "saved_searches_matching": 0,
+            "favorites": 0,
         }
 
     def fetch_sample(self, listing, period_type, period_id, rng, scale):
