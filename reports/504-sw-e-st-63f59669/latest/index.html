@@ -215,6 +215,96 @@
   .plan-card.recs{border-top:3px solid var(--gold);}
   .plan-card.next{border-top:3px solid var(--crimson);}
 
+  /* ---------- National Exposure hero band ---------- */
+  .exposure-band{
+    background:linear-gradient(135deg,var(--navy) 0%,#243962 100%);color:#fff;border-radius:14px;
+    padding:28px 24px;margin-bottom:0;box-shadow:var(--shadow);
+  }
+  .exposure-eyebrow{
+    display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:0.06em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:10px;
+  }
+  .exposure-headline{font-size:44px;font-weight:900;line-height:1;letter-spacing:-0.01em;}
+  .exposure-headline .unit{font-size:16px;font-weight:700;color:#C7CFE0;margin-left:10px;}
+  .exposure-sub{font-size:14px;color:#DCE2F0;margin-top:8px;max-width:640px;}
+  .exposure-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:22px;}
+  .exposure-tile{
+    background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);border-radius:10px;padding:12px 14px;
+  }
+  .exposure-tile .e-val{font-size:20px;font-weight:900;color:#fff;}
+  .exposure-tile .e-lbl{font-size:11px;color:#C7CFE0;text-transform:uppercase;letter-spacing:0.03em;margin-top:2px;}
+  @media (min-width:640px){
+    .exposure-headline{font-size:58px;}
+    .exposure-tiles{grid-template-columns:repeat(4,1fr);}
+  }
+
+  /* ---------- Publications / display-ad logo grid ---------- */
+  .pub-intro{font-size:15px;color:var(--gray-900);margin:0 0 16px;}
+  .pub-intro strong{color:var(--navy);}
+  .pub-stat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+  .pub-stat{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow);}
+  .pub-stat .p-val{font-size:22px;font-weight:900;color:var(--navy);}
+  .pub-stat .p-lbl{font-size:11.5px;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.03em;margin-top:2px;}
+  .logo-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#fff;border:1px solid var(--gray-300);
+    border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);
+  }
+  .logo-tile{
+    display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;background:var(--gray-100);
+    border-radius:8px;padding:10px;
+  }
+  .logo-tile img{
+    max-width:100%;max-height:32px;filter:grayscale(100%);opacity:0.72;transition:filter .18s ease,opacity .18s ease,transform .18s ease;
+  }
+  .logo-tile:hover img{filter:grayscale(0%);opacity:1;transform:scale(1.04);}
+  .pub-list-full{margin-top:16px;font-size:12px;color:var(--gray-500);line-height:1.9;}
+  .pub-list-full strong{color:var(--gray-700);display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px;}
+  @media (min-width:640px){ .logo-grid{grid-template-columns:repeat(6,1fr);} .pub-stat-row{grid-template-columns:repeat(4,1fr);} }
+
+  /* ---------- Buyer Interest Map ---------- */
+  .map-card{padding:18px;}
+  .map-svg-wrap{background:linear-gradient(180deg,#F6F8FC 0%,#EEF1F7 100%);border-radius:8px;overflow:hidden;}
+  .us-outline{fill:#E2E7F0;stroke:#C7D0E0;stroke-width:1.5;}
+  .map-marker{fill:var(--navy);fill-opacity:0.72;stroke:#fff;stroke-width:1;}
+  .map-marker:hover{fill:var(--crimson);fill-opacity:0.9;}
+  .map-marker-label{font-size:10px;font-weight:800;fill:#fff;text-anchor:middle;pointer-events:none;}
+  .map-caption{font-size:14px;color:var(--gray-900);margin-top:14px;font-weight:700;}
+  .map-privacy-note{font-size:11.5px;color:var(--gray-500);margin-top:6px;}
+
+  /* ---------- Momentum & Milestones ---------- */
+  .milestone-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
+  .milestone-chip{
+    display:inline-flex;align-items:center;gap:8px;background:var(--gold-tint);border:1px solid #E9D68C;
+    border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:700;color:#6B520C;
+  }
+  .milestone-chip .m-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex:none;}
+  .milestone-chip .m-date{color:#8A6E1A;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:0.02em;}
+  .daily-chart-svg .db-bar{fill:var(--navy);}
+  .daily-chart-svg .db-bar:hover{fill:var(--crimson);}
+  .daily-chart-svg .db-label{font-size:9px;fill:var(--gray-500);text-anchor:middle;}
+
+  /* ---------- Crexi search-score gauge / funnel / e-blast ---------- */
+  .crexi-gauge-wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+  .crexi-gauge-numbers .cg-big{font-size:34px;font-weight:900;color:var(--navy);}
+  .crexi-gauge-numbers .cg-grade{
+    display:inline-block;margin-top:6px;background:var(--crimson-tint);color:var(--crimson);font-weight:800;
+    font-size:12px;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:0.03em;
+  }
+  .funnel-row{display:grid;grid-template-columns:130px 1fr 64px;align-items:center;gap:10px;margin:10px 0;}
+  .funnel-row .f-label{font-size:12.5px;font-weight:700;color:var(--gray-700);}
+  .funnel-track{background:var(--gray-100);border-radius:4px;height:16px;}
+  .funnel-fill{height:16px;border-radius:4px;background:var(--crimson);min-width:4px;}
+  .funnel-row .f-value{font-size:12.5px;font-weight:800;color:var(--gray-900);text-align:right;font-variant-numeric:tabular-nums;}
+  .eblast-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px;}
+  .eblast-tile{background:var(--navy-tint);border-radius:var(--radius);padding:12px 14px;}
+  .eblast-tile .eb-val{font-size:20px;font-weight:900;color:var(--navy);}
+  .eblast-tile .eb-lbl{font-size:11px;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.03em;margin-top:2px;}
+  .eblast-benchmark-note{font-size:11px;color:var(--gray-500);margin-top:10px;font-style:italic;}
+  @media (min-width:640px){ .eblast-tiles{grid-template-columns:repeat(4,1fr);} }
+  .secondary-listing-note{
+    margin-top:16px;font-size:13px;color:var(--gray-700);background:var(--gray-100);border-radius:8px;padding:12px 14px;
+  }
+
   /* ---------- Footer ---------- */
   .site-footer{background:var(--navy);color:#DCE2F0;padding:36px 0 26px;}
   .footer-proof{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:26px;}
@@ -247,10 +337,12 @@
     .badge-print{display:inline-block;}
     section{border-bottom:none;page-break-inside:avoid;padding:18px 0;}
     #overview{page-break-before:auto;}
-    #analytics,#market,#showings,#next{page-break-before:always;}
+    #analytics,#market,#showings,#next,#advertised,#buyermap,#momentum,#crexi-detail{page-break-before:always;}
     .wrap{max-width:100%;}
     .site-header{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .site-footer{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .exposure-band{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .logo-tile img{filter:none !important;opacity:1 !important;}
     .stat-tile,.card{box-shadow:none;}
     a[href]:after{content:"";}
   }
@@ -303,7 +395,9 @@
 <main>
   <div class="wrap">
 
-  <div class="banner-sample">Sample data &mdash; this report contains demonstration figures for illustration. Live figures replace these once source connections are confirmed.</div>
+
+
+
 
   <section id="overview">
     <div class="section-head">
@@ -313,13 +407,13 @@
     <div class="stat-grid">
       <div class="stat-tile">
         <div class="label">Total views</div>
-        <div class="value">121<span class="delta up">0.0%</span></div>
-        <div class="sub">61 IDX + 60 homes.com</div>
+        <div class="value">0<span class="delta up">0.0%</span></div>
+        <div class="sub">0 IDX + 0 portal</div>
       </div>
       <div class="stat-tile">
         <div class="label">Inquiries</div>
-        <div class="value">3</div>
-        <div class="sub">0 chat, 3 lead forms</div>
+        <div class="value">0</div>
+        <div class="sub">0 chat, 0 lead forms</div>
       </div>
       <div class="stat-tile">
         <div class="label">Showings</div>
@@ -328,8 +422,8 @@
       </div>
       <div class="stat-tile">
         <div class="label">Email reach</div>
-        <div class="value">246</div>
-        <div class="sub">23.2% open rate</div>
+        <div class="value">0</div>
+        <div class="sub">Sources unavailable this period</div>
       </div>
     </div>
   </section>
@@ -339,15 +433,7 @@
       <h2>Activity timeline</h2>
       <p class="section-sub">Marketing and outreach touches logged this period</p>
     </div>
-    <ul class="timeline">
-      <li>
-        <div class="t-date">2026-07-13</div>
-        <div class="t-body">
-          <span class="t-chan email" aria-hidden="true"></span>
-          <div class="t-desc"><span class="chan-label">email</span>Listing featured in &#34;MCG Buyer Newsletter -- 504 SW E St&#34; (246 recipients)</div>
-        </div>
-      </li>
-    </ul>
+    <div class="empty-note">No marketing activity logged for this period.</div>
   </section>
 
   <section id="analytics">
@@ -360,7 +446,7 @@
     <div class="card chart-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
         <h3>Views: this period vs prior period</h3>
-<span class="qbadge sample">Sample data</span>      </div>
+      </div>
       <p class="chart-caption">Combined IDX profile and portal syndication views.</p>
       <div class="chart-relative">
         <svg viewBox="0 0 400 110" width="100%" height="110" role="img" aria-label="Views comparison bar chart">
@@ -371,11 +457,11 @@
           <text x="53" y="106" text-anchor="middle" font-size="10" fill="var(--gray-500)">Prior</text>
           <text x="53" y="78.0" text-anchor="middle" font-size="11" font-weight="700" fill="var(--navy)">0</text>
 
-          <rect x="140" y="18.0" width="26" rx="4"
-                height="70.0" fill="var(--navy)"
-                class="hoverable" data-tip="This period: 121 views"/>
+          <rect x="140" y="88.0" width="26" rx="4"
+                height="0.0" fill="var(--navy)"
+                class="hoverable" data-tip="This period: 0 views"/>
           <text x="153" y="106" text-anchor="middle" font-size="10" fill="var(--gray-500)">Current</text>
-          <text x="153" y="8.0" text-anchor="middle" font-size="11" font-weight="700" fill="var(--navy)">121</text>
+          <text x="153" y="78.0" text-anchor="middle" font-size="11" font-weight="700" fill="var(--navy)">0</text>
         </svg>
         <div class="tooltip" id="tip-views"></div>
       </div>
@@ -388,57 +474,47 @@
     <div class="card chart-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
         <h3>Traffic sources</h3>
-<span class="qbadge sample">Sample data</span>      </div>
+      </div>
       <p class="chart-caption">Website sessions by acquisition source.</p>
       <div class="bar-row">
         <div class="b-label">Google</div>
         <div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#1B2A4A;"></div></div>
-        <div class="b-value">35</div>
+        <div class="b-value">3,384</div>
       </div>
       <div class="bar-row">
-        <div class="b-label">Masoncapitalgroup.Com (Referral)</div>
-        <div class="bar-track"><div class="bar-fill" style="width:62.9%;background:#A6192E;"></div></div>
-        <div class="b-value">22</div>
+        <div class="b-label">(Direct)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:7.9%;background:#A6192E;"></div></div>
+        <div class="b-value">267</div>
       </div>
       <div class="bar-row">
-        <div class="b-label">Homes.Com</div>
-        <div class="bar-track"><div class="bar-fill" style="width:54.3%;background:#C9A227;"></div></div>
-        <div class="b-value">19</div>
+        <div class="b-label">Mp5Th.R.Sp1-Brevo.Net</div>
+        <div class="bar-track"><div class="bar-fill" style="width:3.4%;background:#C9A227;"></div></div>
+        <div class="b-value">115</div>
+      </div>
+      <div class="bar-row">
+        <div class="b-label">(Not Set)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:1.7%;background:#5C7290;"></div></div>
+        <div class="b-value">59</div>
+      </div>
+      <div class="bar-row">
+        <div class="b-label">Other</div>
+        <div class="bar-track"><div class="bar-fill" style="width:0.1%;background:#8A8580;"></div></div>
+        <div class="b-value">5</div>
       </div>
       <div class="legend">
         <span class="sw"><span class="dot" style="background:#1B2A4A"></span>Google</span>
-        <span class="sw"><span class="dot" style="background:#A6192E"></span>Masoncapitalgroup.Com (Referral)</span>
-        <span class="sw"><span class="dot" style="background:#C9A227"></span>Homes.Com</span>
+        <span class="sw"><span class="dot" style="background:#A6192E"></span>(Direct)</span>
+        <span class="sw"><span class="dot" style="background:#C9A227"></span>Mp5Th.R.Sp1-Brevo.Net</span>
+        <span class="sw"><span class="dot" style="background:#5C7290"></span>(Not Set)</span>
+        <span class="sw"><span class="dot" style="background:#8A8580"></span>Other</span>
       </div>
     </div>
 
     <div class="card chart-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
         <h3>Email engagement</h3>
-<span class="qbadge sample">Sample data</span>      </div>
-      <p class="chart-caption">Sent vs opened, by campaign.</p>
-      <div class="bar-row">
-        <div class="b-label" title="MCG Buyer Newsletter -- 504 SW E St">MCG Buyer Newsletter -- 504 SW E St</div>
-        <div class="bar-track">
-          <div class="bar-fill" style="width:100.0%;background:var(--navy-tint);"></div>
-          <div class="bar-fill" style="width:23.2%;background:var(--gold);margin-top:-14px;"></div>
-        </div>
-        <div class="b-value">23.2%</div>
       </div>
-      <div class="legend">
-        <span class="sw"><span class="dot" style="background:var(--navy-tint);border:1px solid var(--gray-300)"></span>Sent</span>
-        <span class="sw"><span class="dot" style="background:var(--gold)"></span>Opened</span>
-      </div>
-      <button class="sr-only-toggle" type="button" onclick="mcgToggleTable('email-table')">View as table</button>
-      <div class="table-view" id="email-table">
-        <table class="tbl">
-          <caption>Email campaign detail</caption>
-          <thead><tr><th>Campaign</th><th>Sent</th><th>Opens</th><th>Clicks</th><th>Open rate</th></tr></thead>
-          <tbody>
-            <tr><td>MCG Buyer Newsletter -- 504 SW E St</td><td>246</td><td>57</td><td>5</td><td>23.2%</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="empty-note">No campaigns sent this period.</div>
     </div>
 
   </section>
@@ -474,11 +550,11 @@
     <div class="section-head">
       <h2>Portfolio summary &amp; what's next</h2>
     </div>
-    <p class="insight-summary">504 SW E St logged 259 tracked views this period, the first period with comparable data. 504 SW E St sits in the $500K-$999K tier, where regional demand is softening relative to sub-$500K; Benton County median DOM is currently 53 days. The period produced 3 tracked leads across IDX, portal, and chat channels. Figures below are sample data pending live source connections.</p>
+    <p class="insight-summary">504 SW E St logged 4004 tracked views this period, the first period with comparable data. 504 SW E St sits in the $500K-$999K tier, where regional demand is softening relative to sub-$500K; Benton County median DOM is currently 53 days. No tracked leads were attributed to this listing this period.</p>
     <div class="plan-cols">
       <div class="card plan-card recs">
         <h3>Recommendations</h3>
-        <ul><li>Confirm current professional photography and floor plan are live across IDX and homes.com -- both measurably lift engagement.</li></ul>
+        <ul><li>Confirm current professional photography and floor plan are live across IDX and homes.com -- both measurably lift engagement.</li><li>Zero tracked leads this period -- review pricing against comparable DOM and confirm all inquiry channels (chat, IDX, portals) are properly instrumented.</li></ul>
       </div>
       <div class="card plan-card next">
         <h3>Next period plan</h3>
