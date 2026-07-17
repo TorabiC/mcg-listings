@@ -653,11 +653,44 @@ class TawkAdapter:
 class PortalIntakeAdapter:
     """Manual-intake adapter for homes.com / Crexi / LoopNet -- no API, so
     this is the one adapter that is 'live' whenever a matching file exists
-    on disk, regardless of config/sources.json enablement."""
+    on disk, regardless of config/sources.json enablement.
+
+    Two intake shapes are supported, and both can be present at once:
+
+    1. Legacy, period-scoped: intake/<slug>/<period_type>-<period_id>.json
+       (or .csv) -- one row per portal, simple {portal, views, saves|leads}.
+       This is the original hand-typed contract and still works unchanged.
+
+    2. v2, portal-scoped snapshot files (not period-scoped, since portal
+       dashboards only expose an all-time/current-period snapshot, not
+       historical per-week breakdowns): intake/<slug>/homes_com.json and
+       intake/<slug>/crexi.json (loopnet.json also supported for symmetry).
+       These accept everything the legacy shape accepts (views/saves or
+       views/leads) *plus* arbitrary extra fields -- summary stats, traffic
+       sources, daily series, display-ad/publication data, milestones,
+       visitor-map markers for homes.com; search score, page views,
+       visitors, OM/flyer opens, offers, and a deep dashboard block for
+       Crexi. Every extra field is passed through verbatim into
+       metrics.json under sources.portals.<portal> so report generation
+       can render the richer v2 sections. The old views/saves|leads pair
+       is always normalized from these rich objects too (falling back to
+       summary fields when a bare "views" isn't given), so every existing
+       consumer of sources.portals.<portal>.views/saves/leads keeps working
+       unchanged.
+
+    If both shapes are present, the portal-scoped snapshot file wins for
+    that portal (it is the richer, more current source); the legacy file
+    still supplies any portals it mentions that the snapshot files don't.
+    """
 
     key = "portals"
     block = "portals"
     KNOWN_PORTALS = ("homes.com", "crexi", "loopnet")
+    PORTAL_SNAPSHOT_FILENAMES = {
+        "homes.com": "homes_com.json",
+        "crexi": "crexi.json",
+        "loopnet": "loopnet.json",
+    }
 
     def zeros_all(self):
         return {
@@ -674,6 +707,52 @@ class PortalIntakeAdapter:
         with open(path, newline="") as f:
             return list(csv.DictReader(f))
 
+    def _normalize_portal_object(self, portal, raw):
+        """Normalize an intake row/object for a portal: guarantee the
+        original simple views/saves (homes.com) or views/leads (crexi,
+        loopnet) fields so every existing aggregation/template consumer
+        keeps working, while passing every other field through verbatim
+        so v2 report sections can render the richer portal analytics.
+        Never mutates the caller's dict."""
+        raw = dict(raw)
+        raw.pop("portal", None)
+
+        def _num(v):
+            """Best-effort numeric coercion: CSV rows hand everything in as
+            strings, JSON rows may hand in real ints/floats -- accept both."""
+            if v is None:
+                return None
+            if isinstance(v, (int, float)):
+                return v
+            try:
+                return float(v) if isinstance(v, str) and "." in v else int(v)
+            except (TypeError, ValueError):
+                return None
+
+        if portal == "homes.com":
+            summary = raw.get("summary") or {}
+            views = _num(raw.get("views"))
+            if views is None:
+                views = summary.get("total_views", 0)
+            saves = _num(raw.get("saves"))
+            if saves is None:
+                saves = summary.get("favorites", 0)
+            normalized = {"views": int(views or 0), "saves": int(saves or 0)}
+        else:  # crexi / loopnet
+            views = _num(raw.get("views"))
+            if views is None:
+                views = raw.get("page_views", 0)
+            leads = _num(raw.get("leads"))
+            if leads is None:
+                leads = raw.get("om_flyer_opens", 0)
+            normalized = {"views": int(views or 0), "leads": int(leads or 0)}
+
+        # Pass every extra field through verbatim (rich v2 data).
+        for k, v in raw.items():
+            if k not in normalized:
+                normalized[k] = v
+        return normalized
+
     def read_intake(self, slug, period_type, period_id):
         """Returns (portal_data_dict, found: bool)."""
         result = self.zeros_all()
@@ -681,6 +760,24 @@ class PortalIntakeAdapter:
         if not listing_dir.exists():
             return result, False
 
+        found = False
+
+        # v2: portal-scoped snapshot files (homes_com.json / crexi.json /
+        # loopnet.json), not period-scoped.
+        for portal, fname in self.PORTAL_SNAPSHOT_FILENAMES.items():
+            fpath = listing_dir / fname
+            if not fpath.exists():
+                continue
+            try:
+                raw = json.loads(fpath.read_text())
+            except (ValueError, OSError):
+                continue
+            if isinstance(raw, list):
+                raw = raw[0] if raw else {}
+            result[portal] = self._normalize_portal_object(portal, raw)
+            found = True
+
+        # Legacy: period-scoped file, one row per portal.
         json_path = listing_dir / f"{period_type}-{period_id}.json"
         csv_path = listing_dir / f"{period_type}-{period_id}.csv"
 
@@ -690,24 +787,15 @@ class PortalIntakeAdapter:
         elif csv_path.exists():
             rows = self._parse_csv(csv_path)
 
-        if rows is None:
-            return result, False
+        if rows is not None:
+            for row in rows:
+                portal = str(row.get("portal", "")).strip().lower()
+                if portal not in self.KNOWN_PORTALS:
+                    continue
+                result[portal] = self._normalize_portal_object(portal, row)
+                found = True
 
-        for row in rows:
-            portal = str(row.get("portal", "")).strip().lower()
-            if portal not in self.KNOWN_PORTALS:
-                continue
-            if portal == "homes.com":
-                result[portal] = {
-                    "views": int(row.get("views", 0) or 0),
-                    "saves": int(row.get("saves", 0) or 0),
-                }
-            else:
-                result[portal] = {
-                    "views": int(row.get("views", 0) or 0),
-                    "leads": int(row.get("leads", 0) or 0),
-                }
-        return result, True
+        return result, found
 
     def fetch_sample(self, listing, period_type, period_id, rng, scale):
         result = self.zeros_all()
@@ -921,12 +1009,78 @@ def build_market(listing, market_cfg):
 # Insights (deterministic narrative generator, no LLM calls)
 # --------------------------------------------------------------------------
 
+def _portal_exposure_lead(listing, sources_block):
+    """When rich v2 portal data (homes.com summary / Crexi search score) is
+    present, build a lead sentence that puts the single biggest exposure
+    number and the most recent milestone/recognition first -- the seller
+    narrative should open with the strongest, most favorable, fully-sourced
+    number available before anything else. Returns None when no rich portal
+    data is present so build_insights falls back to the views-vs-prior lead."""
+    addr_short = listing["address"].split(",")[0]
+    portals = sources_block.get("portals", {})
+
+    homes = portals.get("homes.com") or {}
+    summary = homes.get("summary") or {}
+    if summary.get("total_views"):
+        total = summary["total_views"]
+        parts = [f"{addr_short} has been viewed {total:,} times on homes.com"]
+        extras = []
+        if summary.get("top_of_search_results"):
+            extras.append(f"{summary['top_of_search_results']:,} top-of-search placements")
+        if summary.get("display_ad_views"):
+            extras.append(f"{summary['display_ad_views']:,} display ad views across national publications")
+        if extras:
+            parts.append(" with " + " and ".join(extras))
+        milestones = homes.get("milestones") or []
+        if milestones:
+            latest = sorted(milestones, key=lambda m: m.get("date", ""))[-1]
+            event = latest.get("event", "")
+            if event:
+                parts.append(
+                    f". The listing most recently earned homes.com's \"{event}\" "
+                    f"recognition ({fmt_milestone_date(latest.get('date'))})"
+                )
+        return "".join(parts) + "."
+
+    crexi = portals.get("crexi") or {}
+    if crexi.get("search_score") is not None or crexi.get("page_views"):
+        dashboard = crexi.get("dashboard_deep") or {}
+        impressions = dashboard.get("impressions_all_time")
+        headline_n = impressions or crexi.get("page_views", 0)
+        headline_label = "impressions" if impressions else "page views"
+        sentence = f"{addr_short} has generated {headline_n:,} {headline_label} on Crexi's commercial marketplace"
+        if crexi.get("search_score") is not None:
+            sentence += f", carrying a search score of {crexi['search_score']}/100"
+        extras = []
+        if crexi.get("om_flyer_opens"):
+            extras.append(f"{crexi['om_flyer_opens']:,} offering memorandum opens")
+        if crexi.get("visitors"):
+            extras.append(f"{crexi['visitors']:,} unique visitors")
+        if extras:
+            sentence += " (" + ", ".join(extras) + ")"
+        return sentence + "."
+
+    return None
+
+
+def fmt_milestone_date(iso_date):
+    if not iso_date:
+        return ""
+    try:
+        d = date.fromisoformat(iso_date)
+        return d.strftime("%b %-d, %Y")
+    except ValueError:
+        return iso_date
+
+
 def build_insights(listing, sources_block, trend, market_block, data_quality, period_type):
     total_views, total_leads = aggregate_totals(sources_block)
     delta = trend["delta_views_pct"]
     dom = market_block.get("area_dom_days")
     county = market_block.get("county")
     addr_short = listing["address"].split(",")[0]
+
+    exposure_lead = _portal_exposure_lead(listing, sources_block)
 
     # --- views vs prior sentence ---
     live_sources = [k for k, v in data_quality.items() if v == "live"]
@@ -960,7 +1114,13 @@ def build_insights(listing, sources_block, trend, market_block, data_quality, pe
     else:
         lead_sentence = "No tracked leads were attributed to this listing this period."
 
-    summary_parts = [views_sentence, dom_sentence, lead_sentence]
+    if exposure_lead:
+        # Rich portal exposure data available -- lead the narrative with the
+        # single biggest, most favorable, sourced number (and the most
+        # recent milestone) ahead of the period-over-period views sentence.
+        summary_parts = [exposure_lead, views_sentence, dom_sentence, lead_sentence]
+    else:
+        summary_parts = [views_sentence, dom_sentence, lead_sentence]
     if quality_note:
         summary_parts.append(quality_note)
     summary = " ".join(p for p in summary_parts if p)

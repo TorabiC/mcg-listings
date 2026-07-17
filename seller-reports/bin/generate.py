@@ -293,6 +293,213 @@ def build_comps(comps: list[dict], listing_price: float) -> tuple[list[dict], st
     return out, overpriced_note
 
 
+# ---------------------------------------------------------------------------
+# Portal exposure (v2) -- homes.com / Crexi rich analytics
+# ---------------------------------------------------------------------------
+INDUSTRY_BENCHMARK_NOTE = (
+    "vs. ~30-35% industry average open rate (approximate, unsourced industry "
+    "benchmark for commercial real estate e-blasts -- shown for context only)."
+)
+
+
+def grade_search_score(score) -> str | None:
+    if score is None:
+        return None
+    try:
+        score = float(score)
+    except (TypeError, ValueError):
+        return None
+    if score >= 90:
+        return "Excellent"
+    if score >= 80:
+        return "Very Good"
+    if score >= 70:
+        return "Good"
+    if score >= 50:
+        return "Fair"
+    return "Needs Improvement"
+
+
+def build_daily_views_chart(daily: dict) -> dict:
+    if not daily:
+        return {"available": False}
+    items = sorted(daily.items())
+    max_val = max((v for _, v in items), default=0) or 1
+    n = len(items)
+    label_every = max(1, round(n / 7))
+    # Selective direct labels without collisions: label every Nth bar, but
+    # if the final bar would land too close to the last regular label,
+    # replace that label with the final bar instead of adding a second one.
+    label_idxs = list(range(0, n, label_every))
+    if n - 1 not in label_idxs:
+        if label_idxs and (n - 1 - label_idxs[-1]) <= max(1, label_every // 2):
+            label_idxs[-1] = n - 1
+        else:
+            label_idxs.append(n - 1)
+    label_set = set(label_idxs)
+    bars = []
+    for i, (d, v) in enumerate(items):
+        bars.append({
+            "date": d,
+            "date_short": fmt_date_short(d),
+            "value": v,
+            "pct": round(v / max_val * 100, 1),
+            "show_label": i in label_set,
+        })
+    return {
+        "available": True,
+        "bars": bars,
+        "max_val": max_val,
+        "total": sum(v for _, v in items),
+    }
+
+
+VISITOR_MAP_VB_W = 1000
+VISITOR_MAP_VB_H = 520
+
+
+def build_visitor_map(vm: dict) -> dict:
+    markers_raw = vm.get("markers") or []
+    total_mapped = vm.get("total_mapped_views", 0)
+    if not markers_raw:
+        return {"available": False}
+
+    clipped = [m for m in markers_raw if 0.0 <= m.get("x", -1) <= 1.0 and 0.0 <= m.get("y", -1) <= 1.0]
+    dropped = len(markers_raw) - len(clipped)
+    top8 = set(
+        idx for idx, _ in sorted(enumerate(clipped), key=lambda p: -p[1].get("n", 0))[:8]
+    )
+
+    markers = []
+    for i, m in enumerate(clipped):
+        n = m.get("n", 0)
+        r = round(4 + (max(n, 0) ** 0.5) * 0.48, 1)
+        markers.append({
+            "cx": round(m["x"] * VISITOR_MAP_VB_W, 1),
+            "cy": round(m["y"] * VISITOR_MAP_VB_H, 1),
+            "r": r,
+            "n": n,
+            "label": i in top8,
+        })
+    # Draw smaller markers first so the biggest circles (and their labels)
+    # sit on top and stay legible.
+    markers.sort(key=lambda mk: mk["r"])
+
+    return {
+        "available": True,
+        "markers": markers,
+        "total_mapped_views": total_mapped,
+        "clipped_count": len(clipped),
+        "dropped_count": dropped,
+        "viewbox_w": VISITOR_MAP_VB_W,
+        "viewbox_h": VISITOR_MAP_VB_H,
+    }
+
+
+def build_homes_exposure(portals: dict) -> dict | None:
+    homes = portals.get("homes.com") or {}
+    summary = homes.get("summary")
+    if not summary:
+        return None
+
+    display_ads = homes.get("display_ads") or {}
+    publications = display_ads.get("publications") or []
+    logo_cdn = display_ads.get("publication_logo_cdn") or {}
+    pubs = []
+    for p in publications:
+        label = p.split(".")[0].replace("-", " ").title()
+        pubs.append({"domain": p, "logo": logo_cdn.get(p), "name": label})
+
+    retarget = display_ads.get("retargeting") or {}
+    contact = display_ads.get("contact_list_targeting") or {}
+    ad_views_total = summary.get("display_ad_views") or (
+        retarget.get("ad_views", 0) + contact.get("ad_views", 0)
+    )
+    users_reached_total = retarget.get("users_reached", 0) + contact.get("users_reached", 0)
+
+    milestones = sorted(homes.get("milestones") or [], key=lambda m: m.get("date", ""))
+    for ms in milestones:
+        ms["date_display"] = fmt_date_display(ms.get("date"))
+
+    return {
+        "available": True,
+        "total_views": summary.get("total_views", 0),
+        "top_of_search": summary.get("top_of_search_results", 0),
+        "display_ad_views": summary.get("display_ad_views", 0),
+        "matterport_views": summary.get("matterport_views", 0),
+        "matterport_minutes": summary.get("matterport_view_time_min", 0),
+        "favorites": summary.get("favorites", 0),
+        "floor_plan_views": summary.get("floor_plan_views", 0),
+        "detail_page_views": summary.get("detail_page_views", 0),
+        "publications": pubs,
+        "publication_count": len(pubs),
+        "ad_views_total": ad_views_total,
+        "sites_displayed_on": retarget.get("sites_displayed_on", 0),
+        "users_reached_total": users_reached_total,
+        "contacts_targeted": contact.get("uploaded_contacts", 0),
+        "milestones": milestones,
+        "latest_milestone": milestones[-1] if milestones else None,
+        "daily_chart": build_daily_views_chart(homes.get("daily") or {}),
+        "visitor_map": build_visitor_map(homes.get("visitor_map") or {}),
+        "analytics_url": homes.get("analytics_url"),
+        "days_on_market_portal": homes.get("days_on_market"),
+    }
+
+
+def build_crexi_exposure(portals: dict) -> dict | None:
+    crexi = portals.get("crexi") or {}
+    if crexi.get("search_score") is None and not crexi.get("page_views"):
+        return None
+
+    dashboard = crexi.get("dashboard_deep") or {}
+    leads = dashboard.get("leads") or {}
+    blasts = dashboard.get("marketing_blasts") or {}
+    secondary = crexi.get("secondary_listing")
+
+    funnel = []
+    if leads:
+        steps = [
+            ("Visited page", leads.get("visited_page", 0)),
+            ("Saved property", leads.get("saved_property", 0)),
+            ("Opened OM / flyer", leads.get("opened_om_flyer", 0)),
+            ("Requested info", leads.get("requested_info", 0)),
+            ("Clicked phone", leads.get("clicked_phone", 0)),
+        ]
+        max_f = max((v for _, v in steps), default=0) or 1
+        funnel = [{"label": l, "value": v, "pct": round(v / max_f * 100, 1)} for l, v in steps]
+
+    score = crexi.get("search_score")
+    eblast = None
+    if blasts:
+        eblast = {
+            "total_sent": blasts.get("total_sent", 0),
+            "delivered": blasts.get("delivered", 0),
+            "delivered_pct": blasts.get("delivered_pct", 0),
+            "opened": blasts.get("opened", 0),
+            "open_pct": blasts.get("open_pct", 0),
+            "clicked": blasts.get("clicked", 0),
+            "click_pct": blasts.get("click_pct", 0),
+            "benchmark_note": INDUSTRY_BENCHMARK_NOTE,
+        }
+
+    impressions = dashboard.get("impressions_all_time")
+    return {
+        "available": True,
+        "search_score": score,
+        "search_score_grade": grade_search_score(score),
+        "search_score_pct": round((score or 0), 1),
+        "impressions": impressions or crexi.get("page_views", 0),
+        "impressions_is_deep": bool(impressions),
+        "page_views": crexi.get("page_views", 0),
+        "visitors": crexi.get("visitors", 0),
+        "om_flyer_opens": crexi.get("om_flyer_opens", 0),
+        "offers": crexi.get("offers", 0),
+        "funnel": funnel,
+        "eblast": eblast,
+        "secondary_listing": secondary,
+    }
+
+
 def build_stats(metrics: dict, dq: dict) -> list[dict]:
     src = metrics.get("sources", {})
     idx = src.get("idx", {})
@@ -416,6 +623,26 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     activity = sorted(metrics.get("activity", []), key=lambda a: a.get("date", ""))
     showings = sorted(metrics.get("showings", []), key=lambda s: s.get("date", ""))
 
+    # --- v2: portal exposure (homes.com / Crexi) ---
+    portals_raw = src.get("portals", {})
+    homes_exposure = build_homes_exposure(portals_raw)
+    crexi_exposure = build_crexi_exposure(portals_raw)
+    exposure_available = bool(homes_exposure or crexi_exposure)
+    if homes_exposure:
+        exposure_headline = {
+            "value": fmt_int(homes_exposure["total_views"]),
+            "label": "Total views on homes.com",
+            "source": "homes.com",
+        }
+    elif crexi_exposure:
+        exposure_headline = {
+            "value": fmt_int(crexi_exposure["impressions"]),
+            "label": "Total impressions on Crexi" if crexi_exposure["impressions_is_deep"] else "Total page views on Crexi",
+            "source": "crexi",
+        }
+    else:
+        exposure_headline = None
+
     return {
         "listing": listing,
         "period": metrics["period"],
@@ -450,6 +677,10 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
         "analytics_all_missing": analytics_all_missing,
         "insights": metrics.get("insights", {}),
         "mcg_proof": MCG_PROOF,
+        "exposure_available": exposure_available,
+        "exposure_headline": exposure_headline,
+        "homes_exposure": homes_exposure,
+        "crexi_exposure": crexi_exposure,
     }
 
 
@@ -478,6 +709,15 @@ def render_pdf(chromium_bin: str, html_path: Path, pdf_path: Path) -> tuple[bool
         "--disable-gpu",
         "--no-sandbox",
         "--disable-dev-shm-usage",
+        # This sandbox's egress policy blocks third-party CDN hosts (e.g. the
+        # homes.com display-ad logo CDN referenced by the publications
+        # grid), so those <img> requests would otherwise hang/retry for the
+        # full page-load timeout on every render. Disabling image loading
+        # only for this internal PDF render keeps generation fast and
+        # deterministic; it has no effect on the live HTML page, which
+        # loads normally in a real browser with unrestricted internet
+        # access.
+        "--blink-settings=imagesEnabled=false",
         f"--print-to-pdf={pdf_path}",
         "--no-pdf-header-footer",
         "--print-to-pdf-no-header",
@@ -485,7 +725,7 @@ def render_pdf(chromium_bin: str, html_path: Path, pdf_path: Path) -> tuple[bool
         f"file://{html_path.resolve()}",
     ]
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
     except Exception as exc:  # noqa: BLE001
         return False, f"chromium invocation failed: {exc}"
     if result.returncode != 0 or not pdf_path.exists():

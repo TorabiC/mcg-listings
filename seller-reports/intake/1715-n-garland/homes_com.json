@@ -1,0 +1,447 @@
+{
+  "portal": "homes.com",
+  "views": 24063,
+  "saves": 1,
+  "analytics_id": "ethertjgc3rem",
+  "analytics_url": "https://www.homes.com/customer/dashboard/analytics/listing/ethertjgc3rem/",
+  "listed": "2026-06-22",
+  "days_on_market": 25,
+  "summary": {
+    "total_views": 24063,
+    "display_ad_views": 2152,
+    "detail_page_views": 86,
+    "top_of_search_results": 2659,
+    "favorites": 1,
+    "matterport_views": 9,
+    "matterport_view_time_min": 18,
+    "floor_plan_views": 9
+  },
+  "traffic_sources": [
+    {
+      "source": "Property Search Page",
+      "pct": 89.3,
+      "views": 21489
+    },
+    {
+      "source": "Display Ads",
+      "pct": 9.05,
+      "views": 2177
+    },
+    {
+      "source": "GreatSchools",
+      "pct": 0.57,
+      "views": 138
+    },
+    {
+      "source": "Multiple Sources",
+      "pct": 0.4,
+      "views": 96
+    },
+    {
+      "source": "Detail Page Views",
+      "pct": 0.36,
+      "views": 86
+    },
+    {
+      "source": "Niche.com",
+      "pct": 0.32,
+      "views": 77
+    }
+  ],
+  "daily": {
+    "2026-06-22": 248,
+    "2026-06-23": 490,
+    "2026-06-24": 411,
+    "2026-06-25": 445,
+    "2026-06-26": 433,
+    "2026-06-27": 444,
+    "2026-06-28": 561,
+    "2026-06-29": 773,
+    "2026-06-30": 1000,
+    "2026-07-01": 945,
+    "2026-07-02": 1000,
+    "2026-07-03": 1200,
+    "2026-07-04": 1100,
+    "2026-07-05": 1000,
+    "2026-07-06": 1200,
+    "2026-07-07": 1100,
+    "2026-07-08": 1000,
+    "2026-07-09": 1100,
+    "2026-07-10": 938,
+    "2026-07-11": 1100,
+    "2026-07-12": 1200,
+    "2026-07-13": 1100,
+    "2026-07-14": 1300,
+    "2026-07-15": 1200,
+    "2026-07-16": 1000,
+    "2026-07-17": 323
+  },
+  "daily_note": "values with K suffix are homes.com-rounded (1K/1.1K/1.2K/1.3K)",
+  "display_ads": {
+    "retargeting": {
+      "ad_views": 854,
+      "sites_displayed_on": 303,
+      "users_reached": 284
+    },
+    "contact_list_targeting": {
+      "ad_views": 1298,
+      "sites_displayed_on": 108,
+      "users_reached": 137,
+      "uploaded_contacts": 7739
+    },
+    "publications": [
+      "facebook.com",
+      "instagram.com",
+      "meta.com",
+      "espn.com",
+      "cnn.com",
+      "foxnews.com",
+      "msn.com",
+      "mapquest.com",
+      "nypost.com",
+      "weather.com",
+      "usnews.com",
+      "usatoday.com",
+      "yahoo.com",
+      "bbc.com",
+      "nbcnews.com",
+      "politico.com",
+      "ebay.com",
+      "kohls.com",
+      "people.com",
+      "accuweather.com",
+      "nytimes.com",
+      "t-mobile.com",
+      "huffpost.com",
+      "npr.org",
+      "usmagazine.com",
+      "nydailynews.com",
+      "theatlantic.com",
+      "mlb.com",
+      "independent.co.uk",
+      "inquirer.com",
+      "myfox8.com",
+      "coinmarketcap.com",
+      "cnbc.com",
+      "suntimes.com",
+      "billboard.com",
+      "elle.com",
+      "komonews.com",
+      "kbb.com",
+      "5newsonline.com",
+      "wsj.com",
+      "washingtontimes.com",
+      "wtkr.com",
+      "kshb.com",
+      "wchstv.com"
+    ],
+    "publication_logo_cdn": {
+      "facebook.com": "https://imagescdn.homes.com/i2/3JhgZX32WbNK8l5FJ2IFRN1PpZU_Mu1knQEZqyRKF40/117/image.png?p=1",
+      "instagram.com": "https://imagescdn.homes.com/i2/6N2MyyuS4n1WbQa5IaG5IgyefRzTFU107LYALf6sEzE/117/image.png?p=1",
+      "meta.com": "https://imagescdn.homes.com/i2/Dsw8fYFSqZb8MLftbaWnN_8DKlJ1mnw_e8taLt6EzH0/117/image.png?p=1",
+      "espn.com": "https://imagescdn.homes.com/i2/5MyCCJuRVNXKNTXxGOY6QkKwd8-zDf_1HeU0Nqmclrg/117/image.png?p=1",
+      "cnn.com": "https://imagescdn.homes.com/i2/XGlY4oRqrEYAuWJVRzJim3FKG6Es9r2hz3SG5BM4y-M/117/image.png?p=1",
+      "foxnews.com": "https://imagescdn.homes.com/i2/7OHOl4geNpZK68aJFaZWx_HKkH6Bsm5Dfglnx_3uRhM/117/image.png?p=1",
+      "msn.com": "https://imagescdn.homes.com/i2/DMa7i9oCH1mgGyaI0rRkcv7HtBWenGZN-jDTYlclqP4/117/image.png?p=1",
+      "mapquest.com": "https://imagescdn.homes.com/i2/OjvCIOEsha9WYZi5hbT4IZkMsnhyFPq-XHTmsr2TbqQ/117/image.png?p=1",
+      "nypost.com": "https://imagescdn.homes.com/i2/SkAhHtwZ44EO42x_ZJ8OuzauQ318nW2Bu2uasAzgjRM/117/image.png?p=1",
+      "weather.com": "https://imagescdn.homes.com/i2/SIXxCUS903L4FPNAd7BYyvLvcb69_jCZnM7pV0CZ73E/117/image.png?p=1",
+      "usnews.com": "https://imagescdn.homes.com/i2/Of4nSCRwlgY17_U2JnrXJ5hKCZ0XEOYrbSeeghqsHGc/117/image.png?p=1",
+      "usatoday.com": "https://imagescdn.homes.com/i2/nCcqQLDoBwHTU1atv3aMrLT3S3LHH30zLbb-hWfyEqA/117/image.png?p=1",
+      "yahoo.com": "https://imagescdn.homes.com/i2/LKIhpj9D5QrsTLwMz96e6i4k6WwmgO0pLdFU5c6tJh8/117/image.png?p=1",
+      "bbc.com": "https://imagescdn.homes.com/i2/3h2b3kbk6Xt6LI5uHvk7ivzRC6r86ZvDy3G2J0zgGJQ/117/image.png?p=1",
+      "nbcnews.com": "https://imagescdn.homes.com/i2/WWhlAtGg4i71EhBoJClteQRtH1CAMUG_Dk4sDNG3q7M/117/image.png?p=1",
+      "politico.com": "https://imagescdn.homes.com/i2/C0fb9Nvo5a4O_zbovc8xfcbGymPyEqsJzVAYX3mggGU/117/image.png?p=1",
+      "ebay.com": "https://imagescdn.homes.com/i2/--40jooK24bZq8_MDXCkgEluzJMCNMk8Wtu_DS64nVw/117/image.png?p=1",
+      "kohls.com": "https://imagescdn.homes.com/i2/u-HtrWRK8z-XyY5mPWQy5jx75FFYR9EG2fLpZ-Yjzx0/117/image.png?p=1",
+      "people.com": "https://imagescdn.homes.com/i2/ckNGEWmlMMr34jK--A7VNYvg9R8iS3ciqcaHMK6woiE/117/image.png?p=1",
+      "accuweather.com": "https://imagescdn.homes.com/i2/uj4uZndcO6IFm6PgK3X2Z61GZkmMk6eMVKds-nL730U/117/image.png?p=1",
+      "nytimes.com": "https://imagescdn.homes.com/i2/RypJG_xvCGZKN-mcQXeR2NJhzD73lFhRg9ULWi-4nWg/117/image.png?p=1",
+      "t-mobile.com": "https://imagescdn.homes.com/i2/bATy82cQpuN5IZyxB8DBT7q19AaTWxDVYiPXImR3fR0/117/image.png?p=1",
+      "huffpost.com": "https://imagescdn.homes.com/i2/ytpbtec72M06PSDh3DqpS0e6I2yx_ZVzDVLmZl9EUf8/117/image.jpg?p=1",
+      "npr.org": "https://imagescdn.homes.com/i2/MtM6RbLGn82WPgbJNoLuo0mXQaIJR5fbRz1vKqJTtPs/117/image.jpg?p=1",
+      "usmagazine.com": "https://imagescdn.homes.com/i2/isWwuBk655zHtsb7WaNhqkUutezmBi1j3cwh4MbLDFk/117/image.png?p=1",
+      "nydailynews.com": "https://imagescdn.homes.com/i2/duD6PGcBVK-Vgyv8abBp3afSm779H4YLS_hRqzMwOLU/117/image.png?p=1",
+      "theatlantic.com": "https://imagescdn.homes.com/i2/Frgvbz12NjlqKEIWZEXXe24aZ9DZaULE5Y8yx9yah2M/117/image.png?p=1",
+      "mlb.com": "https://imagescdn.homes.com/i2/8bNfUOojY-mgbX1xsL0V9mx-xogXBuLU6HMI4y9a1Yc/117/image.png?p=1",
+      "independent.co.uk": "https://imagescdn.homes.com/i2/GVAZkRqmgmIOyjo4RyjiDbuI5WiY1Nvx2BCpK-P_Wjw/117/image.png?p=1",
+      "inquirer.com": "https://imagescdn.homes.com/i2/SHZVhN7Wy7oQsiyZeMXc4IQjhblKI9FjiHe4xl3O7D4/117/image.png?p=1",
+      "myfox8.com": "https://imagescdn.homes.com/i2/L1TA6PBhpkG8NUHVXraCiuLg7eSYZIrhFNmRMWZvg50/117/image.png?p=1",
+      "coinmarketcap.com": "https://imagescdn.homes.com/i2/8wFKMfZNqI-57Qgs_2kfdM8fVefdyzhMhS5IGZzjQ9Y/117/image.png?p=1",
+      "cnbc.com": "https://imagescdn.homes.com/i2/4N-aBaNfB7cFldeXQ0KTKtXG0-_jLeLH_cM3eMSaYR8/117/image.png?p=1",
+      "suntimes.com": "https://imagescdn.homes.com/i2/MvSkcfM6SPKQqf_e2myOF8i5SvxW3CwrMsmaypHvy4w/117/image.png?p=1",
+      "billboard.com": "https://imagescdn.homes.com/i2/vMNqIOkwTS6mg6KNgA4aZ65m9McFv7pgQUmspcDrQ90/117/image.png?p=1",
+      "elle.com": "https://imagescdn.homes.com/i2/1sSadNCU8NAUPgGK9rAnEGftJriePR1qTeJvwKgSCPo/117/image.png?p=1",
+      "komonews.com": "https://imagescdn.homes.com/i2/NB_Dw5P2rI3OI4rMnk55a77DniL5xo2ceiAQl24lgtQ/117/image.png?p=1",
+      "kbb.com": "https://imagescdn.homes.com/i2/xIIIMO4m9DR2RbOuW16p2xhNmxuiAX2XVw3QUcmXGS8/117/image.png?p=1",
+      "5newsonline.com": "https://imagescdn.homes.com/i2/CR2rOVdhgXV8CXjuwBYUQqVZeWA9HgSlTg3AW36PqNY/117/image.png?p=1",
+      "wsj.com": "https://imagescdn.homes.com/i2/x5gIZ45f5r9nYVteiGqDxbgzbqdFZeQOVm3SNFcR_cg/117/image.png?p=1",
+      "washingtontimes.com": "https://imagescdn.homes.com/i2/Bam3YhkmEjNAAk1F71pJJu0AyxBQ1LJMRR3PR6f2kHU/117/image.png?p=1",
+      "wtkr.com": "https://imagescdn.homes.com/i2/17iKpzBEX_xB7bxsjCJt8fiBfCzsJT4AcHoUHOWiACc/117/image.png?p=1",
+      "kshb.com": "https://imagescdn.homes.com/i2/Kx4ixnLjO9IUDddX54qQAJA9hPI7jCkWgXLMkCKUato/117/image.png?p=1",
+      "wchstv.com": "https://imagescdn.homes.com/i2/njBBW2uVAcS88q8ZNb-5eT6HABsEFKGTQCzeSfWXzMc/117/image.jpg?p=1"
+    }
+  },
+  "milestones": [
+    {
+      "date": "2026-07-17",
+      "event": "Reached Very Popular status"
+    },
+    {
+      "date": "2026-07-09",
+      "event": "Reached Very Popular status"
+    },
+    {
+      "date": "2026-06-28",
+      "event": "Now considered a Hot Property"
+    },
+    {
+      "date": "2026-06-24",
+      "event": "Now considered Very Popular"
+    },
+    {
+      "date": "2026-06-22",
+      "event": "Listed as New Listing"
+    }
+  ],
+  "visitor_map": {
+    "total_mapped_views": 20603,
+    "viewport": {
+      "w": 1114,
+      "h": 578,
+      "note": "marker x/y are normalized 0-1 within a continental-US Google Maps viewport"
+    },
+    "markers": [
+      {
+        "n": 4990,
+        "x": 0.5033,
+        "y": 0.517
+      },
+      {
+        "n": 1083,
+        "x": 0.8033,
+        "y": 1.007
+      },
+      {
+        "n": 1033,
+        "x": 0.1942,
+        "y": 0.4695
+      },
+      {
+        "n": 666,
+        "x": 0.4554,
+        "y": 0.769
+      },
+      {
+        "n": 531,
+        "x": 0.5071,
+        "y": 0.3802
+      },
+      {
+        "n": 453,
+        "x": 0.4764,
+        "y": 0.4007
+      },
+      {
+        "n": 415,
+        "x": -0.0541,
+        "y": 0.7343
+      },
+      {
+        "n": 121,
+        "x": 0.6313,
+        "y": 0.054
+      },
+      {
+        "n": 117,
+        "x": 0.6685,
+        "y": 0.804
+      },
+      {
+        "n": 108,
+        "x": 1.0532,
+        "y": 0.6014
+      },
+      {
+        "n": 81,
+        "x": 0.3563,
+        "y": 0.5636
+      },
+      {
+        "n": 60,
+        "x": 0.9033,
+        "y": 0.5954
+      },
+      {
+        "n": 51,
+        "x": 0.7413,
+        "y": 1.0862
+      },
+      {
+        "n": 49,
+        "x": 0.6482,
+        "y": 0.2762
+      },
+      {
+        "n": 49,
+        "x": 0.7875,
+        "y": 0.883
+      },
+      {
+        "n": 45,
+        "x": 0.4437,
+        "y": 0.0895
+      },
+      {
+        "n": 40,
+        "x": 0.7836,
+        "y": 0.4146
+      },
+      {
+        "n": 39,
+        "x": 0.6958,
+        "y": 1.0407
+      },
+      {
+        "n": 37,
+        "x": 0.4456,
+        "y": 0.4618
+      },
+      {
+        "n": 36,
+        "x": 0.8391,
+        "y": 0.9341
+      },
+      {
+        "n": 34,
+        "x": 0.872,
+        "y": 0.8121
+      },
+      {
+        "n": 31,
+        "x": 0.6665,
+        "y": 0.4258
+      },
+      {
+        "n": 23,
+        "x": 0.406,
+        "y": -0.0328
+      },
+      {
+        "n": 23,
+        "x": 0.7656,
+        "y": 1.0703
+      },
+      {
+        "n": 23,
+        "x": 0.456,
+        "y": 0.1851
+      },
+      {
+        "n": 20,
+        "x": 0.6833,
+        "y": 1.0936
+      },
+      {
+        "n": 19,
+        "x": -0.0416,
+        "y": 0.8289
+      },
+      {
+        "n": 17,
+        "x": 1.082,
+        "y": 0.5039
+      },
+      {
+        "n": 17,
+        "x": 0.2112,
+        "y": 0.9396
+      },
+      {
+        "n": 16,
+        "x": 0.5545,
+        "y": 0.2635
+      },
+      {
+        "n": 13,
+        "x": 0.3979,
+        "y": 0.7076
+      },
+      {
+        "n": 11,
+        "x": 0.2308,
+        "y": 0.0391
+      },
+      {
+        "n": 11,
+        "x": 0.2247,
+        "y": 0.5339
+      },
+      {
+        "n": 9,
+        "x": 0.2986,
+        "y": 0.6514
+      },
+      {
+        "n": 6,
+        "x": 0.7833,
+        "y": 0.9721
+      },
+      {
+        "n": 6,
+        "x": 0.218,
+        "y": 0.3706
+      },
+      {
+        "n": 6,
+        "x": 0.2645,
+        "y": 0.3972
+      },
+      {
+        "n": 3,
+        "x": 0.1877,
+        "y": 0.3782
+      },
+      {
+        "n": 2,
+        "x": -0.0748,
+        "y": 0.7164
+      },
+      {
+        "n": 2,
+        "x": 0.0169,
+        "y": 0.4976
+      },
+      {
+        "n": 2,
+        "x": -0.0482,
+        "y": 0.5931
+      },
+      {
+        "n": 1,
+        "x": 0.0645,
+        "y": 0.9928
+      },
+      {
+        "n": 1,
+        "x": 0.33,
+        "y": 0.5526
+      },
+      {
+        "n": 1,
+        "x": 0.0841,
+        "y": 0.8282
+      },
+      {
+        "n": 1,
+        "x": -0.0013,
+        "y": -0.0395
+      },
+      {
+        "n": 1,
+        "x": 1.0374,
+        "y": 0.8151
+      }
+    ]
+  }
+}

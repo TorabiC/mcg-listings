@@ -215,6 +215,96 @@
   .plan-card.recs{border-top:3px solid var(--gold);}
   .plan-card.next{border-top:3px solid var(--crimson);}
 
+  /* ---------- National Exposure hero band ---------- */
+  .exposure-band{
+    background:linear-gradient(135deg,var(--navy) 0%,#243962 100%);color:#fff;border-radius:14px;
+    padding:28px 24px;margin-bottom:0;box-shadow:var(--shadow);
+  }
+  .exposure-eyebrow{
+    display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:0.06em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:10px;
+  }
+  .exposure-headline{font-size:44px;font-weight:900;line-height:1;letter-spacing:-0.01em;}
+  .exposure-headline .unit{font-size:16px;font-weight:700;color:#C7CFE0;margin-left:10px;}
+  .exposure-sub{font-size:14px;color:#DCE2F0;margin-top:8px;max-width:640px;}
+  .exposure-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:22px;}
+  .exposure-tile{
+    background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);border-radius:10px;padding:12px 14px;
+  }
+  .exposure-tile .e-val{font-size:20px;font-weight:900;color:#fff;}
+  .exposure-tile .e-lbl{font-size:11px;color:#C7CFE0;text-transform:uppercase;letter-spacing:0.03em;margin-top:2px;}
+  @media (min-width:640px){
+    .exposure-headline{font-size:58px;}
+    .exposure-tiles{grid-template-columns:repeat(4,1fr);}
+  }
+
+  /* ---------- Publications / display-ad logo grid ---------- */
+  .pub-intro{font-size:15px;color:var(--gray-900);margin:0 0 16px;}
+  .pub-intro strong{color:var(--navy);}
+  .pub-stat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+  .pub-stat{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow);}
+  .pub-stat .p-val{font-size:22px;font-weight:900;color:var(--navy);}
+  .pub-stat .p-lbl{font-size:11.5px;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.03em;margin-top:2px;}
+  .logo-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#fff;border:1px solid var(--gray-300);
+    border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);
+  }
+  .logo-tile{
+    display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;background:var(--gray-100);
+    border-radius:8px;padding:10px;
+  }
+  .logo-tile img{
+    max-width:100%;max-height:32px;filter:grayscale(100%);opacity:0.72;transition:filter .18s ease,opacity .18s ease,transform .18s ease;
+  }
+  .logo-tile:hover img{filter:grayscale(0%);opacity:1;transform:scale(1.04);}
+  .pub-list-full{margin-top:16px;font-size:12px;color:var(--gray-500);line-height:1.9;}
+  .pub-list-full strong{color:var(--gray-700);display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px;}
+  @media (min-width:640px){ .logo-grid{grid-template-columns:repeat(6,1fr);} .pub-stat-row{grid-template-columns:repeat(4,1fr);} }
+
+  /* ---------- Buyer Interest Map ---------- */
+  .map-card{padding:18px;}
+  .map-svg-wrap{background:linear-gradient(180deg,#F6F8FC 0%,#EEF1F7 100%);border-radius:8px;overflow:hidden;}
+  .us-outline{fill:#E2E7F0;stroke:#C7D0E0;stroke-width:1.5;}
+  .map-marker{fill:var(--navy);fill-opacity:0.72;stroke:#fff;stroke-width:1;}
+  .map-marker:hover{fill:var(--crimson);fill-opacity:0.9;}
+  .map-marker-label{font-size:10px;font-weight:800;fill:#fff;text-anchor:middle;pointer-events:none;}
+  .map-caption{font-size:14px;color:var(--gray-900);margin-top:14px;font-weight:700;}
+  .map-privacy-note{font-size:11.5px;color:var(--gray-500);margin-top:6px;}
+
+  /* ---------- Momentum & Milestones ---------- */
+  .milestone-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
+  .milestone-chip{
+    display:inline-flex;align-items:center;gap:8px;background:var(--gold-tint);border:1px solid #E9D68C;
+    border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:700;color:#6B520C;
+  }
+  .milestone-chip .m-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex:none;}
+  .milestone-chip .m-date{color:#8A6E1A;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:0.02em;}
+  .daily-chart-svg .db-bar{fill:var(--navy);}
+  .daily-chart-svg .db-bar:hover{fill:var(--crimson);}
+  .daily-chart-svg .db-label{font-size:9px;fill:var(--gray-500);text-anchor:middle;}
+
+  /* ---------- Crexi search-score gauge / funnel / e-blast ---------- */
+  .crexi-gauge-wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+  .crexi-gauge-numbers .cg-big{font-size:34px;font-weight:900;color:var(--navy);}
+  .crexi-gauge-numbers .cg-grade{
+    display:inline-block;margin-top:6px;background:var(--crimson-tint);color:var(--crimson);font-weight:800;
+    font-size:12px;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:0.03em;
+  }
+  .funnel-row{display:grid;grid-template-columns:130px 1fr 64px;align-items:center;gap:10px;margin:10px 0;}
+  .funnel-row .f-label{font-size:12.5px;font-weight:700;color:var(--gray-700);}
+  .funnel-track{background:var(--gray-100);border-radius:4px;height:16px;}
+  .funnel-fill{height:16px;border-radius:4px;background:var(--crimson);min-width:4px;}
+  .funnel-row .f-value{font-size:12.5px;font-weight:800;color:var(--gray-900);text-align:right;font-variant-numeric:tabular-nums;}
+  .eblast-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px;}
+  .eblast-tile{background:var(--navy-tint);border-radius:var(--radius);padding:12px 14px;}
+  .eblast-tile .eb-val{font-size:20px;font-weight:900;color:var(--navy);}
+  .eblast-tile .eb-lbl{font-size:11px;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.03em;margin-top:2px;}
+  .eblast-benchmark-note{font-size:11px;color:var(--gray-500);margin-top:10px;font-style:italic;}
+  @media (min-width:640px){ .eblast-tiles{grid-template-columns:repeat(4,1fr);} }
+  .secondary-listing-note{
+    margin-top:16px;font-size:13px;color:var(--gray-700);background:var(--gray-100);border-radius:8px;padding:12px 14px;
+  }
+
   /* ---------- Footer ---------- */
   .site-footer{background:var(--navy);color:#DCE2F0;padding:36px 0 26px;}
   .footer-proof{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:26px;}
@@ -247,10 +337,12 @@
     .badge-print{display:inline-block;}
     section{border-bottom:none;page-break-inside:avoid;padding:18px 0;}
     #overview{page-break-before:auto;}
-    #analytics,#market,#showings,#next{page-break-before:always;}
+    #analytics,#market,#showings,#next,#advertised,#buyermap,#momentum,#crexi-detail{page-break-before:always;}
     .wrap{max-width:100%;}
     .site-header{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .site-footer{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .exposure-band{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .logo-tile img{filter:none !important;opacity:1 !important;}
     .stat-tile,.card{box-shadow:none;}
     a[href]:after{content:"";}
   }
@@ -300,6 +392,17 @@
 
 <nav class="section-nav" aria-label="Report sections">
   <div class="wrap">
+    {% if exposure_available %}
+    <a href="#exposure">National Exposure</a>
+    {% endif %}
+    {% if homes_exposure %}
+    <a href="#advertised">Advertised</a>
+    <a href="#buyermap">Buyer Map</a>
+    <a href="#momentum">Momentum</a>
+    {% endif %}
+    {% if crexi_exposure %}
+    <a href="#crexi-detail">Crexi Performance</a>
+    {% endif %}
     <a href="#overview">Overview</a>
     <a href="#activity">Activity</a>
     <a href="#analytics">Analytics</a>
@@ -314,6 +417,183 @@
 
   {% if any_sample %}
   <div class="banner-sample">Sample data &mdash; this report contains demonstration figures for illustration. Live figures replace these once source connections are confirmed.</div>
+  {% endif %}
+
+  {% if exposure_available %}
+  <section id="exposure" style="padding-top:22px;">
+    <div class="exposure-band">
+      <div class="exposure-eyebrow">&#9679; National Exposure</div>
+      <div class="exposure-headline">{{ exposure_headline.value }}<span class="unit">{{ exposure_headline.label }}</span></div>
+      {% if homes_exposure %}
+      <p class="exposure-sub">{{ hero.address.split(',')[0] }} is being marketed to buyers nationwide through homes.com&rsquo;s syndicated network &mdash; every number below is pulled directly from the live listing dashboard.</p>
+      <div class="exposure-tiles">
+        <div class="exposure-tile"><div class="e-val">{{ '{:,}'.format(homes_exposure.top_of_search) }}</div><div class="e-lbl">Top-of-search placements</div></div>
+        <div class="exposure-tile"><div class="e-val">{{ '{:,}'.format(homes_exposure.display_ad_views) }}</div><div class="e-lbl">Display ad views</div></div>
+        <div class="exposure-tile"><div class="e-val">{{ '{:,}'.format(homes_exposure.matterport_views) }}</div><div class="e-lbl">Matterport tour views</div></div>
+        <div class="exposure-tile"><div class="e-val">{{ homes_exposure.publication_count }}</div><div class="e-lbl">National publications</div></div>
+      </div>
+      {% elif crexi_exposure %}
+      <p class="exposure-sub">{{ hero.address.split(',')[0] }} is being marketed to the commercial investor network through Crexi &mdash; every number below is pulled directly from the live listing dashboard.</p>
+      <div class="exposure-tiles">
+        <div class="exposure-tile"><div class="e-val">{{ crexi_exposure.search_score }}<span style="font-size:12px;color:#C7CFE0;">/100</span></div><div class="e-lbl">Search score &mdash; {{ crexi_exposure.search_score_grade }}</div></div>
+        <div class="exposure-tile"><div class="e-val">{{ '{:,}'.format(crexi_exposure.visitors) }}</div><div class="e-lbl">Unique visitors</div></div>
+        <div class="exposure-tile"><div class="e-val">{{ '{:,}'.format(crexi_exposure.om_flyer_opens) }}</div><div class="e-lbl">OM / flyer opens</div></div>
+        <div class="exposure-tile"><div class="e-val">{{ '{:,}'.format(crexi_exposure.page_views) }}</div><div class="e-lbl">Page views</div></div>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if homes_exposure %}
+  <section id="advertised">
+    <div class="section-head">
+      <h2>Where Your Property Is Advertised</h2>
+      <p class="section-sub">Display-ad placement across homes.com&rsquo;s national retargeting network</p>
+    </div>
+    <p class="pub-intro">Your listing has appeared on <strong>{{ homes_exposure.publication_count }} recognizable publications</strong> &mdash; from national news and sports to lifestyle and finance sites &mdash; putting it in front of buyers well beyond the local MLS.</p>
+    <div class="pub-stat-row">
+      <div class="pub-stat"><div class="p-val">{{ '{:,}'.format(homes_exposure.ad_views_total) }}</div><div class="p-lbl">Ad views</div></div>
+      <div class="pub-stat"><div class="p-val">{{ '{:,}'.format(homes_exposure.sites_displayed_on) }}</div><div class="p-lbl">Sites displayed on</div></div>
+      <div class="pub-stat"><div class="p-val">{{ '{:,}'.format(homes_exposure.users_reached_total) }}</div><div class="p-lbl">Users reached</div></div>
+      <div class="pub-stat"><div class="p-val">{{ '{:,}'.format(homes_exposure.contacts_targeted) }}</div><div class="p-lbl">Contacts targeted</div></div>
+    </div>
+    <div class="logo-grid">
+      {% for pub in homes_exposure.publications %}
+      <div class="logo-tile" title="{{ pub.domain }}">
+        {% if pub.logo %}
+        <img src="{{ pub.logo }}" alt="{{ pub.name }}" loading="lazy" width="94" height="32">
+        {% else %}
+        <span style="font-size:11px;font-weight:700;color:var(--gray-500);">{{ pub.name }}</span>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <div class="pub-list-full">
+      <strong>Full publication list ({{ homes_exposure.publication_count }})</strong>
+      {{ homes_exposure.publications | map(attribute='domain') | join(' &middot; ') }}
+    </div>
+  </section>
+
+  <section id="buyermap">
+    <div class="section-head">
+      <h2>Buyer Interest Map</h2>
+      <p class="section-sub">Where online visitors to this listing are located</p>
+    </div>
+    {% if homes_exposure.visitor_map.available %}
+    <div class="card map-card">
+      <div class="map-svg-wrap">
+        <svg viewBox="0 0 {{ homes_exposure.visitor_map.viewbox_w }} {{ homes_exposure.visitor_map.viewbox_h }}" width="100%" role="img" aria-label="Map of the continental United States showing where buyer interest in this listing originated">
+          <path class="us-outline" d="M50,80 L80,50 L120,35 L190,25 L300,20 L420,18 L550,20 L620,45 L580,65 L660,40 L720,60 L780,35 L830,45 L900,58 L880,90 L830,110 L850,140 L820,170 L840,215 L800,250 L820,290 L780,340 L830,400 L870,460 L820,480 L800,430 L750,390 L650,410 L550,400 L480,440 L400,450 L300,430 L280,375 L250,340 L200,375 L190,430 L150,420 L100,375 L60,345 L20,300 L30,250 L10,220 L30,180 L20,150 L40,110 Z"/>
+          {% for mk in homes_exposure.visitor_map.markers %}
+          <circle class="map-marker hoverable" cx="{{ mk.cx }}" cy="{{ mk.cy }}" r="{{ mk.r }}" data-tip="{{ '{:,}'.format(mk.n) }} view{{ 's' if mk.n != 1 else '' }}"></circle>
+          {% if mk.label %}
+          <text class="map-marker-label" x="{{ mk.cx }}" y="{{ mk.cy + 3.5 }}">{{ mk.n }}</text>
+          {% endif %}
+          {% endfor %}
+        </svg>
+      </div>
+      <p class="map-caption">Total mapped views: {{ '{:,}'.format(homes_exposure.visitor_map.total_mapped_views) }} &mdash; buyers from across the country are discovering this property.</p>
+      <p class="map-privacy-note">Marker positions are approximate and aggregated for buyer privacy; homes.com does not report exact visitor addresses. {{ homes_exposure.visitor_map.clipped_count }} mapped clusters shown within the continental U.S. frame.</p>
+    </div>
+    {% else %}
+    <div class="empty-note">Visitor map data unavailable this period.</div>
+    {% endif %}
+  </section>
+
+  <section id="momentum">
+    <div class="section-head">
+      <h2>Momentum &amp; Milestones</h2>
+      <p class="section-sub">Recognition earned and daily view activity on homes.com</p>
+    </div>
+    {% if homes_exposure.milestones %}
+    <div class="milestone-row">
+      {% for ms in homes_exposure.milestones %}
+      <span class="milestone-chip"><span class="m-dot" aria-hidden="true"></span><span class="m-date">{{ ms.date_display }}</span>&nbsp;{{ ms.event }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if homes_exposure.daily_chart.available %}
+    <div class="card chart-card">
+      <h3>Daily views</h3>
+      <p class="chart-caption">{{ '{:,}'.format(homes_exposure.daily_chart.total) }} total views tracked over {{ homes_exposure.daily_chart.bars | length }} days on homes.com.</p>
+      <div class="chart-relative">
+        <svg class="daily-chart-svg" viewBox="0 0 {{ (homes_exposure.daily_chart.bars | length) * 16 }} 130" width="100%" height="150" role="img" aria-label="Daily views bar chart">
+          {% for b in homes_exposure.daily_chart.bars %}
+          <rect class="db-bar hoverable" x="{{ loop.index0 * 16 + 2 }}" width="11" rx="2"
+                y="{{ 105 - (b.pct * 0.95) }}" height="{{ (b.pct * 0.95) | round(1) if b.pct > 0 else 1 }}"
+                data-tip="{{ b.date }}: {{ '{:,}'.format(b.value) }} views"></rect>
+          {% if b.show_label %}
+          <text class="db-label" x="{{ loop.index0 * 16 + 7 }}" y="120">{{ b.date_short }}</text>
+          {% endif %}
+          {% endfor %}
+        </svg>
+        <div class="tooltip" id="tip-daily"></div>
+      </div>
+    </div>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  {% if crexi_exposure %}
+  <section id="crexi-detail">
+    <div class="section-head">
+      <h2>Crexi Commercial Marketplace Performance</h2>
+      <p class="section-sub">Search visibility, buyer engagement, and e-blast reach</p>
+    </div>
+
+    <div class="card chart-card" style="margin-bottom:16px;">
+      <h3>Search score</h3>
+      <div class="crexi-gauge-wrap">
+        <svg width="140" height="90" viewBox="0 0 140 90" role="img" aria-label="Crexi search score gauge">
+          <path d="M 15 80 A 55 55 0 0 1 125 80" fill="none" stroke="var(--gray-300)" stroke-width="14" stroke-linecap="round"/>
+          <path d="M 15 80 A 55 55 0 0 1 125 80" fill="none" stroke="var(--crimson)"
+                stroke-width="14" stroke-linecap="round"
+                stroke-dasharray="{{ (crexi_exposure.search_score_pct/100*172.8) | round(1) }} 999"/>
+          <text x="70" y="72" text-anchor="middle" font-size="22" font-weight="900" fill="var(--navy)">{{ crexi_exposure.search_score }}</text>
+          <text x="70" y="86" text-anchor="middle" font-size="9" fill="var(--gray-500)">out of 100</text>
+        </svg>
+        <div class="crexi-gauge-numbers">
+          <div class="cg-big">{{ crexi_exposure.search_score_grade }}</div>
+          <span class="cg-grade">Crexi search score</span>
+        </div>
+      </div>
+    </div>
+
+    {% if crexi_exposure.funnel %}
+    <div class="card chart-card" style="margin-bottom:16px;">
+      <h3>Buyer engagement funnel</h3>
+      <p class="chart-caption">From page visit through to a phone click, this period&rsquo;s full-funnel activity.</p>
+      {% for f in crexi_exposure.funnel %}
+      <div class="funnel-row">
+        <div class="f-label">{{ f.label }}</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:{{ f.pct }}%;"></div></div>
+        <div class="f-value">{{ '{:,}'.format(f.value) }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if crexi_exposure.eblast %}
+    <div class="card chart-card">
+      <h3>Email/e-blast performance</h3>
+      <p class="chart-caption">Targeted e-blasts sent to Crexi&rsquo;s investor network for this listing.</p>
+      <div class="eblast-tiles">
+        <div class="eblast-tile"><div class="eb-val">{{ '{:,}'.format(crexi_exposure.eblast.total_sent) }}</div><div class="eb-lbl">Sent</div></div>
+        <div class="eblast-tile"><div class="eb-val">{{ crexi_exposure.eblast.delivered_pct }}%</div><div class="eb-lbl">Delivered</div></div>
+        <div class="eblast-tile"><div class="eb-val">{{ crexi_exposure.eblast.open_pct }}%</div><div class="eb-lbl">Opened</div></div>
+        <div class="eblast-tile"><div class="eb-val">{{ crexi_exposure.eblast.click_pct }}%</div><div class="eb-lbl">Clicked</div></div>
+      </div>
+      <p class="eblast-benchmark-note">{{ crexi_exposure.eblast.open_pct }}% open rate {{ crexi_exposure.eblast.benchmark_note }}</p>
+    </div>
+    {% endif %}
+
+    {% if crexi_exposure.secondary_listing %}
+    <div class="secondary-listing-note">
+      This parcel is also dual-marketed on Crexi as <strong>{{ crexi_exposure.secondary_listing.name }}</strong>: {{ '{:,}'.format(crexi_exposure.secondary_listing.page_views) }} additional page views, {{ '{:,}'.format(crexi_exposure.secondary_listing.visitors) }} visitors, {{ crexi_exposure.secondary_listing.om_flyer_opens }} OM opens &mdash; further multiplying this property&rsquo;s marketplace exposure.
+    </div>
+    {% endif %}
+  </section>
   {% endif %}
 
   <section id="overview">

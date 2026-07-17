@@ -1,0 +1,22 @@
+{
+  "portal": "crexi",
+  "views": 63,
+  "leads": 3,
+  "name": "SW Regional Airport Blvd",
+  "price": 1945000,
+  "search_score": 95,
+  "page_views": 63,
+  "visitors": 10,
+  "om_flyer_opens": 3,
+  "offers": 0,
+  "secondary_listing": {
+    "name": "3500B SW Regional Airport Blvd",
+    "entry": "secondary (3500B dual listing)",
+    "price": 1945000,
+    "search_score": 95,
+    "page_views": 41,
+    "visitors": 3,
+    "om_flyer_opens": 2,
+    "offers": 0
+  }
+}

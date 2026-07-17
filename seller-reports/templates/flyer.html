@@ -131,6 +131,50 @@
           </td>
         </tr>
 
+        {% if homes_exposure and homes_exposure.publications %}
+        <!-- National exposure teaser: publication logo strip -->
+        <tr>
+          <td class="mcg-px" style="padding:14px 28px 4px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #D6DAE2;">
+              <tr>
+                <td style="padding:16px 0 10px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#1D2333;line-height:1.55;">
+                  <strong style="color:#A6192E;">National exposure &mdash;</strong> advertised on {{ homes_exposure.publication_count }} national publications &mdash; see the full report for the complete list.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      {% for pub in homes_exposure.publications[:6] %}
+                      <td style="padding:0 8px 8px 0;">
+                        {% if pub.logo %}
+                        <img src="{{ pub.logo }}" alt="{{ pub.name }}" width="52" height="18" style="display:block;border-radius:4px;">
+                        {% else %}
+                        <span style="font-family:Lato,Arial,sans-serif;font-size:10px;color:#5C7290;">{{ pub.name }}</span>
+                        {% endif %}
+                      </td>
+                      {% endfor %}
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        {% elif crexi_exposure %}
+        <tr>
+          <td class="mcg-px" style="padding:14px 28px 4px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #D6DAE2;">
+              <tr>
+                <td style="padding:16px 0 4px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#1D2333;line-height:1.55;">
+                  <strong style="color:#A6192E;">National exposure &mdash;</strong> {{ '{:,}'.format(crexi_exposure.impressions) }} {{ 'impressions' if crexi_exposure.impressions_is_deep else 'page views' }} on Crexi&rsquo;s commercial marketplace, search score {{ crexi_exposure.search_score }}/100 ({{ crexi_exposure.search_score_grade }}) &mdash; see the full report for details.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        {% endif %}
+
         <!-- CTA -->
         <tr>
           <td align="center" style="padding:22px 28px 26px;">
