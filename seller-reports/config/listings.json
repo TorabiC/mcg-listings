@@ -5,13 +5,23 @@
       "address": "1715 N Garland Ave, Fayetteville, AR",
       "type": "residential",
       "county": "Washington",
-      "price": 650000,
+      "price": 750000,
       "price_type": "sale",
       "beds": 4,
       "baths": 3.5,
       "status": "active",
       "list_date": null,
-      "mls_id": null,
+      "mls_id": "1352809",
+      "mls_entries": [
+        {
+          "mls": "1352809",
+          "category": "Residential"
+        },
+        {
+          "mls": "1352755",
+          "category": "Residential"
+        }
+      ],
       "seller": {
         "name": null,
         "email": null
@@ -31,11 +41,11 @@
           "homes.com"
         ]
       },
-      "notes": "1916 Folk-Victorian + studio. MLS sheet at $650K (Webflow card discrepancy showed $750K per 2026-07-15 audit; detail-page iframe wrongly points at 1716 W Holly)."
+      "notes": "1916 Folk-Victorian + studio. Price CORRECTED to $750,000 per Cameron confirmation 2026-07-17 (prior MLS sheet showed $650K; Webflow card discrepancy showed $750K per 2026-07-15 audit -- $750K confirmed correct, detail-page iframe issue pointing at 1716 W Holly is separate and still unresolved). Dual-listed: MLS 1352809 and 1352755 (both Residential)."
     },
     {
       "slug": "46-northfleet",
-      "address": "46 Northfleet Dr, Bentonville, AR",
+      "address": "46 Northfleet Dr, Bella Vista, AR",
       "type": "residential",
       "county": "Benton",
       "price": 590000,
@@ -45,6 +55,12 @@
       "status": "active",
       "list_date": null,
       "mls_id": "1336350",
+      "mls_entries": [
+        {
+          "mls": "1336350",
+          "category": "Residential"
+        }
+      ],
       "seller": {
         "name": null,
         "email": null
@@ -64,13 +80,13 @@
           "homes.com"
         ]
       },
-      "notes": "Certificate of Occupancy completed; CC campaign 'Now Complete - CO' sent 2026-07-15. Virtual staging done. Address verification pending (Dr vs Ln / Bentonville vs Bella Vista discrepancy noted in source)."
+      "notes": "Certificate of Occupancy completed; CC campaign 'Now Complete - CO' sent 2026-07-15. Virtual staging done. City confirmed as Bella Vista 72714 per Cameron 2026-07-17 roster (resolves prior Bentonville/Bella Vista discrepancy)."
     },
     {
       "slug": "18772-davis-rd",
-      "address": "18772 Davis Rd, Fayetteville, AR",
+      "address": "18772 Davis Rd, Rogers, AR",
       "type": "residential",
-      "county": "Washington",
+      "county": "Benton",
       "price": 675000,
       "price_type": "sale",
       "beds": 4,
@@ -78,6 +94,12 @@
       "status": "active",
       "list_date": null,
       "mls_id": "1340381",
+      "mls_entries": [
+        {
+          "mls": "1340381",
+          "category": "Residential"
+        }
+      ],
       "seller": {
         "name": null,
         "email": null
@@ -97,20 +119,26 @@
           "homes.com"
         ]
       },
-      "notes": "3,096 SF on 7.74 AC. Price reduced $20K to $675K on 2026-07-15; owner financing offered; agent CC campaign sent 2026-07-15."
+      "notes": "3,096 SF on 7.74 AC. Price reduced $20K to $675K on 2026-07-15; owner financing offered; agent CC campaign sent 2026-07-15. City corrected to Rogers 72756 per Cameron 2026-07-17 roster (was listed as Fayetteville)."
     },
     {
       "slug": "407-old-forge",
-      "address": "407 Old Forge Dr, AR",
+      "address": "407 Old Forge Dr, Bentonville, AR",
       "type": "residential",
-      "county": null,
+      "county": "Benton",
       "price": 728000,
       "price_type": "sale",
-      "beds": null,
-      "baths": null,
+      "beds": 3,
+      "baths": 4,
       "status": "active",
       "list_date": null,
-      "mls_id": null,
+      "mls_id": "1336349",
+      "mls_entries": [
+        {
+          "mls": "1336349",
+          "category": "Residential"
+        }
+      ],
       "seller": {
         "name": null,
         "email": null
@@ -130,7 +158,7 @@
           "homes.com"
         ]
       },
-      "notes": "Featured listing. City/county not specified in source material -- confirm with Cameron."
+      "notes": "Featured listing. 2,404 SF. City/county confirmed as Bentonville, Benton County per Cameron 2026-07-17 roster."
     },
     {
       "slug": "1716-w-holly",
@@ -143,7 +171,17 @@
       "baths": null,
       "status": "active",
       "list_date": null,
-      "mls_id": null,
+      "mls_id": "1341222",
+      "mls_entries": [
+        {
+          "mls": "1341222",
+          "category": "Residential/Commercial"
+        },
+        {
+          "mls": "1341533",
+          "category": "Land"
+        }
+      ],
       "seller": {
         "name": null,
         "email": null
@@ -164,7 +202,7 @@
           "loopnet"
         ]
       },
-      "notes": "Land + 4-unit building, 2.34 AC. R-O zoning (~56-unit envelope). Opportunity Zone. 0.1 mi to Razorback Stadium. On CoStar/LoopNet (19 photos)."
+      "notes": "Land + 4-unit building, 2.34 AC. R-O zoning (~56-unit envelope). Opportunity Zone. 0.1 mi to Razorback Stadium. On CoStar/LoopNet (19 photos). Dual-listed: MLS 1341222 (Residential/Commercial) and 1341533 (Land)."
     },
     {
       "slug": "3300-blue-hill",
@@ -177,7 +215,13 @@
       "baths": null,
       "status": "active",
       "list_date": null,
-      "mls_id": null,
+      "mls_id": "1341226",
+      "mls_entries": [
+        {
+          "mls": "1341226",
+          "category": "Residential/MHP"
+        }
+      ],
       "seller": {
         "name": null,
         "email": null
@@ -198,7 +242,7 @@
           "loopnet"
         ]
       },
-      "notes": "Mobile home park, 14 pads (11 leased). NOI $90,903. 10.1% cap in place, 12.6% pro forma (lease 2 pads + water submetering)."
+      "notes": "Mobile home park, 14 pads (11 leased), 6.52 AC. NOI $90,903. 10.1% cap in place, 12.6% pro forma (lease 2 pads + water submetering). MLS 1341226 confirmed per Cameron 2026-07-17 roster."
     },
     {
       "slug": "401-n-2nd",
@@ -211,7 +255,13 @@
       "baths": null,
       "status": "active",
       "list_date": null,
-      "mls_id": null,
+      "mls_id": "1336089",
+      "mls_entries": [
+        {
+          "mls": "1336089",
+          "category": "Commercial"
+        }
+      ],
       "seller": {
         "name": null,
         "email": null
@@ -232,7 +282,290 @@
           "loopnet"
         ]
       },
-      "notes": "'Downtown Rogers Corner' lease at $3,725/mo, 2,972 SF RBA (correction pending CoStar review). Sorts first on featured grid."
+      "notes": "'Downtown Rogers Corner' lease at $3,725/mo, 2,972 SF RBA. Sorts first on featured grid. MLS 1336089 confirmed per Cameron 2026-07-17 roster."
+    },
+    {
+      "slug": "ar-72-gravette",
+      "address": "AR-72, Gravette, AR",
+      "type": "land",
+      "county": "Benton",
+      "price": 3168000,
+      "price_type": "sale",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": "1317768",
+      "mls_entries": [
+        {
+          "mls": "1317768",
+          "category": "Land"
+        }
+      ],
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "b95a828f",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "crexi",
+          "loopnet"
+        ]
+      },
+      "notes": "Land development parcel, 10.56 AC, on the AR-72 corridor. Added to registry 2026-07-17 per Cameron roster confirmation (14 active listings / 17 MLS entries)."
+    },
+    {
+      "slug": "3936-s-48th",
+      "address": "3936 S 48th St, Springdale, AR",
+      "type": "land",
+      "county": "Washington",
+      "price": 2500000,
+      "price_type": "sale",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": "1317770",
+      "mls_entries": [
+        {
+          "mls": "1317770",
+          "category": "Land"
+        }
+      ],
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "02a6b292",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "crexi",
+          "loopnet"
+        ]
+      },
+      "notes": "Land parcel, 7.92 AC. Added to registry 2026-07-17 per Cameron roster confirmation."
+    },
+    {
+      "slug": "sw-regional-airport-blvd",
+      "address": "SW Regional Airport Blvd (3500B), Bentonville, AR",
+      "type": "land",
+      "county": "Benton",
+      "price": 1945000,
+      "price_type": "sale",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": "1321330",
+      "mls_entries": [
+        {
+          "mls": "1321330",
+          "category": "Land"
+        },
+        {
+          "mls": "1321325",
+          "category": "Commercial"
+        }
+      ],
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "cef6d66f",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "crexi",
+          "loopnet"
+        ]
+      },
+      "notes": "Land/commercial parcel, 3.89 AC, near SW Regional Airport Blvd. Dual-listed: MLS 1321330 (Land) and 1321325 (Commercial). Added to registry 2026-07-17 per Cameron roster confirmation."
+    },
+    {
+      "slug": "504-sw-e-st",
+      "address": "504 SW E St, Bentonville, AR",
+      "type": "residential",
+      "county": "Benton",
+      "price": 995000,
+      "price_type": "sale",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": "1341223",
+      "mls_entries": [
+        {
+          "mls": "1341223",
+          "category": "Residential Development"
+        }
+      ],
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "63f59669",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "homes.com"
+        ]
+      },
+      "notes": "Residential development parcel, 0.3 AC. Added to registry 2026-07-17 per Cameron roster confirmation."
+    },
+    {
+      "slug": "presidential-dr",
+      "address": "Presidential Dr, Lowell, AR",
+      "type": "land",
+      "county": "Benton",
+      "price": 850000,
+      "price_type": "sale",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": "1317772",
+      "mls_entries": [
+        {
+          "mls": "1317772",
+          "category": "Land"
+        }
+      ],
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "4591c0c3",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "crexi",
+          "loopnet"
+        ]
+      },
+      "notes": "Land parcel, 1.16 AC. Added to registry 2026-07-17 per Cameron roster confirmation."
+    },
+    {
+      "slug": "whithorn-ln",
+      "address": "Whithorn Ln, Bella Vista, AR",
+      "type": "land",
+      "county": "Benton",
+      "price": 18000,
+      "price_type": "sale",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": "1333669",
+      "mls_entries": [
+        {
+          "mls": "1333669",
+          "category": "Land"
+        }
+      ],
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "b2955194",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "crexi",
+          "loopnet"
+        ]
+      },
+      "notes": "Residential lot, 0.34 AC. Added to registry 2026-07-17 per Cameron roster confirmation."
+    },
+    {
+      "slug": "exminster-cir",
+      "address": "Exminster Cir, Bella Vista, AR",
+      "type": "land",
+      "county": "Benton",
+      "price": 15000,
+      "price_type": "sale",
+      "beds": null,
+      "baths": null,
+      "status": "active",
+      "list_date": null,
+      "mls_id": "1333667",
+      "mls_entries": [
+        {
+          "mls": "1333667",
+          "category": "Land"
+        }
+      ],
+      "seller": {
+        "name": null,
+        "email": null
+      },
+      "report_token": "c266fe48",
+      "links": {
+        "idx": null,
+        "webflow_page": null,
+        "marketing_page": null
+      },
+      "sources": {
+        "idx": true,
+        "cc": true,
+        "ga4": true,
+        "tawk": true,
+        "portals": [
+          "crexi",
+          "loopnet"
+        ]
+      },
+      "notes": "Residential lot, 0.28 AC. Added to registry 2026-07-17 per Cameron roster confirmation."
     }
   ]
 }
