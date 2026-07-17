@@ -1,23 +1,23 @@
 {
   "idx_broker": {
-    "enabled": false,
-    "credential_env_or_path": "IDXBROKER_ACCESSKEY",
+    "enabled": true,
+    "credential_env_or_path": "/mnt/user-data/uploads/Second Brain/.secrets/idx-broker-api-key.txt",
     "notes": "IDX Broker Platinum/middleware API. Base URL https://api.idxbroker.com (partner/middleware host historically middleware.idxbroker.com). Auth via 'accesskey' HTTP header (+ optional 'outputtype' header, default json). Key comes from IDX Broker account > My Account > API Access (Platinum Members). Endpoints used: GET /clients/listingstat (per-listing view counts, if plan supports Listing Stats), GET /leads/lead (lead/contact records tied to listing MLS #), GET /clients/featured or /clients/listcomplex/<id> to resolve slug -> MLS#. Set env var IDXBROKER_ACCESSKEY (or point credential file path here) to activate. Missing/blank key => adapter returns zeros with data_quality 'missing', never raises."
   },
   "constant_contact": {
     "enabled": false,
-    "credential_env_or_path": "CONSTANTCONTACT_OAUTH_TOKEN",
-    "notes": "Constant Contact API v3 (developer.constantcontact.com). OAuth2 server-side flow (authorization_code with refresh_token, or PKCE) required — CC has no static API key, only short-lived OAuth access tokens + long-lived refresh token. Store refresh token at path in credential_env_or_path (or env var CONSTANTCONTACT_OAUTH_TOKEN holding a JSON blob {access_token, refresh_token, expires_at}); adapter refreshes access_token via POST https://authz.constantcontact.com/oauth2/default/v1/token when expired. Endpoints used: GET /v3/reports/campaign_tracking_stats/{campaign_activity_id}, GET /v3/emails/activities (search by listing tag/segment) to find campaigns referencing a listing slug. Campaigns are matched to a listing by naming convention (listing slug or address substring in campaign name) — see collect.py CCAdapter._match_campaigns. All CC actions in this system are READ-ONLY reporting; no sends are ever triggered here. Missing/blank token => zeros + data_quality 'missing'."
+    "credential_env_or_path": "/mnt/user-data/uploads/Second Brain/.secrets/constant-contact-token.json",
+    "notes": "Constant Contact API v3 (developer.constantcontact.com). OAuth2 server-side flow (authorization_code with refresh_token, or PKCE) required — CC has no static API key, only short-lived OAuth access tokens + long-lived refresh token. Store refresh token at path in credential_env_or_path (or env var CONSTANTCONTACT_OAUTH_TOKEN holding a JSON blob {access_token, refresh_token, expires_at}); adapter refreshes access_token via POST https://authz.constantcontact.com/oauth2/default/v1/token when expired. Endpoints used: GET /v3/reports/campaign_tracking_stats/{campaign_activity_id}, GET /v3/emails/activities (search by listing tag/segment) to find campaigns referencing a listing slug. Campaigns are matched to a listing by naming convention (listing slug or address substring in campaign name) — see collect.py CCAdapter._match_campaigns. All CC actions in this system are READ-ONLY reporting; no sends are ever triggered here. Missing/blank token => zeros + data_quality 'missing'. App 'MCG Seller Reports' client_id/secret live in Second Brain .secrets/constant-contact-api.txt; refresh+access token JSON expected at credential path once OAuth consent completes."
   },
   "ga4": {
-    "enabled": false,
-    "credential_env_or_path": "config/ga4-service-account.json",
-    "property_id": null,
+    "enabled": true,
+    "credential_env_or_path": "/mnt/user-data/uploads/Second Brain/.secrets/ga4-service-account.json",
+    "property_id": "533973860",
     "notes": "Google Analytics 4 Data API (Google Analytics Admin required to find property id in GA4 Admin > Property Settings > Property ID, format '123456789', NOT the 'G-XXXX' measurement id). Service account JSON key file (Google Cloud Console > IAM > Service Accounts > Keys) must be added as a Viewer on the GA4 property (GA4 Admin > Property Access Management). Adapter implements JWT-signed OAuth2 token exchange (RS256, scope https://www.googleapis.com/auth/analytics.readonly) against https://oauth2.googleapis.com/token, then POSTs runReport to https://analyticsdata.googleapis.com/v1beta/properties/{property_id}:runReport filtered by pagePath/pageTitle matching the listing's webflow_page URL slug. Set property_id above and drop the service account key at the path in credential_env_or_path to activate. Missing property_id or key file => zeros + data_quality 'missing', never raises."
   },
   "tawk": {
-    "enabled": false,
-    "credential_env_or_path": "TAWK_API_KEY",
+    "enabled": true,
+    "credential_env_or_path": "/mnt/user-data/uploads/Second Brain/.secrets/tawk-api-key.txt",
     "notes": "tawk.to REST API (Property/Widget level API key from tawk.to Dashboard > Administration > Property Settings > REST API, per-widget). Endpoints used: GET https://api.tawk.to/v3/chat/{chat_id} and GET https://api.tawk.to/v3/property/{property_id}/chats (or /chat/history) with 'Authorization: Bearer <key>'. Chats are matched to a listing by scanning chat transcript/tags for the listing address or slug (see collect.py TawkAdapter._chat_mentions_listing). Set env var TAWK_API_KEY to activate. Missing key => zeros + data_quality 'missing'."
   },
   "portals": {
