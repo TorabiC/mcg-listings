@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1715 N Garland Ave, Fayetteville, AR &mdash; Seller Activity Report &mdash; 2026-W29</title>
-<meta name="description" content="Seller activity report for 1715 N Garland Ave, Fayetteville, AR, Weekly period Jul 13, 2026 – Jul 19, 2026.">
+<title>1715 N Garland Ave, Fayetteville, AR &mdash; MCG Listing Intelligence &mdash; 2026-W29</title>
+<meta name="description" content="MCG Listing Intelligence report for 1715 N Garland Ave, Fayetteville, AR, Weekly period Jul 13, 2026 – Jul 19, 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
@@ -43,60 +43,84 @@
   }
   a{color:var(--navy);}
   img{max-width:100%;}
-  .wrap{max-width:960px;margin:0 auto;padding:0 20px;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
 
   /* ---------- Skip link / a11y ---------- */
   .skip-link{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;z-index:200;}
   .skip-link:focus{left:8px;top:8px;}
 
-  /* ---------- Header ---------- */
-  .site-header{background:var(--navy);color:#fff;}
-  .site-header .wrap{padding-top:20px;padding-bottom:20px;}
-  .brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-  .wordmark{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:0.02em;font-size:18px;}
-  .wordmark .mark{
-    width:34px;height:34px;border-radius:8px;background:var(--gold);
-    color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;
+  /* ==========================================================
+     1. HERO
+     ========================================================== */
+  .hero-full{
+    position:relative;min-height:520px;color:#fff;
+    background-color:var(--navy);
+    background-size:cover;background-position:center 40%;background-repeat:no-repeat;
+    display:flex;flex-direction:column;
   }
-  .wordmark small{display:block;font-weight:400;font-size:11px;letter-spacing:0.08em;color:#C7CFE0;text-transform:uppercase;}
-  .badge-print{display:none;}
-  .period-chip{
-    background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.24);
-    color:#fff;padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:700;letter-spacing:0.02em;
+  .hero-full.has-photo::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(10,17,34,.62) 0%,rgba(10,17,34,.42) 38%,rgba(10,17,34,.72) 100%);
   }
+  .hero-full.no-photo{background:radial-gradient(120% 140% at 15% 0%,#28406e 0%,var(--navy) 46%,#0d1730 100%);}
+  .hero-monogram{
+    position:absolute;right:6%;top:50%;transform:translateY(-50%);
+    width:280px;height:280px;border-radius:50%;border:3px solid rgba(201,162,39,0.45);
+    display:flex;align-items:center;justify-content:center;
+    font-size:96px;font-weight:900;color:rgba(201,162,39,0.28);letter-spacing:-0.03em;
+  }
+  .hero-inner{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:28px 0 34px;}
+  .hero-top-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;}
+  .hero-agent-inline{font-size:12.5px;color:#DCE2F0;font-weight:700;letter-spacing:0.02em;}
+  .hero-buttons{display:flex;gap:10px;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:12.5px;letter-spacing:0.02em;
+    padding:10px 16px;border-radius:8px;cursor:pointer;border:none;text-decoration:none;white-space:nowrap;
+  }
+  .btn-live{background:var(--gold);color:var(--navy);}
+  .btn-live:hover{background:#dcb84a;}
+  .btn-print-hero{background:rgba(255,255,255,0.14);color:#fff;border:1px solid rgba(255,255,255,0.4);}
+  .btn-print-hero:hover{background:rgba(255,255,255,0.24);}
 
-  .hero{margin-top:18px;}
-  .hero h1{font-size:24px;margin:0 0 6px;font-weight:900;letter-spacing:-0.01em;}
-  .hero-facts{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;color:#DCE2F0;margin-top:6px;}
-  .hero-facts strong{color:#fff;font-weight:700;}
-  .hero-status{
+  .hero-cards{display:flex;flex-direction:column;gap:10px;max-width:420px;margin-top:auto;}
+  .hero-card{
+    background:rgba(255,255,255,0.97);color:var(--gray-900);border-radius:12px;padding:18px 20px;
+    box-shadow:0 10px 32px rgba(7,13,28,0.35);
+  }
+  .hero-chip{
     display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--navy);
-    font-weight:800;font-size:12px;letter-spacing:0.04em;text-transform:uppercase;padding:4px 10px;border-radius:6px;
+    font-weight:900;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;
   }
+  .hero-card h1{font-size:21px;margin:10px 0 1px;color:var(--navy);font-weight:900;letter-spacing:-0.01em;line-height:1.2;}
+  .hero-card .hc-city{font-size:13px;color:var(--gray-500);font-weight:700;margin-bottom:10px;}
+  .hero-card .hc-price{font-size:27px;font-weight:900;color:var(--navy);letter-spacing:-0.01em;}
+  .hero-card .hc-meta{font-size:12.5px;color:var(--gray-700);margin-top:7px;font-weight:600;}
+  .hero-status{
+    display:inline-flex;align-items:center;gap:6px;background:var(--navy-tint);color:var(--navy);
+    font-weight:800;font-size:11px;letter-spacing:0.04em;text-transform:uppercase;padding:3px 9px;border-radius:6px;margin-left:8px;
+  }
+  .agent-card{
+    background:rgba(255,255,255,0.92);border-radius:10px;padding:12px 16px;font-size:12.5px;color:var(--gray-700);
+  }
+  .agent-card .ac-name{display:block;font-size:14.5px;font-weight:900;color:var(--navy);}
+  .agent-card .ac-firm{display:block;margin-top:1px;}
+  .agent-card .ac-phone{display:block;margin-top:4px;font-weight:800;color:var(--crimson);}
+  .agent-card a{color:inherit;text-decoration:none;}
 
-  /* ---------- Period switcher ---------- */
-  .switcher{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;}
-  .switcher a, .switcher span{
-    font-size:13px;font-weight:700;padding:7px 14px;border-radius:8px;text-decoration:none;
-    border:1px solid rgba(255,255,255,0.28);color:#EDF0F8;
+  /* ==========================================================
+     2. STICKY TAB NAV
+     ========================================================== */
+  .tabs-sticky{
+    position:sticky;top:0;z-index:80;background:#fff;border-bottom:1px solid var(--gray-300);box-shadow:var(--shadow);
   }
-  .switcher a:hover{background:rgba(255,255,255,0.14);}
-  .switcher .active{background:#fff;color:var(--navy);border-color:#fff;}
-  .switcher .disabled{opacity:0.4;cursor:default;}
-
-  /* ---------- Section nav ---------- */
-  .section-nav{
-    position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--gray-300);
-    box-shadow:var(--shadow);
-  }
-  .section-nav .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:0;padding-bottom:0;-ms-overflow-style:none;scrollbar-width:none;}
-  .section-nav .wrap::-webkit-scrollbar{display:none;}
-  .section-nav a{
-    white-space:nowrap;display:inline-block;padding:13px 14px;font-size:13.5px;font-weight:700;
+  .tabs-sticky .wrap{display:flex;gap:4px;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none;}
+  .tabs-sticky .wrap::-webkit-scrollbar{display:none;}
+  .tabs-sticky a{
+    white-space:nowrap;display:inline-block;padding:14px 16px;font-size:13.5px;font-weight:800;
     color:var(--gray-700);text-decoration:none;border-bottom:3px solid transparent;
   }
-  .section-nav a:hover{color:var(--navy);}
-  .section-nav a.is-active{color:var(--navy);border-bottom-color:var(--crimson);}
+  .tabs-sticky a:hover{color:var(--navy);}
+  .tabs-sticky a.is-active{color:var(--navy);border-bottom-color:var(--crimson);}
 
   /* ---------- Sample / quality badges ---------- */
   .qbadge{
@@ -112,54 +136,44 @@
 
   /* ---------- Sections ---------- */
   main{padding-bottom:40px;}
-  section{padding:36px 0;border-bottom:1px solid var(--gray-300);scroll-margin-top:52px;}
+  section{padding:36px 0;border-bottom:1px solid var(--gray-300);scroll-margin-top:58px;}
   section:last-of-type{border-bottom:none;}
   .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
-  .section-head h2{font-size:20px;margin:0;font-weight:900;color:var(--navy);}
+  .section-head h2{font-size:21px;margin:0;font-weight:900;color:var(--navy);}
   .section-sub{color:var(--gray-500);font-size:13.5px;margin:2px 0 0;}
   .card{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);box-shadow:var(--shadow);}
   .empty-note{
     background:var(--gray-100);border:1px dashed var(--gray-300);border-radius:var(--radius);
     padding:18px;color:var(--gray-500);font-size:13.5px;
   }
+  .badge-total{
+    display:inline-flex;align-items:center;gap:6px;background:var(--navy-tint);color:var(--navy);
+    font-weight:800;font-size:12px;padding:5px 12px;border-radius:999px;
+  }
 
-  /* ---------- Stat tiles ---------- */
+  /* ---------- 3. Summary stat tiles ---------- */
   .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
   .stat-tile{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);}
+  .stat-tile.highlight{
+    grid-column:1 / -1;border-left:5px solid var(--gold);background:linear-gradient(90deg,var(--gold-tint) 0%,#fff 32%);
+  }
+  .stat-tile.unavailable{opacity:0.55;}
   .stat-tile .label{font-size:12px;color:var(--gray-500);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}
-  .stat-tile .value{font-size:30px;font-weight:900;color:var(--navy);margin:6px 0 2px;}
+  .stat-tile .value{font-size:28px;font-weight:900;color:var(--navy);margin:6px 0 2px;}
+  .stat-tile.highlight .value{font-size:38px;}
   .stat-tile .sub{font-size:12.5px;color:var(--gray-500);}
   .delta{display:inline-flex;align-items:center;gap:3px;font-weight:800;font-size:12.5px;margin-left:6px;}
   .delta.up{color:var(--good);}
   .delta.down{color:var(--crimson);}
 
-  /* ---------- Timeline ---------- */
-  .timeline{list-style:none;margin:0;padding:0;}
-  .timeline li{
-    display:grid;grid-template-columns:70px 1fr;gap:14px;padding:12px 0;border-top:1px solid var(--gray-300);
-  }
-  .timeline li:first-child{border-top:none;}
-  .timeline .t-date{font-size:12.5px;font-weight:800;color:var(--slate);white-space:nowrap;padding-top:2px;}
-  .timeline .t-body{display:flex;gap:10px;align-items:flex-start;}
-  .t-chan{
-    flex:none;width:8px;height:8px;border-radius:50%;margin-top:6px;background:var(--gold);
-  }
-  .t-chan.email{background:var(--navy);}
-  .t-chan.showing{background:var(--crimson);}
-  .t-chan.inquiry{background:var(--gold);}
-  .t-chan.portal{background:var(--slate);}
-  .t-chan.social{background:#8A8580;}
-  .t-desc{font-size:14px;color:var(--gray-900);}
-  .t-desc .chan-label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--gray-500);font-weight:800;margin-bottom:2px;}
-
-  /* ---------- Charts ---------- */
+  /* ---------- 4. Views: chart & traffic sources ---------- */
   .chart-card{padding:18px;margin-bottom:16px;}
   .chart-card h3{font-size:14.5px;margin:0 0 3px;color:var(--navy);font-weight:800;}
   .chart-card .chart-caption{font-size:12.5px;color:var(--gray-500);margin:0 0 14px;}
   .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:12.5px;color:var(--gray-700);}
   .legend .sw{display:inline-flex;align-items:center;gap:6px;}
   .legend .dot{width:9px;height:9px;border-radius:2px;display:inline-block;}
-  .bar-row{display:grid;grid-template-columns:104px 1fr 56px;align-items:center;gap:10px;margin:9px 0;}
+  .bar-row{display:grid;grid-template-columns:140px 1fr 70px;align-items:center;gap:10px;margin:9px 0;}
   .bar-row .b-label{font-size:12.5px;color:var(--gray-700);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .bar-track{background:var(--gray-100);border-radius:4px;height:14px;position:relative;}
   .bar-fill{height:14px;border-radius:4px;min-width:4px;}
@@ -181,64 +195,11 @@
   }
   .tooltip.shown{opacity:1;}
   .chart-relative{position:relative;}
+  .daily-chart-svg .db-bar{fill:var(--navy);}
+  .daily-chart-svg .db-bar:hover{fill:var(--gold);}
+  .daily-chart-svg .db-label{font-size:9px;fill:var(--gray-500);text-anchor:middle;}
 
-  /* ---------- DOM Gauge ---------- */
-  .gauge-wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
-  .gauge-numbers{flex:1;min-width:180px;}
-  .gauge-numbers .g-big{font-size:30px;font-weight:900;color:var(--navy);}
-  .gauge-numbers .g-note{font-size:13px;color:var(--gray-700);margin-top:4px;}
-  .pace-badge{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:12.5px;padding:4px 10px;border-radius:999px;margin-top:8px;}
-  .pace-badge.good{background:#E4F3EA;color:var(--good);}
-  .pace-badge.slow{background:var(--crimson-tint);color:var(--crimson);}
-
-  /* ---------- Market ---------- */
-  .positioning-note{font-size:14.5px;color:var(--gray-900);background:var(--navy-tint);border-left:4px solid var(--navy);padding:14px 16px;border-radius:6px;margin-bottom:16px;}
-  .overpriced-note{font-size:13.5px;color:var(--crimson);background:var(--crimson-tint);border-left:4px solid var(--crimson);padding:12px 16px;border-radius:6px;margin-bottom:16px;font-weight:700;}
-  .status-pill{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.03em;padding:3px 8px;border-radius:999px;}
-  .status-active{background:#E4F3EA;color:var(--good);}
-  .status-pending{background:var(--gold-tint);color:#7A5E10;}
-  .status-sold{background:var(--gray-100);color:var(--gray-500);}
-
-  /* ---------- Showings ---------- */
-  .showing-card{padding:14px 16px;margin-bottom:10px;}
-  .showing-card .s-date{font-size:12px;font-weight:800;color:var(--slate);text-transform:uppercase;letter-spacing:0.03em;}
-  .showing-card .s-feedback{font-size:14.5px;color:var(--gray-900);margin-top:5px;font-style:italic;}
-  .showing-card .s-source{font-size:11.5px;color:var(--gray-500);margin-top:6px;}
-
-  /* ---------- Insights / Next ---------- */
-  .insight-summary{font-size:15px;color:var(--gray-900);line-height:1.65;}
-  .plan-cols{display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px;}
-  .plan-card{padding:16px;}
-  .plan-card h3{font-size:13.5px;text-transform:uppercase;letter-spacing:0.03em;color:var(--navy);margin:0 0 10px;}
-  .plan-card ul{margin:0;padding-left:18px;}
-  .plan-card li{font-size:14px;margin-bottom:8px;color:var(--gray-900);}
-  .plan-card.recs{border-top:3px solid var(--gold);}
-  .plan-card.next{border-top:3px solid var(--crimson);}
-
-  /* ---------- National Exposure hero band ---------- */
-  .exposure-band{
-    background:linear-gradient(135deg,var(--navy) 0%,#243962 100%);color:#fff;border-radius:14px;
-    padding:28px 24px;margin-bottom:0;box-shadow:var(--shadow);
-  }
-  .exposure-eyebrow{
-    display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:0.06em;
-    text-transform:uppercase;color:var(--gold);margin-bottom:10px;
-  }
-  .exposure-headline{font-size:44px;font-weight:900;line-height:1;letter-spacing:-0.01em;}
-  .exposure-headline .unit{font-size:16px;font-weight:700;color:#C7CFE0;margin-left:10px;}
-  .exposure-sub{font-size:14px;color:#DCE2F0;margin-top:8px;max-width:640px;}
-  .exposure-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:22px;}
-  .exposure-tile{
-    background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);border-radius:10px;padding:12px 14px;
-  }
-  .exposure-tile .e-val{font-size:20px;font-weight:900;color:#fff;}
-  .exposure-tile .e-lbl{font-size:11px;color:#C7CFE0;text-transform:uppercase;letter-spacing:0.03em;margin-top:2px;}
-  @media (min-width:640px){
-    .exposure-headline{font-size:58px;}
-    .exposure-tiles{grid-template-columns:repeat(4,1fr);}
-  }
-
-  /* ---------- Publications / display-ad logo grid ---------- */
+  /* ---------- 5. Marketing Reach ---------- */
   .pub-intro{font-size:15px;color:var(--gray-900);margin:0 0 16px;}
   .pub-intro strong{color:var(--navy);}
   .pub-stat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
@@ -261,36 +222,13 @@
   .pub-list-full strong{color:var(--gray-700);display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px;}
   @media (min-width:640px){ .logo-grid{grid-template-columns:repeat(6,1fr);} .pub-stat-row{grid-template-columns:repeat(4,1fr);} }
 
-  /* ---------- Buyer Interest Map ---------- */
-  .map-card{padding:18px;}
-  .map-svg-wrap{background:linear-gradient(180deg,#F6F8FC 0%,#EEF1F7 100%);border-radius:8px;overflow:hidden;}
-  .us-outline{fill:#E2E7F0;stroke:#C7D0E0;stroke-width:1.5;}
-  .map-marker{fill:var(--navy);fill-opacity:0.72;stroke:#fff;stroke-width:1;}
-  .map-marker:hover{fill:var(--crimson);fill-opacity:0.9;}
-  .map-marker-label{font-size:10px;font-weight:800;fill:#fff;text-anchor:middle;pointer-events:none;}
-  .map-caption{font-size:14px;color:var(--gray-900);margin-top:14px;font-weight:700;}
-  .map-privacy-note{font-size:11.5px;color:var(--gray-500);margin-top:6px;}
-
-  /* ---------- Momentum & Milestones ---------- */
-  .milestone-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
-  .milestone-chip{
-    display:inline-flex;align-items:center;gap:8px;background:var(--gold-tint);border:1px solid #E9D68C;
-    border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:700;color:#6B520C;
-  }
-  .milestone-chip .m-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex:none;}
-  .milestone-chip .m-date{color:#8A6E1A;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:0.02em;}
-  .daily-chart-svg .db-bar{fill:var(--navy);}
-  .daily-chart-svg .db-bar:hover{fill:var(--crimson);}
-  .daily-chart-svg .db-label{font-size:9px;fill:var(--gray-500);text-anchor:middle;}
-
-  /* ---------- Crexi search-score gauge / funnel / e-blast ---------- */
-  .crexi-gauge-wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
-  .crexi-gauge-numbers .cg-big{font-size:34px;font-weight:900;color:var(--navy);}
-  .crexi-gauge-numbers .cg-grade{
-    display:inline-block;margin-top:6px;background:var(--crimson-tint);color:var(--crimson);font-weight:800;
+  .mcg-gauge-wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+  .mcg-gauge-numbers .cg-big{font-size:34px;font-weight:900;color:var(--navy);}
+  .mcg-gauge-numbers .cg-grade{
+    display:inline-block;margin-top:6px;background:var(--gold-tint);color:#7A5E10;font-weight:800;
     font-size:12px;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:0.03em;
   }
-  .funnel-row{display:grid;grid-template-columns:130px 1fr 64px;align-items:center;gap:10px;margin:10px 0;}
+  .funnel-row{display:grid;grid-template-columns:150px 1fr 64px;align-items:center;gap:10px;margin:10px 0;}
   .funnel-row .f-label{font-size:12.5px;font-weight:700;color:var(--gray-700);}
   .funnel-track{background:var(--gray-100);border-radius:4px;height:16px;}
   .funnel-fill{height:16px;border-radius:4px;background:var(--crimson);min-width:4px;}
@@ -305,43 +243,109 @@
     margin-top:16px;font-size:13px;color:var(--gray-700);background:var(--gray-100);border-radius:8px;padding:12px 14px;
   }
 
-  /* ---------- Footer ---------- */
+  /* ---------- 6. Activity feed ---------- */
+  .feed-list{list-style:none;margin:0;padding:0;}
+  .feed-item{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 4px;
+    border-bottom:1px solid var(--gray-100);
+  }
+  .feed-item:last-child{border-bottom:none;}
+  .feed-left{display:flex;align-items:center;gap:12px;min-width:0;}
+  .feed-icon{
+    flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:900;color:#fff;background:var(--slate);
+  }
+  .feed-icon.milestone{background:var(--gold);color:var(--navy);}
+  .feed-icon.email{background:var(--navy);}
+  .feed-icon.showing{background:var(--crimson);}
+  .feed-icon.portal{background:var(--slate);}
+  .feed-icon.social{background:#8A8580;}
+  .feed-text{font-size:14px;color:var(--gray-900);font-weight:600;min-width:0;}
+  .feed-text .feed-kicker{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;color:var(--gray-500);font-weight:800;margin-bottom:2px;}
+  .feed-date{font-size:12px;color:var(--gray-500);font-weight:700;white-space:nowrap;flex:none;}
+
+  /* ---------- 7. Buyer Map ---------- */
+  .map-card{padding:18px;}
+  .map-svg-wrap{background:linear-gradient(180deg,#F6F8FC 0%,#EEF1F7 100%);border-radius:8px;overflow:hidden;}
+  .us-outline{fill:#E2E7F0;stroke:#C7D0E0;stroke-width:1.5;}
+  .map-marker{fill:var(--navy);fill-opacity:0.72;stroke:#fff;stroke-width:1;}
+  .map-marker:hover{fill:var(--crimson);fill-opacity:0.9;}
+  .map-marker-label{font-size:10px;font-weight:800;fill:#fff;text-anchor:middle;pointer-events:none;}
+  .map-caption{font-size:14px;color:var(--gray-900);margin-top:14px;font-weight:700;}
+  .map-privacy-note{font-size:11.5px;color:var(--gray-500);margin-top:6px;}
+
+  /* ---------- Market position / DOM gauge ---------- */
+  .positioning-note{font-size:14.5px;color:var(--gray-900);background:var(--navy-tint);border-left:4px solid var(--navy);padding:14px 16px;border-radius:6px;margin-bottom:16px;}
+  .overpriced-note{font-size:13.5px;color:var(--crimson);background:var(--crimson-tint);border-left:4px solid var(--crimson);padding:12px 16px;border-radius:6px;margin-bottom:16px;font-weight:700;}
+  .status-pill{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.03em;padding:3px 8px;border-radius:999px;}
+  .status-active{background:#E4F3EA;color:var(--good);}
+  .status-pending{background:var(--gold-tint);color:#7A5E10;}
+  .status-sold{background:var(--gray-100);color:var(--gray-500);}
+  .gauge-wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+  .gauge-numbers{flex:1;min-width:180px;}
+  .gauge-numbers .g-note{font-size:13px;color:var(--gray-700);margin-top:4px;}
+  .pace-badge{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:12.5px;padding:4px 10px;border-radius:999px;margin-top:8px;}
+  .pace-badge.good{background:#E4F3EA;color:var(--good);}
+  .pace-badge.slow{background:var(--crimson-tint);color:var(--crimson);}
+
+  /* ---------- Showings ---------- */
+  .showing-card{padding:14px 16px;margin-bottom:10px;}
+  .showing-card .s-date{font-size:12px;font-weight:800;color:var(--slate);text-transform:uppercase;letter-spacing:0.03em;}
+  .showing-card .s-feedback{font-size:14.5px;color:var(--gray-900);margin-top:5px;font-style:italic;}
+  .showing-card .s-source{font-size:11.5px;color:var(--gray-500);margin-top:6px;}
+
+  /* ---------- Insights / Next ---------- */
+  .insight-summary{font-size:15px;color:var(--gray-900);line-height:1.65;}
+  .plan-cols{display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px;}
+  .plan-card{padding:16px;}
+  .plan-card h3{font-size:13.5px;text-transform:uppercase;letter-spacing:0.03em;color:var(--navy);margin:0 0 10px;}
+  .plan-card ul{margin:0;padding-left:18px;}
+  .plan-card li{font-size:14px;margin-bottom:8px;color:var(--gray-900);}
+  .plan-card.recs{border-top:3px solid var(--gold);}
+  .plan-card.next{border-top:3px solid var(--crimson);}
+
+  /* ---------- 8. Footer ---------- */
   .site-footer{background:var(--navy);color:#DCE2F0;padding:36px 0 26px;}
   .footer-proof{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:26px;}
   .proof-tile{text-align:center;}
   .proof-tile .p-num{font-size:22px;font-weight:900;color:var(--gold);}
   .proof-tile .p-label{font-size:11.5px;color:#B9C2DA;margin-top:2px;text-transform:uppercase;letter-spacing:0.03em;}
   .footer-brand{font-weight:900;font-size:16px;color:#fff;}
-  .footer-tagline{font-size:12.5px;color:#B9C2DA;margin-top:6px;max-width:520px;}
-  .footer-meta{font-size:11.5px;color:#8E9AC0;margin-top:20px;border-top:1px solid rgba(255,255,255,0.15);padding-top:16px;}
-  .footer-meta a{color:#CBD5EC;}
-
-  .print-btn{
-    background:var(--gold);color:var(--navy);border:none;font-weight:800;font-size:12.5px;
-    padding:8px 14px;border-radius:8px;cursor:pointer;
+  .footer-tagline{font-size:12.5px;color:#B9C2DA;margin-top:6px;max-width:600px;}
+  .footer-switcher{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px;}
+  .footer-switcher a, .footer-switcher span{
+    font-size:12.5px;font-weight:700;padding:7px 14px;border-radius:8px;text-decoration:none;
+    border:1px solid rgba(255,255,255,0.28);color:#EDF0F8;
   }
+  .footer-switcher a:hover{background:rgba(255,255,255,0.14);}
+  .footer-switcher .active{background:#fff;color:var(--navy);border-color:#fff;}
+  .footer-switcher .disabled{opacity:0.4;cursor:default;}
+  .footer-prepared{font-size:13px;color:#fff;font-weight:800;margin-top:22px;border-top:1px solid rgba(255,255,255,0.15);padding-top:16px;}
+  .footer-meta{font-size:11.5px;color:#8E9AC0;margin-top:8px;}
+  .footer-meta a{color:#CBD5EC;}
+  .badge-print{display:none;}
 
   @media (min-width:640px){
-    .hero h1{font-size:28px;}
     .stat-grid{grid-template-columns:repeat(4,1fr);}
+    .stat-tile.highlight{grid-column:span 2;}
     .plan-cols{grid-template-columns:1fr 1fr;}
     .footer-proof{grid-template-columns:repeat(4,1fr);}
+    .hero-full{min-height:600px;}
   }
-  @media (min-width:760px){
-    .timeline li{grid-template-columns:110px 1fr;}
+  @media (max-width:639px){
+    .hero-monogram{display:none;}
+    .hero-card .hc-price{font-size:23px;}
   }
 
   @media print{
     body{background:#fff;}
-    .section-nav,.switcher,.print-btn,.skip-link,.sr-only-toggle{display:none !important;}
+    .tabs-sticky,.hero-buttons,.footer-switcher,.skip-link,.sr-only-toggle{display:none !important;}
     .badge-print{display:inline-block;}
     section{border-bottom:none;page-break-inside:avoid;padding:18px 0;}
-    #overview{page-break-before:auto;}
-    #analytics,#market,#showings,#next,#advertised,#buyermap,#momentum,#crexi-detail{page-break-before:always;}
+    #reach,#activity,#buyermap,#market,#showings,#next{page-break-before:always;}
     .wrap{max-width:100%;}
-    .site-header{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .hero-full{min-height:0;padding-bottom:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .site-footer{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-    .exposure-band{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .logo-tile img{filter:none !important;opacity:1 !important;}
     .stat-tile,.card{box-shadow:none;}
     a[href]:after{content:"";}
@@ -349,77 +353,271 @@
 </style>
 </head>
 <body>
-<a class="skip-link" href="#overview">Skip to report content</a>
+<a class="skip-link" href="#summary">Skip to report content</a>
 
-<header class="site-header">
-  <div class="wrap">
-    <div class="brand-row">
-      <div class="wordmark">
-        <span class="mark">MCG</span>
-        <span>Mason Capital Group<br><small>Seller Activity Report</small></span>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center;">
-        <span class="period-chip">Weekly &middot; Jul 13, 2026 – Jul 19, 2026</span>
-        <button class="print-btn" onclick="window.print()" aria-label="Print or save as PDF">Print / Save PDF</button>
-      </div>
-    </div>
-
-    <div class="hero">
-      <span class="hero-status">Active</span>
-      <h1>1715 N Garland Ave, Fayetteville, AR</h1>
-      <div class="hero-facts">
-        <span><strong>$750,000</strong></span>
-<span>4 bd</span><span>3.5 ba</span>        <span>Residential</span>
+<!-- ==========================================================
+     1. HERO
+     ========================================================== -->
+<header class="hero-full no-photo"
+>
+<div class="hero-monogram" aria-hidden="true">MCG</div>  <div class="wrap hero-inner">
+    <div class="hero-top-row">
+      <div class="hero-agent-inline">Mason Capital Group &middot; MCG Listing Intelligence</div>
+      <div class="hero-buttons">
+        <button class="btn btn-print-hero" onclick="window.print()" aria-label="Print or save as PDF">Print / Save PDF</button>
       </div>
     </div>
 
-    <nav class="switcher" aria-label="Report period switcher">
-          <span class="active">Weekly &middot; 2026-W29</span>
-          <span class="disabled">Monthly report unavailable</span>
-          <span class="disabled">Quarterly report unavailable</span>
-    </nav>
+    <div class="hero-cards">
+      <div class="hero-card">
+        <span class="hero-chip">MCG Listing Intelligence</span><span class="hero-status">Active</span>
+        <h1>1715 N Garland Ave</h1>
+        <div class="hc-city">Fayetteville, AR</div>
+        <div class="hc-price">$750,000</div>
+        <div class="hc-meta">
+4 bd &middot; 3.5 ba &middot; Residential
+<br>Listed Jun 22, 2026 &middot; 25 Days on Market        </div>
+      </div>
+      <div class="agent-card">
+        <span class="ac-name">Cameron Torabi</span>
+        <span class="ac-firm">Mason Capital Group Real Estate Investment &amp; Trust</span>
+        <a class="ac-phone" href="tel:+14799253333">(479) 925-3333</a>
+      </div>
+    </div>
   </div>
 </header>
 
-<nav class="section-nav" aria-label="Report sections">
+<!-- ==========================================================
+     2. STICKY TAB NAV
+     ========================================================== -->
+<nav class="tabs-sticky" aria-label="Report sections">
   <div class="wrap">
-    <a href="#exposure">National Exposure</a>
-    <a href="#advertised">Advertised</a>
-    <a href="#buyermap">Buyer Map</a>
-    <a href="#momentum">Momentum</a>
-    <a href="#overview">Overview</a>
-    <a href="#activity">Activity</a>
-    <a href="#analytics">Analytics</a>
-    <a href="#market">Market</a>
-    <a href="#showings">Showings</a>
-    <a href="#next">What's Next</a>
-  </div>
+    <a href="#summary">Summary</a>
+<a href="#views">Views</a><a href="#reach">Marketing Reach</a>    <a href="#activity">Activity</a>
+<a href="#buyermap">Buyer Map</a>  </div>
 </nav>
 
 <main>
   <div class="wrap">
 
 
-  <section id="exposure" style="padding-top:22px;">
-    <div class="exposure-band">
-      <div class="exposure-eyebrow">&#9679; National Exposure</div>
-      <div class="exposure-headline">24,063<span class="unit">Total views on homes.com</span></div>
-      <p class="exposure-sub">1715 N Garland Ave is being marketed to buyers nationwide through homes.com&rsquo;s syndicated network &mdash; every number below is pulled directly from the live listing dashboard.</p>
-      <div class="exposure-tiles">
-        <div class="exposure-tile"><div class="e-val">2,659</div><div class="e-lbl">Top-of-search placements</div></div>
-        <div class="exposure-tile"><div class="e-val">2,152</div><div class="e-lbl">Display ad views</div></div>
-        <div class="exposure-tile"><div class="e-val">9</div><div class="e-lbl">Matterport tour views</div></div>
-        <div class="exposure-tile"><div class="e-val">44</div><div class="e-lbl">National publications</div></div>
+  <!-- ==========================================================
+       3. SUMMARY
+       ========================================================== -->
+  <section id="summary" style="padding-top:26px;">
+    <div class="section-head">
+      <h2>Summary</h2>
+      <p class="section-sub">Headline marketing activity for Jul 13, 2026 – Jul 19, 2026</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-tile highlight ">
+        <div class="label">Total Marketing Views</div>
+        <div class="value">24,063</div>
+        <div class="sub">Combined listing views across MCG&#39;s on-site listing widget and syndication network placements this period</div>
+      </div>
+      <div class="stat-tile  ">
+        <div class="label">Display Ad Views</div>
+        <div class="value">2,152</div>
+        <div class="sub">Off-site ad impressions on partner publications</div>
+      </div>
+      <div class="stat-tile  ">
+        <div class="label">Top-of-Search Placements</div>
+        <div class="value">2,659</div>
+        <div class="sub">Times the listing ranked first in buyer searches</div>
+      </div>
+      <div class="stat-tile  ">
+        <div class="label">Website Views</div>
+        <div class="value">4,004</div>
+        <div class="sub">3,840 unique visitors</div>
+      </div>
+      <div class="stat-tile  ">
+        <div class="label">Email Reach</div>
+        <div class="value">0</div>
+        <div class="sub">Unavailable this period</div>
+      </div>
+      <div class="stat-tile  ">
+        <div class="label">Inquiries &amp; Leads</div>
+        <div class="value">0</div>
+        <div class="sub">0 showings logged this period</div>
+      </div>
+      <div class="stat-tile  ">
+        <div class="label">Saved / Favorites</div>
+        <div class="value">1</div>
+        <div class="sub">Buyers who saved this listing</div>
+      </div>
+      <div class="stat-tile  ">
+        <div class="label">3D Tour Views</div>
+        <div class="value">9</div>
+        <div class="sub">18 min. of tour time logged</div>
       </div>
     </div>
   </section>
 
-  <section id="advertised">
+  <!-- ==========================================================
+       4. VIEWS
+       ========================================================== -->
+  <section id="views">
     <div class="section-head">
-      <h2>Where Your Property Is Advertised</h2>
-      <p class="section-sub">Display-ad placement across homes.com&rsquo;s national retargeting network</p>
+      <h2>Views</h2>
+      <p class="section-sub">Daily view activity and where those views originate</p>
     </div>
-    <p class="pub-intro">Your listing has appeared on <strong>44 recognizable publications</strong> &mdash; from national news and sports to lifestyle and finance sites &mdash; putting it in front of buyers well beyond the local MLS.</p>
+
+    <div class="card chart-card">
+      <h3>Daily views</h3>
+      <p class="chart-caption">22,611 total views tracked over 26 days across MCG's national syndication partners.</p>
+      <div class="chart-relative">
+        <svg class="daily-chart-svg" viewBox="0 0 416 130" width="100%" height="150" role="img" aria-label="Daily views bar chart">
+          <rect class="db-bar hoverable" x="2" width="11" rx="2"
+                y="86.855" height="18.1"
+                data-tip="2026-06-22: 248 views"></rect>
+          <text class="db-label" x="7" y="120">Jun 22</text>
+          <rect class="db-bar hoverable" x="18" width="11" rx="2"
+                y="69.185" height="35.8"
+                data-tip="2026-06-23: 490 views"></rect>
+          <rect class="db-bar hoverable" x="34" width="11" rx="2"
+                y="74.98" height="30.0"
+                data-tip="2026-06-24: 411 views"></rect>
+          <rect class="db-bar hoverable" x="50" width="11" rx="2"
+                y="72.50999999999999" height="32.5"
+                data-tip="2026-06-25: 445 views"></rect>
+          <rect class="db-bar hoverable" x="66" width="11" rx="2"
+                y="73.36500000000001" height="31.6"
+                data-tip="2026-06-26: 433 views"></rect>
+          <text class="db-label" x="71" y="120">Jun 26</text>
+          <rect class="db-bar hoverable" x="82" width="11" rx="2"
+                y="72.50999999999999" height="32.5"
+                data-tip="2026-06-27: 444 views"></rect>
+          <rect class="db-bar hoverable" x="98" width="11" rx="2"
+                y="63.96" height="41.0"
+                data-tip="2026-06-28: 561 views"></rect>
+          <rect class="db-bar hoverable" x="114" width="11" rx="2"
+                y="48.475" height="56.5"
+                data-tip="2026-06-29: 773 views"></rect>
+          <rect class="db-bar hoverable" x="130" width="11" rx="2"
+                y="31.944999999999993" height="73.1"
+                data-tip="2026-06-30: 1,000 views"></rect>
+          <text class="db-label" x="135" y="120">Jun 30</text>
+          <rect class="db-bar hoverable" x="146" width="11" rx="2"
+                y="35.935" height="69.1"
+                data-tip="2026-07-01: 945 views"></rect>
+          <rect class="db-bar hoverable" x="162" width="11" rx="2"
+                y="31.944999999999993" height="73.1"
+                data-tip="2026-07-02: 1,000 views"></rect>
+          <rect class="db-bar hoverable" x="178" width="11" rx="2"
+                y="17.315000000000012" height="87.7"
+                data-tip="2026-07-03: 1,200 views"></rect>
+          <rect class="db-bar hoverable" x="194" width="11" rx="2"
+                y="24.63000000000001" height="80.4"
+                data-tip="2026-07-04: 1,100 views"></rect>
+          <text class="db-label" x="199" y="120">Jul 4</text>
+          <rect class="db-bar hoverable" x="210" width="11" rx="2"
+                y="31.944999999999993" height="73.1"
+                data-tip="2026-07-05: 1,000 views"></rect>
+          <rect class="db-bar hoverable" x="226" width="11" rx="2"
+                y="17.315000000000012" height="87.7"
+                data-tip="2026-07-06: 1,200 views"></rect>
+          <rect class="db-bar hoverable" x="242" width="11" rx="2"
+                y="24.63000000000001" height="80.4"
+                data-tip="2026-07-07: 1,100 views"></rect>
+          <rect class="db-bar hoverable" x="258" width="11" rx="2"
+                y="31.944999999999993" height="73.1"
+                data-tip="2026-07-08: 1,000 views"></rect>
+          <text class="db-label" x="263" y="120">Jul 8</text>
+          <rect class="db-bar hoverable" x="274" width="11" rx="2"
+                y="24.63000000000001" height="80.4"
+                data-tip="2026-07-09: 1,100 views"></rect>
+          <rect class="db-bar hoverable" x="290" width="11" rx="2"
+                y="36.41" height="68.6"
+                data-tip="2026-07-10: 938 views"></rect>
+          <rect class="db-bar hoverable" x="306" width="11" rx="2"
+                y="24.63000000000001" height="80.4"
+                data-tip="2026-07-11: 1,100 views"></rect>
+          <rect class="db-bar hoverable" x="322" width="11" rx="2"
+                y="17.315000000000012" height="87.7"
+                data-tip="2026-07-12: 1,200 views"></rect>
+          <text class="db-label" x="327" y="120">Jul 12</text>
+          <rect class="db-bar hoverable" x="338" width="11" rx="2"
+                y="24.63000000000001" height="80.4"
+                data-tip="2026-07-13: 1,100 views"></rect>
+          <rect class="db-bar hoverable" x="354" width="11" rx="2"
+                y="10.0" height="95.0"
+                data-tip="2026-07-14: 1,300 views"></rect>
+          <rect class="db-bar hoverable" x="370" width="11" rx="2"
+                y="17.315000000000012" height="87.7"
+                data-tip="2026-07-15: 1,200 views"></rect>
+          <rect class="db-bar hoverable" x="386" width="11" rx="2"
+                y="31.944999999999993" height="73.1"
+                data-tip="2026-07-16: 1,000 views"></rect>
+          <rect class="db-bar hoverable" x="402" width="11" rx="2"
+                y="81.44" height="23.6"
+                data-tip="2026-07-17: 323 views"></rect>
+          <text class="db-label" x="407" y="120">Jul 17</text>
+        </svg>
+        <div class="tooltip" id="tip-daily"></div>
+      </div>
+      <div class="legend"><span class="sw"><span class="dot" style="background:var(--navy)"></span>Views</span></div>
+    </div>
+
+    <div class="card chart-card">
+      <h3>Top traffic sources</h3>
+      <p class="chart-caption">Where views on the MCG website and MCG's national syndication partners originated, combined.</p>
+      <div class="bar-row">
+        <div class="b-label">Property Search Page</div>
+        <div class="bar-track"><div class="bar-fill" style="width:77.0%;background:#1B2A4A;"></div></div>
+        <div class="b-value">77.0% &middot; 21,489</div>
+      </div>
+      <div class="bar-row">
+        <div class="b-label">Search Engines</div>
+        <div class="bar-track"><div class="bar-fill" style="width:12.1%;background:#A6192E;"></div></div>
+        <div class="b-value">12.1% &middot; 3,384</div>
+      </div>
+      <div class="bar-row">
+        <div class="b-label">Display Ads</div>
+        <div class="bar-track"><div class="bar-fill" style="width:7.8%;background:#C9A227;"></div></div>
+        <div class="b-value">7.8% &middot; 2,177</div>
+      </div>
+      <div class="bar-row">
+        <div class="b-label">Direct</div>
+        <div class="bar-track"><div class="bar-fill" style="width:1.0%;background:#5C7290;"></div></div>
+        <div class="b-value">1.0% &middot; 267</div>
+      </div>
+      <div class="bar-row">
+        <div class="b-label">Greatschools</div>
+        <div class="bar-track"><div class="bar-fill" style="width:0.5%;background:#8A8580;"></div></div>
+        <div class="b-value">0.5% &middot; 138</div>
+      </div>
+      <div class="bar-row">
+        <div class="b-label">Email Campaigns</div>
+        <div class="bar-track"><div class="bar-fill" style="width:0.4%;background:#1B2A4A;"></div></div>
+        <div class="b-value">0.4% &middot; 115</div>
+      </div>
+      <div class="bar-row">
+        <div class="b-label">Other</div>
+        <div class="bar-track"><div class="bar-fill" style="width:1.2%;background:#A6192E;"></div></div>
+        <div class="b-value">1.2% &middot; 323</div>
+      </div>
+      <div class="legend">
+        <span class="sw"><span class="dot" style="background:#1B2A4A"></span>Property Search Page</span>
+        <span class="sw"><span class="dot" style="background:#A6192E"></span>Search Engines</span>
+        <span class="sw"><span class="dot" style="background:#C9A227"></span>Display Ads</span>
+        <span class="sw"><span class="dot" style="background:#5C7290"></span>Direct</span>
+        <span class="sw"><span class="dot" style="background:#8A8580"></span>Greatschools</span>
+        <span class="sw"><span class="dot" style="background:#1B2A4A"></span>Email Campaigns</span>
+        <span class="sw"><span class="dot" style="background:#A6192E"></span>Other</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       5. MARKETING REACH
+       ========================================================== -->
+  <section id="reach">
+    <div class="section-head">
+      <h2>Marketing Reach</h2>
+      <p class="section-sub">Targeted display advertising and where this listing has been published</p>
+    </div>
+
+    <p class="pub-intro">Your listing has appeared on <strong>44 recognizable publications</strong> &mdash; from national news and sports to lifestyle and finance sites &mdash; through MCG&#39;s national syndication partners — the most capable platforms in residential and commercial real estate marketing.</p>
     <div class="pub-stat-row">
       <div class="pub-stat"><div class="p-val">2,152</div><div class="p-lbl">Ad views</div></div>
       <div class="pub-stat"><div class="p-val">303</div><div class="p-lbl">Sites displayed on</div></div>
@@ -564,12 +762,75 @@
       <strong>Full publication list (44)</strong>
       facebook.com &amp;middot; instagram.com &amp;middot; meta.com &amp;middot; espn.com &amp;middot; cnn.com &amp;middot; foxnews.com &amp;middot; msn.com &amp;middot; mapquest.com &amp;middot; nypost.com &amp;middot; weather.com &amp;middot; usnews.com &amp;middot; usatoday.com &amp;middot; yahoo.com &amp;middot; bbc.com &amp;middot; nbcnews.com &amp;middot; politico.com &amp;middot; ebay.com &amp;middot; kohls.com &amp;middot; people.com &amp;middot; accuweather.com &amp;middot; nytimes.com &amp;middot; t-mobile.com &amp;middot; huffpost.com &amp;middot; npr.org &amp;middot; usmagazine.com &amp;middot; nydailynews.com &amp;middot; theatlantic.com &amp;middot; mlb.com &amp;middot; independent.co.uk &amp;middot; inquirer.com &amp;middot; myfox8.com &amp;middot; coinmarketcap.com &amp;middot; cnbc.com &amp;middot; suntimes.com &amp;middot; billboard.com &amp;middot; elle.com &amp;middot; komonews.com &amp;middot; kbb.com &amp;middot; 5newsonline.com &amp;middot; wsj.com &amp;middot; washingtontimes.com &amp;middot; wtkr.com &amp;middot; kshb.com &amp;middot; wchstv.com
     </div>
+
   </section>
 
+  <!-- ==========================================================
+       6. ACTIVITY
+       ========================================================== -->
+  <section id="activity">
+    <div class="section-head">
+      <h2>Activity</h2>
+      <p class="section-sub">Recognition earned and outreach touches logged this period, most recent first</p>
+    </div>
+    <div class="card">
+      <ul class="feed-list">
+        <li class="feed-item">
+          <div class="feed-left">
+            <span class="feed-icon milestone" aria-hidden="true">★</span>
+            <span class="feed-text">
+<span class="feed-kicker">Milestone</span>              Your listing reached Very Popular status
+            </span>
+          </div>
+          <div class="feed-date">Jul 17, 2026</div>
+        </li>
+        <li class="feed-item">
+          <div class="feed-left">
+            <span class="feed-icon milestone" aria-hidden="true">★</span>
+            <span class="feed-text">
+<span class="feed-kicker">Milestone</span>              Your listing reached Very Popular status
+            </span>
+          </div>
+          <div class="feed-date">Jul 9, 2026</div>
+        </li>
+        <li class="feed-item">
+          <div class="feed-left">
+            <span class="feed-icon milestone" aria-hidden="true">★</span>
+            <span class="feed-text">
+<span class="feed-kicker">Milestone</span>              Your listing is now considered a Hot Property
+            </span>
+          </div>
+          <div class="feed-date">Jun 28, 2026</div>
+        </li>
+        <li class="feed-item">
+          <div class="feed-left">
+            <span class="feed-icon milestone" aria-hidden="true">★</span>
+            <span class="feed-text">
+<span class="feed-kicker">Milestone</span>              Your listing is now considered Very Popular
+            </span>
+          </div>
+          <div class="feed-date">Jun 24, 2026</div>
+        </li>
+        <li class="feed-item">
+          <div class="feed-left">
+            <span class="feed-icon milestone" aria-hidden="true">★</span>
+            <span class="feed-text">
+<span class="feed-kicker">Milestone</span>              Your listing was listed as New Listing
+            </span>
+          </div>
+          <div class="feed-date">Jun 22, 2026</div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       7. BUYER MAP
+       ========================================================== -->
   <section id="buyermap">
     <div class="section-head">
-      <h2>Buyer Interest Map</h2>
-      <p class="section-sub">Where online visitors to this listing are located</p>
+      <h2>Buyer Map</h2>
+      <p class="section-sub">See where buyers are discovering your listing <span class="badge-total">20,603 mapped views</span></p>
     </div>
     <div class="card map-card">
       <div class="map-svg-wrap">
@@ -617,243 +878,15 @@
           <text class="map-marker-label" x="503.3" y="272.3">4990</text>
         </svg>
       </div>
-      <p class="map-caption">Total mapped views: 20,603 &mdash; buyers from across the country are discovering this property.</p>
-      <p class="map-privacy-note">Marker positions are approximate and aggregated for buyer privacy; homes.com does not report exact visitor addresses. 32 mapped clusters shown within the continental U.S. frame.</p>
+      <p class="map-caption">Buyers from across the country are discovering this property.</p>
+      <p class="map-privacy-note">Marker positions are approximate and aggregated for buyer privacy; exact visitor addresses are not reported. 32 mapped clusters shown within the continental U.S. frame.</p>
     </div>
   </section>
 
-  <section id="momentum">
-    <div class="section-head">
-      <h2>Momentum &amp; Milestones</h2>
-      <p class="section-sub">Recognition earned and daily view activity on homes.com</p>
-    </div>
-    <div class="milestone-row">
-      <span class="milestone-chip"><span class="m-dot" aria-hidden="true"></span><span class="m-date">Jun 22, 2026</span>&nbsp;Listed as New Listing</span>
-      <span class="milestone-chip"><span class="m-dot" aria-hidden="true"></span><span class="m-date">Jun 24, 2026</span>&nbsp;Now considered Very Popular</span>
-      <span class="milestone-chip"><span class="m-dot" aria-hidden="true"></span><span class="m-date">Jun 28, 2026</span>&nbsp;Now considered a Hot Property</span>
-      <span class="milestone-chip"><span class="m-dot" aria-hidden="true"></span><span class="m-date">Jul 9, 2026</span>&nbsp;Reached Very Popular status</span>
-      <span class="milestone-chip"><span class="m-dot" aria-hidden="true"></span><span class="m-date">Jul 17, 2026</span>&nbsp;Reached Very Popular status</span>
-    </div>
-    <div class="card chart-card">
-      <h3>Daily views</h3>
-      <p class="chart-caption">22,611 total views tracked over 26 days on homes.com.</p>
-      <div class="chart-relative">
-        <svg class="daily-chart-svg" viewBox="0 0 416 130" width="100%" height="150" role="img" aria-label="Daily views bar chart">
-          <rect class="db-bar hoverable" x="2" width="11" rx="2"
-                y="86.855" height="18.1"
-                data-tip="2026-06-22: 248 views"></rect>
-          <text class="db-label" x="7" y="120">Jun 22</text>
-          <rect class="db-bar hoverable" x="18" width="11" rx="2"
-                y="69.185" height="35.8"
-                data-tip="2026-06-23: 490 views"></rect>
-          <rect class="db-bar hoverable" x="34" width="11" rx="2"
-                y="74.98" height="30.0"
-                data-tip="2026-06-24: 411 views"></rect>
-          <rect class="db-bar hoverable" x="50" width="11" rx="2"
-                y="72.50999999999999" height="32.5"
-                data-tip="2026-06-25: 445 views"></rect>
-          <rect class="db-bar hoverable" x="66" width="11" rx="2"
-                y="73.36500000000001" height="31.6"
-                data-tip="2026-06-26: 433 views"></rect>
-          <text class="db-label" x="71" y="120">Jun 26</text>
-          <rect class="db-bar hoverable" x="82" width="11" rx="2"
-                y="72.50999999999999" height="32.5"
-                data-tip="2026-06-27: 444 views"></rect>
-          <rect class="db-bar hoverable" x="98" width="11" rx="2"
-                y="63.96" height="41.0"
-                data-tip="2026-06-28: 561 views"></rect>
-          <rect class="db-bar hoverable" x="114" width="11" rx="2"
-                y="48.475" height="56.5"
-                data-tip="2026-06-29: 773 views"></rect>
-          <rect class="db-bar hoverable" x="130" width="11" rx="2"
-                y="31.944999999999993" height="73.1"
-                data-tip="2026-06-30: 1,000 views"></rect>
-          <text class="db-label" x="135" y="120">Jun 30</text>
-          <rect class="db-bar hoverable" x="146" width="11" rx="2"
-                y="35.935" height="69.1"
-                data-tip="2026-07-01: 945 views"></rect>
-          <rect class="db-bar hoverable" x="162" width="11" rx="2"
-                y="31.944999999999993" height="73.1"
-                data-tip="2026-07-02: 1,000 views"></rect>
-          <rect class="db-bar hoverable" x="178" width="11" rx="2"
-                y="17.315000000000012" height="87.7"
-                data-tip="2026-07-03: 1,200 views"></rect>
-          <rect class="db-bar hoverable" x="194" width="11" rx="2"
-                y="24.63000000000001" height="80.4"
-                data-tip="2026-07-04: 1,100 views"></rect>
-          <text class="db-label" x="199" y="120">Jul 4</text>
-          <rect class="db-bar hoverable" x="210" width="11" rx="2"
-                y="31.944999999999993" height="73.1"
-                data-tip="2026-07-05: 1,000 views"></rect>
-          <rect class="db-bar hoverable" x="226" width="11" rx="2"
-                y="17.315000000000012" height="87.7"
-                data-tip="2026-07-06: 1,200 views"></rect>
-          <rect class="db-bar hoverable" x="242" width="11" rx="2"
-                y="24.63000000000001" height="80.4"
-                data-tip="2026-07-07: 1,100 views"></rect>
-          <rect class="db-bar hoverable" x="258" width="11" rx="2"
-                y="31.944999999999993" height="73.1"
-                data-tip="2026-07-08: 1,000 views"></rect>
-          <text class="db-label" x="263" y="120">Jul 8</text>
-          <rect class="db-bar hoverable" x="274" width="11" rx="2"
-                y="24.63000000000001" height="80.4"
-                data-tip="2026-07-09: 1,100 views"></rect>
-          <rect class="db-bar hoverable" x="290" width="11" rx="2"
-                y="36.41" height="68.6"
-                data-tip="2026-07-10: 938 views"></rect>
-          <rect class="db-bar hoverable" x="306" width="11" rx="2"
-                y="24.63000000000001" height="80.4"
-                data-tip="2026-07-11: 1,100 views"></rect>
-          <rect class="db-bar hoverable" x="322" width="11" rx="2"
-                y="17.315000000000012" height="87.7"
-                data-tip="2026-07-12: 1,200 views"></rect>
-          <text class="db-label" x="327" y="120">Jul 12</text>
-          <rect class="db-bar hoverable" x="338" width="11" rx="2"
-                y="24.63000000000001" height="80.4"
-                data-tip="2026-07-13: 1,100 views"></rect>
-          <rect class="db-bar hoverable" x="354" width="11" rx="2"
-                y="10.0" height="95.0"
-                data-tip="2026-07-14: 1,300 views"></rect>
-          <rect class="db-bar hoverable" x="370" width="11" rx="2"
-                y="17.315000000000012" height="87.7"
-                data-tip="2026-07-15: 1,200 views"></rect>
-          <rect class="db-bar hoverable" x="386" width="11" rx="2"
-                y="31.944999999999993" height="73.1"
-                data-tip="2026-07-16: 1,000 views"></rect>
-          <rect class="db-bar hoverable" x="402" width="11" rx="2"
-                y="81.44" height="23.6"
-                data-tip="2026-07-17: 323 views"></rect>
-          <text class="db-label" x="407" y="120">Jul 17</text>
-        </svg>
-        <div class="tooltip" id="tip-daily"></div>
-      </div>
-    </div>
-  </section>
-
-
-  <section id="overview">
-    <div class="section-head">
-      <h2>Period summary</h2>
-      <p class="section-sub">Headline activity for Jul 13, 2026 – Jul 19, 2026</p>
-    </div>
-    <div class="stat-grid">
-      <div class="stat-tile">
-        <div class="label">Total views</div>
-        <div class="value">24,063<span class="delta up">0.0%</span></div>
-        <div class="sub">0 IDX + 24,063 homes.com</div>
-      </div>
-      <div class="stat-tile">
-        <div class="label">Inquiries</div>
-        <div class="value">0</div>
-        <div class="sub">0 chat, 0 lead forms</div>
-      </div>
-      <div class="stat-tile">
-        <div class="label">Showings</div>
-        <div class="value">0</div>
-        <div class="sub">None logged this period</div>
-      </div>
-      <div class="stat-tile">
-        <div class="label">Email reach</div>
-        <div class="value">0</div>
-        <div class="sub">Sources unavailable this period</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="activity">
-    <div class="section-head">
-      <h2>Activity timeline</h2>
-      <p class="section-sub">Marketing and outreach touches logged this period</p>
-    </div>
-    <div class="empty-note">No marketing activity logged for this period.</div>
-  </section>
-
-  <section id="analytics">
-    <div class="section-head">
-      <h2>Marketing analytics</h2>
-      <p class="section-sub">Traffic, sources, and email engagement</p>
-    </div>
-
-
-    <div class="card chart-card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
-        <h3>Views: this period vs prior period</h3>
-      </div>
-      <p class="chart-caption">Combined IDX profile and portal syndication views.</p>
-      <div class="chart-relative">
-        <svg viewBox="0 0 400 110" width="100%" height="110" role="img" aria-label="Views comparison bar chart">
-          <line x1="8" y1="95" x2="392" y2="95" stroke="var(--gray-300)" stroke-width="1"/>
-          <rect x="40" y="88.0" width="26" rx="4"
-                height="0.0" fill="var(--slate)"
-                class="hoverable" data-tip="Prior period: 0 views"/>
-          <text x="53" y="106" text-anchor="middle" font-size="10" fill="var(--gray-500)">Prior</text>
-          <text x="53" y="78.0" text-anchor="middle" font-size="11" font-weight="700" fill="var(--navy)">0</text>
-
-          <rect x="140" y="18.0" width="26" rx="4"
-                height="70.0" fill="var(--navy)"
-                class="hoverable" data-tip="This period: 24,063 views"/>
-          <text x="153" y="106" text-anchor="middle" font-size="10" fill="var(--gray-500)">Current</text>
-          <text x="153" y="8.0" text-anchor="middle" font-size="11" font-weight="700" fill="var(--navy)">24,063</text>
-        </svg>
-        <div class="tooltip" id="tip-views"></div>
-      </div>
-      <div class="legend">
-        <span class="sw"><span class="dot" style="background:var(--slate)"></span>Prior period</span>
-        <span class="sw"><span class="dot" style="background:var(--navy)"></span>Current period</span>
-      </div>
-    </div>
-
-    <div class="card chart-card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
-        <h3>Traffic sources</h3>
-      </div>
-      <p class="chart-caption">Website sessions by acquisition source.</p>
-      <div class="bar-row">
-        <div class="b-label">Google</div>
-        <div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#1B2A4A;"></div></div>
-        <div class="b-value">3,384</div>
-      </div>
-      <div class="bar-row">
-        <div class="b-label">(Direct)</div>
-        <div class="bar-track"><div class="bar-fill" style="width:7.9%;background:#A6192E;"></div></div>
-        <div class="b-value">267</div>
-      </div>
-      <div class="bar-row">
-        <div class="b-label">Mp5Th.R.Sp1-Brevo.Net</div>
-        <div class="bar-track"><div class="bar-fill" style="width:3.4%;background:#C9A227;"></div></div>
-        <div class="b-value">115</div>
-      </div>
-      <div class="bar-row">
-        <div class="b-label">(Not Set)</div>
-        <div class="bar-track"><div class="bar-fill" style="width:1.7%;background:#5C7290;"></div></div>
-        <div class="b-value">59</div>
-      </div>
-      <div class="bar-row">
-        <div class="b-label">Other</div>
-        <div class="bar-track"><div class="bar-fill" style="width:0.1%;background:#8A8580;"></div></div>
-        <div class="b-value">5</div>
-      </div>
-      <div class="legend">
-        <span class="sw"><span class="dot" style="background:#1B2A4A"></span>Google</span>
-        <span class="sw"><span class="dot" style="background:#A6192E"></span>(Direct)</span>
-        <span class="sw"><span class="dot" style="background:#C9A227"></span>Mp5Th.R.Sp1-Brevo.Net</span>
-        <span class="sw"><span class="dot" style="background:#5C7290"></span>(Not Set)</span>
-        <span class="sw"><span class="dot" style="background:#8A8580"></span>Other</span>
-      </div>
-    </div>
-
-    <div class="card chart-card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
-        <h3>Email engagement</h3>
-      </div>
-      <div class="empty-note">No campaigns sent this period.</div>
-    </div>
-
-  </section>
-
+  <!-- ---------- Market position (supplementary) ---------- -->
   <section id="market">
     <div class="section-head">
-      <h2>Market positioning</h2>
+      <h2>Market position</h2>
       <p class="section-sub">Washington County comparables and pacing</p>
     </div>
 
@@ -870,6 +903,7 @@
     </div>
   </section>
 
+  <!-- ---------- Showings (supplementary) ---------- -->
   <section id="showings">
     <div class="section-head">
       <h2>Showings &amp; feedback</h2>
@@ -878,19 +912,20 @@
     <div class="empty-note">No showings logged for this period.</div>
   </section>
 
+  <!-- ---------- What's next (supplementary) ---------- -->
   <section id="next">
     <div class="section-head">
       <h2>Portfolio summary &amp; what's next</h2>
     </div>
-    <p class="insight-summary">1715 N Garland Ave has been viewed 24,063 times on homes.com with 2,659 top-of-search placements and 2,152 display ad views across national publications. The listing most recently earned homes.com&#39;s &#34;Reached Very Popular status&#34; recognition (Jul 17, 2026). 1715 N Garland Ave logged 28067 tracked views this period, the first period with comparable data. 1715 N Garland Ave sits in the $500K-$999K tier, where regional demand is softening relative to sub-$500K; Washington County median DOM is currently 46 days. No tracked leads were attributed to this listing this period.</p>
+    <p class="insight-summary">1715 N Garland Ave has been viewed 24,063 times on MCG&#39;s national syndication network with 2,659 top-of-search placements and 2,152 display ad views across national publications. The listing most recently earned the network&#39;s &#34;Reached Very Popular status&#34; recognition (Jul 17, 2026). 1715 N Garland Ave logged 28067 tracked views this period, the first period with comparable data. 1715 N Garland Ave sits in the $500K-$999K tier, where regional demand is softening relative to sub-$500K; Washington County median DOM is currently 46 days. No tracked leads were attributed to this listing this period.</p>
     <div class="plan-cols">
       <div class="card plan-card recs">
         <h3>Recommendations</h3>
-        <ul><li>Confirm current professional photography and floor plan are live across IDX and homes.com -- both measurably lift engagement.</li><li>Zero tracked leads this period -- review pricing against comparable DOM and confirm all inquiry channels (chat, IDX, portals) are properly instrumented.</li></ul>
+        <ul><li>Confirm current professional photography and floor plan are live across the MCG website and MCG&#39;s national syndication network -- both measurably lift engagement.</li><li>Zero tracked leads this period -- review pricing against comparable DOM and confirm all inquiry channels (chat, the MCG website, portals) are properly instrumented.</li></ul>
       </div>
       <div class="card plan-card next">
         <h3>Next period plan</h3>
-        <ul><li>Continue monitoring IDX, email, web, and portal channels for this listing.</li><li>Log any showings and buyer feedback as they occur so next period&#39;s report reflects them.</li><li>Revisit pricing positioning if DOM trends materially above the Washington County 46-day median.</li></ul>
+        <ul><li>Continue monitoring the MCG website, email, web, and portal channels for this listing.</li><li>Log any showings and buyer feedback as they occur so next period&#39;s report reflects them.</li><li>Revisit pricing positioning if DOM trends materially above the Washington County 46-day median.</li></ul>
       </div>
     </div>
   </section>
@@ -898,6 +933,9 @@
   </div>
 </main>
 
+<!-- ==========================================================
+     8. FOOTER
+     ========================================================== -->
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-proof">
@@ -907,18 +945,26 @@
       <div class="proof-tile"><div class="p-num">1.4M+</div><div class="p-label">Views, first 90 days</div></div>
     </div>
     <div class="footer-brand">Mason Capital Group</div>
-    <p class="footer-tagline">Northwest Arkansas real estate advisory -- brokerage, development, property management, and investment services. Every listing is syndicated across a national network of consumer, commercial, and MLS-connected sites &mdash; positioned for the right buyer, not just any buyer. Exposure figures as of Q3 2026, drawn from one of several syndication partners.</p>
+    <p class="footer-tagline">Northwest Arkansas real estate advisory -- brokerage, development, property management, and investment services. Every listing is syndicated across a national network of consumer, commercial, and MLS-connected sites through MCG&#39;s national syndication partners — the most capable platforms in residential and commercial real estate marketing. Exposure figures as of Q3 2026.</p>
+
+    <nav class="footer-switcher" aria-label="Report period switcher">
+          <span class="active">Weekly &middot; 2026-W29</span>
+          <span class="disabled">Monthly report unavailable</span>
+          <span class="disabled">Quarterly report unavailable</span>
+    </nav>
+
+    <div class="footer-prepared">Prepared exclusively for the owner &mdash; Weekly period, Jul 13, 2026 – Jul 19, 2026.</div>
     <div class="footer-meta">
-      Report generated July 17, 2026 for 1715 N Garland Ave, Fayetteville, AR. This report is prepared for the seller of record and is not intended for public distribution.
-      <span class="badge-print">&nbsp;Printed July 17, 2026.</span>
+      Prepared for the property owner. Contains MCG proprietary marketing intelligence. Report generated July 18, 2026 for 1715 N Garland Ave, Fayetteville, AR. Not intended for public distribution.
+      <span class="badge-print">&nbsp;Printed July 18, 2026.</span>
     </div>
   </div>
 </footer>
 
 <script>
 (function(){
-  // Section-nav active state on scroll
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.section-nav a'));
+  // Sticky tab-nav active state on scroll
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.tabs-sticky a'));
   var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
   function onScroll(){
     var y = window.scrollY + 90;
