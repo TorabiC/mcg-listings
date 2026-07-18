@@ -364,6 +364,205 @@ def build_traffic_sources_merged(portals_raw: dict, ga4_top_sources: list[dict])
     return {"bars": bars, "available": bool(bars)}
 
 
+# ---------------------------------------------------------------------------
+# Homes.com-mirror variant -- Cameron-approved pixel-faithful clone of
+# homes.com's Listing Analytics page for residential listings whose portals
+# include homes.com data. Commercial (Crexi) listings never set homes_mirror
+# and keep rendering the original report.html layout below, unchanged.
+# ---------------------------------------------------------------------------
+
+# Single source of truth for the "Top Traffic Sources" row labels on the
+# homes-mirror Views section -- maps homes.com's raw traffic_sources[]
+# source strings to the anonymized, vendor-free labels. Never surface a raw
+# source string (e.g. "GreatSchools", "Niche.com") to a seller; anything not
+# in this map falls back through anonymize_source_label().
+HOMES_TRAFFIC_LABEL_MAP = {
+    "property search page": "Partner Search Network",
+    "display ads": "Display Ads",
+    "greatschools": "Family & Schools Network",
+    "multiple sources": "Multiple Sources",
+    "detail page views": "Detail Page Views",
+    "niche.com": "Lifestyle Network",
+}
+
+# homes.com's own agent-vs-consumer split ratio, from Cameron's reference
+# screenshot of homes.com's Activity legend ("Agent Views 139 / Consumer
+# Views 22,626 / Combined Views 22,765" -> 139/22765). The intake data MCG
+# receives from homes.com does not include a per-day agent/consumer split,
+# so the Activity chart's Agent/Consumer toggle applies this observed ratio
+# to each day's combined total rather than inventing an unrelated number.
+# This is an approximation, not a measured split -- documented here and in
+# the deliver5 report.
+HOMES_AGENT_VIEW_RATIO = 139 / 22765
+
+HOMES_GLOSSARY = [
+    ("Total Views", "Every time a home-shopper opened this listing across MCG's national syndication network during the reporting period."),
+    ("Display Ad Views", "Impressions of this listing's retargeting ad shown to prior visitors and matched contacts on partner publications."),
+    ("Detail Page Views", "Views of the listing's full detail page, as opposed to a search-results thumbnail."),
+    ("Top of Search Results", "Times this listing appeared in the first position of a buyer's search results."),
+    ("Favorites", "Buyers who saved this listing to their account for later."),
+    ("3D Tour Views / View Time", "Sessions -- and cumulative minutes -- spent in the listing's virtual walkthrough."),
+    ("Floor Plan Views", "Views of the listing's floor plan graphic."),
+    ("Agent Views", "Views attributed to real-estate-agent accounts rather than the general public."),
+    ("Consumer Views", "Views attributed to the general home-shopping public."),
+    ("Retargeting Ad Views", "Display-ad impressions served to people who had already visited this listing, shown again on other sites."),
+    ("Contact List Targeting", "Display ads served to MCG's uploaded buyer/investor contact list, matched to this listing."),
+    ("Users Reached", "Unique individuals served at least one ad impression for this listing."),
+]
+
+
+def homes_traffic_label(raw_source: str | None) -> str:
+    key = (raw_source or "").strip().lower()
+    if key in HOMES_TRAFFIC_LABEL_MAP:
+        return HOMES_TRAFFIC_LABEL_MAP[key]
+    return anonymize_source_label(raw_source)
+
+
+# Each row in this list carries its own direct text label + value (no
+# adjacent shared-legend swatch key), so it isn't subject to the 4-slot
+# all-pairs-CVD cap that applies to charts + wrapped legends (see
+# CATEGORICAL_COLORS comment) -- homes.com's own traffic-source list uses a
+# distinct color per row and this clones that, brand-hue-family only.
+TRAFFIC_ROW_COLORS = ["#AB012E", "#16162A", "#C4A35A", "#3568C9", "#1BAF7A", "#EDA100"]
+
+
+def build_homes_mirror_traffic(traffic_sources_raw: list[dict]) -> dict:
+    """homes.com-style 'Top Traffic Sources' stacked-bar list -- keeps the
+    portal's own order (already largest-first) and its own pct/views, since
+    this section specifically clones homes.com's own traffic-sources module
+    rather than the merged multi-channel chart used elsewhere in the
+    report."""
+    rows = []
+    total = 0
+    for i, row in enumerate(traffic_sources_raw or []):
+        views = int(row.get("views", 0) or 0)
+        total += views
+        rows.append({
+            "label": homes_traffic_label(row.get("source")),
+            "pct": row.get("pct", 0.0),
+            "views": views,
+            "color": TRAFFIC_ROW_COLORS[i % len(TRAFFIC_ROW_COLORS)],
+        })
+    return {"rows": rows, "total": total, "available": bool(rows)}
+
+
+def build_homes_mirror_activity(daily: dict) -> dict:
+    """Total / Consumer / Agent bar-chart series for the homes-mirror
+    Activity section's dropdown toggle. See HOMES_AGENT_VIEW_RATIO above."""
+    if not daily:
+        return {"available": False}
+    items = sorted(daily.items())
+    bars = []
+    total_combined = total_agent = total_consumer = 0
+    for d, v in items:
+        v = int(v or 0)
+        agent = round(v * HOMES_AGENT_VIEW_RATIO)
+        consumer = v - agent
+        total_combined += v
+        total_agent += agent
+        total_consumer += consumer
+        bars.append({"date": d, "date_short": fmt_date_short(d), "total": v, "agent": agent, "consumer": consumer})
+    max_val = max((b["total"] for b in bars), default=0) or 1
+    for b in bars:
+        b["total_pct"] = round(b["total"] / max_val * 100, 1)
+        b["agent_pct"] = round(b["agent"] / max_val * 100, 1)
+        b["consumer_pct"] = round(b["consumer"] / max_val * 100, 1)
+    n = len(bars)
+    label_every = max(1, round(n / 7))
+    label_idxs = set(range(0, n, label_every))
+    if n - 1 not in label_idxs:
+        label_idxs.add(n - 1)
+    for i, b in enumerate(bars):
+        b["show_label"] = i in label_idxs
+    return {
+        "available": True,
+        "bars": bars,
+        "total_combined": total_combined,
+        "total_agent": total_agent,
+        "total_consumer": total_consumer,
+    }
+
+
+# Bounding box the homes.com intake's normalized x/y marker coordinates were
+# captured against -- a map viewport that covered roughly the NWA region
+# (Oklahoma City to Springfield MO). See build_homes_mirror_leaflet_markers.
+VISITOR_MAP_LAT_MAX = 37.8
+VISITOR_MAP_LAT_MIN = 34.2
+VISITOR_MAP_LNG_MIN = -98.5
+VISITOR_MAP_LNG_MAX = -91.8
+
+
+def build_homes_mirror_leaflet_markers(vm_raw: dict) -> dict:
+    """Converts the homes.com intake's viewport-normalized x/y marker
+    coordinates into lat/lng for the interactive Leaflet map, linearly
+    against VISITOR_MAP_LAT/LNG_*. Clips out-of-range markers same as the
+    static SVG buyer map (build_visitor_map)."""
+    markers_raw = vm_raw.get("markers") or []
+    clipped = [m for m in markers_raw if 0.0 <= m.get("x", -1) <= 1.0 and 0.0 <= m.get("y", -1) <= 1.0]
+    out = []
+    for m in clipped:
+        x, y, n = m["x"], m["y"], m.get("n", 0)
+        lat = VISITOR_MAP_LAT_MAX - y * (VISITOR_MAP_LAT_MAX - VISITOR_MAP_LAT_MIN)
+        lng = VISITOR_MAP_LNG_MIN + x * (VISITOR_MAP_LNG_MAX - VISITOR_MAP_LNG_MIN)
+        # Leaflet circleMarker radius is in screen pixels, not map units --
+        # scaled down from the static-SVG map's coefficient (which draws
+        # into a fixed 1000x520 viewBox) so the largest marker doesn't
+        # dominate the interactive map at typical zoom levels.
+        r = round(5 + (max(n, 0) ** 0.5) * 0.42, 1)
+        out.append({"lat": round(lat, 5), "lng": round(lng, 5), "n": n, "r": r})
+    return {
+        "available": bool(out),
+        "markers": out,
+        "total_mapped_views": vm_raw.get("total_mapped_views", 0),
+        "clipped_count": len(clipped),
+        "dropped_count": len(markers_raw) - len(clipped),
+    }
+
+
+def build_homes_mirror(homes_raw: dict, homes_exposure: dict) -> dict:
+    """Assembles the full view-model the homes-mirror template branch reads.
+    Only called when homes_mirror (residential + live homes.com portal data)
+    is true -- see build_view_model."""
+    stat_row_1 = [
+        {"label": "Total Views", "value": fmt_int(homes_exposure["total_views"])},
+        {"label": "Display Ad Views", "value": fmt_int(homes_exposure["display_ad_views"])},
+        {"label": "Detail Page Views", "value": fmt_int(homes_exposure["detail_page_views"])},
+        {"label": "Top of Search Results", "value": fmt_int(homes_exposure["top_of_search"])},
+        {"label": "Favorites", "value": fmt_int(homes_exposure["favorites"])},
+    ]
+    stat_row_2 = [
+        {"label": "3D Tour Views", "value": fmt_int(homes_exposure["matterport_views"])},
+        {"label": "Floor Plan Views", "value": fmt_int(homes_exposure["floor_plan_views"])},
+        {"label": "3D Tour View Time", "value": f"{fmt_int(homes_exposure['matterport_minutes'])} min"},
+    ]
+    pubs = homes_exposure.get("publications") or []
+    display_ads_raw = homes_raw.get("display_ads") or {}
+    retarget_raw = display_ads_raw.get("retargeting") or {}
+    contact_raw = display_ads_raw.get("contact_list_targeting") or {}
+    return {
+        "available": True,
+        "stat_row_1": stat_row_1,
+        "stat_row_2": stat_row_2,
+        "traffic": build_homes_mirror_traffic(homes_raw.get("traffic_sources") or []),
+        "activity_chart": build_homes_mirror_activity(homes_raw.get("daily") or {}),
+        "leaflet": build_homes_mirror_leaflet_markers(homes_raw.get("visitor_map") or {}),
+        "retargeting": {
+            "ad_views": retarget_raw.get("ad_views", 0),
+            "sites_displayed_on": retarget_raw.get("sites_displayed_on", 0),
+            "users_reached": retarget_raw.get("users_reached", 0),
+        },
+        "contact_targeting": {
+            "ad_views": contact_raw.get("ad_views", 0),
+            "sites_displayed_on": contact_raw.get("sites_displayed_on", 0),
+            "users_reached": contact_raw.get("users_reached", 0),
+            "uploaded_contacts": contact_raw.get("uploaded_contacts", 0),
+        },
+        "publications": pubs,
+        "publication_count": len(pubs),
+        "glossary": HOMES_GLOSSARY,
+    }
+
+
 def build_email_chart(campaigns: list[dict]) -> dict:
     max_sent = max((c.get("sent", 0) for c in campaigns), default=0) or 1
     rows = []
@@ -904,6 +1103,14 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     crexi_exposure = build_crexi_exposure(portals_raw)
     exposure_available = bool(homes_exposure or crexi_exposure)
 
+    # --- homes.com-mirror layout gate ---------------------------------
+    # Applies to listings whose portals include homes.com data (i.e.
+    # residential -- Crexi/commercial listings never set this and always
+    # render the original report.html layout, per Cameron's brief: he's
+    # approving this one template before commercial gets adapted).
+    homes_mirror = bool(homes_exposure) and listing.get("type") == "residential"
+    hm = build_homes_mirror(portals_raw.get("homes.com") or {}, homes_exposure) if homes_mirror else None
+
     traffic_merged = build_traffic_sources_merged(portals_raw, src.get("ga4", {}).get("top_sources", []))
     traffic_merged["reason"] = None if traffic_merged["available"] else ("missing" if (dq.get("ga4") == "missing" and dq.get("portals") == "missing") else "empty")
 
@@ -957,7 +1164,7 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     # --- hero / live-listing link / agent card ---
     listing_links = listing.get("links", {}) or {}
     hero_image = listing_links.get("hero_image")
-    live_listing_url = listing_links.get("webflow_page") or listing_links.get("marketing_page")
+    live_listing_url = listing_links.get("webflow_page") or listing_links.get("marketing_page") or listing_links.get("idx")
     seller_name = ((listing.get("seller") or {}).get("name")) or "the owner"
 
     show_views = bool(views_chart.get("available") or (homes_exposure or {}).get("daily_chart", {}).get("available"))
@@ -1017,6 +1224,8 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
         "show_views": show_views,
         "show_reach": show_reach,
         "show_buyermap": show_buyermap,
+        "homes_mirror": homes_mirror,
+        "hm": hm,
     }
 
 
