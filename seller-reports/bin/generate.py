@@ -51,6 +51,96 @@ MCG_PROOF = {
                "property management, and investment services.",
 }
 
+# Cameron's agent card, shown on the report hero. Standing contact facts --
+# not sourced from a metrics.json.
+AGENT = {
+    "name": "Cameron Torabi",
+    "firm": "Mason Capital Group Real Estate Investment & Trust",
+    "phone": "(479) 925-3333",
+    "phone_tel": "+14799253333",
+}
+
+# ---------------------------------------------------------------------------
+# Anonymization -- CONTENT POLICY, not just a formatting nicety.
+#
+# Seller-facing copy never names the third-party platforms MCG uses to
+# execute marketing (no "homes.com", "Crexi", "Constant Contact", "IDX
+# Broker", "Google"/"GA4"/"Google Analytics" anywhere a seller can read it --
+# chart labels, section notes, glossary, insights narrative). Sellers see
+# results, not vendor/strategy names. The single exception: publications
+# where display ads actually *ran* (WSJ, CNN, ESPN, ...) are shown by name --
+# that's the impressive, non-strategic part.
+#
+# This is the ONE place channel/source display names and the anonymizing
+# text-scrub live. Every code path that turns a raw source key or a raw
+# metrics.json free-text field (insights, market notes, activity/showings
+# text -- which collect.py's adapters sometimes write with a vendor name
+# baked in) into seller-visible copy must route through CHANNEL_LABELS /
+# anonymize_text() / anonymize_source_label() below rather than
+# interpolating raw source keys or raw text directly.
+# ---------------------------------------------------------------------------
+CHANNEL_LABELS = {
+    "idx": "the MCG website",
+    "ga4": "MCG website analytics",
+    "cc": "MCG's email marketing program",
+    "tawk": "live chat",
+    "portals": "MCG's national syndication partners",
+    "homes.com": "MCG's national syndication partners",
+    "crexi": "MCG's commercial marketplace network",
+    "loopnet": "MCG's commercial marketplace network",
+}
+
+SYNDICATION_BLURB = (
+    "MCG's national syndication partners — the most capable platforms in "
+    "residential and commercial real estate marketing."
+)
+
+# Ordered, most-specific-first. Possessive forms handled before the bare
+# noun so we don't leave a dangling "'s". Applied case-insensitively.
+_ANON_PATTERNS = [
+    (re.compile(r"homes\.com's", re.IGNORECASE), "the network's"),
+    (re.compile(r"homes\.com", re.IGNORECASE), "MCG's national syndication network"),
+    (re.compile(r"Constant Contact", re.IGNORECASE), "MCG's email marketing program"),
+    (re.compile(r"IDX Broker", re.IGNORECASE), "the MCG website"),
+    (re.compile(r"\bIDX\b", re.IGNORECASE), "the MCG website"),
+    (re.compile(r"Crexi's", re.IGNORECASE), "the network's"),
+    (re.compile(r"\bCrexi\b", re.IGNORECASE), "MCG's commercial marketplace network"),
+    (re.compile(r"\bGoogle Analytics\b", re.IGNORECASE), "MCG's website analytics"),
+    (re.compile(r"\bGA4\b", re.IGNORECASE), "website analytics"),
+    (re.compile(r"\bGoogle\b", re.IGNORECASE), "leading search engines"),
+]
+
+
+def anonymize_text(s: str | None) -> str | None:
+    """Scrub vendor/platform names out of free-text fields written by
+    collect.py's adapters (insights, market notes, activity/showing text)
+    before they reach the template. See CHANNEL_LABELS block above."""
+    if not s:
+        return s
+    out = s
+    for pattern, repl in _ANON_PATTERNS:
+        out = pattern.sub(repl, out)
+    return out
+
+
+def anonymize_source_label(raw: str | None) -> str:
+    """Map a raw GA4/portal traffic-source string to a seller-safe label.
+    Structured-data counterpart to anonymize_text() -- used for chart
+    labels built from source keys rather than prose."""
+    s = (raw or "").strip().lower()
+    if not s:
+        return "Other"
+    if s == "google":
+        return "Search Engines"
+    if s in ("(direct)", "direct"):
+        return "Direct"
+    if s in ("(not set)", "(data not available)", "not set", "not available"):
+        return "Other"
+    if any(tok in s for tok in ("brevo", "mailchimp", "constantcontact", "sp1", "sendgrid")):
+        return "Email Campaigns"
+    cleaned = anonymize_text(raw) or raw
+    return cleaned.title()
+
 PERIOD_TYPES = ["weekly", "monthly", "quarterly"]
 PERIOD_ID_PATTERNS = {
     "weekly": re.compile(r"^\d{4}-W\d{2}$"),
@@ -205,14 +295,45 @@ CATEGORICAL_COLORS = ["#1B2A4A", "#A6192E", "#C9A227", "#5C7290", "#8A8580"]
 
 
 def build_traffic_sources_chart(top_sources: list[dict]) -> dict:
+    """Legacy single-source chart (GA4 top_sources only) -- kept for the
+    flyer/back-compat callers. See build_traffic_sources_merged for the
+    report page's merged portals+GA4 view."""
     capped = cap_top_n_with_other(top_sources, "users", "source", 4)
     max_val = max((c.get("users", 0) for c in capped), default=0) or 1
     bars = []
     for i, c in enumerate(capped):
+        label = "Other" if c.get("source") == "Other" else anonymize_source_label(c.get("source"))
         bars.append({
-            "label": c.get("source", "unknown").title(),
+            "label": label,
             "value": c.get("users", 0),
             "pct": round((c.get("users", 0) / max_val) * 100, 1),
+            "color": CATEGORICAL_COLORS[i % len(CATEGORICAL_COLORS)],
+        })
+    return {"bars": bars, "available": bool(bars)}
+
+
+def build_traffic_sources_merged(portals_raw: dict, ga4_top_sources: list[dict]) -> dict:
+    """Homes.com-style 'Top Traffic Sources' bar list, merged across every
+    portal's traffic_sources[] and GA4's top_sources[] -- anonymized labels,
+    combined into one ranked list capped to the top 6 + Other."""
+    combined: dict[str, int] = {}
+    for portal in (portals_raw or {}).values():
+        for row in (portal.get("traffic_sources") or []):
+            label = anonymize_source_label(row.get("source"))
+            combined[label] = combined.get(label, 0) + int(row.get("views", 0) or 0)
+    for row in (ga4_top_sources or []):
+        label = anonymize_source_label(row.get("source"))
+        combined[label] = combined.get(label, 0) + int(row.get("users", 0) or 0)
+
+    items = [{"source": k, "value": v} for k, v in combined.items() if v > 0]
+    capped = cap_top_n_with_other(items, "value", "source", 6)
+    total = sum(c.get("value", 0) for c in capped) or 1
+    bars = []
+    for i, c in enumerate(capped):
+        bars.append({
+            "label": c.get("source", "Other"),
+            "value": c.get("value", 0),
+            "pct": round((c.get("value", 0) / total) * 100, 1),
             "color": CATEGORICAL_COLORS[i % len(CATEGORICAL_COLORS)],
         })
     return {"bars": bars, "available": bool(bars)}
@@ -225,7 +346,7 @@ def build_email_chart(campaigns: list[dict]) -> dict:
         sent = c.get("sent", 0)
         opens = c.get("opens", 0)
         rows.append({
-            "name": c.get("name", "Campaign"),
+            "name": anonymize_text(c.get("name", "Campaign")),
             "sent": sent,
             "opens": opens,
             "clicks": c.get("clicks", 0),
@@ -443,6 +564,7 @@ def build_homes_exposure(portals: dict) -> dict | None:
         "visitor_map": build_visitor_map(homes.get("visitor_map") or {}),
         "analytics_url": homes.get("analytics_url"),
         "days_on_market_portal": homes.get("days_on_market"),
+        "listed_date": homes.get("listed"),
     }
 
 
@@ -514,7 +636,6 @@ def build_stats(metrics: dict, dq: dict) -> list[dict]:
     tawk_missing = dq.get("tawk") == "missing"
 
     portal_views_total = sum(v.get("views", 0) for v in portals.values()) if not portals_missing else 0
-    portal_names = ", ".join(k for k, v in portals.items() if v.get("views", 0) > 0)
 
     views_available = not (idx_missing and portals_missing)
     total_views = (0 if idx_missing else idx.get("views", 0)) + (0 if portals_missing else portal_views_total)
@@ -538,8 +659,8 @@ def build_stats(metrics: dict, dq: dict) -> list[dict]:
             "label": "Total views",
             "available": views_available,
             "value_display": fmt_int(total_views) if views_available else "--",
-            "sub": (f"{fmt_int(idx.get('views', 0))} IDX + {fmt_int(portal_views_total)} "
-                    f"{portal_names or 'portal'}" if views_available else "Sources unavailable this period"),
+            "sub": (f"{fmt_int(idx.get('views', 0))} website + {fmt_int(portal_views_total)} "
+                    f"syndication views" if views_available else "Sources unavailable this period"),
             "delta_display": fmt_pct(delta_pct, signed=True) if views_available else None,
             "delta_dir": "up" if delta_pct >= 0 else "down",
         },
@@ -573,16 +694,159 @@ def build_stats(metrics: dict, dq: dict) -> list[dict]:
             "delta_dir": None,
         },
     ]
-    return stats, total_views
+    return stats, total_views, total_inquiries, showings_count
+
+
+def build_summary_tiles(metrics: dict, dq: dict, homes_exposure: dict | None,
+                         crexi_exposure: dict | None, total_views: int,
+                         total_inquiries: int, showings_count: int) -> list[dict]:
+    """Homes.com-style stat-tile grid for the Summary section: each channel
+    gets its own tile (never double-counted into another tile), plus one
+    clearly-labeled combined headline. Order matches the target layout."""
+    src = metrics.get("sources", {})
+    ga4 = src.get("ga4", {})
+    cc = src.get("cc", {})
+    ga4_missing = dq.get("ga4") == "missing"
+    cc_missing = dq.get("cc") == "missing"
+
+    email_sent = cc.get("totals", {}).get("sent", 0) if not cc_missing else 0
+    email_opens = cc.get("totals", {}).get("opens", 0) if not cc_missing else 0
+    email_open_rate = (email_opens / email_sent * 100) if email_sent else 0.0
+
+    tiles = [
+        {
+            "key": "total_views",
+            "label": "Total Marketing Views",
+            "available": True,
+            "highlight": True,
+            "value_display": fmt_int(total_views),
+            "sub": "Combined listing views across MCG's on-site listing widget and "
+                   "syndication network placements this period",
+        },
+    ]
+
+    if homes_exposure:
+        tiles.append({
+            "key": "display_ads", "label": "Display Ad Views", "available": True,
+            "value_display": fmt_int(homes_exposure["display_ad_views"]),
+            "sub": "Off-site ad impressions on partner publications",
+        })
+        tiles.append({
+            "key": "top_of_search", "label": "Top-of-Search Placements", "available": True,
+            "value_display": fmt_int(homes_exposure["top_of_search"]),
+            "sub": "Times the listing ranked first in buyer searches",
+        })
+    elif crexi_exposure:
+        tiles.append({
+            "key": "display_ads", "label": "Marketplace Impressions", "available": True,
+            "value_display": fmt_int(crexi_exposure["impressions"]),
+            "sub": "Impressions across the commercial marketplace network",
+        })
+        grade = crexi_exposure.get("search_score_grade")
+        tiles.append({
+            "key": "top_of_search", "label": "MCG Placement Score", "available": crexi_exposure.get("search_score") is not None,
+            "value_display": f"{crexi_exposure['search_score']}/100" if crexi_exposure.get("search_score") is not None else "--",
+            "sub": grade or "Commercial marketplace visibility",
+        })
+    else:
+        tiles.append({"key": "display_ads", "label": "Display Ad Views", "available": False,
+                       "value_display": "--", "sub": "Unavailable this period"})
+        tiles.append({"key": "top_of_search", "label": "Top-of-Search Placements", "available": False,
+                       "value_display": "--", "sub": "Unavailable this period"})
+
+    tiles.append({
+        "key": "website_views", "label": "Website Views", "available": not ga4_missing,
+        "value_display": fmt_int(ga4.get("pageviews", 0)) if not ga4_missing else "--",
+        "sub": (f"{fmt_int(ga4.get('users', 0))} unique visitors" if not ga4_missing
+                else "Unavailable this period"),
+    })
+    tiles.append({
+        "key": "email_reach", "label": "Email Reach", "available": not cc_missing,
+        "value_display": fmt_int(email_sent) if not cc_missing else "--",
+        "sub": (f"{email_open_rate:.1f}% open rate" if not cc_missing and email_sent
+                else "Unavailable this period"),
+    })
+    tiles.append({
+        "key": "inquiries", "label": "Inquiries & Leads", "available": True,
+        "value_display": fmt_int(total_inquiries),
+        "sub": f"{showings_count} showing{'s' if showings_count != 1 else ''} logged this period",
+    })
+
+    if homes_exposure:
+        tiles.append({
+            "key": "saved", "label": "Saved / Favorites", "available": True,
+            "value_display": fmt_int(homes_exposure["favorites"]),
+            "sub": "Buyers who saved this listing",
+        })
+    elif crexi_exposure and crexi_exposure.get("funnel"):
+        saved = next((f["value"] for f in crexi_exposure["funnel"] if f["label"] == "Saved property"), None)
+        tiles.append({
+            "key": "saved", "label": "Saved / Favorites", "available": saved is not None,
+            "value_display": fmt_int(saved) if saved is not None else "--",
+            "sub": "Buyers who saved this listing",
+        })
+    else:
+        tiles.append({"key": "saved", "label": "Saved / Favorites", "available": False,
+                       "value_display": "--", "sub": "Unavailable this period"})
+
+    if homes_exposure and homes_exposure.get("matterport_views"):
+        tiles.append({
+            "key": "tour", "label": "3D Tour Views", "available": True,
+            "value_display": fmt_int(homes_exposure["matterport_views"]),
+            "sub": f"{fmt_int(homes_exposure['matterport_minutes'])} min. of tour time logged",
+        })
+
+    return tiles
+
+
+def build_activity_feed(activity: list[dict], milestones: list[dict] | None) -> list[dict]:
+    """Merges the activity timeline with portal milestones into one
+    homes.com-style feed (icon + description + right-aligned date),
+    newest first."""
+
+    def milestone_phrase(event: str | None) -> str:
+        if not event:
+            return "Your listing reached a new milestone"
+        e = event.strip()
+        low = e.lower()
+        if low.startswith("reached "):
+            return f"Your listing {e[0].lower()}{e[1:]}"
+        if low.startswith("now considered"):
+            return f"Your listing is {e[0].lower()}{e[1:]}"
+        if low.startswith("listed as"):
+            return f"Your listing was {e[0].lower()}{e[1:]}"
+        return f"Your listing {e[0].lower()}{e[1:]}"
+
+    feed = []
+    for a in activity or []:
+        feed.append({
+            "date": a.get("date"),
+            "date_display": fmt_date_display(a.get("date")),
+            "kind": "activity",
+            "channel": a.get("channel", "activity"),
+            "text": anonymize_text(a.get("desc", "")),
+        })
+    for m in milestones or []:
+        feed.append({
+            "date": m.get("date"),
+            "date_display": m.get("date_display") or fmt_date_display(m.get("date")),
+            "kind": "milestone",
+            "channel": "milestone",
+            "text": milestone_phrase(m.get("event")),
+        })
+    feed.sort(key=lambda x: x.get("date") or "", reverse=True)
+    return feed
 
 
 def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
                       report_url: str, generated_display: str) -> dict:
     dq = metrics.get("data_quality", {})
-    stats, total_views = build_stats(metrics, dq)
+    stats, total_views, total_inquiries, showings_count = build_stats(metrics, dq)
 
     market = metrics.get("market", {})
     comps, overpriced_note = build_comps(market.get("comps", []), listing.get("price", 0))
+    comps = [{**c, "note": anonymize_text(c.get("note", ""))} for c in comps]
+    overpriced_note = anonymize_text(overpriced_note)
     dom_gauge = build_dom_gauge(listing, market, metrics["period"]["end"])
 
     src = metrics.get("sources", {})
@@ -608,9 +872,20 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
         email_chart = build_email_chart(src.get("cc", {}).get("campaigns", []))
         email_chart["reason"] = None if email_chart["available"] else "empty"
 
+    # --- portal exposure (homes.com / Crexi) -- compute first so both the
+    # merged traffic-sources chart and the summary tiles can use it. ---
+    portals_raw = src.get("portals", {})
+    homes_exposure = build_homes_exposure(portals_raw)
+    crexi_exposure = build_crexi_exposure(portals_raw)
+    exposure_available = bool(homes_exposure or crexi_exposure)
+
+    traffic_merged = build_traffic_sources_merged(portals_raw, src.get("ga4", {}).get("top_sources", []))
+    traffic_merged["reason"] = None if traffic_merged["available"] else ("missing" if (dq.get("ga4") == "missing" and dq.get("portals") == "missing") else "empty")
+
     charts = {
         "views_comparison": views_chart,
         "traffic_sources": traffic_chart,
+        "traffic_sources_merged": traffic_merged,
         "email_engagement": email_chart,
         "dom_gauge": dom_gauge,
     }
@@ -621,27 +896,51 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     analytics_all_missing = all(dq.get(k) == "missing" for k in ("idx", "cc", "ga4", "portals"))
 
     activity = sorted(metrics.get("activity", []), key=lambda a: a.get("date", ""))
+    activity = [{**a, "desc": anonymize_text(a.get("desc", ""))} for a in activity]
     showings = sorted(metrics.get("showings", []), key=lambda s: s.get("date", ""))
+    showings = [{**s, "feedback": anonymize_text(s.get("feedback", ""))} for s in showings]
 
-    # --- v2: portal exposure (homes.com / Crexi) ---
-    portals_raw = src.get("portals", {})
-    homes_exposure = build_homes_exposure(portals_raw)
-    crexi_exposure = build_crexi_exposure(portals_raw)
-    exposure_available = bool(homes_exposure or crexi_exposure)
+    summary_tiles = build_summary_tiles(metrics, dq, homes_exposure, crexi_exposure,
+                                         total_views, total_inquiries, showings_count)
+    activity_feed = build_activity_feed(activity, (homes_exposure or {}).get("milestones"))
+
     if homes_exposure:
         exposure_headline = {
             "value": fmt_int(homes_exposure["total_views"]),
-            "label": "Total views on homes.com",
-            "source": "homes.com",
+            "label": "Total marketing views across MCG's national syndication partners",
         }
     elif crexi_exposure:
         exposure_headline = {
             "value": fmt_int(crexi_exposure["impressions"]),
-            "label": "Total impressions on Crexi" if crexi_exposure["impressions_is_deep"] else "Total page views on Crexi",
-            "source": "crexi",
+            "label": ("Total impressions across MCG's commercial marketplace network"
+                      if crexi_exposure["impressions_is_deep"]
+                      else "Total page views across MCG's commercial marketplace network"),
         }
     else:
         exposure_headline = None
+
+    # --- insights narrative: collect.py sometimes bakes a vendor name into
+    # these free-text fields (see anonymize_text() docstring). Scrub before
+    # they reach the template. ---
+    insights_raw = metrics.get("insights", {})
+    insights = {
+        "summary": anonymize_text(insights_raw.get("summary", "")),
+        "recommendations": [anonymize_text(r) for r in insights_raw.get("recommendations", [])],
+        "next_period_plan": [anonymize_text(n) for n in insights_raw.get("next_period_plan", [])],
+    }
+
+    # --- hero / live-listing link / agent card ---
+    listing_links = listing.get("links", {}) or {}
+    hero_image = listing_links.get("hero_image")
+    live_listing_url = listing_links.get("webflow_page") or listing_links.get("marketing_page")
+    seller_name = ((listing.get("seller") or {}).get("name")) or "the owner"
+
+    show_views = bool(views_chart.get("available") or (homes_exposure or {}).get("daily_chart", {}).get("available"))
+    show_reach = exposure_available
+    show_buyermap = bool((homes_exposure or {}).get("visitor_map", {}).get("available"))
+
+    hero_list_date = listing.get("list_date") or (homes_exposure or {}).get("listed_date")
+    hero_dom = dom_gauge.get("listing_dom") if dom_gauge.get("available") else (homes_exposure or {}).get("days_on_market_portal")
 
     return {
         "listing": listing,
@@ -658,29 +957,41 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
             "baths": listing.get("baths"),
             "type_display": type_display(listing.get("type", "")),
             "status_display": (listing.get("status") or "active").title(),
+            "list_date_display": fmt_date_display(hero_list_date),
+            "dom": hero_dom,
+            "image_url": hero_image,
         },
+        "agent": AGENT,
+        "live_listing_url": live_listing_url,
+        "seller_name": seller_name,
         "quality": dq,
         "sample_sections": sample_sections,
         "missing_sections": missing_sections,
         "any_sample": bool(sample_sections),
         "stats": stats,
+        "summary_tiles": summary_tiles,
         "activity": activity,
+        "activity_feed": activity_feed,
         "showings": showings,
         "charts": charts,
         "market": {
-            "positioning": market.get("positioning", ""),
+            "positioning": anonymize_text(market.get("positioning", "")),
             "county": market.get("county", ""),
             "area_dom_days": market.get("area_dom_days"),
             "comps": comps,
             "overpriced_note": overpriced_note,
         },
         "analytics_all_missing": analytics_all_missing,
-        "insights": metrics.get("insights", {}),
+        "insights": insights,
         "mcg_proof": MCG_PROOF,
+        "syndication_blurb": SYNDICATION_BLURB,
         "exposure_available": exposure_available,
         "exposure_headline": exposure_headline,
         "homes_exposure": homes_exposure,
         "crexi_exposure": crexi_exposure,
+        "show_views": show_views,
+        "show_reach": show_reach,
+        "show_buyermap": show_buyermap,
     }
 
 

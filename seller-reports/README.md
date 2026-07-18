@@ -1,10 +1,11 @@
 # MCG Seller Activity Report System
 
 Automated weekly / monthly / quarterly activity reports for every active
-Mason Capital Group listing: an interactive report page, a print-ready PDF,
-and a Constant Contact email flyer, published to GitHub Pages
-(`torabic/mcg-listings`) and (once Constant Contact credentials exist)
-drafted as an email campaign for Cameron to review and send himself.
+Mason Capital Group listing: an interactive report page ("MCG Listing
+Intelligence" -- `templates/report.html`, v3), a print-ready PDF, and an
+email flyer, published to GitHub Pages (`torabic/mcg-listings`) and (once
+Constant Contact credentials exist) drafted as an email campaign for
+Cameron to review and send himself.
 
 Full data contract and design spec: see `SPEC.md` in this repo (or the
 parent build spec it was generated from). This README covers how to
@@ -114,6 +115,63 @@ which sources are even attempted for that listing.
 - **`config/market-nwa.json`** -- county-level median days-on-market and
   pricing-tier reference numbers used for the market-positioning section
   of each report; update this periodically as NWA market conditions shift.
+
+## New-listing flow
+
+Nothing has to be wired up per listing beyond adding it to the registry --
+`bin/generate.py --slug all` iterates every entry in `config/listings.json`,
+so the next scheduled weekly run picks up a new listing automatically:
+
+1. **Add the listing to `config/listings.json`.** Today this is a manual
+   step: when Cameron adds a property to Second Brain's `listings.md` (or a
+   new marketing/investor page goes up under `presentations/<slug>/` or
+   `listing-presentations/<slug>/` in this repo), add a matching entry to
+   `config/listings.json` -- `slug`, `address`, `type`, `price`, a fresh
+   8-hex `report_token`, and `sources` (which adapters + which portal(s)
+   apply). Pull `links.marketing_page` / `links.webflow_page` /
+   `links.hero_image` from whatever page already exists for that property
+   (verify the file/URL actually exists in-repo before adding it -- never
+   invent one; see the `46-northfleet` entry, sourced from
+   `presentations/46-northfleet-analysis/`, as the pattern). Leave any of
+   those three `null` if nothing exists yet -- the report degrades
+   gracefully (navy/gold monogram hero instead of a photo, no "View Live
+   Listing" button).
+2. **Run the pipeline.** The very next `bin/collect.py --period weekly`
+   (writes `data/<slug>/<period_id>/metrics.json`, zeros + `"missing"` for
+   any source without an intake file or credential yet) followed by
+   `bin/generate.py --period-id <id>` renders that listing's MCG Listing
+   Intelligence page, PDF, and flyer -- no code change required.
+3. **Portal numbers** (homes.com / Crexi / LoopNet) still need a matching
+   file dropped under `intake/<slug>/` per `intake/README.md`, same as any
+   other listing -- there's no API for those, new or old.
+
+## Content policy: anonymized source names
+
+Seller-facing copy never names the third-party marketing platforms MCG
+uses to execute a campaign -- no "homes.com", "Crexi", "Constant Contact",
+"IDX Broker", "Google"/"GA4"/"Google Analytics" anywhere a seller can read
+it (chart labels, section notes, the insights narrative, alt text, CSS
+class/id names -- anywhere it ends up in the rendered HTML). Sellers see
+results, not vendor names or MCG's syndication strategy. The one
+deliberate exception: the **publications** where display ads actually ran
+(WSJ, CNN, ESPN, ...) are shown by name/logo in the Marketing Reach
+section -- that's the impressive part, and it doesn't expose which
+platform bought the placement.
+
+This is enforced in exactly one place -- **`bin/generate.py`**, the
+`CHANNEL_LABELS` dict plus `anonymize_text()` / `anonymize_source_label()`
+just below the `MCG_PROOF` constant. `anonymize_text()` scrubs vendor names
+out of every free-text field that reaches the template (insights,
+recommendations, market notes, activity/showing text -- `collect.py`'s
+adapters sometimes bake a vendor name into these), and
+`anonymize_source_label()` does the same for structured chart labels (GA4
+`top_sources`, portal names). **When editing the template or adding a new
+data source, route any new seller-visible label or narrative field through
+these -- do not interpolate a raw source key, campaign name, or portal key
+directly.** The `2026-W29` v3 regeneration verified zero occurrences of the
+banned strings across all 14 rendered reports (`grep`, excluding `src=`
+attribute values, which is where the real (and fine) publication-logo CDN
+URLs live).
 
 ## Credential activation
 

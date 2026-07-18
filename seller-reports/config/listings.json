@@ -30,7 +30,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -69,7 +70,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": "https://torabic.github.io/mcg-listings/presentations/46-northfleet-analysis/",
+        "hero_image": "https://torabic.github.io/mcg-listings/presentations/46-northfleet-analysis/images/hero.jpg"
       },
       "sources": {
         "idx": true,
@@ -108,7 +110,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -147,7 +150,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -190,7 +194,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -230,7 +235,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -270,7 +276,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -310,7 +317,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -350,7 +358,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -394,7 +403,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -434,7 +444,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -473,7 +484,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -513,7 +525,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
@@ -553,7 +566,8 @@
       "links": {
         "idx": null,
         "webflow_page": null,
-        "marketing_page": null
+        "marketing_page": null,
+        "hero_image": null
       },
       "sources": {
         "idx": true,
