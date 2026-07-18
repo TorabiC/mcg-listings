@@ -387,7 +387,7 @@
   .hm-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;z-index:0;}
   .hm-hero.has-photo::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(16,16,42,.55) 0%,rgba(16,16,42,.08) 30%,rgba(16,16,42,.78) 100%);}
   .hm-hero.no-photo{background:radial-gradient(120% 140% at 15% 0%,var(--navy-2) 0%,var(--navy) 46%,#0a0a18 100%);}
-  .hm-hero-topbar{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:flex-start;padding:16px 20px;gap:12px;flex-wrap:wrap;}
+  .hm-hero-topbar{position:relative;z-index:3;display:flex;justify-content:flex-end;align-items:flex-start;padding:16px 20px;gap:12px;flex-wrap:wrap;}
   .hm-chip-promo{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--navy);font-weight:900;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;padding:6px 13px;border-radius:999px;box-shadow:0 4px 10px rgba(0,0,0,.25);}
   .hm-hero-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:relative;}
   .hm-pill{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--navy);font-weight:800;font-size:12.5px;padding:9px 16px;border-radius:999px;text-decoration:none;border:none;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.18);}
@@ -403,7 +403,10 @@
      #F5F1EA, 1px #E2D9CC border, 14px radius, 0 4px 24px rgba(0,0,0,.1)
      shadow -- was a translucent white 10px-radius card with a heavier
      photo-legibility shadow (0 10px 30px rgba(7,13,28,.32)). */
-  .hm-card{background:#F5F1EA;color:var(--navy);border:1px solid #E2D9CC;border-radius:14px;padding:18px 20px;box-shadow:0 4px 24px rgba(0,0,0,.1);}
+  /* FINAL APPROVAL ROUND: white card (was warm-cream #F5F1EA) per
+     Cameron's homes.com agent-card reference screenshot -- MCG colors,
+     white rounded ~14px cards with a soft shadow. */
+  .hm-card{background:#fff;color:var(--navy);border:1px solid var(--gray-100);border-radius:14px;padding:18px 20px;box-shadow:0 10px 30px rgba(16,16,42,.12);}
   .hm-card .hm-card-title{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-500);margin-bottom:6px;}
   .hm-card h1{font-family:var(--font-serif);font-size:20px;font-weight:800;margin:0 0 1px;color:var(--navy);line-height:1.2;}
   .hm-card .hm-city{font-size:12.5px;color:var(--gray-500);font-weight:700;margin-bottom:8px;}
@@ -415,7 +418,9 @@
      "ACTIVE LISTING · MLS #..." line on the live listing page. */
   .hm-card .hm-status-row{display:flex;align-items:center;gap:6px;margin:6px 0 2px;}
   .hm-card .hm-status-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;display:inline-block;}
-  .hm-card .hm-status-label{font-size:11px;font-weight:700;color:#8a6d1f;letter-spacing:.06em;text-transform:uppercase;}
+  /* Gold text, matching the bundle's own "FOR SALE LISTING · MLS #..."
+     line color (var(--gold)) exactly -- was a muted amber #8a6d1f. */
+  .hm-card .hm-status-label{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;}
   .hm-card .hm-meta{font-size:12px;color:var(--gray-700);margin-top:6px;font-weight:700;}
   .hm-agent-card{display:flex;align-items:center;gap:12px;}
   /* Gold ring around the logo mark -- same treatment as templates/listing.html's
@@ -549,6 +554,74 @@
   .hm-glossary-list dt{font-weight:900;color:var(--navy);font-size:13.5px;margin:0;}
   .hm-glossary-list dd{margin:4px 0 0;font-size:13px;color:var(--gray-700);}
 
+  /* ==========================================================
+     FINAL APPROVAL ROUND -- secondary nav, gold badge, homes.com-style
+     agent card, minimal end-strip. Residential (homes_mirror) only;
+     commercial branch (.hero-full/.brand-bar/.site-footer, below)
+     untouched. Class names + values for .breadcrumb/.bc-inner/.bc-trail/
+     .bc-sep/.bc-nav/.bc-nav-link/.nav-btn/.gallery-badge/@keyframes
+     shimmer-gold copied verbatim (byte-identical) from the production
+     iframe bundle (mcgmarketinghub.z13.web.core.windows.net/oms/
+     1715-garland-avenue/listing-page.html, fetched 2026-07-18).
+     ========================================================== */
+  .breadcrumb{background:#fff;position:sticky;top:0;z-index:200;padding:0 24px;}
+  .bc-inner{max-width:1260px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:44px;gap:16px;overflow:hidden;}
+  .bc-trail{display:flex;align-items:center;gap:0;font-size:12px;color:#6b7280;white-space:nowrap;flex-shrink:0;}
+  .bc-trail a{color:#6b7280;text-decoration:none;transition:color .15s;}
+  .bc-trail a:hover{color:var(--crimson);}
+  .bc-sep{margin:0 5px;color:#ccc;}
+  .bc-nav{display:flex;align-items:center;gap:20px;flex-shrink:0;}
+  .bc-nav-link{font-size:12px;color:#6b7280;font-weight:500;white-space:nowrap;text-decoration:none;transition:color .15s;}
+  .bc-nav-link:hover{color:var(--crimson);}
+  @media(max-width:768px){.bc-nav{display:none;}}
+  .nav-btn{background:var(--crimson);color:#fff;font-size:13px;font-weight:700;padding:8px 18px;border-radius:4px;border:none;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block;}
+  .nav-btn:hover{background:var(--crimson-2);}
+  /* .hm-tabnav's own inner row now matches the bundle's 1260/24 width
+     (was inheriting the shared 1080px/20px .wrap; commercial's
+     .tabs-sticky .wrap is untouched since this selector is more
+     specific and scoped to .hm-tabnav only). Also stacks the sticky
+     in-page section nav directly below the new 44px breadcrumb bar. */
+  .hm-tabnav.tabs-sticky{top:44px;}
+  .hm-tabnav .wrap{max-width:1260px;padding:0 24px;}
+
+  @keyframes shimmer-gold{0% {background-position:0% center;} 50% {background-position:100% center;} 100% {background-position:0% center;}}
+  .gallery-badge{position:absolute;top:16px;left:16px;z-index:10;padding:7px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:3px;background:linear-gradient(90deg,#9a7a30 0%,#e8d48b 30%,#c4a35a 50%,#e8d48b 70%,#9a7a30 100%);background-size:200% auto;animation:shimmer-gold 3s ease infinite;color:#1a0a00;box-shadow:0 2px 10px rgba(0,0,0,.35);}
+
+  /* Homes.com-style agent card (Cameron's reference screenshot), MCG-
+     branded -- replaces the old horizontal mini agent card. */
+  .ha-top{display:flex;align-items:stretch;gap:0;margin-bottom:10px;}
+  .ha-photo{flex:none;width:72px;height:72px;border-radius:8px;overflow:hidden;background:var(--navy-tint);box-shadow:0 2px 8px rgba(0,0,0,.15);}
+  .ha-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+  .ha-namechip{background:var(--crimson);color:#fff;font-weight:900;font-size:14px;padding:0 14px;border-radius:0 8px 8px 0;flex:1;min-width:0;line-height:1.2;display:flex;align-items:center;}
+  .ha-role{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-500);margin-top:2px;}
+  .ha-firm{font-size:12.5px;color:var(--gray-500);margin-top:2px;}
+  .ha-bubble{background:var(--gray-100);color:var(--gray-900);border-radius:14px;border-top-left-radius:4px;padding:10px 14px;font-size:12.5px;line-height:1.5;margin:12px 0;}
+  .ha-btn{display:block;width:100%;text-align:center;background:var(--crimson);color:#fff;font-weight:900;font-size:13px;letter-spacing:.02em;padding:12px;border-radius:8px;text-decoration:none;box-sizing:border-box;}
+  .ha-btn:hover{background:var(--crimson-2);}
+  .ha-phone{display:block;text-align:center;font-weight:900;font-size:14px;color:var(--navy);text-decoration:none;margin-top:10px;}
+  .ha-footer{text-align:center;font-size:10.5px;color:var(--gray-500);margin-top:8px;line-height:1.4;}
+
+  /* Minimal end-of-report strip -- replaces the dark .site-footer for
+     this residential variant only (global chrome comes from the
+     Webflow wrapper when this report is iframed the same way the
+     bundle is). Muted text styled per the bundle's own .mls-attr-text
+     treatment (font-size:12px;color muted grey;line-height:1.7). */
+  .hm-endstrip{background:#fff;border-top:1px solid var(--gray-100);padding:22px 0 30px;}
+  .hm-endstrip .hm-content{padding-top:0;padding-bottom:0;}
+  .hm-endstrip-text{font-size:12px;color:#6b7280;line-height:1.7;margin:0 0 6px;}
+  .hm-endstrip-text strong{color:var(--gray-700);}
+  .hm-endstrip-switcher{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;}
+  .hm-endstrip-switcher a,.hm-endstrip-switcher span{font-size:12px;font-weight:700;padding:6px 12px;border-radius:6px;text-decoration:none;border:1px solid var(--gray-300);color:var(--gray-700);}
+  .hm-endstrip-switcher a:hover{background:var(--gray-100);}
+  .hm-endstrip-switcher .active{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .hm-endstrip-switcher .disabled{opacity:.4;cursor:default;}
+
+  /* Print-only minimal logo header line -- the iframe/Webflow chrome
+     won't print, so this variant keeps one small logo line instead. */
+  .print-logo-line{display:none;align-items:center;gap:10px;padding:14px 24px;border-bottom:1px solid var(--gray-300);}
+  .print-logo-line img{height:24px;width:auto;}
+  .print-logo-line span{font-family:var(--font-serif);font-weight:800;font-size:14px;color:var(--navy);}
+
   @media (min-width:640px){
     .hm-hero{min-height:460px;}
     .hm-stat-tile{padding:20px 22px;}
@@ -558,7 +631,8 @@
     .hm-carousel-page{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(5,1fr);}
   }
   @media print{
-    .hm-tabnav,.hm-hero-actions,.hm-banner,.hm-carousel-arrow,.hm-carousel-dots,.hm-controls,.hm-map-toggle,.hm-share-toast{display:none !important;}
+    .hm-tabnav,.hm-hero-actions,.hm-banner,.hm-carousel-arrow,.hm-carousel-dots,.hm-controls,.hm-map-toggle,.hm-share-toast,.breadcrumb{display:none !important;}
+    .print-logo-line{display:flex !important;}
     #hm-leaflet-map{display:none !important;}
     .hm-map-print-fallback{display:block !important;}
     .hm-section{page-break-inside:avoid;padding:16px 0;}
@@ -657,8 +731,8 @@ Land
       </div>
       <div class="stat-tile  ">
         <div class="label">Website Views</div>
-        <div class="value">4,164</div>
-        <div class="sub">4,062 unique visitors</div>
+        <div class="value">0</div>
+        <div class="sub">0 unique visitors</div>
       </div>
       <div class="stat-tile  ">
         <div class="label">Email Reach</div>
@@ -714,33 +788,7 @@ Land
 
     <div class="card chart-card">
       <h3>Top traffic sources</h3>
-      <p class="chart-caption">Where views on the MCG website and MCG's national syndication partners originated, combined.</p>
-      <div class="bar-row">
-        <div class="b-label">Search Engines</div>
-        <div class="bar-track"><div class="bar-fill" style="width:86.8%;background:#ab012e;"></div></div>
-        <div class="b-value">86.8% &middot; 3,515</div>
-      </div>
-      <div class="bar-row">
-        <div class="b-label">Direct</div>
-        <div class="bar-track"><div class="bar-fill" style="width:6.9%;background:#3568c9;"></div></div>
-        <div class="b-value">6.9% &middot; 278</div>
-      </div>
-      <div class="bar-row">
-        <div class="b-label">Other</div>
-        <div class="bar-track"><div class="bar-fill" style="width:3.5%;background:#9a9aa6;"></div></div>
-        <div class="b-value">3.5% &middot; 142</div>
-      </div>
-      <div class="bar-row">
-        <div class="b-label">Email Campaigns</div>
-        <div class="bar-track"><div class="bar-fill" style="width:2.8%;background:#1baf7a;"></div></div>
-        <div class="b-value">2.8% &middot; 115</div>
-      </div>
-      <div class="legend">
-        <span class="sw"><span class="dot" style="background:#ab012e"></span>Search Engines</span>
-        <span class="sw"><span class="dot" style="background:#3568c9"></span>Direct</span>
-        <span class="sw"><span class="dot" style="background:#9a9aa6"></span>Other</span>
-        <span class="sw"><span class="dot" style="background:#1baf7a"></span>Email Campaigns</span>
-      </div>
+      <div class="empty-note">Traffic-source data unavailable this period.</div>
     </div>
   </section>
 
@@ -832,7 +880,7 @@ Land
     <div class="section-head">
       <h2>Portfolio summary &amp; what's next</h2>
     </div>
-    <p class="insight-summary">3936 S 48th St has generated 46 page views on the network&#39;s commercial marketplace, carrying a search score of 95/100 (6 offering memorandum opens, 10 unique visitors). 3936 S 48th St logged 4210 tracked views this period, the first period with comparable data. 3936 S 48th St sits in the resilient luxury tier, which is holding relative to the mid-range; Washington County median DOM is currently 46 days. The period produced 6 tracked leads across the MCG website, portal, and chat channels.</p>
+    <p class="insight-summary">3936 S 48th St has generated 46 page views on the network&#39;s commercial marketplace, carrying a search score of 95/100 (6 offering memorandum opens, 10 unique visitors). 3936 S 48th St logged 46 tracked views this period, the first period with comparable data. 3936 S 48th St sits in the resilient luxury tier, which is holding relative to the mid-range; Washington County median DOM is currently 46 days. The period produced 6 tracked leads across the MCG website, portal, and chat channels.</p>
     <div class="plan-cols">
       <div class="card plan-card recs">
         <h3>Recommendations</h3>
@@ -849,7 +897,7 @@ Land
 </main>
 
 <!-- ==========================================================
-     8. FOOTER
+     8. FOOTER (commercial branch only -- unchanged)
      ========================================================== -->
 <footer class="site-footer">
   <div class="wrap">
