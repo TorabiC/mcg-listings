@@ -14,12 +14,14 @@
 </xml>
 </noscript>
 <![endif]-->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 <style type="text/css">
   body,table,td,a{ -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
   table,td{ mso-table-lspace:0pt; mso-table-rspace:0pt; }
   img{ -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; }
-  body{ margin:0; padding:0; width:100% !important; background-color:#F4F5F8; font-family:Lato, Arial, Helvetica, sans-serif; }
-  a{ color:#1B2A4A; }
+  body{ margin:0; padding:0; width:100% !important; background-color:#F7F5F0; font-family:Lato, Arial, Helvetica, sans-serif; }
+  a{ color:#16162A; }
+  .mcg-serif{ font-family:'Playfair Display', Georgia, 'Times New Roman', serif; }
   @media only screen and (max-width:600px){
     .mcg-container{ width:100% !important; }
     .mcg-px{ padding-left:16px !important; padding-right:16px !important; }
@@ -27,29 +29,29 @@
   }
 </style>
 </head>
-<body style="margin:0;padding:0;background-color:#F4F5F8;">
+<body style="margin:0;padding:0;background-color:#F7F5F0;">
 <!-- preheader -->
 <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
   {{ hero.address }} &mdash; {{ period_label }} activity report: {{ stats[0].value_display }} views, {{ stats[2].value_display }} showings this period.
 </div>
 
 <center>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F4F5F8;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F7F5F0;">
   <tr>
     <td align="center" style="padding:24px 12px;">
       <table role="presentation" class="mcg-container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background-color:#FFFFFF;border-radius:10px;overflow:hidden;">
 
         <!-- Header -->
         <tr>
-          <td class="mcg-px" style="background-color:#1B2A4A;padding:22px 28px;" bgcolor="#1B2A4A">
+          <td class="mcg-px" style="background-color:#16162A;padding:22px 28px;" bgcolor="#16162A">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td style="font-family:Lato,Arial,sans-serif;color:#ffffff;font-size:16px;font-weight:900;letter-spacing:0.02em;">
-                  MASON CAPITAL GROUP
-                  <div style="font-family:Lato,Arial,sans-serif;color:#C7CFE0;font-size:10.5px;font-weight:400;letter-spacing:0.08em;text-transform:uppercase;margin-top:2px;">MCG Listing Intelligence</div>
+                <td>
+                  <img src="data:image/png;base64,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" width="160" height="29" alt="Mason Capital Group" style="display:block;border:0;">
+                  <div style="font-family:Lato,Arial,sans-serif;color:#DCC188;font-size:10.5px;font-weight:400;letter-spacing:0.08em;text-transform:uppercase;margin-top:6px;">MCG Listing Intelligence</div>
                 </td>
                 <td align="right" style="font-family:Lato,Arial,sans-serif;color:#ffffff;font-size:11.5px;">
-                  <span style="background-color:#C9A227;color:#1B2A4A;font-weight:800;padding:5px 10px;border-radius:20px;font-size:11px;">{{ period_label }}</span>
+                  <span style="background-color:#C4A35A;color:#16162A;font-weight:800;padding:5px 10px;border-radius:20px;font-size:11px;">{{ period_label }}</span>
                 </td>
               </tr>
             </table>
@@ -61,12 +63,12 @@
           <td class="mcg-px" style="padding:26px 28px 10px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td style="font-family:Lato,Arial,sans-serif;font-size:20px;font-weight:900;color:#1B2A4A;">
+                <td class="mcg-serif" style="font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-size:22px;font-weight:800;color:#16162A;">
                   {{ hero.address }}
                 </td>
               </tr>
               <tr>
-                <td style="font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#5C7290;padding-top:4px;">
+                <td style="font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#6B6B78;padding-top:4px;">
                   {{ hero.price_display }} &middot; {% if hero.beds %}{{ hero.beds }} bd / {% endif %}{% if hero.baths %}{{ hero.baths }} ba &middot; {% endif %}{{ hero.type_display }} &middot; {{ period_range_display }}
                 </td>
               </tr>
@@ -80,9 +82,9 @@
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 {% for s in stats %}
-                <td class="mcg-stat" align="center" width="25%" style="padding:10px 4px;border:1px solid #D6DAE2;border-radius:8px;" bgcolor="#F4F5F8">
-                  <div style="font-family:Lato,Arial,sans-serif;font-size:22px;font-weight:900;color:#1B2A4A;line-height:1.1;">{{ s.value_display }}</div>
-                  <div style="font-family:Lato,Arial,sans-serif;font-size:10.5px;color:#5C7290;text-transform:uppercase;letter-spacing:0.03em;margin-top:3px;">{{ s.label }}</div>
+                <td class="mcg-stat" align="center" width="25%" style="padding:10px 4px;border:1px solid #C7C7D0;border-radius:8px;" bgcolor="#F7F5F0">
+                  <div style="font-family:Lato,Arial,sans-serif;font-size:22px;font-weight:900;color:#16162A;line-height:1.1;">{{ s.value_display }}</div>
+                  <div style="font-family:Lato,Arial,sans-serif;font-size:10.5px;color:#6B6B78;text-transform:uppercase;letter-spacing:0.03em;margin-top:3px;">{{ s.label }}</div>
                 </td>
                 {% if not loop.last %}<td width="8" style="font-size:0;line-height:0;">&nbsp;</td>{% endif %}
                 {% endfor %}
@@ -96,7 +98,7 @@
           <td class="mcg-px" style="padding:20px 28px 4px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td style="font-family:Lato,Arial,sans-serif;font-size:13px;font-weight:800;color:#1B2A4A;text-transform:uppercase;letter-spacing:0.03em;padding-bottom:8px;border-bottom:2px solid #C9A227;">
+                <td style="font-family:Lato,Arial,sans-serif;font-size:13px;font-weight:800;color:#16162A;text-transform:uppercase;letter-spacing:0.03em;padding-bottom:8px;border-bottom:2px solid #C4A35A;">
                   This period&rsquo;s highlights
                 </td>
               </tr>
@@ -108,22 +110,22 @@
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               {% if market.positioning %}
               <tr>
-                <td style="padding:0 0 12px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#1D2333;line-height:1.55;">
-                  <strong style="color:#A6192E;">Market position &mdash;</strong> {{ market.positioning }}
+                <td style="padding:0 0 12px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#16162A;line-height:1.55;">
+                  <strong style="color:#AB012E;">Market position &mdash;</strong> {{ market.positioning }}
                 </td>
               </tr>
               {% endif %}
               {% if showings %}
               <tr>
-                <td style="padding:0 0 12px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#1D2333;line-height:1.55;">
-                  <strong style="color:#A6192E;">Showing feedback &mdash;</strong> &ldquo;{{ showings[-1].feedback }}&rdquo;
+                <td style="padding:0 0 12px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#16162A;line-height:1.55;">
+                  <strong style="color:#AB012E;">Showing feedback &mdash;</strong> &ldquo;{{ showings[-1].feedback }}&rdquo;
                 </td>
               </tr>
               {% endif %}
               {% if insights.next_period_plan %}
               <tr>
-                <td style="padding:0 0 4px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#1D2333;line-height:1.55;">
-                  <strong style="color:#A6192E;">Next up &mdash;</strong> {{ insights.next_period_plan[0] }}
+                <td style="padding:0 0 4px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#16162A;line-height:1.55;">
+                  <strong style="color:#AB012E;">Next up &mdash;</strong> {{ insights.next_period_plan[0] }}
                 </td>
               </tr>
               {% endif %}
@@ -135,10 +137,10 @@
         <!-- National exposure teaser: publication logo strip -->
         <tr>
           <td class="mcg-px" style="padding:14px 28px 4px;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #D6DAE2;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #C7C7D0;">
               <tr>
-                <td style="padding:16px 0 10px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#1D2333;line-height:1.55;">
-                  <strong style="color:#A6192E;">National exposure &mdash;</strong> advertised on {{ homes_exposure.publication_count }} national publications &mdash; see the full report for the complete list.
+                <td style="padding:16px 0 10px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#16162A;line-height:1.55;">
+                  <strong style="color:#AB012E;">National exposure &mdash;</strong> advertised on {{ homes_exposure.publication_count }} national publications &mdash; see the full report for the complete list.
                 </td>
               </tr>
               <tr>
@@ -150,7 +152,7 @@
                         {% if pub.logo %}
                         <img src="{{ pub.logo }}" alt="{{ pub.name }}" width="52" height="18" style="display:block;border-radius:4px;">
                         {% else %}
-                        <span style="font-family:Lato,Arial,sans-serif;font-size:10px;color:#5C7290;">{{ pub.name }}</span>
+                        <span style="font-family:Lato,Arial,sans-serif;font-size:10px;color:#6B6B78;">{{ pub.name }}</span>
                         {% endif %}
                       </td>
                       {% endfor %}
@@ -164,10 +166,10 @@
         {% elif crexi_exposure %}
         <tr>
           <td class="mcg-px" style="padding:14px 28px 4px;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #D6DAE2;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #C7C7D0;">
               <tr>
-                <td style="padding:16px 0 4px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#1D2333;line-height:1.55;">
-                  <strong style="color:#A6192E;">National exposure &mdash;</strong> {{ '{:,}'.format(crexi_exposure.impressions) }} {{ 'impressions' if crexi_exposure.impressions_is_deep else 'page views' }} across MCG&rsquo;s commercial marketplace network, MCG Placement Score {{ crexi_exposure.search_score }}/100 ({{ crexi_exposure.search_score_grade }}) &mdash; see the full report for details.
+                <td style="padding:16px 0 4px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#16162A;line-height:1.55;">
+                  <strong style="color:#AB012E;">National exposure &mdash;</strong> {{ '{:,}'.format(crexi_exposure.impressions) }} {{ 'impressions' if crexi_exposure.impressions_is_deep else 'page views' }} across MCG&rsquo;s commercial marketplace network, MCG Placement Score {{ crexi_exposure.search_score }}/100 ({{ crexi_exposure.search_score_grade }}) &mdash; see the full report for details.
                 </td>
               </tr>
             </table>
@@ -180,8 +182,8 @@
           <td align="center" style="padding:22px 28px 26px;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td align="center" bgcolor="#A6192E" style="border-radius:8px;">
-                  <a href="{{ report_url }}" target="_blank" style="display:inline-block;padding:14px 28px;font-family:Lato,Arial,sans-serif;font-size:14px;font-weight:800;color:#ffffff;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">
+                <td align="center" bgcolor="#AB012E" style="border-radius:6px;">
+                  <a href="{{ report_url }}" target="_blank" style="display:inline-block;padding:14px 30px;font-family:Lato,Arial,sans-serif;font-size:13px;font-weight:900;color:#ffffff;text-decoration:none;border-radius:6px;letter-spacing:0.06em;text-transform:uppercase;">
                     View Your Listing Intelligence Report
                   </a>
                 </td>
@@ -192,20 +194,20 @@
 
         <!-- Footer -->
         <tr>
-          <td class="mcg-px" style="background-color:#1B2A4A;padding:22px 28px;" bgcolor="#1B2A4A">
+          <td class="mcg-px" style="background-color:#16162A;padding:22px 28px;" bgcolor="#16162A">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td style="font-family:Lato,Arial,sans-serif;font-size:12px;color:#DCE2F0;font-weight:700;">
+                <td style="font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-size:14px;color:#ffffff;font-weight:800;">
                   Mason Capital Group &middot; Northwest Arkansas
                 </td>
               </tr>
               <tr>
-                <td style="font-family:Lato,Arial,sans-serif;font-size:11px;color:#B9C2DA;padding-top:6px;line-height:1.5;">
+                <td style="font-family:Lato,Arial,sans-serif;font-size:11px;color:#ABABC2;padding-top:6px;line-height:1.5;">
                   {{ mcg_proof.transactions }} in transactions closed &middot; {{ mcg_proof.years }} years in Northwest Arkansas &middot; listings featured on {{ mcg_proof.featured_sites }} syndication sites through a single platform partner ({{ mcg_proof.views_90d }} views in the first 90 days, as of {{ mcg_proof.as_of }}).
                 </td>
               </tr>
               <tr>
-                <td style="font-family:Lato,Arial,sans-serif;font-size:10.5px;color:#8E9AC0;padding-top:14px;">
+                <td style="font-family:Lato,Arial,sans-serif;font-size:10.5px;color:#8B8BA0;padding-top:14px;">
                   This report was prepared for the seller of record for {{ hero.address }} and is not intended for public distribution.
                 </td>
               </tr>

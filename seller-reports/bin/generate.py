@@ -289,9 +289,32 @@ def cap_top_n_with_other(items: list[dict], key_value: str, key_label: str, n: i
     return result
 
 
-# Fixed categorical order per brand palette. Always paired with direct labels
-# and a legend (never color-alone identification) -- see dataviz skill.
-CATEGORICAL_COLORS = ["#1B2A4A", "#A6192E", "#C9A227", "#5C7290", "#8A8580"]
+# Fixed categorical order per brand palette (MCG listing-page design system:
+# crimson / navy / gold / teal family). Always paired with direct labels and
+# a legend (never color-alone identification) -- see dataviz skill.
+#
+# These are NOT the raw brand chrome hex values (--navy/--gold in report.html)
+# -- validated 2026-07-18 with the dataviz skill's validate_palette.js: the
+# raw navy (#16162a) and gold (#c4a35a) fail the categorical lightness/chroma
+# floors when used as data marks on a white card (they read as near-black /
+# near-gray). These four steps are brand-hue-family variants re-stepped into
+# the passing OKLCH band, confirmed ALL CHECKS PASS on --pairs all (light
+# mode): worst all-pairs CVD ΔE 9.1 (protan), normal-vision floor 22.9.
+# Per the skill's series cap, only 4 slots are safe for all-pairs contexts
+# (bar list + wrapped legend); anything past 4 folds into "Other", which
+# takes CATEGORICAL_OTHER_COLOR instead of cycling back through the identity
+# hues (an "Other" residual is not a 5th identity to confuse with the first).
+CATEGORICAL_COLORS = ["#ab012e", "#3568c9", "#eda100", "#1baf7a"]
+CATEGORICAL_OTHER_COLOR = "#9a9aa6"
+
+
+def _categorical_color(item: dict, label_key: str, i: int) -> str:
+    """Slot-1..4 identity hue by position, except the 'Other' residual
+    bucket, which always takes the reserved neutral (never cycles back
+    through the identity colors -- see CATEGORICAL_COLORS comment)."""
+    if item.get(label_key) == "Other":
+        return CATEGORICAL_OTHER_COLOR
+    return CATEGORICAL_COLORS[i % len(CATEGORICAL_COLORS)]
 
 
 def build_traffic_sources_chart(top_sources: list[dict]) -> dict:
@@ -307,7 +330,7 @@ def build_traffic_sources_chart(top_sources: list[dict]) -> dict:
             "label": label,
             "value": c.get("users", 0),
             "pct": round((c.get("users", 0) / max_val) * 100, 1),
-            "color": CATEGORICAL_COLORS[i % len(CATEGORICAL_COLORS)],
+            "color": _categorical_color(c, "source", i),
         })
     return {"bars": bars, "available": bool(bars)}
 
@@ -315,7 +338,9 @@ def build_traffic_sources_chart(top_sources: list[dict]) -> dict:
 def build_traffic_sources_merged(portals_raw: dict, ga4_top_sources: list[dict]) -> dict:
     """Homes.com-style 'Top Traffic Sources' bar list, merged across every
     portal's traffic_sources[] and GA4's top_sources[] -- anonymized labels,
-    combined into one ranked list capped to the top 6 + Other."""
+    combined into one ranked list capped to the top 4 + Other (4 is the
+    dataviz-skill-validated all-pairs-safe series count for this brand
+    palette; see CATEGORICAL_COLORS comment above)."""
     combined: dict[str, int] = {}
     for portal in (portals_raw or {}).values():
         for row in (portal.get("traffic_sources") or []):
@@ -326,7 +351,7 @@ def build_traffic_sources_merged(portals_raw: dict, ga4_top_sources: list[dict])
         combined[label] = combined.get(label, 0) + int(row.get("users", 0) or 0)
 
     items = [{"source": k, "value": v} for k, v in combined.items() if v > 0]
-    capped = cap_top_n_with_other(items, "value", "source", 6)
+    capped = cap_top_n_with_other(items, "value", "source", 4)
     total = sum(c.get("value", 0) for c in capped) or 1
     bars = []
     for i, c in enumerate(capped):
@@ -334,7 +359,7 @@ def build_traffic_sources_merged(portals_raw: dict, ga4_top_sources: list[dict])
             "label": c.get("source", "Other"),
             "value": c.get("value", 0),
             "pct": round((c.get("value", 0) / total) * 100, 1),
-            "color": CATEGORICAL_COLORS[i % len(CATEGORICAL_COLORS)],
+            "color": _categorical_color(c, "source", i),
         })
     return {"bars": bars, "available": bool(bars)}
 
@@ -1020,15 +1045,16 @@ def render_pdf(chromium_bin: str, html_path: Path, pdf_path: Path) -> tuple[bool
         "--disable-gpu",
         "--no-sandbox",
         "--disable-dev-shm-usage",
-        # This sandbox's egress policy blocks third-party CDN hosts (e.g. the
-        # homes.com display-ad logo CDN referenced by the publications
-        # grid), so those <img> requests would otherwise hang/retry for the
-        # full page-load timeout on every render. Disabling image loading
-        # only for this internal PDF render keeps generation fast and
-        # deterministic; it has no effect on the live HTML page, which
-        # loads normally in a real browser with unrestricted internet
-        # access.
-        "--blink-settings=imagesEnabled=false",
+        # Force every hostname to resolve to 0.0.0.0 so third-party CDN
+        # requests (the homes.com display-ad logo CDN referenced by the
+        # publications grid, the Google Fonts CDN) fail fast instead of
+        # hanging/retrying for the page-load timeout. file:// and data: URIs
+        # never touch DNS, so this has no effect on them -- the MCG logo,
+        # embedded as a data: URI in the header/footer (same asset as the
+        # live listing pages), still renders. A blanket
+        # "--blink-settings=imagesEnabled=false" (the prior approach) would
+        # also have blocked that local logo image.
+        "--host-resolver-rules=MAP * 0.0.0.0",
         f"--print-to-pdf={pdf_path}",
         "--no-pdf-header-footer",
         "--print-to-pdf-no-header",
@@ -1036,7 +1062,11 @@ def render_pdf(chromium_bin: str, html_path: Path, pdf_path: Path) -> tuple[bool
         f"file://{html_path.resolve()}",
     ]
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+        # 150s (was 90s): the homes.com-portal listings' publication-logo
+        # grid (~40+ external <img> hosts, all now resolving to 0.0.0.0 per
+        # the flags above) takes a real-but-bounded ~100s wall-clock to fail
+        # out on this sandbox's network path -- 90s clipped it.
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=150)
     except Exception as exc:  # noqa: BLE001
         return False, f"chromium invocation failed: {exc}"
     if result.returncode != 0 or not pdf_path.exists():

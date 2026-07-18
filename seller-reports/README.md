@@ -134,8 +134,8 @@ so the next scheduled weekly run picks up a new listing automatically:
    invent one; see the `46-northfleet` entry, sourced from
    `presentations/46-northfleet-analysis/`, as the pattern). Leave any of
    those three `null` if nothing exists yet -- the report degrades
-   gracefully (navy/gold monogram hero instead of a photo, no "View Live
-   Listing" button).
+   gracefully (navy hero gradient instead of a photo, no "View Live
+   Listing" button; the MCG logo bar above the hero renders either way).
 2. **Run the pipeline.** The very next `bin/collect.py --period weekly`
    (writes `data/<slug>/<period_id>/metrics.json`, zeros + `"missing"` for
    any source without an intake file or credential yet) followed by
