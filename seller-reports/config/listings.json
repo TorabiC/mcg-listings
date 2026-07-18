@@ -29,9 +29,9 @@
       "report_token": "6c7b8b8d",
       "links": {
         "idx": "https://masoncapitalgroup.idxbroker.com/idx/photogallery/d198/1352809",
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/1715-garland-ave-047-acre-development-site-fayetteville-ar-mason-capital-group",
         "marketing_page": null,
-        "hero_image": "https://api.cotality.com/trestle/Media/Property/PHOTO-Jpeg/1175484435/1/MzczLzE5MTEvMjA/MjAvNzM3MS8xNzgyNjg3NzU4/5Bdu3f1yBq88BGVthl8b2QCMlXKlZdVpD45E_gy_CuM"
+        "hero_image": "https://mcg-marketing-hub.azurewebsites.net/output/1715-garland-avenue/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -69,9 +69,9 @@
       "report_token": "569528b3",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/46-northfleet-drive-bella-vista-ar",
         "marketing_page": "https://torabic.github.io/mcg-listings/presentations/46-northfleet-analysis/",
-        "hero_image": "https://torabic.github.io/mcg-listings/presentations/46-northfleet-analysis/images/hero.jpg"
+        "hero_image": "https://mcgmarketinghub.z13.web.core.windows.net/oms/46-northfleet-ln/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -109,9 +109,9 @@
       "report_token": "2910c2fb",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/18772-davis-rd-beaver-lake-rogers-ar",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcgmarketinghub.z13.web.core.windows.net/oms/18772-davis-road/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -149,9 +149,9 @@
       "report_token": "71fecc51",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/407-old-forge-drive-23",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcg-marketing-hub.azurewebsites.net/output/407-old-forge-drive/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -193,9 +193,9 @@
       "report_token": "b4b40a8b",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/1716-w-holly-street-fayetteville-ar",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcgmarketinghub.z13.web.core.windows.net/oms/1716-w-holly-street/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -234,9 +234,9 @@
       "report_token": "3fdf164f",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/3300-blue-hill-road-rogers-ar",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcg-marketing-hub.azurewebsites.net/output/3300-blue-hill-road/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -275,9 +275,9 @@
       "report_token": "eb341019",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/downtown-rogers-commercial-building-ar",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcg-marketing-hub.azurewebsites.net/output/401-n2-n-d-street/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -316,9 +316,9 @@
       "report_token": "b95a828f",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/hwy-49-hwy-72-development-gravette-ar",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcgmarketinghub.z13.web.core.windows.net/oms/ar-72/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -357,9 +357,9 @@
       "report_token": "02a6b292",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/hwy-49-storage-facility-springdale-ar",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcg-marketing-hub.azurewebsites.net/output/3936-s48th-street/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -402,9 +402,9 @@
       "report_token": "cef6d66f",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/sw-regional-airport-blvd-bentonville-ar",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcg-marketing-hub.azurewebsites.net/output/s-w-regional-airport-blvd/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -443,9 +443,9 @@
       "report_token": "63f59669",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/504-sw-e-street-bentonville-ar",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcg-marketing-hub.azurewebsites.net/output/504-s-w-e-street/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -483,9 +483,9 @@
       "report_token": "4591c0c3",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/presidential-drive-commercial-lot-lowell-ar",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcg-marketing-hub.azurewebsites.net/output/presidential-drive/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -524,9 +524,9 @@
       "report_token": "b2955194",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/whithorn-lane-bella-vista-lot-ar",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcg-marketing-hub.azurewebsites.net/output/whithorn-lane/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
@@ -565,9 +565,9 @@
       "report_token": "c266fe48",
       "links": {
         "idx": null,
-        "webflow_page": null,
+        "webflow_page": "https://www.masoncapitalgroup.com/property-listings/featured-listings/exminster-circle-bella-vista-ar",
         "marketing_page": null,
-        "hero_image": null
+        "hero_image": "https://mcgmarketinghub.z13.web.core.windows.net/oms/exminster-circle/images/photo-001.jpg"
       },
       "sources": {
         "idx": true,
