@@ -19,6 +19,7 @@ import re
 import shutil
 import subprocess
 import sys
+import urllib.parse
 from pathlib import Path
 
 try:
@@ -1194,6 +1195,12 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
             "image_url": hero_image,
         },
         "agent": AGENT,
+        # Final-approval-round agent card ("Message Cameron" button) --
+        # mailto with a per-listing subject line, address-specific.
+        "agent_mailto": (
+            "mailto:Torabi@MasonCapitalGroup.com?subject="
+            + urllib.parse.quote(f"Listing Intelligence — {listing.get('address', '')}")
+        ),
         "live_listing_url": live_listing_url,
         "seller_name": seller_name,
         "quality": dq,
