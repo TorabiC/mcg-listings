@@ -1378,6 +1378,62 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
 
 
 # ---------------------------------------------------------------------------
+# Private insights (Cameron's eyes only -- see Listing Reports hub's
+# "For your call — private" card in mcg-marketing-hub. Published alongside
+# the seller-facing report/flyer at the same period URL so the hub can fetch
+# it server-side, but it is NEVER linked from seller-facing HTML and NEVER
+# rendered into report.html/flyer.html.
+# ---------------------------------------------------------------------------
+def build_insights_private(listing: dict, metrics: dict, vm: dict) -> dict:
+    """3 talking-point bullets (biggest number, trend, next-step framing) +
+    a pricing_flag (true when DOM exceeds the county average and views are
+    trending down), each with a one-line rationale."""
+    stats = vm.get("stats", [])
+    dom_gauge = vm.get("charts", {}).get("dom_gauge", {})
+    trend = metrics.get("trend", {})
+    delta_pct = trend.get("delta_views_pct", 0.0)
+
+    views_stat = next((s for s in stats if s.get("key") == "views"), None)
+    if views_stat and views_stat.get("available"):
+        biggest_number = f"{views_stat['value_display']} total views this period -- {views_stat['sub']}."
+    else:
+        biggest_number = "No view data available this period -- confirm the listing is still syndicating."
+
+    if delta_pct > 0:
+        trend_point = f"Views trending up {delta_pct:.1f}% vs. the prior period."
+    elif delta_pct < 0:
+        trend_point = f"Views trending down {abs(delta_pct):.1f}% vs. the prior period."
+    else:
+        trend_point = "Views roughly flat vs. the prior period."
+
+    showings_count = len(metrics.get("showings", []))
+    if dom_gauge.get("available") and not dom_gauge.get("pacing_good"):
+        next_step = (f"On the market {dom_gauge['listing_dom']} days vs. a "
+                     f"{dom_gauge['area_dom']}-day {dom_gauge.get('county', 'county')} average -- "
+                     "worth a pricing/positioning check-in call with the seller.")
+    elif showings_count:
+        next_step = f"{showings_count} showing{'s' if showings_count != 1 else ''} logged -- follow up on buyer feedback with the seller."
+    else:
+        next_step = "Keep the seller warm with a call this week; no urgent flags this period."
+
+    pricing_flag = bool(dom_gauge.get("available") and not dom_gauge.get("pacing_good") and delta_pct < 0)
+    pricing_reason = None
+    if pricing_flag:
+        pricing_reason = (f"Days on market ({dom_gauge['listing_dom']}) exceeds the "
+                           f"{dom_gauge.get('county', 'county')} average ({dom_gauge['area_dom']} days) "
+                           f"and views are trending down {abs(delta_pct):.1f}% -- consider a pricing conversation.")
+
+    return {
+        "slug": listing.get("slug"),
+        "period_id": metrics["period"]["id"],
+        "talking_points": [biggest_number, trend_point, next_step],
+        "pricing_flag": pricing_flag,
+        "pricing_flag_reason": pricing_reason,
+        "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+    }
+
+
+# ---------------------------------------------------------------------------
 # Chromium / PDF
 # ---------------------------------------------------------------------------
 def find_chromium(explicit: str | None) -> str | None:
@@ -1524,11 +1580,24 @@ def main() -> int:
         latest_dir.mkdir(parents=True, exist_ok=True)
         (latest_dir / "index.html").write_text(html, encoding="utf-8")
 
-        # --- flyer ---
+        # --- flyer (out/flyers/, back-compat for bin/cc_flyers.py) ---
         flyer_html = flyer_tmpl.render(**vm)
         flyers_dir.mkdir(parents=True, exist_ok=True)
         flyer_path = flyers_dir / f"{slug}-{args.period_id}.html"
         flyer_path.write_text(flyer_html, encoding="utf-8")
+
+        # --- flyer.html + insights.json published into the SAME period
+        # folder as index.html, so the Listing Reports hub (mcg-marketing-hub
+        # app.py / reports_hub.py) can fetch both by simple relative path off
+        # the public report URL. insights.json is fetched server-side only by
+        # the hub for Cameron's private "For your call" card -- it is never
+        # linked from index.html/flyer.html and carries no seller-facing copy.
+        (period_dir / "flyer.html").write_text(flyer_html, encoding="utf-8")
+        (latest_dir / "flyer.html").write_text(flyer_html, encoding="utf-8")
+        insights_private = build_insights_private(listing, metrics, vm)
+        insights_json = json.dumps(insights_private, indent=2)
+        (period_dir / "insights.json").write_text(insights_json, encoding="utf-8")
+        (latest_dir / "insights.json").write_text(insights_json, encoding="utf-8")
 
         # --- pdf ---
         pdf_status = "skipped (no chromium)"
