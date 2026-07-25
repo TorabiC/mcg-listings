@@ -847,6 +847,145 @@ def build_crexi_exposure(portals: dict) -> dict | None:
     }
 
 
+def _fmt_n(n) -> str:
+    try:
+        return f"{int(round(float(n))):,}"
+    except (TypeError, ValueError):
+        return "0"
+
+
+def build_channel_performance(src: dict, dq: dict, homes_exposure: dict | None,
+                              crexi_exposure: dict | None, portals_raw: dict) -> dict:
+    """Multi-channel performance blocks for the 'Full Marketing Footprint'
+    section. One card per LIVE channel (never fabricate an inactive one),
+    anonymized channel names per the content policy, plus a combined
+    touchpoints headline. Windows differ by channel (site analytics are
+    period-scoped; syndication counters run since listing) -- the section
+    carries an honest footnote instead of pretending otherwise."""
+    channels, combined = [], 0
+
+    ga4 = src.get("ga4") or {}
+    if dq.get("ga4") == "live" and (ga4.get("pageviews") or ga4.get("users")):
+        top = (ga4.get("top_sources") or [])
+        top_label = anonymize_source_label(top[0].get("source", "")) if top else None
+        eng = ga4.get("avg_engagement_s") or 0
+        stats = [
+            {"label": "Listing page views this period", "value": _fmt_n(ga4.get("pageviews", 0))},
+            {"label": "Unique visitors", "value": _fmt_n(ga4.get("users", 0))},
+        ]
+        if eng:
+            stats.append({"label": "Avg. time engaged", "value": f"{int(eng // 60)}m {int(eng % 60)}s"})
+        if top_label:
+            stats.append({"label": "Top traffic source", "value": top_label})
+        channels.append({
+            "key": "website", "icon": "globe",
+            "name": "MasonCapitalGroup.com",
+            "tagline": "Your listing's dedicated page on the MCG website",
+            "stats": stats,
+        })
+        combined += int(ga4.get("pageviews", 0) or 0)
+
+    if homes_exposure:
+        channels.append({
+            "key": "syndication", "icon": "network",
+            "name": "National Syndication Network",
+            "tagline": "MCG's premier residential syndication partners",
+            "stats": [
+                {"label": "Total views since listing", "value": _fmt_n(homes_exposure.get("total_views", 0))},
+                {"label": "Display ad impressions", "value": _fmt_n(homes_exposure.get("display_ad_views", 0))},
+                {"label": "Top-of-search placements", "value": _fmt_n(homes_exposure.get("top_of_search", 0))},
+                {"label": "Publications carrying your listing", "value": _fmt_n(homes_exposure.get("publication_count", 0))},
+            ],
+        })
+        combined += int(homes_exposure.get("total_views", 0) or 0)
+
+    if crexi_exposure:
+        stats = [
+            {"label": "Marketplace page views", "value": _fmt_n(crexi_exposure.get("page_views", 0))},
+            {"label": "Unique visitors", "value": _fmt_n(crexi_exposure.get("visitors", 0))},
+            {"label": "OM / flyer opens", "value": _fmt_n(crexi_exposure.get("om_flyer_opens", 0))},
+        ]
+        if crexi_exposure.get("search_score") is not None:
+            stats.append({"label": "MCG placement score", "value": f"{crexi_exposure['search_score']} / 100"})
+        if crexi_exposure.get("impressions"):
+            stats.insert(0, {"label": "Marketplace impressions", "value": _fmt_n(crexi_exposure["impressions"])})
+            combined += int(crexi_exposure.get("impressions") or 0)
+        else:
+            combined += int(crexi_exposure.get("page_views", 0) or 0)
+        channels.append({
+            "key": "commercial", "icon": "building",
+            "name": "Commercial Marketplace Network",
+            "tagline": "MCG's investor- and developer-facing marketplace partners",
+            "stats": stats,
+        })
+
+    loopnet = portals_raw.get("loopnet") or {}
+    if loopnet.get("views") or loopnet.get("leads"):
+        channels.append({
+            "key": "loopnet", "icon": "building",
+            "name": "Commercial Marketplace Network — national reach",
+            "tagline": "Extended commercial syndication coverage",
+            "stats": [
+                {"label": "Listing views", "value": _fmt_n(loopnet.get("views", 0))},
+                {"label": "Buyer leads", "value": _fmt_n(loopnet.get("leads", 0))},
+            ],
+        })
+        combined += int(loopnet.get("views", 0) or 0)
+
+    cc = src.get("cc") or {}
+    cc_totals = cc.get("totals") or {}
+    if dq.get("cc") == "live" and (cc.get("campaigns") or cc_totals.get("sent")):
+        n_camp = len(cc.get("campaigns") or [])
+        sent = cc_totals.get("sent", 0)
+        opens = cc_totals.get("opens", 0)
+        stats = [{"label": "Targeted campaigns featuring your property", "value": _fmt_n(n_camp)}]
+        if sent:
+            stats += [
+                {"label": "Buyers & investors reached", "value": _fmt_n(sent)},
+                {"label": "Opened your property's e-mail", "value": f"{_fmt_n(opens)} ({round(opens / sent * 100, 1)}%)" if sent else _fmt_n(opens)},
+            ]
+        else:
+            stats.append({"label": "Status", "value": "Campaigns staged — results post after send"})
+        channels.append({
+            "key": "email", "icon": "mail",
+            "name": "MCG Private Buyer Network",
+            "tagline": "Direct e-mail program to MCG's curated buyer and investor lists",
+            "stats": stats,
+        })
+        combined += int(sent or 0)
+
+    idx = src.get("idx") or {}
+    if dq.get("idx") == "live" and idx.get("leads"):
+        channels.append({
+            "key": "leads", "icon": "target",
+            "name": "MCG Buyer Lead Pipeline",
+            "tagline": "Prospective buyers captured and worked by your MCG team",
+            "stats": [{"label": "Active buyer leads engaged this period", "value": _fmt_n(idx.get("leads", 0))}],
+        })
+
+    tawk = src.get("tawk") or {}
+    if dq.get("tawk") == "live" and (tawk.get("chats") or tawk.get("inquiries_about_listing")):
+        channels.append({
+            "key": "chat", "icon": "chat",
+            "name": "Live Buyer Concierge",
+            "tagline": "Real-time website chat, answered for your listing",
+            "stats": [
+                {"label": "Live conversations", "value": _fmt_n(tawk.get("chats", 0))},
+                {"label": "Inquiries about your property", "value": _fmt_n(tawk.get("inquiries_about_listing", 0))},
+            ],
+        })
+
+    return {
+        "available": len(channels) > 0,
+        "channels": channels,
+        "channel_count": len(channels),
+        "combined_display": _fmt_n(combined),
+        "footnote": ("Combined marketing touchpoints across all active MCG channels. "
+                     "Website figures reflect this reporting period; syndication and "
+                     "marketplace counters accrue from your listing date."),
+    }
+
+
 def build_stats(metrics: dict, dq: dict) -> list[dict]:
     src = metrics.get("sources", {})
     idx = src.get("idx", {})
@@ -1103,6 +1242,7 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     homes_exposure = build_homes_exposure(portals_raw)
     crexi_exposure = build_crexi_exposure(portals_raw)
     exposure_available = bool(homes_exposure or crexi_exposure)
+    channel_performance = build_channel_performance(src, dq, homes_exposure, crexi_exposure, portals_raw)
 
     # --- homes.com-mirror layout gate ---------------------------------
     # Applies to listings whose portals include homes.com data (i.e.
@@ -1232,6 +1372,7 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
         "show_reach": show_reach,
         "show_buyermap": show_buyermap,
         "homes_mirror": homes_mirror,
+        "channel_performance": channel_performance,
         "hm": hm,
     }
 

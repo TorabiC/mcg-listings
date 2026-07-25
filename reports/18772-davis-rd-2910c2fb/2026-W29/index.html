@@ -549,6 +549,30 @@
   .hm-tabnav a:hover{color:var(--navy);}
   .hm-tabnav a.is-active{color:var(--navy);border-bottom-color:var(--crimson);}
 
+  /* --- Full Marketing Footprint (multi-channel) --- */
+  .hm-footprint-band{background:linear-gradient(120deg,var(--navy) 0%,var(--navy-2) 70%);border-radius:14px;padding:26px 28px;margin:14px 0 20px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;border:1px solid rgba(196,163,90,.35);}
+  .hm-footprint-number{font-family:var(--font-serif);font-size:44px;font-weight:900;color:var(--gold);line-height:1;letter-spacing:-1px;}
+  .hm-footprint-label{font-size:13.5px;font-weight:700;color:#EDE9DF;max-width:420px;line-height:1.45;}
+  .hm-channel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;}
+  .hm-channel-card{background:#fff;border:1px solid var(--gray-100);border-radius:14px;padding:18px 20px;box-shadow:0 4px 18px rgba(16,16,42,.06);display:flex;flex-direction:column;gap:12px;}
+  .hm-channel-head{display:flex;gap:12px;align-items:flex-start;}
+  .hm-channel-icon{flex:none;width:38px;height:38px;border-radius:10px;background:var(--gold-tint,#F5EEDD);position:relative;}
+  .hm-channel-icon::after{content:"";position:absolute;inset:9px;border-radius:4px;background:var(--gold);opacity:.85;}
+  .hm-ic-globe::after{border-radius:50%;}
+  .hm-ic-network::after{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);}
+  .hm-ic-building::after{clip-path:polygon(0 100%,0 30%,50% 0,100% 30%,100% 100%);}
+  .hm-ic-mail::after{clip-path:polygon(0 15%,100% 15%,100% 85%,0 85%);}
+  .hm-ic-target::after{border-radius:50%;box-shadow:inset 0 0 0 3px #fff;}
+  .hm-ic-chat::after{border-radius:50% 50% 50% 8%;}
+  .hm-channel-name{font-family:var(--font-serif);font-size:16.5px;font-weight:800;color:var(--navy);line-height:1.25;}
+  .hm-channel-tag{font-size:12px;color:var(--gray-500);margin-top:2px;line-height:1.4;}
+  .hm-channel-stats{list-style:none;margin:0;padding:0;border-top:1px solid var(--gray-100);}
+  .hm-channel-stats li{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--gray-100);}
+  .hm-channel-stats li:last-child{border-bottom:none;}
+  .hm-cs-value{font-size:17px;font-weight:900;color:var(--navy);white-space:nowrap;order:2;}
+  .hm-cs-label{font-size:12.5px;color:var(--gray-700);font-weight:600;order:1;}
+  .hm-footnote{font-size:11.5px;color:var(--gray-500);margin-top:14px;line-height:1.5;}
+  @media (max-width:640px){.hm-footprint-number{font-size:34px;}.hm-channel-grid{grid-template-columns:1fr;}}
   .hm-glossary-list{list-style:none;margin:0;padding:0;}
   .hm-glossary-list li{padding:12px 0;border-bottom:1px solid var(--gray-100);}
   .hm-glossary-list dt{font-weight:900;color:var(--navy);font-size:13.5px;margin:0;}
@@ -636,7 +660,7 @@
     #hm-leaflet-map{display:none !important;}
     .hm-map-print-fallback{display:block !important;}
     .hm-section{page-break-inside:avoid;padding:16px 0;}
-    #hm-reach,#hm-activityfeed,#hm-visitormap,#hm-glossary{page-break-before:always;}
+    #hm-reach,#hm-channels,#hm-activityfeed,#hm-visitormap,#hm-glossary{page-break-before:always;}
     .hm-hero{min-height:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   }
 </style>
@@ -892,8 +916,8 @@ style="background-image:url('https://mcgmarketinghub.z13.web.core.windows.net/om
 
     <div class="footer-prepared">Prepared exclusively for the owner &mdash; Weekly period, Jul 13, 2026 – Jul 19, 2026.</div>
     <div class="footer-meta">
-      Prepared for the property owner. Contains MCG proprietary marketing intelligence. Report generated July 18, 2026 for 18772 Davis Rd, Rogers, AR. Not intended for public distribution.
-      <span class="badge-print">&nbsp;Printed July 18, 2026.</span>
+      Prepared for the property owner. Contains MCG proprietary marketing intelligence. Report generated July 25, 2026 for 18772 Davis Rd, Rogers, AR. Not intended for public distribution.
+      <span class="badge-print">&nbsp;Printed July 25, 2026.</span>
     </div>
   </div>
 </footer>
