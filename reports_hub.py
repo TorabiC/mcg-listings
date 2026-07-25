@@ -30,6 +30,7 @@ anywhere that calls it.
 """
 from __future__ import annotations
 
+import base64
 import datetime as dt
 import hashlib
 import html as html_lib
@@ -37,6 +38,7 @@ import json
 import logging
 import os
 import re
+import secrets
 import time
 from pathlib import Path
 
@@ -146,6 +148,17 @@ def get_listing(slug: str) -> dict | None:
         if l.get("slug") == slug:
             return l
     return None
+
+
+def mask_email(email: str) -> str:
+    """'jane@gmail.com' -> 'j***@gmail.com', for the collapsed list view.
+    The full address is still returned separately for the edit field --
+    this is an authenticated admin API, not seller-facing."""
+    if not email or "@" not in email:
+        return email or ""
+    local, _, domain = email.partition("@")
+    first = local[0] if local else ""
+    return f"{first}***@{domain}"
 
 
 def fetch_insights(slug: str, token: str, period_id: str) -> dict | None:
@@ -465,3 +478,179 @@ def send_report(listing: dict, period_id: str, note: str | None) -> dict:
         "sent_html_sha256": sha256,
         "sent_at": dt.datetime.now(dt.timezone.utc).isoformat(),
     }
+
+
+# ---------------------------------------------------------------------------
+# Auto-provision: register a newly-published listing for seller reports.
+#
+# Called from app.py's listing-creation routes (/api/generate,
+# /api/generate-job, /api/publish) right after a successful Webflow publish,
+# so a new listing starts getting seller reports with zero manual steps --
+# the next scheduled bin/generate.py + bin/deploy.py run picks it up
+# automatically once it's in the registry.
+#
+# NEVER raises: every failure path (no token, network error, bad API
+# response) is logged and returns False so the caller can surface a soft
+# "reports_registered": false in its response without failing the listing
+# creation itself.
+# ---------------------------------------------------------------------------
+GITHUB_API_BASE = "https://api.github.com"
+REGISTRY_REPO = "TorabiC/mcg-listings"
+REGISTRY_PATH = "seller-reports/config/listings.json"
+REGISTRY_BRANCH = "main"
+
+_GITHUB_TOKEN_RE = re.compile(r"gh[pousr]_[A-Za-z0-9_]{20,}")
+
+
+def registry_dry_run() -> bool:
+    """Forces auto-registration to log-only, even if a real GITHUB_TOKEN is
+    configured -- for local testing. Defaults OFF: with no token configured
+    at all, register_listing_for_reports() already skips real API calls on
+    its own (see below), so this flag only matters when you want to test the
+    full build_registry_entry()/idempotency logic against a *fake* token
+    without risking a real GitHub API call."""
+    return os.getenv("REGISTRY_DRY_RUN", "").strip().lower() in ("1", "true", "yes")
+
+
+def _github_token() -> str | None:
+    """$GITHUB_TOKEN, or the file at $GITHUB_TOKEN_FILE (never hardcoded --
+    mirrors seller-reports/bin/deploy.py's own token resolution)."""
+    env_val = os.environ.get("GITHUB_TOKEN")
+    if env_val:
+        return env_val.strip()
+    file_path = os.environ.get("GITHUB_TOKEN_FILE")
+    if not file_path:
+        return None
+    p = Path(file_path)
+    if not p.exists():
+        return None
+    try:
+        raw = p.read_text().strip()
+    except OSError:
+        return None
+    m = _GITHUB_TOKEN_RE.search(raw)
+    return m.group(0) if m else (raw or None)
+
+
+def infer_listing_type(listing: dict) -> str:
+    """Best-effort residential/commercial/land classification from whatever
+    the scrape/generate pipeline populated. Never raises; defaults to
+    'residential' (the common case) when nothing else matches."""
+    raw = " ".join(str(listing.get(k) or "") for k in ("property_type", "type")).strip().lower()
+    if any(k in raw for k in ("land", "lot", "acreage", "acre")):
+        return "land"
+    if any(k in raw for k in ("commercial", "retail", "office", "industrial", "mixed use", "mobile home", "mhp")):
+        return "commercial"
+    return "residential"
+
+
+def default_sources_for_type(ptype: str) -> dict:
+    portals = ["homes.com"] if ptype == "residential" else ["crexi", "loopnet"]
+    return {"idx": True, "cc": True, "ga4": True, "tawk": True, "portals": portals}
+
+
+def build_registry_entry(listing: dict, webflow_url: str | None) -> dict:
+    """Shape matches the existing entries in seller-reports/config/listings.json
+    (see that file). seller.name/email are ALWAYS null here, by design --
+    seller PII is entered later via the dashboard's Listing Reports panel
+    (POST /api/reports/seller) and lives only in reports_state.json, never
+    in this public repo."""
+    ptype = infer_listing_type(listing)
+    photos = listing.get("photos") or []
+    links = listing.get("links") or {}
+    price_type = listing.get("price_type") or ("lease_monthly" if "lease" in str(listing.get("price_type", "")).lower() else "sale")
+    return {
+        "slug": listing.get("slug", ""),
+        "address": listing.get("address_full") or listing.get("address_street") or listing.get("slug", ""),
+        "type": ptype,
+        "county": listing.get("county") or "",
+        "price": listing.get("price") or 0,
+        "price_type": price_type,
+        "beds": listing.get("beds"),
+        "baths": listing.get("baths"),
+        "status": "active",
+        "list_date": listing.get("list_date"),
+        "mls_id": listing.get("mls_number") or listing.get("mls_id"),
+        "mls_entries": [],
+        "seller": {"name": None, "email": None},
+        "report_token": secrets.token_hex(4),
+        "links": {
+            "idx": links.get("idx"),
+            "webflow_page": webflow_url or links.get("webflow_page"),
+            "marketing_page": links.get("marketing_page"),
+            "hero_image": photos[0] if photos else links.get("hero_image"),
+        },
+        "sources": default_sources_for_type(ptype),
+        "notes": f"Auto-registered by the marketing hub on {dt.date.today().isoformat()}.",
+    }
+
+
+def register_listing_for_reports(listing: dict, webflow_url: str | None) -> bool:
+    """Idempotently appends a registry entry for `listing` to
+    seller-reports/config/listings.json in torabic/mcg-listings via the
+    GitHub contents API (GET current file + sha, append if the slug isn't
+    already present, PUT). Returns True on success OR if the slug was
+    already registered; False if it could not be registered for any reason.
+    Never raises."""
+    slug = listing.get("slug")
+    if not slug:
+        return False
+
+    token = _github_token()
+    dry = registry_dry_run()
+    if not token and not dry:
+        logger.info(f"[reports_hub] no GITHUB_TOKEN/GITHUB_TOKEN_FILE configured -- skipping auto-registration for {slug!r}")
+        return False
+
+    # In dry-run mode without a real token, the lookup GET still runs
+    # (unauthenticated -- reading a public repo's contents needs no token)
+    # so the full idempotency-check/build_registry_entry() logic can be
+    # exercised end to end in tests; only the mutating PUT is ever skipped
+    # when a token isn't present, per registry_dry_run() below.
+    headers = {"Accept": "application/vnd.github+json"}
+    if token:
+        headers["Authorization"] = f"token {token}"
+    api_url = f"{GITHUB_API_BASE}/repos/{REGISTRY_REPO}/contents/{REGISTRY_PATH}"
+
+    try:
+        get_resp = requests.get(api_url, headers=headers, params={"ref": REGISTRY_BRANCH}, timeout=20)
+        if get_resp.status_code != 200:
+            logger.warning(f"[reports_hub] registry GET failed ({get_resp.status_code}) -- skipping auto-registration for {slug!r}")
+            return False
+        payload = get_resp.json()
+        sha = payload.get("sha")
+        current = json.loads(base64.b64decode(payload["content"]).decode("utf-8"))
+        listings = current.get("listings", [])
+
+        if any(l.get("slug") == slug for l in listings):
+            logger.info(f"[reports_hub] {slug!r} already registered -- skipping (idempotent)")
+            return True
+
+        entry = build_registry_entry(listing, webflow_url)
+        listings.append(entry)
+        current["listings"] = listings
+        new_content = json.dumps(current, indent=2) + "\n"
+
+        if registry_dry_run():
+            logger.info(f"[REGISTRY_DRY_RUN] would PUT {REGISTRY_PATH} adding {slug!r}: {json.dumps(entry)[:300]}")
+            return True
+
+        put_resp = requests.put(
+            api_url,
+            headers=headers,
+            json={
+                "message": f"hub: auto-register listing {slug} for seller reports",
+                "content": base64.b64encode(new_content.encode("utf-8")).decode("ascii"),
+                "sha": sha,
+                "branch": REGISTRY_BRANCH,
+            },
+            timeout=20,
+        )
+        if put_resp.status_code >= 300:
+            logger.warning(f"[reports_hub] registry PUT failed ({put_resp.status_code}): {put_resp.text[:300]}")
+            return False
+        logger.info(f"[reports_hub] auto-registered {slug!r} for seller reports")
+        return True
+    except Exception as e:  # noqa: BLE001 -- must never break listing creation
+        logger.warning(f"[reports_hub] auto-registration error for {slug!r} (non-fatal): {e}")
+        return False

@@ -487,6 +487,34 @@ a{color:var(--crimson);text-decoration:none}
               <div style="padding:12px 18px;" id="reportsEngagementWrap"></div>
             </div>
 
+            <div class="data-section">
+              <div class="data-section-header">
+                <span>Seller contact</span>
+                <button class="table-action" id="reportsSellerEditBtn" onclick="toggleSellerEdit()">
+                  <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:currentColor;vertical-align:-1px;"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                  Edit
+                </button>
+              </div>
+              <div id="reportsSellerView">
+                <div class="data-field"><span class="data-field-label">Name</span><span class="data-field-val" id="sellerNameView">&mdash;</span></div>
+                <div class="data-field"><span class="data-field-label">E-mail</span><span class="data-field-val" id="sellerEmailView">&mdash;</span></div>
+              </div>
+              <div id="reportsSellerEdit" style="display:none;padding:14px 18px;">
+                <div style="margin-bottom:10px;">
+                  <label style="font-size:11px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;">Seller name</label>
+                  <input id="sellerNameInput" type="text" placeholder="Jane Seller" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:13px;font-family:inherit;">
+                </div>
+                <div style="margin-bottom:12px;">
+                  <label style="font-size:11px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;">Seller e-mail</label>
+                  <input id="sellerEmailInput" type="email" placeholder="jane@example.com" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:13px;font-family:inherit;">
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <button class="btn btn-primary" style="flex:1;justify-content:center;" onclick="saveSellerContact()">Save</button>
+                  <button class="btn btn-outline" style="flex:1;justify-content:center;" onclick="toggleSellerEdit(false)">Cancel</button>
+                </div>
+              </div>
+            </div>
+
             <div class="data-section" id="reportsInsightsCard" style="display:none;">
               <div class="data-section-header"><span>For your call &mdash; private</span></div>
               <div style="padding:6px 18px 14px;" id="reportsInsightsBody"></div>
@@ -1035,6 +1063,7 @@ function selectReportListing(slug) {
   }).join('');
   sel.value = rpt.report_url;
 
+  renderSellerContact(listing);
   renderStatusChip(rpt);
   renderEngagementRow(listing, rpt);
   renderInsightsCard(listing, rpt);
@@ -1044,6 +1073,45 @@ function selectReportListing(slug) {
 function onArchiveChange() {
   var sel = document.getElementById('reportsArchiveSelect');
   document.getElementById('reportsFrame').src = sel.value;
+}
+
+// ── Seller contact (stored in reports_state.json, never the public registry) ──
+function renderSellerContact(listing) {
+  var seller = listing.seller || {};
+  document.getElementById('sellerNameView').textContent = seller.name || '—';
+  document.getElementById('sellerEmailView').textContent = seller.email_masked || '—';
+  document.getElementById('sellerNameInput').value = seller.name || '';
+  document.getElementById('sellerEmailInput').value = seller.email || '';
+  // Collapse back to view mode whenever a different listing is selected.
+  document.getElementById('reportsSellerView').style.display = '';
+  document.getElementById('reportsSellerEdit').style.display = 'none';
+}
+
+function toggleSellerEdit(show) {
+  var editing = document.getElementById('reportsSellerEdit').style.display !== 'none';
+  var next = (show === undefined) ? !editing : show;
+  document.getElementById('reportsSellerView').style.display = next ? 'none' : '';
+  document.getElementById('reportsSellerEdit').style.display = next ? '' : 'none';
+}
+
+function saveSellerContact() {
+  var listing = findListing(reportsState.slug);
+  if (!listing) return;
+  var name = document.getElementById('sellerNameInput').value.trim();
+  var email = document.getElementById('sellerEmailInput').value.trim();
+
+  fetch('/api/reports/seller', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ slug: listing.slug, name: name, email: email }),
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (d.error) throw new Error(d.error);
+    listing.seller = d.seller;
+    renderSellerContact(listing);
+    toggleSellerEdit(false);
+    renderSendButtons(listing, listing.reports[reportsState.periodType]);
+    toast('Seller contact saved', 'success');
+  }).catch(function(e) { toast('Save failed: ' + e.message, 'error'); });
 }
 
 function renderStatusChip(rpt) {

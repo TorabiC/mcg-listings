@@ -8,6 +8,7 @@ import json
 import logging
 import hmac
 import hashlib
+import re
 import time
 import threading
 import uuid
@@ -146,9 +147,16 @@ def save_settings(data: dict):
 
 
 # ── Listing Reports state helpers ───────────────────────────────────────────
-# Schema: {"<slug>": {"<period_id>": {"status": "ready"|"approved"|"sent",
-#   "approved_at", "sent_at", "note", "cc_campaign_id", "cc_activity_id",
-#   "email_stats": {...}, "page_views": 0, "sent_html_sha256"}}}
+# Schema: {"<slug>": {
+#   "seller": {"name", "email", "updated_at"},   # entered via the dashboard --
+#                                                 # never written to the public
+#                                                 # registry (privacy fix)
+#   "<period_id>": {"status": "ready"|"approved"|"sent",
+#     "approved_at", "sent_at", "note", "cc_campaign_id", "cc_activity_id",
+#     "email_stats": {...}, "page_views": 0, "sent_html_sha256"}}}
+
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
 
 def load_reports_state() -> dict:
     if REPORTS_STATE_FILE.exists():
@@ -330,11 +338,20 @@ def api_generate():
             except Exception as cms_err:
                 logger.warning(f"CMS publish failed (non-fatal): {cms_err}")
 
+        # Auto-provision this listing for the Listing Reports hub (never
+        # blocks/fails the response -- see reports_hub.register_listing_for_reports).
+        reports_registered = False
+        try:
+            reports_registered = reports_hub.register_listing_for_reports(listing, webflow_url)
+        except Exception as reg_err:
+            logger.warning(f"Reports auto-registration failed (non-fatal): {reg_err}")
+
         return jsonify({
             "html": html,
             "slug": slug,
             "file": str(out_path),
             "webflow_url": webflow_url,
+            "reports_registered": reports_registered,
         })
 
     except Exception as e:
@@ -556,6 +573,17 @@ def api_generate_job():
             else:
                 _update(log_append="Webflow token not set — skipping publish.")
 
+            # Auto-provision this listing for the Listing Reports hub (never
+            # blocks/fails the job -- see reports_hub.register_listing_for_reports).
+            # NOTE: only covers this (non-MLS-Matrix) publish path -- the MLS
+            # Matrix delegation branch above returns early before webflow_url
+            # is ever set and is not yet hooked.
+            reports_registered = False
+            try:
+                reports_registered = reports_hub.register_listing_for_reports(listing, webflow_url)
+            except Exception as reg_err:
+                _update(log_append=f"Reports auto-registration warning: {reg_err}")
+
             # ── Step 5: Confirm email campaign is ready ───────────────────────
             # IXACT Contact does not expose a REST API for mass email creation.
             # The generated email HTML is served from the Node.js server and
@@ -581,6 +609,7 @@ def api_generate_job():
                     "om_pdf":      om_pdf,
                     "email_url":   email_url,
                     "ixact":       ixact_result,
+                    "reports_registered": reports_registered,
                     "log":         _gen_jobs[job_id]["log"] + "✓ All done.",
                 })
 
@@ -704,6 +733,15 @@ def api_publish():
         client = WebflowClient(wf_token, wf_site)
         result = client.create_listing_page(listing, html)
         logger.info(f"Published: {result['url']}")
+
+        # Auto-provision this listing for the Listing Reports hub (never
+        # blocks/fails the response -- see reports_hub.register_listing_for_reports).
+        try:
+            result["reports_registered"] = reports_hub.register_listing_for_reports(listing, result.get("url"))
+        except Exception as reg_err:
+            logger.warning(f"Reports auto-registration failed (non-fatal): {reg_err}")
+            result["reports_registered"] = False
+
         return jsonify(result)
 
     except Exception as e:
@@ -871,8 +909,16 @@ def _reports_payload() -> dict:
             continue
         slug = listing["slug"]
         token = listing.get("report_token", "")
-        seller = listing.get("seller") or {}
         listing_state = state.get(slug, {})
+
+        # Seller contact resolves from hub state FIRST (entered via the
+        # dashboard, never written to the public registry) -- the registry's
+        # own seller.name/email (usually null) is only a fallback for
+        # listings that predate this feature.
+        hub_seller = listing_state.get("seller") or {}
+        registry_seller = listing.get("seller") or {}
+        seller_name = hub_seller.get("name") or registry_seller.get("name")
+        seller_email = hub_seller.get("email") or registry_seller.get("email")
 
         reports_by_type = {}
         for ptype, pdef in period_defs.items():
@@ -912,7 +958,14 @@ def _reports_payload() -> dict:
             "address": listing.get("address", ""),
             "type": listing.get("type", ""),
             "report_token": token,
-            "seller": {"name": seller.get("name"), "email": seller.get("email")},
+            # "email" is the full address (for pre-filling the edit field --
+            # this is an authenticated admin API); "email_masked" is what the
+            # collapsed list view should render (see reports_hub.mask_email).
+            "seller": {
+                "name": seller_name,
+                "email": seller_email,
+                "email_masked": reports_hub.mask_email(seller_email) if seller_email else None,
+            },
             "reports": reports_by_type,
         })
 
@@ -948,6 +1001,37 @@ def api_reports_approve():
     return jsonify({"ok": True, "status": entry["status"], "approved_at": entry["approved_at"]})
 
 
+@app.route("/api/reports/seller", methods=["POST"])
+@login_required
+def api_reports_seller():
+    """Save a seller's name/e-mail against the hub's OWN state file --
+    deliberately never written to the public seller-reports registry
+    (privacy fix: seller PII must not live in the public GitHub repo)."""
+    body = request.get_json(force=True) or {}
+    slug = (body.get("slug") or "").strip()
+    name = (body.get("name") or "").strip()
+    email = (body.get("email") or "").strip()
+    if not slug:
+        return jsonify({"error": "slug is required"}), 400
+    if email and not EMAIL_RE.match(email):
+        return jsonify({"error": "That doesn't look like a valid e-mail address."}), 400
+
+    state = load_reports_state()
+    seller_entry = state.setdefault(slug, {}).setdefault("seller", {})
+    seller_entry["name"] = name
+    seller_entry["email"] = email
+    seller_entry["updated_at"] = datetime.now(timezone.utc).isoformat()
+    save_reports_state(state)
+    return jsonify({
+        "ok": True,
+        "seller": {
+            "name": name,
+            "email": email,
+            "email_masked": reports_hub.mask_email(email) if email else None,
+        },
+    })
+
+
 @app.route("/api/reports/send", methods=["POST"])
 @login_required
 def api_reports_send():
@@ -968,9 +1052,15 @@ def api_reports_send():
     if entry.get("status") != "approved":
         return jsonify({"error": "Report must be approved before it can be sent."}), 400
 
-    seller = listing.get("seller") or {}
-    if not seller.get("email"):
+    # Seller resolves from hub state FIRST, registry only as a fallback --
+    # see api_reports_seller / _reports_payload.
+    hub_seller = state.get(slug, {}).get("seller") or {}
+    registry_seller = listing.get("seller") or {}
+    seller_name = hub_seller.get("name") or registry_seller.get("name")
+    seller_email = hub_seller.get("email") or registry_seller.get("email")
+    if not seller_email:
         return jsonify({"error": "No seller e-mail on file for this listing."}), 400
+    listing = {**listing, "seller": {"name": seller_name, "email": seller_email}}
 
     try:
         result = reports_hub.send_report(listing, period_id, entry.get("note"))
