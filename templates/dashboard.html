@@ -28,6 +28,31 @@ a{color:var(--crimson);text-decoration:none}
 .nav-item:hover{color:#fff;background:rgba(255,255,255,.05)}
 .nav-item.active{color:#fff;background:rgba(196,163,90,.12);border-left-color:var(--gold)}
 .nav-item svg{width:17px;height:17px;fill:currentColor;flex-shrink:0}
+.nav-item-sub{padding:8px 20px 8px 46px;font-size:12px;font-weight:600}
+.nav-badge{margin-left:auto;background:linear-gradient(90deg,#c49a52,#edd87a);color:#16162A;font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;line-height:1.4}
+
+/* REPORTS PANEL */
+.report-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:700;color:var(--text);background:#f4f4f4;border:1.5px solid var(--border);cursor:pointer;transition:all .15s;white-space:nowrap}
+.report-chip:hover{border-color:var(--navy)}
+.report-chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.report-chip .rc-dot{width:7px;height:7px;border-radius:50%;background:#c4a35a;display:none}
+.report-chip.rc-ready .rc-dot{display:inline-block}
+.status-chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;padding:4px 10px;border-radius:12px}
+.status-chip.status-ready{background:#fef3c7;color:#92400e}
+.status-chip.status-approved{background:#dbeafe;color:#1d4ed8}
+.status-chip.status-sent{background:#dcfce7;color:#166534}
+.engagement-stat{display:flex;justify-content:space-between;padding:6px 0;font-size:12px;color:var(--mid);border-bottom:1px solid #f5f5f5}
+.engagement-stat:last-child{border-bottom:none}
+.engagement-stat b{color:var(--text);font-size:13px}
+.insight-bullet{font-size:12.5px;color:var(--text);line-height:1.55;padding:6px 0 6px 16px;position:relative}
+.insight-bullet::before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:50%;background:var(--crimson)}
+.pricing-flag{background:#fff5f5;border:1px solid #fecaca;border-radius:6px;padding:10px 12px;font-size:12px;color:#991b1b;margin-top:8px;line-height:1.5}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(22,22,42,.55);z-index:9998;align-items:center;justify-content:center}
+.modal-overlay.visible{display:flex}
+.modal-box{background:#fff;border-radius:10px;max-width:440px;width:90%;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-title{font-size:16px;font-weight:900;color:var(--navy);margin-bottom:10px}
+.modal-body{font-size:13px;color:var(--mid);line-height:1.6;margin-bottom:22px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
 .sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:rgba(255,255,255,.3)}
 
 /* MAIN */
@@ -196,6 +221,19 @@ a{color:var(--crimson);text-decoration:none}
     <div class="nav-item" onclick="showPanel('listings')">
       <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
       <span>All Listings</span>
+    </div>
+    <div class="nav-item" id="nav-reports-toggle" onclick="toggleReportsNav()">
+      <svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/></svg>
+      <span>Listing Reports</span>
+      <span class="nav-badge" id="reportsBadge" style="display:none;"></span>
+    </div>
+    <div id="reports-subnav" style="display:none;">
+      <div class="nav-item nav-item-sub" data-period="weekly" onclick="showPanel('reports','weekly')">
+        <span>Weekly</span>
+      </div>
+      <div class="nav-item nav-item-sub" data-period="monthly" onclick="showPanel('reports','monthly')">
+        <span>Monthly</span>
+      </div>
     </div>
     <div class="nav-section">Site</div>
     <div class="nav-item" onclick="window.open('https://masoncapitalgroup.com/properties','_blank')">
@@ -402,6 +440,87 @@ a{color:var(--crimson);text-decoration:none}
       </div>
     </div>
 
+    <!-- ═══ LISTING REPORTS PANEL ═══ -->
+    <div id="panel-reports" style="display:none;">
+
+      <div class="panel" style="margin-bottom:20px;">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Listing Reports</div>
+            <div class="panel-sub" id="reportsPeriodSub">Weekly seller activity reports</div>
+          </div>
+        </div>
+        <div class="panel-body" style="padding:16px 22px;">
+          <div id="reportsTabChips" style="display:flex;flex-wrap:wrap;gap:8px;">
+            <div class="empty-state" style="padding:20px;"><p>Loading listings&hellip;</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="reportsDetail" style="display:none;">
+        <div class="results-grid visible" style="grid-template-columns:1fr 380px;">
+
+          <!-- Report preview -->
+          <div class="preview-panel">
+            <div class="preview-toolbar">
+              <div class="preview-toolbar-left">
+                <div class="preview-dots">
+                  <div class="preview-dot" style="background:#ef4444;"></div>
+                  <div class="preview-dot" style="background:#f59e0b;"></div>
+                  <div class="preview-dot" style="background:#22c55e;"></div>
+                </div>
+                <div class="preview-title" id="reportsPreviewTitle">Report Preview</div>
+              </div>
+              <select id="reportsArchiveSelect" onchange="onArchiveChange()" style="background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:5px 10px;font-size:12px;font-family:inherit;max-width:220px;"></select>
+            </div>
+            <iframe id="reportsFrame" class="preview-frame" style="height:calc(100vh - 260px);" title="Report Preview"></iframe>
+          </div>
+
+          <!-- Data + actions -->
+          <div class="data-panel">
+
+            <div class="data-section">
+              <div class="data-section-header">
+                <span>Status</span>
+                <span class="status-chip status-ready" id="reportsStatusChip">Ready for review</span>
+              </div>
+              <div style="padding:12px 18px;" id="reportsEngagementWrap"></div>
+            </div>
+
+            <div class="data-section" id="reportsInsightsCard" style="display:none;">
+              <div class="data-section-header"><span>For your call &mdash; private</span></div>
+              <div style="padding:6px 18px 14px;" id="reportsInsightsBody"></div>
+            </div>
+
+            <div class="data-section">
+              <div class="data-section-header"><span>Personal note</span></div>
+              <div style="padding:14px 18px;">
+                <textarea id="reportsNote" placeholder="Optional note included at the top of the seller's e-mail..." style="width:100%;min-height:90px;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-family:inherit;font-size:13px;resize:vertical;"></textarea>
+              </div>
+            </div>
+
+            <div class="publish-card">
+              <div class="publish-card-title">Send to seller</div>
+              <div class="publish-card-sub" id="reportsSendSub">Approve the report, then send it straight to the seller's inbox.</div>
+              <button class="download-btn" id="reportsApproveBtn" style="margin-bottom:10px;" onclick="approveReport()">Approve Report</button>
+              <button class="publish-btn" id="reportsSendBtn" onclick="confirmSendReport()" disabled title="Approve the report first">
+                <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+                Send to Seller
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state" id="reportsEmptyState" style="display:none;">
+        <svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/></svg>
+        <h3>Select a listing</h3>
+        <p>Choose a listing above to review its report.</p>
+      </div>
+
+    </div><!-- /panel-reports -->
+
     <!-- ═══ SETTINGS PANEL ═══ -->
     <div id="panel-settings" style="display:none;">
       <div class="panel">
@@ -446,6 +565,18 @@ a{color:var(--crimson);text-decoration:none}
   </div><!-- /content -->
 </main>
 
+<!-- CUSTOM CONFIRM MODAL (used instead of window.confirm) -->
+<div class="modal-overlay" id="confirmModalOverlay">
+  <div class="modal-box">
+    <div class="modal-title" id="confirmModalTitle">Are you sure?</div>
+    <div class="modal-body" id="confirmModalBody"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeConfirmModal()">Cancel</button>
+      <button class="btn btn-primary" id="confirmModalOkBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST CONTAINER -->
 <div class="toast-container" id="toastContainer"></div>
 
@@ -455,18 +586,35 @@ var currentHTML = '';
 var publishedListings = JSON.parse(localStorage.getItem('mcg_listings') || '[]');
 
 // ── Panel switching ──────────────────────────────────────────────────────────
-function showPanel(name) {
-  ['create','listings','settings'].forEach(function(p) {
+function showPanel(name, periodType) {
+  ['create','listings','settings','reports'].forEach(function(p) {
     document.getElementById('panel-' + p).style.display = p === name ? '' : 'none';
   });
-  document.querySelectorAll('.nav-item').forEach(function(el, i) {
-    el.classList.toggle('active', el.getAttribute('onclick') && el.getAttribute('onclick').includes("'" + name + "'"));
+  document.querySelectorAll('.nav-item').forEach(function(el) {
+    var oc = el.getAttribute('onclick') || '';
+    el.classList.toggle('active', oc.indexOf("'" + name + "'") !== -1 && el.id !== 'nav-reports-toggle');
   });
-  var titles = { create: 'Create Listing Page', listings: 'All Listings', settings: 'Settings' };
-  var subs = { create: 'Paste any MLS URL to auto-generate a listing page', listings: 'Manage pages published to masoncapitalgroup.com', settings: 'Configure API keys and agent defaults' };
+  document.getElementById('nav-reports-toggle').classList.toggle('active', name === 'reports');
+  var titles = { create: 'Create Listing Page', listings: 'All Listings', settings: 'Settings', reports: 'Listing Reports' };
+  var subs = { create: 'Paste any MLS URL to auto-generate a listing page', listings: 'Manage pages published to masoncapitalgroup.com', settings: 'Configure API keys and agent defaults', reports: 'Review, approve, and send seller activity reports' };
   document.getElementById('topbar-title').textContent = titles[name];
   document.getElementById('topbar-sub').textContent = subs[name];
   if (name === 'listings') renderListingsTable();
+  if (name === 'reports') {
+    document.getElementById('reports-subnav').style.display = '';
+    openReportsPanel(periodType || reportsState.periodType || 'weekly');
+  }
+}
+
+function toggleReportsNav() {
+  var sub = document.getElementById('reports-subnav');
+  var isOpen = sub.style.display !== 'none';
+  if (isOpen && document.getElementById('panel-reports').style.display !== 'none') {
+    sub.style.display = 'none';
+    return;
+  }
+  sub.style.display = '';
+  showPanel('reports', reportsState.periodType || 'weekly');
 }
 
 // ── Steps ────────────────────────────────────────────────────────────────────
@@ -760,6 +908,297 @@ fetch('/api/settings').then(function(r) { return r.json(); }).then(function(s) {
 document.getElementById('mlsUrl').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') startScrape();
 });
+
+// ══════════════════════════════════════════════════════════════════════════
+// LISTING REPORTS PANEL
+// ══════════════════════════════════════════════════════════════════════════
+var reportsState = {
+  data: null,          // last payload from /api/reports/listings
+  periodType: 'weekly',
+  slug: null,
+  loading: false,
+};
+
+// ── Custom confirm modal (never window.confirm) ─────────────────────────────
+function openConfirmModal(title, body, onConfirm) {
+  document.getElementById('confirmModalTitle').textContent = title;
+  document.getElementById('confirmModalBody').innerHTML = body;
+  var okBtn = document.getElementById('confirmModalOkBtn');
+  var freshBtn = okBtn.cloneNode(true); // strip old listeners
+  okBtn.parentNode.replaceChild(freshBtn, okBtn);
+  freshBtn.addEventListener('click', function() {
+    closeConfirmModal();
+    onConfirm();
+  });
+  document.getElementById('confirmModalOverlay').classList.add('visible');
+}
+function closeConfirmModal() {
+  document.getElementById('confirmModalOverlay').classList.remove('visible');
+}
+
+// ── Badge (ready-count) on the sidebar nav item ──────────────────────────────
+function refreshReportsBadge() {
+  fetch('/api/reports/listings').then(function(r) { return r.json(); }).then(function(data) {
+    reportsState.data = data;
+    var badge = document.getElementById('reportsBadge');
+    if (data.ready_count > 0) {
+      badge.textContent = data.ready_count;
+      badge.style.display = '';
+    } else {
+      badge.style.display = 'none';
+    }
+  }).catch(function() {});
+}
+
+// ── Open the panel for a given period type (weekly/monthly) ─────────────────
+function openReportsPanel(periodType) {
+  reportsState.periodType = periodType;
+  document.querySelectorAll('.nav-item-sub').forEach(function(el) {
+    el.classList.toggle('active', el.getAttribute('data-period') === periodType);
+  });
+  document.getElementById('reportsPeriodSub').textContent =
+    (periodType === 'weekly' ? 'Weekly' : 'Monthly') + ' seller activity reports';
+
+  function render() {
+    renderReportsTabs();
+    if (reportsState.slug) {
+      selectReportListing(reportsState.slug);
+    } else {
+      document.getElementById('reportsDetail').style.display = 'none';
+      document.getElementById('reportsEmptyState').style.display = '';
+    }
+  }
+
+  if (reportsState.data) {
+    render();
+  } else if (!reportsState.loading) {
+    reportsState.loading = true;
+    fetch('/api/reports/listings').then(function(r) { return r.json(); }).then(function(data) {
+      reportsState.loading = false;
+      reportsState.data = data;
+      var badge = document.getElementById('reportsBadge');
+      if (data.ready_count > 0) { badge.textContent = data.ready_count; badge.style.display = ''; }
+      else { badge.style.display = 'none'; }
+      render();
+    }).catch(function(e) {
+      reportsState.loading = false;
+      document.getElementById('reportsTabChips').innerHTML =
+        '<div class="empty-state" style="padding:20px;"><p>Failed to load listings: ' + e.message + '</p></div>';
+    });
+  }
+}
+
+function renderReportsTabs() {
+  var wrap = document.getElementById('reportsTabChips');
+  var listings = (reportsState.data && reportsState.data.listings) || [];
+  if (!listings.length) {
+    wrap.innerHTML = '<div class="empty-state" style="padding:20px;"><p>No active listings in the registry.</p></div>';
+    return;
+  }
+  wrap.innerHTML = listings.map(function(l) {
+    var rpt = l.reports[reportsState.periodType];
+    var isReady = rpt.status === 'ready';
+    var isActive = l.slug === reportsState.slug;
+    var short = (l.address || l.slug).split(',')[0];
+    return '<div class="report-chip' + (isActive ? ' active' : '') + (isReady ? ' rc-ready' : '') + '" ' +
+      'onclick="selectReportListing(\'' + l.slug + '\')"><span class="rc-dot"></span>' + short + '</div>';
+  }).join('');
+}
+
+function findListing(slug) {
+  var listings = (reportsState.data && reportsState.data.listings) || [];
+  for (var i = 0; i < listings.length; i++) if (listings[i].slug === slug) return listings[i];
+  return null;
+}
+
+function selectReportListing(slug) {
+  reportsState.slug = slug;
+  renderReportsTabs();
+
+  var listing = findListing(slug);
+  if (!listing) return;
+  var rpt = listing.reports[reportsState.periodType];
+
+  document.getElementById('reportsEmptyState').style.display = 'none';
+  document.getElementById('reportsDetail').style.display = '';
+  document.getElementById('reportsPreviewTitle').textContent = (listing.address || slug) + ' · ' + rpt.current_period_id;
+  document.getElementById('reportsFrame').src = rpt.report_url;
+  document.getElementById('reportsNote').value = rpt.note || '';
+
+  // Archive selector: current period + prior periods (state-known sends marked)
+  var sel = document.getElementById('reportsArchiveSelect');
+  var options = [{ period_id: rpt.current_period_id, url: rpt.report_url, sent: rpt.status === 'sent', current: true }]
+    .concat(rpt.archive || []);
+  sel.innerHTML = options.map(function(o) {
+    var label = (o.current ? o.period_id + ' (current)' : o.period_id) + (o.sent ? ' ✓ sent' : '');
+    return '<option value="' + o.url + '">' + label + '</option>';
+  }).join('');
+  sel.value = rpt.report_url;
+
+  renderStatusChip(rpt);
+  renderEngagementRow(listing, rpt);
+  renderInsightsCard(listing, rpt);
+  renderSendButtons(listing, rpt);
+}
+
+function onArchiveChange() {
+  var sel = document.getElementById('reportsArchiveSelect');
+  document.getElementById('reportsFrame').src = sel.value;
+}
+
+function renderStatusChip(rpt) {
+  var chip = document.getElementById('reportsStatusChip');
+  chip.className = 'status-chip status-' + rpt.status;
+  if (rpt.status === 'sent') {
+    var d = rpt.sent_at ? new Date(rpt.sent_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+    var opens = (rpt.email_stats && rpt.email_stats.opens_unique) || 0;
+    chip.textContent = 'Sent ' + d + (opens ? ' · Opened x' + opens : '');
+  } else if (rpt.status === 'approved') {
+    chip.textContent = 'Approved';
+  } else {
+    chip.textContent = 'Ready for review';
+  }
+}
+
+function renderEngagementRow(listing, rpt) {
+  var wrap = document.getElementById('reportsEngagementWrap');
+  if (rpt.status !== 'sent') {
+    wrap.innerHTML = '<div style="font-size:12px;color:var(--mid);">Engagement stats appear here after the report is sent.</div>';
+    return;
+  }
+  var stats = rpt.email_stats || {};
+  wrap.innerHTML =
+    '<div class="engagement-stat"><span>E-mail Delivered</span><b>' + (stats.sends || 0) + '</b></div>' +
+    '<div class="engagement-stat"><span>Opened</span><b>' + (stats.opens_unique || 0) + '</b></div>' +
+    '<div class="engagement-stat"><span>Clicked</span><b>' + (stats.clicks_unique || 0) + '</b></div>' +
+    '<div class="engagement-stat"><span>Report page views</span><b>' + (rpt.page_views || 0) + '</b></div>';
+
+  // Poll fresh stats from Constant Contact (never fails the panel on error).
+  fetch('/api/reports/stats/' + listing.slug + '/' + rpt.current_period_id).then(function(r) { return r.json(); }).then(function(d) {
+    if (d.ok && reportsState.slug === listing.slug) {
+      rpt.email_stats = d.email_stats;
+      rpt.page_views = d.page_views;
+      renderStatusChip(rpt);
+      renderEngagementRow(listing, rpt);
+    }
+  }).catch(function() {});
+}
+
+function renderInsightsCard(listing, rpt) {
+  var card = document.getElementById('reportsInsightsCard');
+  var body = document.getElementById('reportsInsightsBody');
+  card.style.display = 'none';
+  fetch('/api/reports/insights/' + listing.slug + '/' + rpt.current_period_id).then(function(r) { return r.json(); }).then(function(d) {
+    if (!d.available || reportsState.slug !== listing.slug) return;
+    card.style.display = '';
+    var html = (d.talking_points || []).map(function(t) {
+      return '<div class="insight-bullet">' + t + '</div>';
+    }).join('');
+    if (d.pricing_flag) {
+      html += '<div class="pricing-flag"><strong>Pricing flag &mdash;</strong> ' + (d.pricing_flag_reason || 'Worth a pricing conversation.') + '</div>';
+    }
+    body.innerHTML = html;
+  }).catch(function() {});
+}
+
+function renderSendButtons(listing, rpt) {
+  var approveBtn = document.getElementById('reportsApproveBtn');
+  var sendBtn = document.getElementById('reportsSendBtn');
+  var sendSub = document.getElementById('reportsSendSub');
+  var hasEmail = !!(listing.seller && listing.seller.email);
+
+  approveBtn.disabled = rpt.status !== 'ready';
+  approveBtn.textContent = rpt.status === 'ready' ? 'Approve Report' : 'Approved ✓';
+
+  if (!hasEmail) {
+    sendBtn.disabled = true;
+    sendBtn.title = 'Seller e-mail missing in the registry — add it before sending.';
+    sendSub.textContent = 'No seller e-mail on file for this listing. Add one to the registry to enable sending.';
+  } else if (rpt.status === 'sent') {
+    sendBtn.disabled = true;
+    sendBtn.title = 'Already sent for this period';
+    sendSub.textContent = 'This report was already sent for ' + rpt.current_period_id + '.';
+  } else if (rpt.status === 'approved') {
+    sendBtn.disabled = false;
+    sendBtn.title = '';
+    sendSub.textContent = 'Ready to send to ' + listing.seller.email + '.';
+  } else {
+    sendBtn.disabled = true;
+    sendBtn.title = 'Approve the report first';
+    sendSub.textContent = 'Approve the report, then send it straight to the seller’s inbox.';
+  }
+}
+
+function approveReport() {
+  var listing = findListing(reportsState.slug);
+  if (!listing) return;
+  var rpt = listing.reports[reportsState.periodType];
+  var note = document.getElementById('reportsNote').value;
+
+  fetch('/api/reports/approve', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ slug: listing.slug, period_id: rpt.current_period_id, note: note }),
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (d.error) throw new Error(d.error);
+    rpt.status = 'approved';
+    rpt.approved_at = d.approved_at;
+    rpt.note = note;
+    reportsState.data.ready_count = Math.max(0, (reportsState.data.ready_count || 1) - 1);
+    var badge = document.getElementById('reportsBadge');
+    if (reportsState.data.ready_count > 0) { badge.textContent = reportsState.data.ready_count; }
+    else { badge.style.display = 'none'; }
+    renderStatusChip(rpt);
+    renderSendButtons(listing, rpt);
+    renderReportsTabs();
+    toast('Report approved', 'success');
+  }).catch(function(e) { toast('Approve failed: ' + e.message, 'error'); });
+}
+
+function confirmSendReport() {
+  var listing = findListing(reportsState.slug);
+  if (!listing) return;
+  var rpt = listing.reports[reportsState.periodType];
+  var short = (listing.address || listing.slug).split(',')[0];
+  openConfirmModal(
+    'Send report to seller?',
+    'This will e-mail the ' + rpt.current_period_id + ' report for <strong>' + short + '</strong> to ' +
+      '<strong>' + (listing.seller.email || '') + '</strong> right now. This cannot be undone.',
+    function() { sendReport(listing, rpt); }
+  );
+}
+
+function sendReport(listing, rpt) {
+  var sendBtn = document.getElementById('reportsSendBtn');
+  sendBtn.disabled = true;
+  sendBtn.innerHTML = '<span style="width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block;"></span> Sending...';
+
+  fetch('/api/reports/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ slug: listing.slug, period_id: rpt.current_period_id }),
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (d.error) throw new Error(d.error);
+    rpt.status = 'sent';
+    rpt.sent_at = d.sent_at;
+    rpt.cc_campaign_id = d.cc_campaign_id;
+    rpt.cc_activity_id = d.cc_activity_id;
+    renderStatusChip(rpt);
+    renderEngagementRow(listing, rpt);
+    renderSendButtons(listing, rpt);
+    renderReportsTabs();
+    toast('Report sent to ' + listing.seller.email, 'success');
+  }).catch(function(e) {
+    toast('Send failed: ' + e.message, 'error');
+  }).finally(function() {
+    sendBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg> Send to Seller';
+    var l = findListing(reportsState.slug);
+    if (l) renderSendButtons(l, l.reports[reportsState.periodType]);
+  });
+}
+
+// Prime the sidebar badge on initial page load (before the panel is opened).
+refreshReportsBadge();
 </script>
 </body>
 </html>

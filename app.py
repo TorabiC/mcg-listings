@@ -13,11 +13,12 @@ import threading
 import uuid
 import smtplib
 import requests
+from datetime import datetime, timezone
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from pathlib import Path
 
-from flask import Flask, render_template, request, jsonify, send_file, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, send_file, session, redirect, url_for, Response
 from flask_cors import CORS
 from dotenv import load_dotenv
 from functools import wraps
@@ -26,6 +27,7 @@ from scraper import scrape_listing
 import listing_generator
 from listing_generator import normalize, generate_html
 from webflow_client import WebflowClient
+import reports_hub
 
 load_dotenv(override=True)
 
@@ -47,6 +49,7 @@ OUTPUT_DIR = Path(__file__).parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 SETTINGS_FILE = Path(__file__).parent / ".dashboard_settings.json"
+REPORTS_STATE_FILE = Path(__file__).parent / "reports_state.json"
 
 # ── Background scrape jobs ────────────────────────────────────────────────────
 # Keyed by job_id: {"status": "working"|"done"|"error", "listing": {...}, "error": "..."}
@@ -140,6 +143,24 @@ def save_settings(data: dict):
     existing = load_settings()
     existing.update(data)
     SETTINGS_FILE.write_text(json.dumps(existing, indent=2))
+
+
+# ── Listing Reports state helpers ───────────────────────────────────────────
+# Schema: {"<slug>": {"<period_id>": {"status": "ready"|"approved"|"sent",
+#   "approved_at", "sent_at", "note", "cc_campaign_id", "cc_activity_id",
+#   "email_stats": {...}, "page_views": 0, "sent_html_sha256"}}}
+
+def load_reports_state() -> dict:
+    if REPORTS_STATE_FILE.exists():
+        try:
+            return json.loads(REPORTS_STATE_FILE.read_text())
+        except Exception:
+            return {}
+    return {}
+
+
+def save_reports_state(state: dict):
+    REPORTS_STATE_FILE.write_text(json.dumps(state, indent=2))
 
 
 # ── Auth routes ──────────────────────────────────────────────────────────────
@@ -827,6 +848,210 @@ def test_webflow():
         return jsonify({"ok": True, "site": site.get("displayName", ""), "id": wf_site})
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)})
+
+
+# ── Listing Reports (seller reports hub) ────────────────────────────────────
+
+def _reports_payload() -> dict:
+    """Registry + state + computed period/report URLs, for GET
+    /api/reports/listings. Always computes BOTH weekly and monthly current
+    periods so the dashboard can switch sub-tabs without a second round trip."""
+    registry = reports_hub.get_registry()
+    state = load_reports_state()
+
+    period_defs = {
+        ptype: {"period_type": ptype, "current_period_id": reports_hub.current_period_id(ptype)}
+        for ptype in ("weekly", "monthly")
+    }
+
+    listings_out = []
+    ready_count = 0
+    for listing in registry:
+        if listing.get("status") != "active":
+            continue
+        slug = listing["slug"]
+        token = listing.get("report_token", "")
+        seller = listing.get("seller") or {}
+        listing_state = state.get(slug, {})
+
+        reports_by_type = {}
+        for ptype, pdef in period_defs.items():
+            cur_id = pdef["current_period_id"]
+            cur_entry = listing_state.get(cur_id, {})
+            cur_status = cur_entry.get("status", "ready")
+            if cur_status == "ready":
+                ready_count += 1
+
+            archive = []
+            for pid in reports_hub.prior_period_ids(ptype, cur_id, n=8):
+                pid_entry = listing_state.get(pid)
+                archive.append({
+                    "period_id": pid,
+                    "url": reports_hub.report_url(slug, token, pid),
+                    "sent": bool(pid_entry and pid_entry.get("status") == "sent"),
+                    "sent_at": (pid_entry or {}).get("sent_at"),
+                })
+
+            reports_by_type[ptype] = {
+                "current_period_id": cur_id,
+                "report_url": reports_hub.report_url(slug, token, cur_id),
+                "flyer_url": reports_hub.flyer_url(slug, token, cur_id),
+                "status": cur_status,
+                "approved_at": cur_entry.get("approved_at"),
+                "sent_at": cur_entry.get("sent_at"),
+                "note": cur_entry.get("note", ""),
+                "email_stats": cur_entry.get("email_stats"),
+                "page_views": cur_entry.get("page_views", 0),
+                "cc_campaign_id": cur_entry.get("cc_campaign_id"),
+                "cc_activity_id": cur_entry.get("cc_activity_id"),
+                "archive": archive,
+            }
+
+        listings_out.append({
+            "slug": slug,
+            "address": listing.get("address", ""),
+            "type": listing.get("type", ""),
+            "report_token": token,
+            "seller": {"name": seller.get("name"), "email": seller.get("email")},
+            "reports": reports_by_type,
+        })
+
+    return {"listings": listings_out, "periods": period_defs, "ready_count": ready_count}
+
+
+@app.route("/api/reports/listings", methods=["GET"])
+@login_required
+def api_reports_listings():
+    try:
+        return jsonify(_reports_payload())
+    except Exception as e:
+        logger.error(f"Reports listings error: {e}", exc_info=True)
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/reports/approve", methods=["POST"])
+@login_required
+def api_reports_approve():
+    body = request.get_json(force=True) or {}
+    slug = (body.get("slug") or "").strip()
+    period_id = (body.get("period_id") or "").strip()
+    note = body.get("note") or ""
+    if not slug or not period_id:
+        return jsonify({"error": "slug and period_id are required"}), 400
+
+    state = load_reports_state()
+    entry = state.setdefault(slug, {}).setdefault(period_id, {})
+    entry["status"] = "approved"
+    entry["approved_at"] = datetime.now(timezone.utc).isoformat()
+    entry["note"] = note
+    save_reports_state(state)
+    return jsonify({"ok": True, "status": entry["status"], "approved_at": entry["approved_at"]})
+
+
+@app.route("/api/reports/send", methods=["POST"])
+@login_required
+def api_reports_send():
+    """The only path anywhere in this codebase that triggers a real send --
+    requires @login_required (Cameron's click) and a prior Approve."""
+    body = request.get_json(force=True) or {}
+    slug = (body.get("slug") or "").strip()
+    period_id = (body.get("period_id") or "").strip()
+    if not slug or not period_id:
+        return jsonify({"error": "slug and period_id are required"}), 400
+
+    listing = reports_hub.get_listing(slug)
+    if not listing:
+        return jsonify({"error": f"listing '{slug}' not found in registry"}), 404
+
+    state = load_reports_state()
+    entry = state.setdefault(slug, {}).setdefault(period_id, {})
+    if entry.get("status") != "approved":
+        return jsonify({"error": "Report must be approved before it can be sent."}), 400
+
+    seller = listing.get("seller") or {}
+    if not seller.get("email"):
+        return jsonify({"error": "No seller e-mail on file for this listing."}), 400
+
+    try:
+        result = reports_hub.send_report(listing, period_id, entry.get("note"))
+    except reports_hub.CCError as e:
+        logger.warning(f"Reports send failed for {slug}/{period_id}: {e}")
+        return jsonify({"error": str(e)}), 502
+    except Exception as e:
+        logger.error(f"Reports send error for {slug}/{period_id}: {e}", exc_info=True)
+        return jsonify({"error": str(e)}), 500
+
+    entry["status"] = "sent"
+    entry["sent_at"] = result["sent_at"]
+    entry["cc_campaign_id"] = result["cc_campaign_id"]
+    entry["cc_activity_id"] = result["cc_activity_id"]
+    entry["sent_html_sha256"] = result["sent_html_sha256"]
+    save_reports_state(state)
+    return jsonify({"ok": True, "status": "sent", **result})
+
+
+@app.route("/api/reports/stats/<slug>/<period_id>", methods=["GET"])
+@login_required
+def api_reports_stats(slug, period_id):
+    state = load_reports_state()
+    entry = state.get(slug, {}).get(period_id)
+    if not entry or not entry.get("cc_activity_id"):
+        return jsonify({"error": "No sent campaign for this period yet."}), 404
+    try:
+        stats = reports_hub.get_stats(entry["cc_activity_id"])
+    except reports_hub.CCError as e:
+        # A CC hiccup should never break the panel -- fall back to last-known stats.
+        logger.warning(f"Reports stats error for {slug}/{period_id}: {e}")
+        return jsonify({"ok": False, "error": str(e), "email_stats": entry.get("email_stats")})
+    entry["email_stats"] = stats
+    save_reports_state(state)
+    return jsonify({"ok": True, "email_stats": stats, "page_views": entry.get("page_views", 0)})
+
+
+@app.route("/api/reports/insights/<slug>/<period_id>", methods=["GET"])
+@login_required
+def api_reports_insights(slug, period_id):
+    """Private talking points + pricing flag for Cameron's 'For your call'
+    card. Fetches insights.json (published by bin/generate.py alongside the
+    seller-facing report/flyer) -- never surfaced to the seller."""
+    listing = reports_hub.get_listing(slug)
+    if not listing:
+        return jsonify({"available": False})
+    insights = reports_hub.fetch_insights(slug, listing.get("report_token", ""), period_id)
+    if not insights:
+        return jsonify({"available": False})
+    return jsonify({"available": True, **insights})
+
+
+_BEACON_GIF = (
+    b"GIF89a\x01\x00\x01\x00\x80\x00\x00\xff\xff\xff\x00\x00\x00!\xf9\x04"
+    b"\x01\x00\x00\x00\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02D"
+    b"\x01\x00;"
+)
+
+
+@app.route("/api/reports/beacon/<slug>/<token_gif>", methods=["GET"])
+def api_reports_beacon(slug, token_gif):
+    """1x1 tracking pixel embedded in the seller-facing report page.
+    Deliberately NOT behind @login_required -- sellers view report.html
+    unauthenticated. Validated against the listing's own report_token from
+    the public registry instead. Never raises: any failure (bad token,
+    unknown slug, state-file hiccup) still returns the gif."""
+    try:
+        token = token_gif[:-4] if token_gif.endswith(".gif") else token_gif
+        listing = reports_hub.get_listing(slug)
+        if listing and listing.get("report_token") == token:
+            period_id = reports_hub.current_period_id("weekly")
+            state = load_reports_state()
+            entry = state.setdefault(slug, {}).setdefault(period_id, {})
+            entry["page_views"] = int(entry.get("page_views", 0)) + 1
+            save_reports_state(state)
+    except Exception as e:
+        logger.warning(f"Beacon error (non-fatal) for {slug}: {e}")
+
+    resp = Response(_BEACON_GIF, mimetype="image/gif")
+    resp.headers["Cache-Control"] = "no-store"
+    return resp
 
 
 # ── Dev server ───────────────────────────────────────────────────────────────
