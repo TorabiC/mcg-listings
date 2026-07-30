@@ -9,7 +9,10 @@ Cameron to review and send himself.
 
 Full data contract and design spec: see `SPEC.md` in this repo (or the
 parent build spec it was generated from). This README covers how to
-actually run the system.
+actually run the system. `SCHEMA.md` documents the newer metrics.json
+fields (`source_freshness`, `period_activity`, `weekly_breakdown`,
+`sources.clarity`, `sources.cc.email_campaigns_to_date`) for anything
+reading these files directly, e.g. the mcg-marketing-hub app.
 
 ## How it fits together
 
