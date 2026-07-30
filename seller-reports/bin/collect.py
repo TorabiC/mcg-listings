@@ -29,6 +29,7 @@ import hashlib
 import json
 import os
 import random
+import re
 import sys
 import time
 from datetime import date, datetime, timedelta, timezone
@@ -316,12 +317,98 @@ class IdxAdapter:
         }
 
 
+# --------------------------------------------------------------------------
+# CC campaign name <-> listing address matching
+#
+# Real Constant Contact campaign names drift from the address-of-record
+# string in config/listings.json in predictable ways: a human dropped the
+# directional prefix ("1715 N Garland Ave" -> "1715 Garland Avenue"),
+# expanded/abbreviated the street-type suffix (Ave/Avenue, St/Street, ...),
+# or used the newer "Listing Intelligence — {address} — {period}" naming
+# convention. _address_match_variants() builds every lowercase substring
+# form worth testing a campaign name against; _match_campaigns() below
+# requires the street NUMBER to also appear in the campaign name (when the
+# address has one) so a loose word like "Garland" can't cross-match a
+# different Garland-named listing.
+# --------------------------------------------------------------------------
+DIRECTIONAL_WORDS = {"n", "s", "e", "w", "north", "south", "east", "west"}
+
+STREET_ABBR = {
+    "ave": "avenue", "avenue": "ave",
+    "st": "street", "street": "st",
+    "blvd": "boulevard", "boulevard": "blvd",
+    "rd": "road", "road": "rd",
+    "dr": "drive", "drive": "dr",
+    "ln": "lane", "lane": "ln",
+    "hwy": "highway", "highway": "hwy",
+}
+
+
+def _abbrev_variants(words):
+    """Yield the word list plus one variant per word that has an
+    Ave<->Avenue-style abbreviation swap applied (both directions)."""
+    variants = [list(words)]
+    for i, w in enumerate(words):
+        key = w.lower().strip(".")
+        if key in STREET_ABBR:
+            alt = list(words)
+            alt[i] = STREET_ABBR[key]
+            variants.append(alt)
+    return variants
+
+
+def _address_match_variants(address):
+    """Build the set of lowercase substrings worth testing a CC campaign
+    name against for this listing's address, plus the street number (if
+    any) that a match must also contain. Returns (variants: set[str],
+    number: str|None)."""
+    street = (address or "").split(",")[0].strip()
+    words = street.split()
+    if not words:
+        return set(), None
+
+    number = None
+    m = re.match(r"^(\d+)", words[0])
+    if m:
+        number = m.group(1)
+
+    word_sets = [words]
+    stripped = [w for w in words if w.lower().strip(".") not in DIRECTIONAL_WORDS]
+    if stripped and stripped != words:
+        word_sets.append(stripped)
+
+    variants = set()
+    for ws in word_sets:
+        for v in _abbrev_variants(ws):
+            phrase = " ".join(v).strip().lower()
+            if phrase:
+                variants.add(phrase)
+
+    # street-number + individual street-name word combos, e.g. "1715
+    # Garland" out of "1715 N Garland Ave" -- catches campaigns that drop
+    # the street-type suffix entirely.
+    if number:
+        name_words = [
+            w for w in words[1:]
+            if w.lower().strip(".") not in DIRECTIONAL_WORDS
+            and w.lower().strip(".") not in STREET_ABBR
+        ]
+        for w in name_words:
+            variants.add(f"{number} {w}".lower())
+
+    return variants, number
+
+
 class ConstantContactAdapter:
     key = "constant_contact"
     block = "cc"
 
     def zeros(self):
-        return {"campaigns": [], "totals": {"sent": 0, "opens": 0, "clicks": 0}}
+        return {
+            "campaigns": [],
+            "totals": {"sent": 0, "opens": 0, "clicks": 0},
+            "email_campaigns_to_date": {"campaigns": 0, "sends": 0, "opens": 0, "clicks": 0},
+        }
 
     def is_configured(self, sources_cfg):
         cfg = sources_cfg.get("constant_contact", {})
@@ -360,14 +447,44 @@ class ConstantContactAdapter:
     def _match_campaigns(self, activities, listing):
         """Match CC campaign activities to a listing by slug/address
         substring in the campaign name -- CC has no first-class 'listing'
-        field, so naming convention is the join key."""
-        needles = [listing["slug"].replace("-", " "), listing["address"].split(",")[0]]
+        field, so naming convention is the join key.
+
+        Real campaigns drift from the address-of-record string (dropped
+        directional prefix, Ave/Avenue-style abbreviation swaps) and the
+        newer "Listing Intelligence — {address} — {period}" convention is
+        just another free-text name using the full address, so it's covered
+        by the same variant matching. When the address has a street number,
+        a match must also contain that number -- this is what prevents
+        e.g. two different "Garland"-named listings from cross-matching."""
+        variants, number = _address_match_variants(listing.get("address", ""))
+        slug_words = listing["slug"].replace("-", " ").lower()
+
         matched = []
         for a in activities:
             name = (a.get("name") or "").lower()
-            if any(n.lower() in name for n in needles if n):
+            if not name:
+                continue
+            if number and number not in name:
+                continue
+            if slug_words in name or any(v in name for v in variants):
                 matched.append(a)
         return matched
+
+    @staticmethod
+    def _campaign_date(detail_json, activity_json):
+        """Best-effort date CC actually sent/updated this campaign, used to
+        decide whether it belongs in this reporting period vs. the
+        cumulative to-date bucket. Tries the campaign-detail payload first
+        (richer), then the list-activity row."""
+        for src in (detail_json or {}, activity_json or {}):
+            for field in ("last_sent_date", "updated_at", "created_at"):
+                v = src.get(field)
+                if v:
+                    try:
+                        return date.fromisoformat(str(v)[:10])
+                    except ValueError:
+                        continue
+        return None
 
     def fetch_live(self, listing, start, end, sources_cfg):
         if requests is None:
@@ -403,14 +520,24 @@ class ConstantContactAdapter:
 
         matched = self._match_campaigns(all_campaigns, listing)
 
+        # Portal dashboards aside, CC campaigns are individually dated --
+        # only a campaign actually sent/updated INSIDE the reporting window
+        # belongs in this period's totals. Everything before the window
+        # (e.g. a listing's very first announcement send, weeks or months
+        # ago) rolls into a separate cumulative-to-date counter instead of
+        # inflating the current period's send count (the bug that showed
+        # Northfleet's 10,731 all-time sends as this week's activity).
         campaigns, totals = [], {"sent": 0, "opens": 0, "clicks": 0}
+        to_date_campaigns = 0
+        to_date_totals = {"sent": 0, "opens": 0, "clicks": 0}
         for a in matched:
             # resolve the primary_email campaign_activity_id
-            detail = requests.get(
+            detail_resp = requests.get(
                 f"{base}/emails/{a.get('campaign_id')}", headers=headers, timeout=HTTP_TIMEOUT,
             )
-            detail.raise_for_status()
-            acts = (detail.json() or {}).get("campaign_activities", [])
+            detail_resp.raise_for_status()
+            detail_json = detail_resp.json() or {}
+            acts = detail_json.get("campaign_activities", [])
             primary = next((x for x in acts if x.get("role") == "primary_email"), None)
             if not primary:
                 continue
@@ -425,17 +552,41 @@ class ConstantContactAdapter:
             sent = int(st.get("em_sends", 0) or 0)
             opens = int(st.get("em_opens_all_unique", st.get("em_opens", 0)) or 0)
             clicks = int(st.get("em_clicks_all_unique", st.get("em_clicks", 0)) or 0)
-            campaigns.append({
-                "name": a.get("name", ""),
-                "sent": sent,
-                "opens": opens,
-                "clicks": clicks,
-                "open_rate": round(opens / sent, 4) if sent else 0.0,
-            })
-            totals["sent"] += sent
-            totals["opens"] += opens
-            totals["clicks"] += clicks
-        return {"campaigns": campaigns, "totals": totals}
+
+            campaign_date = self._campaign_date(detail_json, a)
+            in_window = campaign_date is not None and start <= campaign_date <= end
+
+            if in_window:
+                campaigns.append({
+                    "name": a.get("name", ""),
+                    "sent": sent,
+                    "opens": opens,
+                    "clicks": clicks,
+                    "open_rate": round(opens / sent, 4) if sent else 0.0,
+                    "sent_date": campaign_date.isoformat(),
+                })
+                totals["sent"] += sent
+                totals["opens"] += opens
+                totals["clicks"] += clicks
+            else:
+                # Before the window (or the send date couldn't be resolved
+                # -- never assume "current" without a date) -- cumulative
+                # to-date bucket only, never the period totals.
+                to_date_campaigns += 1
+                to_date_totals["sent"] += sent
+                to_date_totals["opens"] += opens
+                to_date_totals["clicks"] += clicks
+
+        return {
+            "campaigns": campaigns,
+            "totals": totals,
+            "email_campaigns_to_date": {
+                "campaigns": to_date_campaigns,
+                "sends": to_date_totals["sent"],
+                "opens": to_date_totals["opens"],
+                "clicks": to_date_totals["clicks"],
+            },
+        }
 
     def fetch_sample(self, listing, period_type, period_id, rng, scale):
         n_campaigns = rng.choices([0, 1, 2], weights=[0.35, 0.45, 0.20])[0]
@@ -460,7 +611,24 @@ class ConstantContactAdapter:
             totals["sent"] += sent
             totals["opens"] += opens
             totals["clicks"] += clicks
-        return {"campaigns": campaigns, "totals": totals}
+
+        # A plausible pre-window cumulative (e.g. the original "Just
+        # Listed" send from before this period), so sample runs also
+        # exercise the period vs. to-date split.
+        to_date_campaigns = rng.choices([0, 1, 2, 3], weights=[0.3, 0.3, 0.25, 0.15])[0]
+        to_date_sent = max(0, round(to_date_campaigns * rng.randint(300, 900) * scale))
+        to_date_opens = round(to_date_sent * rng.uniform(0.18, 0.34))
+        to_date_clicks = round(to_date_opens * rng.uniform(0.08, 0.22))
+        return {
+            "campaigns": campaigns,
+            "totals": totals,
+            "email_campaigns_to_date": {
+                "campaigns": to_date_campaigns,
+                "sends": to_date_sent,
+                "opens": to_date_opens,
+                "clicks": to_date_clicks,
+            },
+        }
 
 
 class Ga4Adapter:
