@@ -822,6 +822,124 @@ class TawkAdapter:
         return {"chats": chats, "inquiries_about_listing": inquiries}
 
 
+# Note on Webflow: Webflow has no analytics/page-view API of its own, so
+# there is deliberately no WebflowAdapter here. The MCG site is hosted on
+# Webflow, but "website traffic" is measured through GA4 (+ ClarityAdapter
+# below for supplemental engagement signal) -- both instrumented on the
+# same Webflow-hosted pages, so GA4/Clarity numbers already ARE Webflow's
+# page-view numbers. Writing a second, fake "Webflow views" source would
+# double count real traffic against invented numbers, which the NO
+# FABRICATED DATA policy forbids outright. See config/sources.json's
+# "webflow" entry for the same note in the config file.
+class ClarityAdapter:
+    """Microsoft Clarity Data Export API (project-live-insights) --
+    supplemental engagement signal (sessions/engagement), not a primary
+    view-count source. Folded into the "MCG website analytics" channel
+    framing alongside GA4 in generate.py, never shown as its own
+    vendor-named channel.
+
+    numOfDays is capped at 3 by the live-insights endpoint, so for any
+    reporting window wider than 3 days (every weekly/monthly/quarterly
+    period this system runs) the pull can only ever cover the most recent
+    slice of the window, not the whole thing -- collect_clarity_freshness()
+    below marks that "stale" (can't cover the full window) rather than
+    letting it masquerade as a period-complete number."""
+
+    key = "clarity"
+    block = "clarity"
+    MAX_NUM_OF_DAYS = 3
+
+    def zeros(self):
+        return {"sessions": 0, "engaged_sessions": 0, "distinct_users": 0,
+                "coverage_days": 0, "note": None}
+
+    def is_configured(self, sources_cfg):
+        cfg = sources_cfg.get("clarity", {})
+        slot = cfg.get("credential_env_or_path") or cfg.get("token_file")
+        return bool(cfg.get("enabled")) and bool(resolve_credential(slot))
+
+    def fetch_live(self, listing, start, end, sources_cfg):
+        if requests is None:
+            raise SourceUnavailable("requests not installed")
+        cfg = sources_cfg.get("clarity", {})
+        slot = cfg.get("credential_env_or_path") or cfg.get("token_file")
+        token = resolve_credential(slot)
+        if not token:
+            raise SourceUnavailable("no Clarity API token (credential pending)")
+
+        page_path = None
+        webflow_page = (listing.get("links") or {}).get("webflow_page")
+        if webflow_page:
+            from urllib.parse import urlparse
+            page_path = urlparse(webflow_page).path
+
+        window_days = (end - start).days + 1
+        num_of_days = min(self.MAX_NUM_OF_DAYS, max(1, window_days))
+
+        headers = {"Authorization": f"Bearer {token}"}
+        resp = requests.get(
+            "https://www.clarity.ms/export-data/api/v1/project-live-insights",
+            headers=headers,
+            params={"numOfDays": num_of_days},
+            timeout=HTTP_TIMEOUT,
+        )
+        resp.raise_for_status()
+        payload = resp.json() or []
+        if not isinstance(payload, list):
+            payload = []
+
+        def _row_matches_page(row):
+            if not page_path:
+                return True
+            for dim in (row.get("Dimensions") or row.get("dimensions") or []):
+                if not isinstance(dim, dict):
+                    continue
+                url = dim.get("Page") or dim.get("page") or dim.get("Url")
+                if url and page_path in url:
+                    return True
+            return False
+
+        sessions = distinct_users = engaged_sessions = 0
+        for metric_block in payload:
+            metric_name = str(metric_block.get("metricName", "")).lower()
+            rows = metric_block.get("information", []) or []
+            for row in rows:
+                if not _row_matches_page(row):
+                    continue
+                if metric_name == "traffic" or "sessioncount" in json.dumps(row).lower():
+                    sessions += int(row.get("totalSessionCount", 0) or 0)
+                    distinct_users += int(row.get("distinctUserCount", 0) or 0)
+                    engaged_sessions += int(row.get("totalBotSessionCount", 0) or 0)
+
+        return {
+            "sessions": sessions,
+            "engaged_sessions": engaged_sessions,
+            "distinct_users": distinct_users,
+            "coverage_days": num_of_days,
+            "note": (
+                None if num_of_days >= window_days else
+                f"reflects only the most recent {num_of_days} day(s); Clarity's "
+                f"live-insights export can't cover a full {window_days}-day window"
+            ),
+        }
+
+    def fetch_sample(self, listing, period_type, period_id, rng, scale):
+        window_days = PERIOD_LENGTH_DAYS.get(period_type, 7)
+        num_of_days = min(self.MAX_NUM_OF_DAYS, window_days)
+        sessions = max(0, round(rng.randint(5, 40) * scale))
+        return {
+            "sessions": sessions,
+            "engaged_sessions": max(0, round(sessions * rng.uniform(0.3, 0.6))),
+            "distinct_users": max(0, round(sessions * rng.uniform(0.7, 0.95))),
+            "coverage_days": num_of_days,
+            "note": (
+                None if num_of_days >= window_days else
+                f"reflects only the most recent {num_of_days} day(s); Clarity's "
+                f"live-insights export can't cover a full {window_days}-day window"
+            ),
+        }
+
+
 class PortalIntakeAdapter:
     """Manual-intake adapter for homes.com / Crexi / LoopNet -- no API, so
     this is the one adapter that is 'live' whenever a matching file exists
@@ -985,6 +1103,7 @@ IDX = IdxAdapter()
 CC = ConstantContactAdapter()
 GA4 = Ga4Adapter()
 TAWK = TawkAdapter()
+CLARITY = ClarityAdapter()
 PORTALS = PortalIntakeAdapter()
 
 

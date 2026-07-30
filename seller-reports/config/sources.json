@@ -25,5 +25,17 @@
     "enabled": true,
     "credential_env_or_path": null,
     "notes": "No API \u2014 manual intake only. Cameron (or future OCR step) drops per-listing JSON/CSV files under intake/<slug>/ containing homes.com (residential) or Crexi/LoopNet (commercial/land) view/save/lead counts for the period. See intake/README.md for exact format. Always 'enabled' in the sense that collect.py always looks for intake files; data_quality is 'live' when a matching-period file is found and parsed, 'missing' when none exists for the period, 'sample' only under --sample."
+  },
+  "clarity": {
+    "enabled": true,
+    "credential_env_or_path": "/mnt/user-data/uploads/Second Brain/.secrets/clarity-api-token.txt",
+    "token_file": "/mnt/user-data/uploads/Second Brain/.secrets/clarity-api-token.txt",
+    "notes": "Microsoft Clarity Data Export API (Project Settings > Setup > Data Export in the Clarity dashboard generates the API token \u2014 project-scoped, no OAuth flow). Endpoint used: GET https://www.clarity.ms/export-data/api/v1/project-live-insights?numOfDays=N with 'Authorization: Bearer <token>'. numOfDays is capped at 3 by the API itself, so a pull can only ever cover the most recent 1-3 days regardless of the reporting window requested \u2014 collect.py treats this as a supplemental engagement signal (sessions/engaged sessions), never a primary/period-complete view count, and folds it into the anonymized 'MCG website analytics' channel alongside GA4 (see generate.py CHANNEL_LABELS). As of 2026-07-30 the credential file at token_file does NOT exist yet (Clarity account/token pending) \u2014 ClarityAdapter.is_configured() returns false in that state and collect.py records data_quality 'missing' with note 'credential pending', never raising. Set credential_env_or_path/token_file to the token once issued.",
+    "credential_status": "pending -- file absent as of 2026-07-30"
+  },
+  "webflow": {
+    "enabled": false,
+    "credential_env_or_path": null,
+    "notes": "No analytics/page-view API. Webflow hosts the MCG site's pages, but 'website traffic' for seller reports is measured through GA4 (+ Clarity supplemental engagement, see the 'clarity' entry above) instrumented on those same Webflow-hosted pages \u2014 GA4/Clarity numbers already ARE Webflow's page-view numbers. There is deliberately no WebflowAdapter in collect.py; writing one would double-count real traffic against a second, fabricated number, which the system's no-fabricated-data policy forbids. This entry exists purely as documentation so a future maintainer doesn't go looking for a Webflow adapter that was never supposed to exist."
   }
 }
