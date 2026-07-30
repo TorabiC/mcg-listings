@@ -69,7 +69,17 @@
               </tr>
               <tr>
                 <td style="font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#6B6B78;padding-top:4px;">
-                  {{ hero.price_display }} &middot; {% if hero.beds %}{{ hero.beds }} bd / {% endif %}{% if hero.baths %}{{ hero.baths }} ba &middot; {% endif %}{{ hero.type_display }} &middot; {{ period_range_display }}
+                  {# Every listing renders the same fact-line skeleton: residential shows
+                     beds/baths when present, commercial/land shows acreage/sqft/zoning
+                     when present, and anything with none of those still shows price +
+                     status + type rather than a shorter line. #}
+                  {{ hero.price_display }} &middot;
+                  {% if hero.beds or hero.baths %}{% if hero.beds %}{{ hero.beds }} bd / {% endif %}{% if hero.baths %}{{ hero.baths }} ba &middot; {% endif %}
+                  {% elif listing.acreage or listing.lot_acres %}{{ listing.acreage or listing.lot_acres }} acres &middot;
+                  {% elif listing.sqft or listing.square_feet %}{{ '{:,}'.format(listing.sqft or listing.square_feet) }} sqft &middot;
+                  {% endif %}
+                  {% if listing.zoning %}Zoned {{ listing.zoning }} &middot; {% endif %}
+                  {{ hero.status_display }} &middot; {{ hero.type_display }} &middot; {{ period_range_display }}
                 </td>
               </tr>
             </table>
@@ -170,6 +180,21 @@
               <tr>
                 <td style="padding:16px 0 4px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#16162A;line-height:1.55;">
                   <strong style="color:#AB012E;">National exposure &mdash;</strong> {{ '{:,}'.format(crexi_exposure.impressions) }} {{ 'impressions' if crexi_exposure.impressions_is_deep else 'page views' }} across MCG&rsquo;s commercial marketplace network, MCG Placement Score {{ crexi_exposure.search_score }}/100 ({{ crexi_exposure.search_score_grade }}) &mdash; see the full report for details.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        {% else %}
+        <!-- No portal exposure data on file this period -- every flyer still
+             renders this band (same section skeleton for every listing),
+             just without logos/figures, per the no-fabricated-data policy. -->
+        <tr>
+          <td class="mcg-px" style="padding:14px 28px 4px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #C7C7D0;">
+              <tr>
+                <td style="padding:16px 0 4px;font-family:Lato,Arial,sans-serif;font-size:13.5px;color:#16162A;line-height:1.55;">
+                  <strong style="color:#AB012E;">National exposure &mdash;</strong> Promoted across MCG&rsquo;s national syndication network &mdash; see the full report for details as figures post.
                 </td>
               </tr>
             </table>
