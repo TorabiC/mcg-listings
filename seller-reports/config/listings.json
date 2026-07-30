@@ -580,41 +580,6 @@
         ]
       },
       "notes": "Residential lot, 0.28 AC. Added to registry 2026-07-17 per Cameron roster confirmation."
-    },
-    {
-      "slug": "zz-deploy-verify-tmp",
-      "address": "zz-deploy-verify-tmp",
-      "type": "residential",
-      "county": "",
-      "price": 1,
-      "price_type": "sale",
-      "beds": null,
-      "baths": null,
-      "status": "active",
-      "list_date": null,
-      "mls_id": null,
-      "mls_entries": [],
-      "seller": {
-        "name": null,
-        "email": null
-      },
-      "report_token": "cb455a48",
-      "links": {
-        "idx": null,
-        "webflow_page": null,
-        "marketing_page": null,
-        "hero_image": null
-      },
-      "sources": {
-        "idx": true,
-        "cc": true,
-        "ga4": true,
-        "tawk": true,
-        "portals": [
-          "homes.com"
-        ]
-      },
-      "notes": "Auto-registered by the marketing hub on 2026-07-30."
     }
   ]
 }
