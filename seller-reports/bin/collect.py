@@ -491,7 +491,11 @@ class Ga4Adapter:
             )
         import base64
 
-        info = json.loads(Path(key_path).read_text()) if Path(key_path).exists() else json.loads(key_path)
+        try:
+            key_is_file = Path(key_path).exists()
+        except OSError:  # e.g. Errno 63 when key_path is the JSON blob itself, not a path
+            key_is_file = False
+        info = json.loads(Path(key_path).read_text()) if key_is_file else json.loads(key_path)
         now = int(time.time())
         header = {"alg": "RS256", "typ": "JWT"}
         claims = {
