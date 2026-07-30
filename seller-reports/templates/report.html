@@ -415,7 +415,7 @@
      shadow -- was a translucent white 10px-radius card with a heavier
      photo-legibility shadow (0 10px 30px rgba(7,13,28,.32)). */
   /* FINAL APPROVAL ROUND: white card (was warm-cream #F5F1EA) per
-     Cameron's homes.com agent-card reference screenshot -- MCG colors,
+     Cameron's portal-style agent-card reference screenshot -- MCG colors,
      white rounded ~14px cards with a soft shadow. */
   .hm-card{background:#fff;color:var(--navy);border:1px solid var(--gray-100);border-radius:14px;padding:18px 20px;box-shadow:0 10px 30px rgba(16,16,42,.12);}
   .hm-card .hm-card-title{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-500);margin-bottom:6px;}
@@ -590,7 +590,7 @@
   .hm-glossary-list dd{margin:4px 0 0;font-size:13px;color:var(--gray-700);}
 
   /* ==========================================================
-     FINAL APPROVAL ROUND -- secondary nav, gold badge, homes.com-style
+     FINAL APPROVAL ROUND -- secondary nav, gold badge, portal-style
      agent card, minimal end-strip. Residential (homes_mirror) only;
      commercial branch (.hero-full/.brand-bar/.site-footer, below)
      untouched. Class names + values for .breadcrumb/.bc-inner/.bc-trail/
@@ -622,7 +622,7 @@
   @keyframes shimmer-gold{0% {background-position:0% center;} 50% {background-position:100% center;} 100% {background-position:0% center;}}
   .gallery-badge{position:absolute;top:16px;left:16px;z-index:10;padding:7px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:3px;background:linear-gradient(90deg,#9a7a30 0%,#e8d48b 30%,#c4a35a 50%,#e8d48b 70%,#9a7a30 100%);background-size:200% auto;animation:shimmer-gold 3s ease infinite;color:#1a0a00;box-shadow:0 2px 10px rgba(0,0,0,.35);}
 
-  /* Homes.com-style agent card (Cameron's reference screenshot), MCG-
+  /* Portal-style agent card (Cameron's reference screenshot), MCG-
      branded -- replaces the old horizontal mini agent card. */
   .ha-top{display:flex;align-items:stretch;gap:0;margin-bottom:10px;}
   .ha-photo{flex:none;width:72px;height:72px;border-radius:8px;overflow:hidden;background:var(--navy-tint);box-shadow:0 2px 8px rgba(0,0,0,.15);}
@@ -638,7 +638,7 @@
 
   /* Minimal end-of-report strip -- replaces the dark .site-footer for
      this residential variant only (global chrome comes from the
-     Webflow wrapper when this report is iframed the same way the
+     parent site's wrapper when this report is iframed the same way the
      bundle is). Muted text styled per the bundle's own .mls-attr-text
      treatment (font-size:12px;color muted grey;line-height:1.7). */
   .hm-endstrip{background:#fff;border-top:1px solid var(--gray-100);padding:22px 0 30px;}
@@ -651,7 +651,7 @@
   .hm-endstrip-switcher .active{background:var(--navy);color:#fff;border-color:var(--navy);}
   .hm-endstrip-switcher .disabled{opacity:.4;cursor:default;}
 
-  /* Print-only minimal logo header line -- the iframe/Webflow chrome
+  /* Print-only minimal logo header line -- the iframe/parent-site chrome
      won't print, so this variant keeps one small logo line instead. */
   .print-logo-line{display:none;align-items:center;gap:10px;padding:14px 24px;border-bottom:1px solid var(--gray-300);}
   .print-logo-line img{height:24px;width:auto;}
@@ -692,7 +692,7 @@
 {% set street = hero.address.split(',')[0] %}
 {% set city_state = hero.address.split(',', 1)[1].strip() if ',' in hero.address else '' %}
 
-<!-- Print-only minimal logo line -- the iframe/Webflow chrome (global
+<!-- Print-only minimal logo line -- the iframe/parent-site chrome (global
      nav + footer) won't print, so keep one small branded line. -->
 <div class="print-logo-line"><img src="{{ mcg_logo_data_uri }}" alt="Mason Capital Group"><span>Mason Capital Group &mdash; Listing Intelligence</span></div>
 
@@ -755,7 +755,7 @@
         {% if hero.dom %}{{ hero.dom }} Days on Market{% endif %}
       </div>
     </div>
-    <!-- 3. AGENT CARD -- homes.com agent-card design (Cameron's reference
+    <!-- 3. AGENT CARD -- portal-style agent-card design (Cameron's reference
          screenshot), MCG colors. -->
     <div class="hm-card hm-agent-card2">
       <div class="ha-top">
@@ -1646,8 +1646,8 @@
 <!-- ==========================================================
      8. MINIMAL END-OF-REPORT STRIP (residential only) -- the dark
      .site-footer + old white brand-bar are removed for this variant;
-     global chrome comes from the Webflow wrapper when this report is
-     iframed the same way the listing bundle is. Commercial branch
+     global chrome comes from the parent site's wrapper when this report
+     is iframed the same way the listing bundle is. Commercial branch
      keeps the full .site-footer below, untouched.
      ========================================================== -->
 <footer class="hm-endstrip">
