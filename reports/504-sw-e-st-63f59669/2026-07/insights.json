@@ -2,7 +2,7 @@
   "slug": "504-sw-e-st",
   "period_id": "2026-07",
   "talking_points": [
-    "0 total views this period -- 0 website + 0 syndication views.",
+    "18 total views this period -- 0 website + 18 syndication views.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -42,8 +42,8 @@
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": null,
-      "status": "missing"
+      "as_of": "2026-07-30",
+      "status": "fresh"
     },
     {
       "key": "loopnet",
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "0",
+    "total_views": "18",
     "total_leads": "0",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
@@ -69,5 +69,5 @@
     },
     "window_label": "July 2026"
   },
-  "generated_at": "2026-07-30T20:06:39.807043+00:00"
+  "generated_at": "2026-07-30T21:19:28.999284+00:00"
 }

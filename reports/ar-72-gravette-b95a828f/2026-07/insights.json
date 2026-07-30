@@ -2,7 +2,7 @@
   "slug": "ar-72-gravette",
   "period_id": "2026-07",
   "talking_points": [
-    "63 total views this period -- 0 website + 63 syndication views.",
+    "66 total views this period -- 0 website + 66 syndication views.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -42,8 +42,8 @@
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": null,
-      "status": "stale"
+      "as_of": "2026-07-30",
+      "status": "fresh"
     },
     {
       "key": "loopnet",
@@ -60,8 +60,8 @@
     }
   ],
   "headline": {
-    "total_views": "63",
-    "total_leads": "5",
+    "total_views": "66",
+    "total_leads": "2",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
       "value_display": "26m 33s",
@@ -69,5 +69,5 @@
     },
     "window_label": "July 2026"
   },
-  "generated_at": "2026-07-30T20:06:39.793036+00:00"
+  "generated_at": "2026-07-30T21:19:28.990630+00:00"
 }

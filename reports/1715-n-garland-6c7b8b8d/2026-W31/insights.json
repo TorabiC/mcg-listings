@@ -2,7 +2,7 @@
   "slug": "1715-n-garland",
   "period_id": "2026-W31",
   "talking_points": [
-    "24,063 total views this period -- 0 website + 24,063 syndication views.",
+    "38,713 total views this period -- 0 website + 38,713 syndication views.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -36,8 +36,8 @@
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": "2026-07-20",
-      "status": "stale"
+      "as_of": "2026-07-30",
+      "status": "fresh"
     },
     {
       "key": "crexi",
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "24,063",
+    "total_views": "38,713",
     "total_leads": "0",
     "page_engagement": {
       "metric": null,
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Jul 27 \u2013 Aug 2"
   },
-  "generated_at": "2026-07-30T20:04:13.790395+00:00"
+  "generated_at": "2026-07-30T21:19:22.948442+00:00"
 }

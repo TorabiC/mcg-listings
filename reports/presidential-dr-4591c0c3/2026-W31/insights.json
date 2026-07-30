@@ -42,8 +42,8 @@
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": null,
-      "status": "stale"
+      "as_of": "2026-07-30",
+      "status": "fresh"
     },
     {
       "key": "loopnet",
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Jul 27 \u2013 Aug 2"
   },
-  "generated_at": "2026-07-30T20:04:13.832786+00:00"
+  "generated_at": "2026-07-30T21:19:23.172672+00:00"
 }

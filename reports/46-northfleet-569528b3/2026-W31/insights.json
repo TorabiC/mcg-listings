@@ -2,7 +2,7 @@
   "slug": "46-northfleet",
   "period_id": "2026-W31",
   "talking_points": [
-    "0 total views this period -- 0 website + 0 syndication views.",
+    "181 total views this period -- 0 website + 181 syndication views.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -42,8 +42,8 @@
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": null,
-      "status": "missing"
+      "as_of": "2026-07-30",
+      "status": "fresh"
     },
     {
       "key": "loopnet",
@@ -60,8 +60,8 @@
     }
   ],
   "headline": {
-    "total_views": "0",
-    "total_leads": "0",
+    "total_views": "181",
+    "total_leads": "4",
     "page_engagement": {
       "metric": null,
       "value_display": "--",
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Jul 27 \u2013 Aug 2"
   },
-  "generated_at": "2026-07-30T20:04:13.794417+00:00"
+  "generated_at": "2026-07-30T21:19:22.953271+00:00"
 }

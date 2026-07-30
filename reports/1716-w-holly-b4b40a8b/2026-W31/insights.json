@@ -2,7 +2,7 @@
   "slug": "1716-w-holly",
   "period_id": "2026-W31",
   "talking_points": [
-    "86 total views this period -- 0 website + 86 syndication views.",
+    "94 total views this period -- 0 website + 94 syndication views.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -42,8 +42,8 @@
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": null,
-      "status": "stale"
+      "as_of": "2026-07-30",
+      "status": "fresh"
     },
     {
       "key": "loopnet",
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "86",
+    "total_views": "94",
     "total_leads": "4",
     "page_engagement": {
       "metric": null,
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Jul 27 \u2013 Aug 2"
   },
-  "generated_at": "2026-07-30T20:04:13.807163+00:00"
+  "generated_at": "2026-07-30T21:19:23.100407+00:00"
 }

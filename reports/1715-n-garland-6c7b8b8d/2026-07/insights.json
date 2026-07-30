@@ -2,7 +2,7 @@
   "slug": "1715-n-garland",
   "period_id": "2026-07",
   "talking_points": [
-    "24,063 total views this period -- 0 website + 24,063 syndication views.",
+    "38,713 total views this period -- 0 website + 38,713 syndication views.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -36,7 +36,7 @@
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": "2026-07-20",
+      "as_of": "2026-07-30",
       "status": "fresh"
     },
     {
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "24,063",
+    "total_views": "38,713",
     "total_leads": "0",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
@@ -69,5 +69,5 @@
     },
     "window_label": "July 2026"
   },
-  "generated_at": "2026-07-30T20:06:39.759939+00:00"
+  "generated_at": "2026-07-30T21:19:28.963978+00:00"
 }
