@@ -338,19 +338,24 @@ _NOTE_BLOCK = """<tr><td class="mcg-px" style="padding:20px 28px 0;">
 
 def build_email_html(flyer_html: str, note: str | None) -> str:
     """Flyer HTML, with an optional MCG-styled (navy/gold) personal-note
-    block inserted as the first row of the flyer's container table."""
-    if not note or not note.strip():
-        return flyer_html
-    note_html = html_lib.escape(note.strip()).replace("\n", "<br>")
-    block = _NOTE_BLOCK.format(note_html=note_html)
-    marker = 'class="mcg-container"'
-    idx = flyer_html.find(marker)
-    if idx == -1:
-        return flyer_html
-    tag_end = flyer_html.find(">", idx) + 1
-    if tag_end <= 0:
-        return flyer_html
-    return flyer_html[:tag_end] + block + flyer_html[tag_end:]
+    block inserted as the first row of the flyer's container table, plus the
+    CC-required [[trackingImage]] tag (custom-code campaigns error out at
+    send time without it)."""
+    if note and note.strip():
+        note_html = html_lib.escape(note.strip()).replace("\n", "<br>")
+        block = _NOTE_BLOCK.format(note_html=note_html)
+        marker = 'class="mcg-container"'
+        idx = flyer_html.find(marker)
+        if idx != -1:
+            tag_end = flyer_html.find(">", idx) + 1
+            if tag_end > 0:
+                flyer_html = flyer_html[:tag_end] + block + flyer_html[tag_end:]
+    if "[[trackingImage]]" not in flyer_html:
+        if "</body>" in flyer_html:
+            flyer_html = flyer_html.replace("</body>", "[[trackingImage]]</body>", 1)
+        else:
+            flyer_html += "[[trackingImage]]"
+    return flyer_html
 
 
 # ---------------------------------------------------------------------------
