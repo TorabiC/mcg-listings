@@ -54,7 +54,7 @@ CC_TOKEN_URL = "https://authz.constantcontact.com/oauth2/default/v1/token"
 REGISTRY_URL = "https://raw.githubusercontent.com/TorabiC/mcg-listings/main/seller-reports/config/listings.json"
 REPORTS_BASE_URL = "https://torabic.github.io/mcg-listings/reports"
 
-SEND_FROM_EMAIL = "Torabi@MasonCapitalGroup.com"
+SEND_FROM_EMAIL = "torabi@masoncapitalgroup.com"  # must match the CONFIRMED account email exactly (CC compares case-sensitively)
 
 
 def dry_run() -> bool:
@@ -373,6 +373,11 @@ def create_campaign(name: str, subject: str, html_content: str) -> dict:
         }],
     }
     resp = requests.post(f"{CC_API_BASE}/emails", headers=headers, json=payload, timeout=30)
+    if resp.status_code == 409:
+        # CC campaign names are unique per account and deleted campaigns keep
+        # their name reserved — a retried send would otherwise hard-fail.
+        payload["name"] = f"{name} ({int(time.time())})"
+        resp = requests.post(f"{CC_API_BASE}/emails", headers=headers, json=payload, timeout=30)
     if resp.status_code >= 400:
         raise CCError(f"campaign create failed ({resp.status_code}): {resp.text[:300]}")
     data = resp.json()
@@ -388,10 +393,18 @@ def set_activity_recipients(campaign_activity_id: str, list_id: str) -> None:
         logger.info(f"[CC_DRY_RUN] would set list {list_id} as recipient of activity {campaign_activity_id}")
         return
     headers = _cc_headers()
+    # CC's activity PUT is full-replace: sending only contact_list_ids nulls
+    # from_email/subject ("From Email is null or empty"). GET the activity,
+    # merge the list in, and PUT the whole object back.
+    get = requests.get(f"{CC_API_BASE}/emails/activities/{campaign_activity_id}", headers=headers, timeout=20)
+    if get.status_code >= 400:
+        raise CCError(f"activity fetch failed ({get.status_code}): {get.text[:300]}")
+    activity = get.json()
+    activity["contact_list_ids"] = [list_id]
     resp = requests.put(
         f"{CC_API_BASE}/emails/activities/{campaign_activity_id}",
         headers=headers,
-        json={"contact_list_ids": [list_id]},
+        json=activity,
         timeout=20,
     )
     if resp.status_code >= 400:
