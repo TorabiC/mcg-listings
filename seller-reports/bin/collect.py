@@ -1437,6 +1437,270 @@ def build_insights(listing, sources_block, trend, market_block, data_quality, pe
 
 
 # --------------------------------------------------------------------------
+# Harvest freshness guard
+#
+# Every intake source has a moment it was actually pulled/harvested. API
+# sources (IDX/CC/GA4/tawk) are queried live against [start, end] every run,
+# so a successful live pull is "fresh" by construction. Portal snapshot
+# files (homes.com/Crexi/LoopNet) are NOT period-scoped -- Cameron (or a
+# future OCR step) drops a fresh dashboard export whenever he gets to it,
+# so the same file can sit underneath several weekly runs. source_freshness
+# records, per source, whether the report is about to show a number that
+# was actually captured inside this reporting window ("fresh"), captured
+# before it ("stale" -- still real data, just not current-week), or never
+# captured at all ("missing"). generate.py uses this to decide whether a
+# tile/section needs a visible "as of {date}" caption instead of silently
+# implying current-period activity.
+# --------------------------------------------------------------------------
+
+def _parse_iso_date(v):
+    if not v:
+        return None
+    try:
+        return date.fromisoformat(str(v)[:10])
+    except ValueError:
+        return None
+
+
+def build_source_freshness(slug, start, end, data_quality, portals_raw, clarity_data):
+    freshness = {}
+
+    # API sources: a live pull this run is inherently "as of" the period end
+    # (it was just queried against [start, end]); sample runs are timeless
+    # demo data, treated as fresh so the sample badge (not a stale caption)
+    # carries the "this isn't real yet" signal; missing is missing.
+    for key in ("idx", "cc", "ga4", "tawk"):
+        q = data_quality.get(key)
+        if q in ("live", "sample"):
+            freshness[key] = {"as_of": end.isoformat(), "status": "fresh"}
+        else:
+            freshness[key] = {"as_of": None, "status": "missing"}
+
+    # Portal snapshot sources: freshness hinges on harvested_at (new,
+    # optional field in the intake JSON -- tolerated when absent, see
+    # intake/README.md). Determine per-portal presence from the actual
+    # snapshot file on disk rather than the combined data_quality['portals']
+    # flag, since that flag covers all three portals at once.
+    portals_q = data_quality.get("portals")
+    listing_dir = INTAKE_DIR / slug
+    for portal, fname in PortalIntakeAdapter.PORTAL_SNAPSHOT_FILENAMES.items():
+        if portals_q == "sample":
+            freshness[portal] = {"as_of": None, "status": "fresh"}
+            continue
+        fpath = listing_dir / fname
+        if not fpath.exists():
+            freshness[portal] = {"as_of": None, "status": "missing"}
+            continue
+        harvested_at = _parse_iso_date((portals_raw.get(portal) or {}).get("harvested_at"))
+        if harvested_at is None:
+            # File exists but carries no harvested_at -- tolerate the
+            # missing field (don't crash, don't guess a date), but never
+            # claim "fresh" without proof: treat as stale so the report
+            # shows a caption rather than implying current-period data.
+            freshness[portal] = {"as_of": None, "status": "stale"}
+        elif harvested_at >= start:
+            freshness[portal] = {"as_of": harvested_at.isoformat(), "status": "fresh"}
+        else:
+            freshness[portal] = {"as_of": harvested_at.isoformat(), "status": "stale"}
+
+    # Clarity: live-insights numOfDays is capped at 3 by the API, so it can
+    # only ever cover the tail end of a weekly/monthly/quarterly window --
+    # mark it "fresh" only when its actual coverage_days reaches the full
+    # window, otherwise "stale" (real, recent data; just partial coverage)
+    # so generate.py treats it as supplemental rather than primary.
+    window_days = (end - start).days + 1
+    coverage_days = (clarity_data or {}).get("coverage_days") or 0
+    if data_quality.get("clarity") == "live" or data_quality.get("clarity") == "sample":
+        status = "fresh" if coverage_days >= window_days else "stale"
+        as_of = (end - timedelta(days=max(coverage_days, 1) - 1)).isoformat() if coverage_days else end.isoformat()
+        freshness["clarity"] = {"as_of": as_of, "status": status, "coverage_days": coverage_days}
+    else:
+        freshness["clarity"] = {"as_of": None, "status": "missing", "coverage_days": 0}
+
+    return freshness
+
+
+# --------------------------------------------------------------------------
+# Weekly period-over-period deltas (portal cumulative counters)
+#
+# Portal dashboards only expose an all-time/current snapshot (see
+# PortalIntakeAdapter docstring), so metrics.json's sources.portals.<portal>
+# numbers are cumulative-since-listing, not "this week". period_activity
+# derives the actual this-period delta by diffing against the prior
+# period's stored metrics.json, walking back up to 3 periods to bridge a
+# gap (a week nobody ran collect.py for). Floors at 0 (a portal number
+# should never go down, but don't let a dashboard correction produce a
+# negative "activity" figure); when no prior baseline exists at all, the
+# delta is null and generate.py/report copy falls back to labeling the
+# figure "total since listing" instead of "this period".
+# --------------------------------------------------------------------------
+PORTAL_DELTA_FIELDS = {
+    "homes.com": ["views", "saves"],
+    "crexi": ["views", "leads"],
+    "loopnet": ["views", "leads"],
+}
+
+
+def _load_prior_metrics_walkback(slug, period_type, period_id, start, max_back=3):
+    """Returns (prior_metrics dict or None, prior_period_id or None) -- the
+    nearest prior period that actually has a metrics.json on disk, walking
+    back up to max_back periods to bridge a gap."""
+    cur_id, cur_start = period_id, start
+    for _ in range(max_back):
+        prior_id = prior_period_id(period_type, cur_id, cur_start)
+        prior_path = DATA_DIR / slug / prior_id / "metrics.json"
+        prior = load_json(prior_path)
+        if prior:
+            return prior, prior_id
+        prior_start, _ = period_from_id(period_type, prior_id)
+        cur_id, cur_start = prior_id, prior_start
+    return None, None
+
+
+def build_period_activity(slug, period_type, period_id, start, portals_data):
+    prior_metrics, prior_id = _load_prior_metrics_walkback(slug, period_type, period_id, start)
+    prior_portals = (prior_metrics or {}).get("sources", {}).get("portals", {})
+    has_baseline = prior_metrics is not None
+
+    result = {}
+    for portal, fields in PORTAL_DELTA_FIELDS.items():
+        cur = portals_data.get(portal) or {}
+        prior = prior_portals.get(portal) or {}
+        entry = {"has_baseline": has_baseline, "baseline_period_id": prior_id if has_baseline else None}
+        for f in fields:
+            cur_v = cur.get(f)
+            if cur_v is None or not has_baseline:
+                entry[f] = None
+                continue
+            try:
+                entry[f] = max(0, int(cur_v) - int(prior.get(f, 0) or 0))
+            except (TypeError, ValueError):
+                entry[f] = None
+        result[portal] = entry
+    return result
+
+
+# --------------------------------------------------------------------------
+# Monthly / quarterly rollup
+#
+# GA4/CC/IDX are period-scoped APIs, so re-querying them directly against
+# the month/quarter window (same adapters, wider [start, end]) is already
+# correct -- no special-casing needed there. Portals are the exception:
+# their raw metrics.json numbers are a point-in-time cumulative snapshot,
+# so a monthly/quarterly total is the SUM of the weekly period_activity
+# deltas for every ISO week overlapping the window, not a single snapshot
+# read. This is written generically over [start, end] so quarterly reuses
+# it unchanged (a quarter's weeks are just a wider week list than a
+# month's).
+# --------------------------------------------------------------------------
+
+def iso_weeks_overlapping(start, end):
+    """Every ISO week id (YYYY-Www) whose Mon-Sun week overlaps [start,
+    end], in chronological order."""
+    weeks, seen = [], set()
+    d = start
+    while d <= end:
+        wid, _, _ = period_from_anchor("weekly", d)
+        if wid not in seen:
+            seen.add(wid)
+            weeks.append(wid)
+        d += timedelta(days=1)
+    return weeks
+
+
+def build_rollup_metrics(listing, period_type, period_id, start, end, sources_cfg, market_cfg, sample_mode):
+    slug = listing["slug"]
+
+    idx_data, idx_q = collect_source(IDX, listing, start, end, period_type, period_id, sources_cfg, sample_mode)
+    cc_data, cc_q = collect_source(CC, listing, start, end, period_type, period_id, sources_cfg, sample_mode)
+    ga4_data, ga4_q = collect_source(GA4, listing, start, end, period_type, period_id, sources_cfg, sample_mode)
+    tawk_data, tawk_q = collect_source(TAWK, listing, start, end, period_type, period_id, sources_cfg, sample_mode)
+    clarity_data, clarity_q = collect_source(CLARITY, listing, start, end, period_type, period_id, sources_cfg, sample_mode)
+
+    week_ids = iso_weeks_overlapping(start, end)
+    weekly_breakdown = []
+    missing_weeks = []
+    portal_sums = {p: {f: 0 for f in fields} for p, fields in PORTAL_DELTA_FIELDS.items()}
+    portal_weeks_counted = {p: 0 for p in PORTAL_DELTA_FIELDS}
+    portals_latest_cumulative = None
+
+    for wid in week_ids:
+        wmetrics = load_json(DATA_DIR / slug / wid / "metrics.json")
+        if not wmetrics:
+            missing_weeks.append(wid)
+            continue
+        wk_period_activity = wmetrics.get("period_activity", {})
+        wk_sources = wmetrics.get("sources", {})
+        wk_views, wk_leads = aggregate_totals(wk_sources)
+        week_row = {
+            "week_id": wid,
+            "start": wmetrics.get("period", {}).get("start"),
+            "end": wmetrics.get("period", {}).get("end"),
+            "total_views": wk_views,
+            "total_leads": wk_leads,
+            "portals": {},
+        }
+        for portal, fields in PORTAL_DELTA_FIELDS.items():
+            pa = wk_period_activity.get(portal, {})
+            row = {}
+            for f in fields:
+                v = pa.get(f)
+                row[f] = v
+                if v is not None:
+                    portal_sums[portal][f] += v
+            week_row["portals"][portal] = row
+        portal_weeks_counted_any = any(
+            wk_period_activity.get(p, {}).get("has_baseline") for p in PORTAL_DELTA_FIELDS
+        )
+        if portal_weeks_counted_any:
+            for p in PORTAL_DELTA_FIELDS:
+                if wk_period_activity.get(p, {}).get("has_baseline"):
+                    portal_weeks_counted[p] += 1
+        weekly_breakdown.append(week_row)
+        if wk_sources.get("portals"):
+            portals_latest_cumulative = wk_sources["portals"]  # weeks are chronological -> last write wins
+
+    portals_cumulative = portals_latest_cumulative or PORTALS.zeros_all()
+    period_activity = {}
+    for portal, sums in portal_sums.items():
+        period_activity[portal] = {
+            **{f: (v if portal_weeks_counted[portal] else None) for f, v in sums.items()},
+            "has_baseline": portal_weeks_counted[portal] > 0,
+            "weeks_included": portal_weeks_counted[portal],
+        }
+
+    sources_block = {"idx": idx_data, "cc": cc_data, "ga4": ga4_data, "tawk": tawk_data, "portals": portals_cumulative}
+    data_quality = {
+        "idx": idx_q, "cc": cc_q, "ga4": ga4_q, "tawk": tawk_q, "clarity": clarity_q,
+        "portals": "live" if weekly_breakdown and portals_latest_cumulative else "missing",
+    }
+
+    activity = build_activity(listing, cc_data, start, end, period_type, period_id, sample_mode)
+    showings = build_showings(listing, start, end, period_type, period_id, sample_mode)
+    trend = build_trend(slug, period_type, period_id, start, sources_block)
+    market_block = build_market(listing, market_cfg)
+    insights = build_insights(listing, sources_block, trend, market_block, data_quality, period_type)
+    source_freshness = build_source_freshness(slug, start, end, data_quality, portals_cumulative, clarity_data)
+
+    return {
+        "listing_slug": slug,
+        "period": {"type": period_type, "id": period_id, "start": start.isoformat(), "end": end.isoformat()},
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "data_quality": data_quality,
+        "source_freshness": source_freshness,
+        "activity": activity,
+        "showings": showings,
+        "sources": {**sources_block, "clarity": clarity_data},
+        "trend": trend,
+        "market": market_block,
+        "insights": insights,
+        "period_activity": period_activity,
+        "weekly_breakdown": weekly_breakdown,
+        "missing_weeks": missing_weeks,
+    }
+
+
+# --------------------------------------------------------------------------
 # Main per-listing build
 # --------------------------------------------------------------------------
 
@@ -1447,28 +1711,33 @@ def build_metrics(listing, period_type, period_id, start, end, sources_cfg, mark
     cc_data, cc_q = collect_source(CC, listing, start, end, period_type, period_id, sources_cfg, sample_mode)
     ga4_data, ga4_q = collect_source(GA4, listing, start, end, period_type, period_id, sources_cfg, sample_mode)
     tawk_data, tawk_q = collect_source(TAWK, listing, start, end, period_type, period_id, sources_cfg, sample_mode)
+    clarity_data, clarity_q = collect_source(CLARITY, listing, start, end, period_type, period_id, sources_cfg, sample_mode)
     portals_data, portals_q = collect_portals(listing, start, end, period_type, period_id, sample_mode)
 
     sources_block = {"idx": idx_data, "cc": cc_data, "ga4": ga4_data, "tawk": tawk_data, "portals": portals_data}
-    data_quality = {"idx": idx_q, "cc": cc_q, "ga4": ga4_q, "tawk": tawk_q, "portals": portals_q}
+    data_quality = {"idx": idx_q, "cc": cc_q, "ga4": ga4_q, "tawk": tawk_q, "portals": portals_q, "clarity": clarity_q}
 
     activity = build_activity(listing, cc_data, start, end, period_type, period_id, sample_mode)
     showings = build_showings(listing, start, end, period_type, period_id, sample_mode)
     trend = build_trend(slug, period_type, period_id, start, sources_block)
     market_block = build_market(listing, market_cfg)
     insights = build_insights(listing, sources_block, trend, market_block, data_quality, period_type)
+    source_freshness = build_source_freshness(slug, start, end, data_quality, portals_data, clarity_data)
+    period_activity = build_period_activity(slug, period_type, period_id, start, portals_data)
 
     return {
         "listing_slug": slug,
         "period": {"type": period_type, "id": period_id, "start": start.isoformat(), "end": end.isoformat()},
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "data_quality": data_quality,
+        "source_freshness": source_freshness,
         "activity": activity,
         "showings": showings,
-        "sources": sources_block,
+        "sources": {**sources_block, "clarity": clarity_data},
         "trend": trend,
         "market": market_block,
         "insights": insights,
+        "period_activity": period_activity,
     }
 
 
@@ -1519,7 +1788,14 @@ def main(argv=None):
     for listing in listings:
         if listing.get("status") != "active":
             continue
-        metrics = build_metrics(listing, args.period, period_id, start, end, sources_cfg, market_cfg, args.sample)
+        if args.period == "weekly":
+            metrics = build_metrics(listing, args.period, period_id, start, end, sources_cfg, market_cfg, args.sample)
+        else:
+            # monthly/quarterly: portals are cumulative-snapshot sources, so
+            # their period figure is rolled up from the constituent weeks'
+            # period_activity deltas rather than a single point-in-time
+            # read -- see build_rollup_metrics.
+            metrics = build_rollup_metrics(listing, args.period, period_id, start, end, sources_cfg, market_cfg, args.sample)
         path = write_metrics(metrics)
         written.append(path)
         print(f"[collect] wrote {path.relative_to(ROOT)}")
