@@ -305,6 +305,9 @@
   .map-caption{font-size:14px;color:var(--gray-900);margin-top:14px;font-weight:700;}
   .map-privacy-note{font-size:11.5px;color:var(--gray-500);margin-top:6px;}
 
+  /* ---------- Freshness / as-of captions ---------- */
+  .as-of-caption{font-size:12.5px;font-weight:700;color:#7A5E10;background:var(--gold-tint);border:1px solid #E9D68C;border-radius:6px;padding:8px 12px;margin-bottom:14px;display:inline-block;}
+
   /* ---------- Market position / DOM gauge ---------- */
   .positioning-note{font-size:14.5px;color:var(--gray-900);background:var(--navy-tint);border-left:4px solid var(--navy);padding:14px 16px;border-radius:6px;margin-bottom:16px;}
   .overpriced-note{font-size:13.5px;color:var(--crimson);background:var(--crimson-tint);border-left:4px solid var(--crimson);padding:12px 16px;border-radius:6px;margin-bottom:16px;font-weight:700;}
@@ -710,6 +713,7 @@
     </div>
     <nav class="bc-nav">
       <a href="#hm-summary" class="bc-nav-link">Summary</a>
+      <a href="#hm-market-position" class="bc-nav-link">Market Position</a>
       <a href="#hm-views" class="bc-nav-link">Views</a>
       {% if hm.publications %}<a href="#hm-reach" class="bc-nav-link">Marketing Reach</a>{% endif %}
       <a href="#hm-activityfeed" class="bc-nav-link">Activity</a>
@@ -795,6 +799,9 @@
         <h2>Summary</h2>
         <a class="hm-glossary-link" href="#hm-glossary">Glossary of Terms &rsaquo;</a>
       </div>
+      {% if homes_exposure.stale %}
+      <div class="as-of-caption">{{ homes_exposure.stale_caption }}</div>
+      {% endif %}
       <div class="hm-stat-rows">
         <div class="hm-stat-row">
           {% for t in hm.stat_row_1 %}
@@ -807,6 +814,73 @@
           {% endfor %}
         </div>
       </div>
+    </section>
+    <hr class="hm-rule">
+
+    {% if is_rollup %}
+    <!-- Month/quarter in review (rollup periods only) -->
+    <section id="hm-month-in-review" class="hm-section">
+      <div class="hm-section-head">
+        <div>
+          <h2>{{ 'Month' if period.type == 'monthly' else 'Quarter' }} in review</h2>
+          <p class="hm-section-sub">Week-by-week breakdown for {{ period_range_display }}.</p>
+        </div>
+      </div>
+      {% if weekly_breakdown.available %}
+      <table class="tbl">
+        <thead><tr><th>Week</th><th>Dates</th><th>Total views</th><th>Total leads</th><th>Syndication views (period)</th></tr></thead>
+        <tbody>
+        {% for w in weekly_breakdown.rows %}
+          <tr>
+            <td>{{ w.week_id }}</td>
+            <td>{{ w.range_display }}</td>
+            <td>{{ w.total_views }}</td>
+            <td>{{ w.total_leads }}</td>
+            <td>{{ w.syndication_views }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% if weekly_breakdown.missing_weeks %}
+      <p class="hm-section-sub">No stored report on file for: {{ weekly_breakdown.missing_weeks | join(', ') }} -- excluded from the totals above rather than estimated.</p>
+      {% endif %}
+      {% else %}
+      <div class="empty-note">No weekly reports on file yet for this {{ period.type }} -- week-by-week breakdown will populate as weekly reports are generated.</div>
+      {% endif %}
+    </section>
+    <hr class="hm-rule">
+    {% endif %}
+
+    <!-- Market Position: portfolio rank + price context + DOM framing,
+         built ONLY from data MCG legitimately has on file. No external
+         comps, no invented market averages. -->
+    <section id="hm-market-position" class="hm-section">
+      <div class="hm-section-head">
+        <div>
+          <h2>Market Position</h2>
+          <p class="hm-section-sub">Where this listing stands, using only MCG's own tracked data.</p>
+        </div>
+      </div>
+      {% if market_position.available %}
+      <div class="hm-stat-rows">
+        <div class="hm-stat-row">
+          {% if market_position.rank.available %}
+          <div class="hm-stat-tile"><div class="hm-stat-label">Portfolio Exposure Rank</div><div class="hm-stat-value">#{{ market_position.rank.position }} of {{ market_position.rank.of }}</div></div>
+          {% endif %}
+          {% if market_position.price.available %}
+          <div class="hm-stat-tile"><div class="hm-stat-label">Price Positioning</div><div class="hm-stat-value">{{ market_position.price.value_display }}</div></div>
+          {% endif %}
+          {% if market_position.dom.available %}
+          <div class="hm-stat-tile"><div class="hm-stat-label">Exposure Campaign</div><div class="hm-stat-value">Day {{ market_position.dom.days }}</div></div>
+          {% endif %}
+        </div>
+      </div>
+      {% if market_position.rank.available %}<p class="hm-section-sub" style="margin-top:10px;">{{ market_position.rank.sentence }}</p>{% endif %}
+      {% if market_position.price.available %}<p class="hm-section-sub">{{ market_position.price.sentence }}</p>{% endif %}
+      {% if market_position.dom.available %}<p class="hm-section-sub">{{ market_position.dom.sentence }}</p>{% endif %}
+      {% else %}
+      <div class="empty-note">Market position figures are not yet available for this listing.</div>
+      {% endif %}
     </section>
     <hr class="hm-rule">
 
@@ -1100,6 +1174,8 @@
 <nav class="tabs-sticky" aria-label="Report sections">
   <div class="wrap">
     <a href="#summary">Summary</a>
+    {% if is_rollup %}<a href="#month-in-review">{{ 'Month' if period.type == 'monthly' else 'Quarter' }} in Review</a>{% endif %}
+    <a href="#market-position">Market Position</a>
     {% if show_views %}<a href="#views">Views</a>{% endif %}
     {% if show_reach %}<a href="#reach">Marketing Reach</a>{% endif %}
     <a href="#activity">Activity</a>
@@ -1122,6 +1198,11 @@
       <h2>Summary</h2>
       <p class="section-sub">Headline marketing activity for {{ period_range_display }}</p>
     </div>
+    {% if homes_exposure and homes_exposure.stale %}
+    <div class="as-of-caption">Syndication figures below: {{ homes_exposure.stale_caption }}</div>
+    {% elif crexi_exposure and crexi_exposure.stale %}
+    <div class="as-of-caption">Syndication figures below: {{ crexi_exposure.stale_caption }}</div>
+    {% endif %}
     <div class="stat-grid">
       {% for t in summary_tiles %}
       <div class="stat-tile {{ 'highlight' if t.highlight else '' }} {{ '' if t.available else 'unavailable' }}">
@@ -1142,6 +1223,12 @@
       <h2>Views</h2>
       <p class="section-sub">Daily view activity and where those views originate</p>
     </div>
+
+    {% if homes_exposure and homes_exposure.stale %}
+    <div class="as-of-caption">{{ homes_exposure.stale_caption }}</div>
+    {% elif crexi_exposure and crexi_exposure.stale %}
+    <div class="as-of-caption">{{ crexi_exposure.stale_caption }}</div>
+    {% endif %}
 
     <div class="card chart-card">
       <h3>Daily views</h3>
@@ -1220,6 +1307,12 @@
       <h2>Marketing Reach</h2>
       <p class="section-sub">Targeted display advertising and where this listing has been published</p>
     </div>
+
+    {% if homes_exposure and homes_exposure.stale %}
+    <div class="as-of-caption">{{ homes_exposure.stale_caption }}</div>
+    {% elif crexi_exposure and crexi_exposure.stale %}
+    <div class="as-of-caption">{{ crexi_exposure.stale_caption }}</div>
+    {% endif %}
 
     {% if homes_exposure %}
     <p class="pub-intro">Your listing has appeared on <strong>{{ homes_exposure.publication_count }} recognizable publications</strong> &mdash; from national news and sports to lifestyle and finance sites &mdash; through {{ syndication_blurb }}</p>
@@ -1366,10 +1459,79 @@
   </section>
   {% endif %}
 
+  <!-- ---------- Month in review (monthly/quarterly rollups only) ---------- -->
+  {% if is_rollup %}
+  <section id="month-in-review">
+    <div class="section-head">
+      <h2>{{ 'Month' if period.type == 'monthly' else 'Quarter' }} in review</h2>
+      <p class="section-sub">Week-by-week breakdown for {{ period_range_display }}</p>
+    </div>
+    {% if weekly_breakdown.available %}
+    <table class="tbl">
+      <thead><tr><th>Week</th><th>Dates</th><th>Total views</th><th>Total leads</th><th>Syndication views (period)</th></tr></thead>
+      <tbody>
+      {% for w in weekly_breakdown.rows %}
+        <tr>
+          <td>{{ w.week_id }}</td>
+          <td>{{ w.range_display }}</td>
+          <td>{{ w.total_views }}</td>
+          <td>{{ w.total_leads }}</td>
+          <td>{{ w.syndication_views }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% if weekly_breakdown.missing_weeks %}
+    <p class="chart-caption">No stored report on file for: {{ weekly_breakdown.missing_weeks | join(', ') }} -- excluded from the totals above rather than estimated.</p>
+    {% endif %}
+    {% else %}
+    <div class="empty-note">No weekly reports on file yet for this {{ period.type }} -- week-by-week breakdown will populate as weekly reports are generated.</div>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  <!-- ---------- Market Position: portfolio rank + price context + DOM
+       framing, built ONLY from data MCG legitimately has on file. No
+       external comps, no invented market averages. ---------- -->
+  <section id="market-position">
+    <div class="section-head">
+      <h2>Market Position</h2>
+      <p class="section-sub">Where this listing stands, using only MCG's own tracked data</p>
+    </div>
+
+    {% if market_position.available %}
+    <div class="stat-grid">
+      {% if market_position.rank.available %}
+      <div class="stat-tile highlight">
+        <div class="label">Portfolio Exposure Rank</div>
+        <div class="value">#{{ market_position.rank.position }} of {{ market_position.rank.of }}</div>
+        <div class="sub">{{ market_position.rank.sentence }}</div>
+      </div>
+      {% endif %}
+      {% if market_position.price.available %}
+      <div class="stat-tile">
+        <div class="label">Price Positioning</div>
+        <div class="value">{{ market_position.price.value_display }}</div>
+        <div class="sub">{{ market_position.price.sentence }}</div>
+      </div>
+      {% endif %}
+      {% if market_position.dom.available %}
+      <div class="stat-tile">
+        <div class="label">Exposure Campaign</div>
+        <div class="value">Day {{ market_position.dom.days }}</div>
+        <div class="sub">{{ market_position.dom.sentence }}</div>
+      </div>
+      {% endif %}
+    </div>
+    {% else %}
+    <div class="empty-note">Market position figures are not yet available for this listing.</div>
+    {% endif %}
+  </section>
+
   <!-- ---------- Market position (supplementary) ---------- -->
   <section id="market">
     <div class="section-head">
-      <h2>Market position</h2>
+      <h2>County Market Comparison</h2>
       <p class="section-sub">{{ market.county }} County comparables and pacing</p>
     </div>
 

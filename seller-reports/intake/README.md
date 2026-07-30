@@ -117,6 +117,16 @@ new report sections can render it. `collect.py` also derives the classic
 rich object automatically — every existing chart and stat tile keeps working
 unchanged, even on a rich-format file.
 
+**`harvested_at`** (optional, recommended): the date (`YYYY-MM-DD`) you
+actually pulled this snapshot off the portal dashboard. `collect.py` uses it
+to tell the report whether the numbers on the page are current for this
+reporting period ("fresh") or a leftover snapshot from an earlier pull
+("stale" — the report then shows a visible "as of {date}" caption instead
+of implying the figures are this period's activity). Safe to omit —
+`collect.py` tolerates a missing `harvested_at` (treated conservatively as
+stale rather than guessed-fresh), it just can't tell you're current without
+it. Update it every time you refresh the file.
+
 **homes.com** (`homes_com.json`) — object shape:
 
 ```json
@@ -124,6 +134,7 @@ unchanged, even on a rich-format file.
   "portal": "homes.com",
   "views": 24063,
   "saves": 1,
+  "harvested_at": "2026-07-27",
   "summary": {
     "total_views": 24063, "display_ad_views": 2152, "detail_page_views": 86,
     "top_of_search_results": 2659, "favorites": 1,
@@ -159,6 +170,7 @@ position.
   "portal": "crexi",
   "views": 1121,
   "leads": 25,
+  "harvested_at": "2026-07-27",
   "name": "3300 Blue Hill Road",
   "search_score": 95,
   "page_views": 1121,

@@ -142,6 +142,27 @@ def anonymize_source_label(raw: str | None) -> str:
     cleaned = anonymize_text(raw) or raw
     return cleaned.title()
 
+# ---------------------------------------------------------------------------
+# Harvest freshness -- as-of captions
+#
+# collect.py's source_freshness block (see SCHEMA.md) tells us whether a
+# source's numbers were actually captured inside this reporting window
+# ("fresh"), captured before it ("stale" -- real, just not current), or
+# never captured ("missing", handled entirely by the existing stand-in
+# machinery). freshness_caption() turns a "stale" entry into the visible
+# "as of {date}" copy a tile/section must show rather than silently
+# implying the figures are this period's activity.
+# ---------------------------------------------------------------------------
+def freshness_caption(source_freshness: dict | None, key: str) -> str | None:
+    entry = (source_freshness or {}).get(key) or {}
+    if entry.get("status") != "stale":
+        return None
+    as_of = entry.get("as_of")
+    if as_of:
+        return f"Figures as of {fmt_date_display(as_of)} (most recent snapshot on file)."
+    return "Figures reflect the most recent snapshot on file, not necessarily this period."
+
+
 PERIOD_TYPES = ["weekly", "monthly", "quarterly"]
 PERIOD_ID_PATTERNS = {
     "weekly": re.compile(r"^\d{4}-W\d{2}$"),
@@ -742,11 +763,12 @@ def build_visitor_map(vm: dict) -> dict:
     }
 
 
-def build_homes_exposure(portals: dict) -> dict | None:
+def build_homes_exposure(portals: dict, source_freshness: dict | None = None) -> dict | None:
     homes = portals.get("homes.com") or {}
     summary = homes.get("summary")
     if not summary:
         return None
+    stale_caption = freshness_caption(source_freshness, "homes.com")
 
     display_ads = homes.get("display_ads") or {}
     publications = display_ads.get("publications") or []
@@ -790,13 +812,16 @@ def build_homes_exposure(portals: dict) -> dict | None:
         "analytics_url": homes.get("analytics_url"),
         "days_on_market_portal": homes.get("days_on_market"),
         "listed_date": homes.get("listed"),
+        "stale": bool(stale_caption),
+        "stale_caption": stale_caption,
     }
 
 
-def build_crexi_exposure(portals: dict) -> dict | None:
+def build_crexi_exposure(portals: dict, source_freshness: dict | None = None) -> dict | None:
     crexi = portals.get("crexi") or {}
     if crexi.get("search_score") is None and not crexi.get("page_views"):
         return None
+    stale_caption = freshness_caption(source_freshness, "crexi")
 
     dashboard = crexi.get("dashboard_deep") or {}
     leads = dashboard.get("leads") or {}
@@ -844,6 +869,8 @@ def build_crexi_exposure(portals: dict) -> dict | None:
         "funnel": funnel,
         "eblast": eblast,
         "secondary_listing": secondary,
+        "stale": bool(stale_caption),
+        "stale_caption": stale_caption,
     }
 
 
@@ -865,18 +892,32 @@ def build_channel_performance(src: dict, dq: dict, homes_exposure: dict | None,
     channels, combined = [], 0
 
     ga4 = src.get("ga4") or {}
-    if dq.get("ga4") == "live" and (ga4.get("pageviews") or ga4.get("users")):
+    clarity = src.get("clarity") or {}
+    # Clarity is folded into the same "MCG website analytics" channel as
+    # GA4 (both instrument the same Webflow-hosted pages -- see the
+    # CHANNEL_LABELS/Webflow note) as a supplemental, clearly-labeled
+    # engagement signal, never its own vendor-named channel and never
+    # treated as a primary view count (numOfDays is API-capped at 3 days).
+    clarity_live = dq.get("clarity") in ("live", "sample") and clarity.get("sessions")
+    if (dq.get("ga4") == "live" and (ga4.get("pageviews") or ga4.get("users"))) or clarity_live:
         top = (ga4.get("top_sources") or [])
         top_label = anonymize_source_label(top[0].get("source", "")) if top else None
         eng = ga4.get("avg_engagement_s") or 0
-        stats = [
-            {"label": "Listing page views this period", "value": _fmt_n(ga4.get("pageviews", 0))},
-            {"label": "Unique visitors", "value": _fmt_n(ga4.get("users", 0))},
-        ]
+        stats = []
+        if ga4.get("pageviews") or ga4.get("users"):
+            stats.append({"label": "Listing page views this period", "value": _fmt_n(ga4.get("pageviews", 0))})
+            stats.append({"label": "Unique visitors", "value": _fmt_n(ga4.get("users", 0))})
         if eng:
             stats.append({"label": "Avg. time engaged", "value": f"{int(eng // 60)}m {int(eng % 60)}s"})
         if top_label:
             stats.append({"label": "Top traffic source", "value": top_label})
+        if clarity_live:
+            coverage = clarity.get("coverage_days") or 0
+            window_label = f"last {coverage} day{'s' if coverage != 1 else ''}" if coverage else "recent activity"
+            stats.append({
+                "label": f"Supplemental engagement signal ({window_label})",
+                "value": f"{_fmt_n(clarity.get('sessions', 0))} sessions",
+            })
         channels.append({
             "key": "website", "icon": "globe",
             "name": "MasonCapitalGroup.com",
@@ -934,18 +975,28 @@ def build_channel_performance(src: dict, dq: dict, homes_exposure: dict | None,
 
     cc = src.get("cc") or {}
     cc_totals = cc.get("totals") or {}
-    if dq.get("cc") == "live" and (cc.get("campaigns") or cc_totals.get("sent")):
+    cc_to_date = cc.get("email_campaigns_to_date") or {}
+    if dq.get("cc") == "live" and (cc.get("campaigns") or cc_totals.get("sent") or cc_to_date.get("sends")):
         n_camp = len(cc.get("campaigns") or [])
         sent = cc_totals.get("sent", 0)
         opens = cc_totals.get("opens", 0)
-        stats = [{"label": "Targeted campaigns featuring your property", "value": _fmt_n(n_camp)}]
+        stats = [{"label": "Targeted campaigns featuring your property this period", "value": _fmt_n(n_camp)}]
         if sent:
             stats += [
-                {"label": "Buyers & investors reached", "value": _fmt_n(sent)},
+                {"label": "Buyers & investors reached this period", "value": _fmt_n(sent)},
                 {"label": "Opened your property's e-mail", "value": f"{_fmt_n(opens)} ({round(opens / sent * 100, 1)}%)" if sent else _fmt_n(opens)},
             ]
-        else:
+        elif not cc_to_date.get("sends"):
             stats.append({"label": "Status", "value": "Campaigns staged — results post after send"})
+        # Cumulative reach from campaigns sent BEFORE this window (e.g. the
+        # original just-listed announcement) -- kept separate from the
+        # period totals above so it never masquerades as this period's
+        # activity (see collect.py CCAdapter period-scoping).
+        if cc_to_date.get("sends"):
+            stats.append({
+                "label": "Additional reach from prior campaigns (total since listing)",
+                "value": _fmt_n(cc_to_date["sends"]),
+            })
         channels.append({
             "key": "email", "icon": "mail",
             "name": "MCG Private Buyer Network",
@@ -1202,9 +1253,137 @@ def build_activity_feed(activity: list[dict], milestones: list[dict] | None) -> 
     return feed
 
 
+# ---------------------------------------------------------------------------
+# Market Position -- exposure rank + price context + DOM framing, built
+# ONLY from data we legitimately have. No external comps, no invented
+# market averages: if cross-portfolio data is unavailable this renders
+# with just the price-context and DOM pieces.
+# ---------------------------------------------------------------------------
+def _listing_period_total_views(metrics: dict) -> int:
+    src = metrics.get("sources", {})
+    idx_v = int((src.get("idx") or {}).get("views", 0) or 0)
+    ga4_v = int((src.get("ga4") or {}).get("pageviews", 0) or 0)
+    portal_v = sum(int((p or {}).get("views", 0) or 0) for p in (src.get("portals") or {}).values())
+    return idx_v + ga4_v + portal_v
+
+
+def load_portfolio_ranking(data_dir: Path, listings: list[dict], period_id: str) -> list[dict]:
+    """Total views for every active listing that has a metrics.json for
+    this exact period_id -- the same total_views figure the Views section
+    itself reports, so the rank agrees with what's on the page. Listings
+    with no metrics.json for this period (e.g. newly added, or this period
+    hasn't been collected for them) are simply absent from the ranking
+    rather than assumed to be zero."""
+    ranking = []
+    for l in listings:
+        if l.get("status") != "active":
+            continue
+        mp = data_dir / l["slug"] / period_id / "metrics.json"
+        if not mp.exists():
+            continue
+        try:
+            m = json.loads(mp.read_text())
+        except (ValueError, OSError):
+            continue
+        ranking.append({"slug": l["slug"], "total_views": _listing_period_total_views(m)})
+    return ranking
+
+
+def build_market_position(listing: dict, metrics: dict, portfolio_ranking: list[dict] | None) -> dict:
+    period_end = metrics.get("period", {}).get("end")
+
+    # (a) exposure rank within the MCG portfolio for this period.
+    rank = {"available": False}
+    if portfolio_ranking and len(portfolio_ranking) > 1:
+        ordered = sorted(portfolio_ranking, key=lambda r: -r["total_views"])
+        position = next((i for i, r in enumerate(ordered) if r["slug"] == listing["slug"]), None)
+        if position is not None:
+            rank = {
+                "available": True,
+                "position": position + 1,
+                "of": len(ordered),
+                "top_tier": (position + 1) <= max(1, round(len(ordered) / 3)),
+                "sentence": (
+                    f"Ranks #{position + 1} of {len(ordered)} active MCG listings for "
+                    f"buyer views this period."
+                ),
+            }
+
+    # (b) price context -- $/sqft or $/acre when the fields exist, else the
+    # plain listing price. Never invented: only computed from fields
+    # actually present on the listing record.
+    price = listing.get("price") or 0
+    acreage = listing.get("acreage") or listing.get("lot_acres")
+    sqft = listing.get("sqft") or listing.get("square_feet")
+    price_context = {"available": False}
+    if price and acreage:
+        per_acre = price / acreage
+        price_context = {
+            "available": True, "metric": "per_acre",
+            "value_display": f"${per_acre:,.0f}/acre",
+            "sentence": f"Positioned at ${per_acre:,.0f} per acre ({fmt_price(listing)} on {acreage:g} acres).",
+        }
+    elif price and sqft:
+        per_sqft = price / sqft
+        price_context = {
+            "available": True, "metric": "per_sqft",
+            "value_display": f"${per_sqft:,.0f}/sqft",
+            "sentence": f"Positioned at ${per_sqft:,.0f} per square foot ({fmt_price(listing)} on {sqft:,} sqft).",
+        }
+    elif price:
+        price_context = {
+            "available": True, "metric": "price",
+            "value_display": fmt_price(listing),
+            "sentence": f"Listed at {fmt_price(listing)}.",
+        }
+
+    # (c) days-on-market, positive framing.
+    dom_days = days_between(listing.get("list_date"), period_end)
+    dom = {"available": dom_days is not None, "days": dom_days}
+    if dom_days is not None:
+        dom["sentence"] = f"Day {dom_days} of a sustained exposure campaign for this listing."
+
+    return {
+        "available": rank["available"] or price_context["available"] or dom["available"],
+        "rank": rank,
+        "price": price_context,
+        "dom": dom,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Monthly/quarterly "Month in review" -- weekly breakdown table view-model
+# ---------------------------------------------------------------------------
+def build_weekly_breakdown_view(metrics: dict) -> dict:
+    rows_raw = metrics.get("weekly_breakdown") or []
+    rows = []
+    for r in rows_raw:
+        homes = r.get("portals", {}).get("homes.com", {})
+        crexi = r.get("portals", {}).get("crexi", {})
+        loopnet = r.get("portals", {}).get("loopnet", {})
+        rows.append({
+            "week_id": r.get("week_id"),
+            "range_display": (
+                f"{fmt_date_short(r.get('start'))} – {fmt_date_short(r.get('end'))}"
+                if r.get("start") and r.get("end") else r.get("week_id")
+            ),
+            "total_views": fmt_int(r.get("total_views", 0)),
+            "total_leads": fmt_int(r.get("total_leads", 0)),
+            "syndication_views": fmt_int((homes.get("views") or 0) + (crexi.get("views") or 0) + (loopnet.get("views") or 0))
+                if any(v.get("views") is not None for v in (homes, crexi, loopnet)) else "--",
+        })
+    return {
+        "available": bool(rows),
+        "rows": rows,
+        "missing_weeks": metrics.get("missing_weeks") or [],
+    }
+
+
 def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
-                      report_url: str, generated_display: str) -> dict:
+                      report_url: str, generated_display: str,
+                      portfolio_ranking: list[dict] | None = None) -> dict:
     dq = metrics.get("data_quality", {})
+    source_freshness = metrics.get("source_freshness", {})
     stats, total_views, total_inquiries, showings_count = build_stats(metrics, dq)
 
     market = metrics.get("market", {})
@@ -1239,8 +1418,8 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     # --- portal exposure (homes.com / Crexi) -- compute first so both the
     # merged traffic-sources chart and the summary tiles can use it. ---
     portals_raw = src.get("portals", {})
-    homes_exposure = build_homes_exposure(portals_raw)
-    crexi_exposure = build_crexi_exposure(portals_raw)
+    homes_exposure = build_homes_exposure(portals_raw, source_freshness)
+    crexi_exposure = build_crexi_exposure(portals_raw, source_freshness)
     exposure_available = bool(homes_exposure or crexi_exposure)
     channel_performance = build_channel_performance(src, dq, homes_exposure, crexi_exposure, portals_raw)
 
@@ -1374,6 +1553,11 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
         "homes_mirror": homes_mirror,
         "channel_performance": channel_performance,
         "hm": hm,
+        "source_freshness": source_freshness,
+        "market_position": build_market_position(listing, metrics, portfolio_ranking),
+        "is_rollup": metrics.get("period", {}).get("type") != "weekly",
+        "weekly_breakdown": build_weekly_breakdown_view(metrics),
+        "period_activity": metrics.get("period_activity", {}),
     }
 
 
@@ -1551,6 +1735,13 @@ def main() -> int:
 
     generated_display = dt.datetime.now().strftime("%B %-d, %Y")
 
+    # Cross-portfolio exposure ranking for the Market Position section --
+    # computed once per run over every active listing's metrics.json for
+    # this exact period_id (not just the slugs being rendered this
+    # invocation), so a single-slug `--slug` run still ranks correctly
+    # against the full portfolio.
+    portfolio_ranking = load_portfolio_ranking(data_dir, listings, args.period_id)
+
     results = []
     for slug in target_slugs:
         listing = listings_by_slug[slug]
@@ -1566,7 +1757,7 @@ def main() -> int:
         period_links = build_period_links(data_dir, slug, metrics["period"], outdir, slug_token)
 
         report_url = f"{args.base_url.rstrip('/')}/reports/{slug_token}/{args.period_id}/index.html"
-        vm = build_view_model(listing, metrics, period_links, report_url, generated_display)
+        vm = build_view_model(listing, metrics, period_links, report_url, generated_display, portfolio_ranking)
 
         # --- render report page ---
         html = report_tmpl.render(**vm)
