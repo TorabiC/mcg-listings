@@ -256,25 +256,32 @@ def _cc_headers() -> dict:
 # ---------------------------------------------------------------------------
 # Contact / list upsert
 # ---------------------------------------------------------------------------
-def ensure_contact(email: str, name: str) -> str | None:
+def ensure_contact(email: str, name: str, list_id: str | None = None) -> str | None:
     if dry_run():
-        logger.info(f"[CC_DRY_RUN] would upsert contact {email!r} ({name!r})")
+        logger.info(f"[CC_DRY_RUN] would upsert contact {email!r} ({name!r}) into list {list_id}")
         return "dry-contact-id"
     headers = _cc_headers()
     first, _, last = (name or "").strip().partition(" ")
+    # CC v3 sign_up_form is a non-destructive upsert; it requires exactly one
+    # of `source` / `list_memberships` — passing the list here also replaces
+    # the old PUT /contacts/{id} membership update, which was a full-replace
+    # that could wipe fields on pre-existing contacts.
     payload = {
-        "email_address": {"address": email, "permission_to_send": "implicit"},
+        "email_address": email,  # sign_up_form takes a plain string, not the {address,...} object
         "first_name": first,
         "last_name": last,
-        "create_source": "Account",
     }
+    if list_id:
+        payload["list_memberships"] = [list_id]
+    else:
+        payload["source"] = "Account"
     resp = requests.post(f"{CC_API_BASE}/contacts/sign_up_form", headers=headers, json=payload, timeout=20)
     if resp.status_code >= 400:
         raise CCError(f"contact upsert failed ({resp.status_code}): {resp.text[:300]}")
     return resp.json().get("contact_id")
 
 
-def ensure_list(name: str, contact_id: str | None) -> str | None:
+def ensure_list(name: str, contact_id: str | None = None) -> str | None:
     if dry_run():
         logger.info(f"[CC_DRY_RUN] would ensure list {name!r}, add contact {contact_id}")
         return "dry-list-id"
@@ -297,15 +304,9 @@ def ensure_list(name: str, contact_id: str | None) -> str | None:
             raise CCError(f"list create failed ({create.status_code}): {create.text[:300]}")
         list_id = create.json().get("list_id")
 
-    if contact_id and list_id:
-        upd = requests.put(
-            f"{CC_API_BASE}/contacts/{contact_id}",
-            headers=headers,
-            json={"list_memberships": [list_id]},
-            timeout=20,
-        )
-        if upd.status_code >= 400:
-            logger.warning(f"[reports_hub] list membership update failed ({upd.status_code}): {upd.text[:300]}")
+    # Membership is applied by ensure_contact() via sign_up_form's
+    # list_memberships (non-destructive) — no PUT /contacts/{id} here, which
+    # is a full-replace and would clear fields on pre-existing contacts.
     return list_id
 
 
@@ -459,8 +460,8 @@ def send_report(listing: dict, period_id: str, note: str | None) -> dict:
     period_type = period_type_of(period_id)
     period_label = "Weekly" if period_type == "weekly" else "Monthly"
 
-    contact_id = ensure_contact(email, name)
-    list_id = ensure_list(f"Seller Reports — {street}", contact_id)
+    list_id = ensure_list(f"Seller Reports — {street}")
+    contact_id = ensure_contact(email, name, list_id)
 
     campaign_name = f"Listing Intelligence — {street} — {period_id}"
     subject = f"Your {period_label} Marketing Report — {street}"

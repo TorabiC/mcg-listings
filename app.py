@@ -50,7 +50,9 @@ OUTPUT_DIR = Path(__file__).parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 SETTINGS_FILE = Path(__file__).parent / ".dashboard_settings.json"
-REPORTS_STATE_FILE = Path(__file__).parent / "reports_state.json"
+# Overridable so hosted deploys can keep state on persistent storage
+# (App Service wwwroot is replaced on every zip deploy).
+REPORTS_STATE_FILE = Path(os.getenv("REPORTS_STATE_FILE") or (Path(__file__).parent / "reports_state.json"))
 
 # ── Background scrape jobs ────────────────────────────────────────────────────
 # Keyed by job_id: {"status": "working"|"done"|"error", "listing": {...}, "error": "..."}
