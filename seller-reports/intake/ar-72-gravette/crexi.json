@@ -1,12 +1,16 @@
 {
   "portal": "crexi",
-  "views": 63,
-  "leads": 5,
+  "views": 66,
+  "leads": 2,
   "name": "Ar-72",
   "price": 3168000,
   "search_score": 95,
-  "page_views": 63,
-  "visitors": 9,
-  "om_flyer_opens": 5,
-  "offers": 0
+  "page_views": 66,
+  "visitors": 11,
+  "om_flyer_opens": 2,
+  "offers": 0,
+  "crexi_property_id": 2321530,
+  "impressions_all_time": 4602,
+  "source_url": "https://www.crexi.com/property/2321530/dashboard",
+  "harvested_at": "2026-07-30"
 }

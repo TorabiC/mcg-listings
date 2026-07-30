@@ -1,0 +1,42 @@
+{
+  "portal": "crexi",
+  "views": 128,
+  "leads": 2,
+  "name": "407 Old Forge Drive",
+  "price": 728000,
+  "search_score": 82,
+  "page_views": 128,
+  "visitors": 32,
+  "om_flyer_opens": 2,
+  "offers": 0,
+  "crexi_property_id": 2372669,
+  "impressions_all_time": 24824,
+  "source_url": "https://www.crexi.com/property/2372669/dashboard",
+  "harvested_at": "2026-07-30",
+  "dashboard_deep": {
+    "total_actions": 44,
+    "email_campaigns_sent": 21,
+    "property_updates": 11,
+    "leads": {
+      "top_prospects": 19,
+      "opened_om_flyer": 3,
+      "requested_info": 0,
+      "clicked_phone": 2,
+      "clicked_email": 1,
+      "saved_property": 3,
+      "visited_page": 32
+    },
+    "email_marketing": {
+      "essential": {
+        "opened": 465,
+        "clicked": 3,
+        "click_pct": 1.0
+      },
+      "featured": {
+        "opened": 91,
+        "clicked": 1,
+        "click_pct": 1.0
+      }
+    }
+  }
+}

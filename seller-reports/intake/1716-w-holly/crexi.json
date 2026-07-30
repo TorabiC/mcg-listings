@@ -1,12 +1,42 @@
 {
   "portal": "crexi",
-  "views": 86,
+  "views": 94,
   "leads": 4,
   "name": "1716 W Holly Street",
   "price": 1800000,
   "search_score": 91,
-  "page_views": 86,
+  "page_views": 94,
   "visitors": 31,
   "om_flyer_opens": 4,
-  "offers": 0
+  "offers": 0,
+  "crexi_property_id": 2448209,
+  "impressions_all_time": 8107,
+  "source_url": "https://www.crexi.com/property/2448209/dashboard",
+  "harvested_at": "2026-07-30",
+  "dashboard_deep": {
+    "total_actions": 37,
+    "email_campaigns_sent": 7,
+    "property_updates": 8,
+    "leads": {
+      "top_prospects": 29,
+      "opened_om_flyer": 4,
+      "requested_info": 0,
+      "clicked_phone": 1,
+      "clicked_email": 1,
+      "saved_property": 0,
+      "visited_page": 31
+    },
+    "email_marketing": {
+      "essential": {
+        "opened": 432,
+        "clicked": 4,
+        "click_pct": 1.0
+      },
+      "featured": {
+        "opened": 88,
+        "clicked": 0,
+        "click_pct": 0.0
+      }
+    }
+  }
 }

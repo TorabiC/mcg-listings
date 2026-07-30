@@ -1,0 +1,42 @@
+{
+  "portal": "crexi",
+  "views": 181,
+  "leads": 4,
+  "name": "46 Northfleet Drive, Bella Vista, AR 72714",
+  "price": 590000,
+  "search_score": 82,
+  "page_views": 181,
+  "visitors": 35,
+  "om_flyer_opens": 4,
+  "offers": 0,
+  "crexi_property_id": 2372723,
+  "impressions_all_time": 21953,
+  "source_url": "https://www.crexi.com/property/2372723/dashboard",
+  "harvested_at": "2026-07-30",
+  "dashboard_deep": {
+    "total_actions": 49,
+    "email_campaigns_sent": 15,
+    "property_updates": 11,
+    "leads": {
+      "top_prospects": 19,
+      "opened_om_flyer": 4,
+      "requested_info": 0,
+      "clicked_phone": 3,
+      "clicked_email": 1,
+      "saved_property": 2,
+      "visited_page": 35
+    },
+    "email_marketing": {
+      "essential": {
+        "opened": 531,
+        "clicked": 5,
+        "click_pct": 1.0
+      },
+      "featured": {
+        "opened": 96,
+        "clicked": 0,
+        "click_pct": 0.0
+      }
+    }
+  }
+}

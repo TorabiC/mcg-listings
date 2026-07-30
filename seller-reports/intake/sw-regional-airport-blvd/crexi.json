@@ -1,22 +1,32 @@
 {
   "portal": "crexi",
-  "views": 63,
-  "leads": 3,
+  "views": 64,
+  "leads": 1,
   "name": "SW Regional Airport Blvd",
   "price": 1945000,
   "search_score": 95,
-  "page_views": 63,
-  "visitors": 10,
-  "om_flyer_opens": 3,
+  "page_views": 64,
+  "visitors": 11,
+  "om_flyer_opens": 1,
   "offers": 0,
-  "secondary_listing": {
+  "crexi_property_id": 2317492,
+  "impressions_all_time": 6165,
+  "source_url": "https://www.crexi.com/property/2317492/dashboard",
+  "harvested_at": "2026-07-30",
+  "dual_listing": {
+    "portal": "crexi",
+    "views": 42,
+    "leads": 1,
     "name": "3500B SW Regional Airport Blvd",
-    "entry": "secondary (3500B dual listing)",
     "price": 1945000,
     "search_score": 95,
-    "page_views": 41,
+    "page_views": 42,
     "visitors": 3,
-    "om_flyer_opens": 2,
-    "offers": 0
-  }
+    "om_flyer_opens": 1,
+    "offers": 0,
+    "crexi_property_id": 2317495,
+    "impressions_all_time": 5118,
+    "source_url": "https://www.crexi.com/property/2317495/dashboard"
+  },
+  "dual_listing_note": "This slug carries two separate Crexi listings (MLS 1321330 Land = primary row above; MLS 1321325 Commercial = 3500B SW Regional Airport Blvd, nested here) per config/listings.json mls_entries."
 }

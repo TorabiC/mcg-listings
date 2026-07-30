@@ -1,12 +1,16 @@
 {
   "portal": "crexi",
-  "views": 46,
-  "leads": 6,
+  "views": 47,
+  "leads": 3,
   "name": "3936 S 48th St",
   "price": 2500000,
   "search_score": 95,
-  "page_views": 46,
-  "visitors": 10,
-  "om_flyer_opens": 6,
-  "offers": 0
+  "page_views": 47,
+  "visitors": 11,
+  "om_flyer_opens": 3,
+  "offers": 0,
+  "crexi_property_id": 2321524,
+  "impressions_all_time": 3938,
+  "source_url": "https://www.crexi.com/property/2321524/dashboard",
+  "harvested_at": "2026-07-30"
 }

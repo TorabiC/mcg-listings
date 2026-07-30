@@ -1,12 +1,16 @@
 {
   "portal": "crexi",
-  "views": 60,
+  "views": 64,
   "leads": 1,
   "name": "Whithorn Lane",
   "price": 18000,
-  "search_score": 89,
-  "page_views": 60,
-  "visitors": 5,
+  "search_score": 95,
+  "page_views": 64,
+  "visitors": 7,
   "om_flyer_opens": 1,
-  "offers": 0
+  "offers": 0,
+  "crexi_property_id": 2343084,
+  "impressions_all_time": 6213,
+  "source_url": "https://www.crexi.com/property/2343084/dashboard",
+  "harvested_at": "2026-07-30"
 }

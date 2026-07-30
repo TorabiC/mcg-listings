@@ -1,61 +1,49 @@
 {
   "portal": "crexi",
-  "views": 1121,
+  "views": 1250,
   "leads": 25,
   "name": "3300 Blue Hill Road",
   "price": 900000,
   "search_score": 95,
-  "page_views": 1121,
-  "visitors": 209,
+  "page_views": 1250,
+  "visitors": 227,
   "om_flyer_opens": 25,
   "offers": 0,
   "crexi_property_id": 2448248,
+  "impressions_all_time": 52885,
+  "source_url": "https://www.crexi.com/property/2448248/dashboard",
+  "harvested_at": "2026-07-30",
   "dashboard_deep": {
-    "impressions_all_time": 51183,
-    "opened_flyers": 25,
+    "total_actions": 314,
     "email_campaigns_sent": 2,
-    "property_updates": 6,
-    "total_actions": 291,
+    "property_updates": 7,
     "leads": {
       "top_prospects": 29,
       "opened_om_flyer": 25,
-      "requested_info": 5,
-      "clicked_phone": 14,
+      "requested_info": 0,
+      "clicked_phone": 15,
       "clicked_email": 3,
-      "saved_property": 30,
-      "visited_page": 209
+      "saved_property": 34,
+      "visited_page": 227
     },
-    "marketing_blasts": {
-      "total_sent": 3055,
-      "delivered": 3041,
-      "delivered_pct": 99.5,
-      "opened": 1535,
-      "open_pct": 50.5,
-      "clicked": 28,
-      "click_pct": 1.8,
-      "campaigns": [
-        {
-          "name": "Properties for Sale in AR",
-          "sent_on": "2026-06-25",
-          "sent": 1230,
-          "delivered": 1222,
-          "opened": 607,
-          "clicked": 9
-        },
-        {
-          "name": "Properties for Sale in AR",
-          "sent_on": "2026-05-14",
-          "sent": 1825,
-          "delivered": 1819,
-          "opened": 928,
-          "clicked": 19
-        }
-      ]
+    "email_marketing": {
+      "essential": {
+        "opened": 861,
+        "clicked": 16,
+        "click_pct": 2.0
+      },
+      "featured": {
+        "opened": 298,
+        "clicked": 3,
+        "click_pct": 1.0
+      }
     },
     "valuation_snapshot": {
-      "entries": 88,
-      "purchase_price_median": 895200,
-      "purchase_price_avg": 900000
+      "entries": 93,
+      "purchase_price_median": 895400,
+      "purchase_price_avg": 900000,
+      "down_payment_median": 233900,
+      "down_payment_avg": 180000
     }
   }
 }
