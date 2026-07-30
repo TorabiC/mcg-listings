@@ -89,6 +89,10 @@ CHANNEL_LABELS = {
     "homes.com": "MCG's national syndication partners",
     "crexi": "MCG's commercial marketplace network",
     "loopnet": "MCG's commercial marketplace network",
+    # Clarity is folded into the same "MCG website analytics" channel as
+    # GA4 everywhere it's surfaced (see build_channel_performance) -- same
+    # anonymized label here for consistency.
+    "clarity": "MCG website analytics",
 }
 
 SYNDICATION_BLURB = (
@@ -1562,6 +1566,93 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
 
 
 # ---------------------------------------------------------------------------
+# insights.json "health" + "headline" -- the hub dashboard's per-report
+# health chips and stats line. Published alongside the private talking
+# points below (same file, same private/never-seller-facing status), but
+# these two blocks are pure data (no strategy/rationale text) so the hub
+# can render them directly.
+# ---------------------------------------------------------------------------
+def _health_from_freshness(source_freshness: dict) -> list[dict]:
+    """metrics.json's source_freshness, reshaped for the hub: a LIST (not
+    a dict keyed by label) because CHANNEL_LABELS is deliberately
+    many-to-one -- crexi and loopnet both read "MCG's commercial
+    marketplace network" -- so keying by label would silently drop one of
+    them. Each row carries the anonymized display label (never a raw
+    vendor name, even in this private file) plus a stable machine 'key'
+    for the hub to match/filter/sort on, alongside the original
+    as_of/status (and any extra fields, e.g. clarity's coverage_days)."""
+    rows = []
+    for key, entry in (source_freshness or {}).items():
+        row = {"key": key, "label": CHANNEL_LABELS.get(key, key.replace("_", " ").replace(".", " ").title())}
+        row.update(entry or {})
+        rows.append(row)
+    return rows
+
+
+def build_window_label(period: dict) -> str:
+    """Human-readable period window for the hub's stats line, e.g. 'Week
+    of Jul 27 – Aug 2', 'July 2026', 'Q3 2026'."""
+    ptype = period.get("type")
+    start, end = period.get("start"), period.get("end")
+    if ptype == "weekly" and start and end:
+        return f"Week of {fmt_date_short(start)} – {fmt_date_short(end)}"
+    if ptype == "monthly" and start:
+        try:
+            return dt.date.fromisoformat(start).strftime("%B %Y")
+        except ValueError:
+            pass
+    if ptype == "quarterly":
+        pid = period.get("id", "") or ""
+        if "-Q" in pid:
+            y, q = pid.split("-Q")
+            return f"Q{q} {y}"
+    return period.get("id", "") or ""
+
+
+def _headline_from_vm(vm: dict, metrics: dict) -> dict:
+    """total_views/total_leads reuse the exact same stats the seller-facing
+    report shows (vm['stats'], built by build_stats()) so the hub's number
+    never disagrees with the report's. page_engagement prefers GA4's
+    average session duration; when GA4 is unavailable it falls back to
+    Clarity's supplemental session count (clearly marked as such, never
+    presented as a primary engagement metric) -- best-available, no
+    fabrication either way."""
+    stats_by_key = {s.get("key"): s for s in vm.get("stats", [])}
+    views_stat = stats_by_key.get("views", {})
+    inquiries_stat = stats_by_key.get("inquiries", {})
+    total_views = views_stat.get("value_display", "--") if views_stat.get("available") else "--"
+    total_leads = inquiries_stat.get("value_display", "--") if inquiries_stat.get("available") else "--"
+
+    src = metrics.get("sources", {})
+    dq = metrics.get("data_quality", {})
+    ga4 = src.get("ga4") or {}
+    clarity = src.get("clarity") or {}
+
+    if dq.get("ga4") in ("live", "sample") and ga4.get("avg_engagement_s"):
+        eng = ga4["avg_engagement_s"]
+        page_engagement = {
+            "metric": "avg_engagement_seconds",
+            "value_display": f"{int(eng // 60)}m {int(eng % 60)}s",
+            "available": True,
+        }
+    elif dq.get("clarity") in ("live", "sample") and clarity.get("sessions"):
+        page_engagement = {
+            "metric": "clarity_sessions_supplemental",
+            "value_display": f"{fmt_int(clarity.get('sessions', 0))} sessions ({clarity.get('coverage_days', 0)}d)",
+            "available": True,
+        }
+    else:
+        page_engagement = {"metric": None, "value_display": "--", "available": False}
+
+    return {
+        "total_views": total_views,
+        "total_leads": total_leads,
+        "page_engagement": page_engagement,
+        "window_label": build_window_label(metrics.get("period", {})),
+    }
+
+
+# ---------------------------------------------------------------------------
 # Private insights (Cameron's eyes only -- see Listing Reports hub's
 # "For your call — private" card in mcg-marketing-hub. Published alongside
 # the seller-facing report/flyer at the same period URL so the hub can fetch
@@ -1613,6 +1704,8 @@ def build_insights_private(listing: dict, metrics: dict, vm: dict) -> dict:
         "talking_points": [biggest_number, trend_point, next_step],
         "pricing_flag": pricing_flag,
         "pricing_flag_reason": pricing_reason,
+        "health": _health_from_freshness(metrics.get("source_freshness", {})),
+        "headline": _headline_from_vm(vm, metrics),
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
     }
 

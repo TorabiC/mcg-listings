@@ -142,3 +142,64 @@ Every matched campaign sent/updated *before* the window rolls into
 `email_campaigns_to_date` instead -- a separate cumulative counter, never
 added into `totals`, so a listing's original announcement send from weeks
 ago can't reappear as this week's send count.
+
+## `insights.json` -- `health` + `headline` (hub dashboard chips/stats line)
+
+`insights.json` is written by `generate.py` (`build_insights_private()`) alongside
+`index.html`/`flyer.html` into every `reports/{slug}-{token}/{period_id}/` (and
+`.../latest/`) folder. It is **private** -- never linked from seller-facing HTML,
+fetched server-side only by the mcg-marketing-hub app. `talking_points` and
+`pricing_flag`/`pricing_flag_reason` are unchanged from before; `health` and
+`headline` are new, added for the hub's per-report health chips + stats line.
+
+```json
+{
+  "slug": "1715-n-garland",
+  "period_id": "2026-W31",
+  "talking_points": [ "...", "...", "..." ],
+  "pricing_flag": false,
+  "pricing_flag_reason": null,
+  "health": [
+    { "key": "idx",       "label": "the MCG website",                        "as_of": null,         "status": "missing" },
+    { "key": "cc",        "label": "MCG's email marketing program",          "as_of": null,         "status": "missing" },
+    { "key": "ga4",       "label": "MCG website analytics",                  "as_of": null,         "status": "missing" },
+    { "key": "tawk",      "label": "live chat",                              "as_of": null,         "status": "missing" },
+    { "key": "homes.com", "label": "MCG's national syndication partners",    "as_of": "2026-07-20", "status": "stale" },
+    { "key": "crexi",     "label": "MCG's commercial marketplace network",   "as_of": null,         "status": "missing" },
+    { "key": "loopnet",   "label": "MCG's commercial marketplace network",   "as_of": null,         "status": "missing" },
+    { "key": "clarity",   "label": "MCG website analytics", "as_of": null, "status": "missing", "coverage_days": 0 }
+  ],
+  "headline": {
+    "total_views": "24,063",
+    "total_leads": "0",
+    "page_engagement": { "metric": "avg_engagement_seconds", "value_display": "1m 20s", "available": true },
+    "window_label": "Week of Jul 27 – Aug 2"
+  },
+  "generated_at": "2026-07-30T19:43:04.777302+00:00"
+}
+```
+
+- **`health`**: a **list**, not a dict keyed by label -- `CHANNEL_LABELS` is
+  deliberately many-to-one (`crexi` and `loopnet` both read "MCG's
+  commercial marketplace network"), so keying by label text would silently
+  drop one entry. Each row is the same shape as one `source_freshness`
+  entry in `metrics.json` (`as_of`, `status`, plus any extra fields such as
+  Clarity's `coverage_days`), with two additions: `label` (the anonymized
+  `CHANNEL_LABELS` display name -- never a raw vendor name, even in this
+  private file) and `key` (the original machine-readable source key, for
+  the hub to match/filter/sort on). Row order matches `source_freshness`'s
+  own key order (`idx, cc, ga4, tawk, homes.com, crexi, loopnet, clarity`).
+- **`headline`**:
+  - `total_views` / `total_leads`: the exact `value_display` strings
+    (e.g. `"24,063"`, `"--"` when unavailable) from the same `stats` the
+    seller-facing report itself renders (`views`/`inquiries` keys of
+    `build_stats()`), so the hub's number can never disagree with the
+    report's.
+  - `page_engagement`: `{metric, value_display, available}`.
+    `metric` is `"avg_engagement_seconds"` (from GA4, when live) or, when
+    GA4 is unavailable, `"clarity_sessions_supplemental"` (Clarity's
+    session count, clearly marked as supplemental, never presented as a
+    primary engagement figure) or `null` with `available: false` when
+    neither source has data -- best-available, never fabricated.
+  - `window_label`: `"Week of {start} – {end}"` for weekly, `"{Month} {Year}"`
+    for monthly, `"Q{n} {Year}"` for quarterly.
