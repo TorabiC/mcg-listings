@@ -1,6 +1,6 @@
 {
   "slug": "18772-davis-rd",
-  "period_id": "2026-07",
+  "period_id": "2026-W31",
   "talking_points": [
     "0 total views this period -- 0 website + 0 syndication views.",
     "Views roughly flat vs. the prior period.",
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-07-31",
+      "as_of": "2026-08-02",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-07-31",
+      "as_of": "2026-08-02",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-07-31",
+      "as_of": "2026-08-02",
       "status": "fresh"
     },
     {
@@ -63,11 +63,11 @@
     "total_views": "0",
     "total_leads": "0",
     "page_engagement": {
-      "metric": "avg_engagement_seconds",
-      "value_display": "3m 48s",
-      "available": true
+      "metric": null,
+      "value_display": "--",
+      "available": false
     },
-    "window_label": "July 2026"
+    "window_label": "Week of Jul 27 \u2013 Aug 2"
   },
-  "generated_at": "2026-08-05T16:54:02.793176+00:00"
+  "generated_at": "2026-08-05T18:18:42.298758+00:00"
 }

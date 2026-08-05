@@ -63,11 +63,11 @@
     "total_views": "47",
     "total_leads": "3",
     "page_engagement": {
-      "metric": null,
-      "value_display": "--",
-      "available": false
+      "metric": "avg_engagement_seconds",
+      "value_display": "1m 17s",
+      "available": true
     },
     "window_label": "Week of Jul 27 \u2013 Aug 2"
   },
-  "generated_at": "2026-08-05T16:54:02.561841+00:00"
+  "generated_at": "2026-08-05T18:24:35.104200+00:00"
 }

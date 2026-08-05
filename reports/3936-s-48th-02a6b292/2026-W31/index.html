@@ -164,6 +164,23 @@
     padding:10px 16px;font-size:13.5px;font-weight:600;margin:18px 0;
   }
 
+  /* ---------- Exposure banner -- confident lead-in below the hero,
+     built from real numbers only (see generate.py build_exposure_banner).
+     Navy/gold, matches the report's brand system rather than the
+     gold-tinted informational banners above. ---------- */
+  .exposure-banner{
+    display:flex;align-items:center;gap:14px;background:var(--navy);color:#fff;
+    border-radius:var(--radius);padding:16px 20px;margin:20px 0 6px;
+    box-shadow:var(--shadow);
+  }
+  .exposure-banner .eb-mark{
+    flex-shrink:0;width:34px;height:34px;border-radius:999px;background:var(--gold);
+    color:var(--navy);display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:15px;font-family:var(--font-serif);
+  }
+  .exposure-banner .eb-text{font-size:14.5px;font-weight:600;line-height:1.5;}
+  .exposure-banner .eb-text strong{color:var(--gold-light);font-weight:900;}
+
   /* ---------- Sections ---------- */
   main{padding-bottom:40px;}
   section{padding:36px 0;border-bottom:1px solid var(--gray-300);scroll-margin-top:58px;}
@@ -825,6 +842,13 @@ Land
   </div>
 </header>
 
+<div class="wrap">
+  <div class="exposure-banner">
+    <span class="eb-mark">M</span>
+    <span class="eb-text">Your property is actively marketed across MCG&#39;s national syndication network.</span>
+  </div>
+</div>
+
 <!-- ==========================================================
      2. STICKY TAB NAV
      ========================================================== -->
@@ -846,7 +870,7 @@ Land
   <section id="summary" style="padding-top:26px;">
     <div class="section-head">
       <h2>Summary</h2>
-      <p class="section-sub">Headline marketing activity for Jul 27, 2026 – Aug 2, 2026</p>
+      <p class="section-sub">Consolidated marketing activity for Jul 27, 2026 – Aug 2, 2026</p>
     </div>
     <div class="stat-grid">
       <div class="stat-tile highlight ">
@@ -866,8 +890,8 @@ Land
       </div>
       <div class="stat-tile  ">
         <div class="label">Website Views</div>
-        <div class="value">0</div>
-        <div class="sub">0 unique visitors</div>
+        <div class="value">3</div>
+        <div class="sub">2 unique visitors</div>
       </div>
       <div class="stat-tile  ">
         <div class="label">Email Reach</div>
@@ -893,7 +917,7 @@ Land
   <section id="views">
     <div class="section-head">
       <h2>Views</h2>
-      <p class="section-sub">Daily view activity and where those views originate</p>
+      <p class="section-sub">Daily exposure activity and where that traffic originates</p>
     </div>
 
 
@@ -924,7 +948,21 @@ Land
 
     <div class="card chart-card">
       <h3>Top traffic sources</h3>
-      <div class="empty-note">Traffic-source data unavailable this period.</div>
+      <p class="chart-caption">Where views on the MCG website and MCG's national syndication partners originated, combined.</p>
+      <div class="bar-row">
+        <div class="b-label">Mcgmarketinghub.Z13.Web.Core.Windows.Net</div>
+        <div class="bar-track"><div class="bar-fill" style="width:50.0%;background:#ab012e;"></div></div>
+        <div class="b-value">50.0% &middot; 1</div>
+      </div>
+      <div class="bar-row">
+        <div class="b-label">Search Engines</div>
+        <div class="bar-track"><div class="bar-fill" style="width:50.0%;background:#3568c9;"></div></div>
+        <div class="b-value">50.0% &middot; 1</div>
+      </div>
+      <div class="legend">
+        <span class="sw"><span class="dot" style="background:#ab012e"></span>Mcgmarketinghub.Z13.Web.Core.Windows.Net</span>
+        <span class="sw"><span class="dot" style="background:#3568c9"></span>Search Engines</span>
+      </div>
     </div>
   </section>
 
@@ -934,7 +972,7 @@ Land
   <section id="reach">
     <div class="section-head">
       <h2>Marketing Reach</h2>
-      <p class="section-sub">Targeted display advertising and where this listing has been published</p>
+      <p class="section-sub">Targeted display advertising and the publications carrying your listing</p>
     </div>
 
 
@@ -991,14 +1029,14 @@ Land
   <section id="market-position">
     <div class="section-head">
       <h2>Market Position</h2>
-      <p class="section-sub">Where this listing stands, using only MCG's own tracked data</p>
+      <p class="section-sub">Your listing's standing within MCG's active portfolio, based solely on data MCG has verified</p>
     </div>
 
     <div class="stat-grid">
       <div class="stat-tile highlight">
         <div class="label">Portfolio Exposure Rank</div>
-        <div class="value">#10 of 14</div>
-        <div class="sub">Ranks #10 of 14 active MCG listings for buyer views this period.</div>
+        <div class="value">#12 of 14</div>
+        <div class="sub">Ranks #12 of 14 active MCG listings for buyer views this period.</div>
       </div>
       <div class="stat-tile">
         <div class="label">Price Positioning</div>
@@ -1042,7 +1080,7 @@ Land
     <div class="section-head">
       <h2>Portfolio summary &amp; what's next</h2>
     </div>
-    <p class="insight-summary">3936 S 48th St has generated 47 page views on the network&#39;s commercial marketplace, carrying a search score of 95/100 (3 offering memorandum opens, 11 unique visitors). 3936 S 48th St logged 47 tracked views this period, the first period with comparable data. 3936 S 48th St sits in the resilient luxury tier, which is holding relative to the mid-range; Washington County median DOM is currently 46 days. The period produced 3 tracked leads across the MCG website, portal, and chat channels.</p>
+    <p class="insight-summary">3936 S 48th St has generated 47 page views on the network&#39;s commercial marketplace, carrying a search score of 95/100 (3 offering memorandum opens, 11 unique visitors). 3936 S 48th St logged 50 tracked views this period, the first period with comparable data. 3936 S 48th St sits in the resilient luxury tier, which is holding relative to the mid-range; Washington County median DOM is currently 46 days. The period produced 3 tracked leads across the MCG website, portal, and chat channels.</p>
     <div class="plan-cols">
       <div class="card plan-card recs">
         <h3>Recommendations</h3>

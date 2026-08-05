@@ -170,6 +170,23 @@
     padding:10px 16px;font-size:13.5px;font-weight:600;margin:18px 0;
   }
 
+  /* ---------- Exposure banner -- confident lead-in below the hero,
+     built from real numbers only (see generate.py build_exposure_banner).
+     Navy/gold, matches the report's brand system rather than the
+     gold-tinted informational banners above. ---------- */
+  .exposure-banner{
+    display:flex;align-items:center;gap:14px;background:var(--navy);color:#fff;
+    border-radius:var(--radius);padding:16px 20px;margin:20px 0 6px;
+    box-shadow:var(--shadow);
+  }
+  .exposure-banner .eb-mark{
+    flex-shrink:0;width:34px;height:34px;border-radius:999px;background:var(--gold);
+    color:var(--navy);display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:15px;font-family:var(--font-serif);
+  }
+  .exposure-banner .eb-text{font-size:14.5px;font-weight:600;line-height:1.5;}
+  .exposure-banner .eb-text strong{color:var(--gold-light);font-weight:900;}
+
   /* ---------- Sections ---------- */
   main{padding-bottom:40px;}
   section{padding:36px 0;border-bottom:1px solid var(--gray-300);scroll-margin-top:58px;}
@@ -858,6 +875,13 @@
   </div>
 </header>
 
+<div class="wrap">
+  <div class="exposure-banner">
+    <span class="eb-mark">M</span>
+    <span class="eb-text">To date, MCG has presented your property to more than 44,800 prospective buyers across 48+ national and regional channels — including 6,179 this month.</span>
+  </div>
+</div>
+
 <!-- 4. STICKY TAB NAV (in-page section nav, approved -- unchanged; now
      stacks directly below the 44px breadcrumb bar via .hm-tabnav.tabs-sticky{top:44px}) -->
 <nav class="hm-tabnav tabs-sticky" aria-label="Report sections">
@@ -904,7 +928,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Month in review</h2>
-          <p class="hm-section-sub">Week-by-week breakdown for Jul 1, 2026 – Jul 31, 2026.</p>
+          <p class="hm-section-sub">Week-by-week performance across the Jul 1, 2026 – Jul 31, 2026 exposure campaign.</p>
         </div>
       </div>
       <table class="tbl">
@@ -930,16 +954,16 @@
       <div class="hm-section-head">
         <div>
           <h2>Market Position</h2>
-          <p class="hm-section-sub">Where this listing stands, using only MCG's own tracked data.</p>
+          <p class="hm-section-sub">Your listing's standing within MCG's active portfolio, based solely on data MCG has verified.</p>
         </div>
       </div>
       <div class="hm-stat-rows">
         <div class="hm-stat-row">
-          <div class="hm-stat-tile"><div class="hm-stat-label">Portfolio Exposure Rank</div><div class="hm-stat-value">#1 of 14</div></div>
+          <div class="hm-stat-tile"><div class="hm-stat-label">Portfolio Exposure Rank</div><div class="hm-stat-value">#11 of 14</div></div>
           <div class="hm-stat-tile"><div class="hm-stat-label">Price Positioning</div><div class="hm-stat-value">$750,000</div></div>
         </div>
       </div>
-<p class="hm-section-sub" style="margin-top:10px;">Ranks #1 of 14 active MCG listings for buyer views this period.</p><p class="hm-section-sub">Listed at $750,000.</p>    </section>
+<p class="hm-section-sub" style="margin-top:10px;">Ranks #11 of 14 active MCG listings for buyer views this period.</p><p class="hm-section-sub">Listed at $750,000.</p>    </section>
     <hr class="hm-rule">
 
     <!-- 4. ACTIVITY (agent / consumer / combined daily bar chart) -->
@@ -947,7 +971,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Activity</h2>
-          <p class="hm-section-sub">A breakdown of agent and home buyer views.</p>
+          <p class="hm-section-sub">Agent and prospective-buyer engagement with your listing this period.</p>
         </div>
         <div class="hm-controls">
           <!-- ROUND 2: no disabled options -- every category is
@@ -995,7 +1019,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Total Views</h2>
-          <p class="hm-section-sub">A breakdown of where home-shoppers are viewing your listing.</p>
+          <p class="hm-section-sub">Where prospective buyers are engaging with your listing across MCG's syndication network.</p>
         </div>
       </div>
       <div class="hm-traffic-head"><span>Top Traffic Sources</span><span style="text-align:right;">Views</span></div>
@@ -1175,7 +1199,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Full Marketing Footprint</h2>
-          <p class="hm-section-sub">Every channel MCG has working for your property &mdash; tracked, measured, and reported.</p>
+          <p class="hm-section-sub">MCG's sustained exposure campaign for your property &mdash; every active channel tracked, measured, and reported.</p>
         </div>
         <a class="hm-glossary-link" href="#hm-glossary">Glossary of Terms &rsaquo;</a>
       </div>
@@ -1238,7 +1262,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Activity Feed</h2>
-          <p class="hm-section-sub">A feed of the milestones and events your listing has achieved.</p>
+          <p class="hm-section-sub">Milestones and outreach MCG has logged on your property's behalf this period.</p>
         </div>
       </div>
       <ul class="hm-feed-list">
@@ -1323,7 +1347,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Visitor Map</h2>
-          <p class="hm-section-sub">See where buyers are discovering your listing.</p>
+          <p class="hm-section-sub">Where MCG's marketing is putting your listing in front of buyers.</p>
         </div>
         <div class="hm-map-toggle">
           <button type="button" class="hm-toggle-chip active" id="hm-map-total-btn" data-caption="Total Views 32,799" data-clipped="612">Total Views</button>
@@ -2000,7 +2024,7 @@
     <p class="hm-endstrip-text"><strong>Updated weekly by Mason Capital Group.</strong> Report generated August 5, 2026 for 1715 N Garland Ave, Fayetteville, AR.<span class="badge-print">&nbsp;Printed August 5, 2026.</span></p>
     <p class="hm-endstrip-text" style="opacity:.65;">Know someone thinking of selling? Introductions to MCG are the finest compliment &mdash; simply reply to this e-mail.</p>
     <nav class="hm-endstrip-switcher" aria-label="Report period switcher">
-          <a href="../../1715-n-garland-6c7b8b8d/2026-W31/index.html">Weekly &middot; 2026-W31</a>
+          <a href="../../1715-n-garland-6c7b8b8d/2026-W32/index.html">Weekly &middot; 2026-W32</a>
           <span class="active">Monthly &middot; 2026-07</span>
           <span class="disabled">Quarterly report unavailable</span>
     </nav>

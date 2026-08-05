@@ -164,6 +164,23 @@
     padding:10px 16px;font-size:13.5px;font-weight:600;margin:18px 0;
   }
 
+  /* ---------- Exposure banner -- confident lead-in below the hero,
+     built from real numbers only (see generate.py build_exposure_banner).
+     Navy/gold, matches the report's brand system rather than the
+     gold-tinted informational banners above. ---------- */
+  .exposure-banner{
+    display:flex;align-items:center;gap:14px;background:var(--navy);color:#fff;
+    border-radius:var(--radius);padding:16px 20px;margin:20px 0 6px;
+    box-shadow:var(--shadow);
+  }
+  .exposure-banner .eb-mark{
+    flex-shrink:0;width:34px;height:34px;border-radius:999px;background:var(--gold);
+    color:var(--navy);display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:15px;font-family:var(--font-serif);
+  }
+  .exposure-banner .eb-text{font-size:14.5px;font-weight:600;line-height:1.5;}
+  .exposure-banner .eb-text strong{color:var(--gold-light);font-weight:900;}
+
   /* ---------- Sections ---------- */
   main{padding-bottom:40px;}
   section{padding:36px 0;border-bottom:1px solid var(--gray-300);scroll-margin-top:58px;}
@@ -825,6 +842,13 @@ style="background-image:url('https://mcgmarketinghub.z13.web.core.windows.net/om
   </div>
 </header>
 
+<div class="wrap">
+  <div class="exposure-banner">
+    <span class="eb-mark">M</span>
+    <span class="eb-text">Your property is actively marketed across MCG&#39;s national syndication network.</span>
+  </div>
+</div>
+
 <!-- ==========================================================
      2. STICKY TAB NAV
      ========================================================== -->
@@ -846,7 +870,7 @@ style="background-image:url('https://mcgmarketinghub.z13.web.core.windows.net/om
   <section id="summary" style="padding-top:26px;">
     <div class="section-head">
       <h2>Summary</h2>
-      <p class="section-sub">Headline marketing activity for Jul 27, 2026 – Aug 2, 2026</p>
+      <p class="section-sub">Consolidated marketing activity for Jul 27, 2026 – Aug 2, 2026</p>
     </div>
     <div class="stat-grid">
       <div class="stat-tile highlight ">
@@ -893,7 +917,7 @@ style="background-image:url('https://mcgmarketinghub.z13.web.core.windows.net/om
   <section id="views">
     <div class="section-head">
       <h2>Views</h2>
-      <p class="section-sub">Daily view activity and where those views originate</p>
+      <p class="section-sub">Daily exposure activity and where that traffic originates</p>
     </div>
 
 
@@ -963,7 +987,7 @@ style="background-image:url('https://mcgmarketinghub.z13.web.core.windows.net/om
   <section id="market-position">
     <div class="section-head">
       <h2>Market Position</h2>
-      <p class="section-sub">Where this listing stands, using only MCG's own tracked data</p>
+      <p class="section-sub">Your listing's standing within MCG's active portfolio, based solely on data MCG has verified</p>
     </div>
 
     <div class="stat-grid">

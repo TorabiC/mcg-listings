@@ -64,10 +64,10 @@
     "total_leads": "3",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
-      "value_display": "13m 32s",
+      "value_display": "9m 38s",
       "available": true
     },
     "window_label": "July 2026"
   },
-  "generated_at": "2026-08-05T16:54:02.809527+00:00"
+  "generated_at": "2026-08-05T18:24:36.620267+00:00"
 }

@@ -2,7 +2,7 @@
   "slug": "whithorn-ln",
   "period_id": "2026-07",
   "talking_points": [
-    "64 total views this period -- 0 website + 64 syndication views.",
+    "63,259 total views this period -- 0 website + 63,259 syndication views.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -36,8 +36,8 @@
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": null,
-      "status": "missing"
+      "as_of": "2026-08-05",
+      "status": "fresh"
     },
     {
       "key": "crexi",
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "64",
+    "total_views": "63,259",
     "total_leads": "1",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
-      "value_display": "21m 52s",
+      "value_display": "11m 42s",
       "available": true
     },
     "window_label": "July 2026"
   },
-  "generated_at": "2026-08-05T16:54:02.819036+00:00"
+  "generated_at": "2026-08-05T18:24:36.650343+00:00"
 }

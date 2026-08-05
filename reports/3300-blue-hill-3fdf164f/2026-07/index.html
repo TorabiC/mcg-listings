@@ -164,6 +164,23 @@
     padding:10px 16px;font-size:13.5px;font-weight:600;margin:18px 0;
   }
 
+  /* ---------- Exposure banner -- confident lead-in below the hero,
+     built from real numbers only (see generate.py build_exposure_banner).
+     Navy/gold, matches the report's brand system rather than the
+     gold-tinted informational banners above. ---------- */
+  .exposure-banner{
+    display:flex;align-items:center;gap:14px;background:var(--navy);color:#fff;
+    border-radius:var(--radius);padding:16px 20px;margin:20px 0 6px;
+    box-shadow:var(--shadow);
+  }
+  .exposure-banner .eb-mark{
+    flex-shrink:0;width:34px;height:34px;border-radius:999px;background:var(--gold);
+    color:var(--navy);display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:15px;font-family:var(--font-serif);
+  }
+  .exposure-banner .eb-text{font-size:14.5px;font-weight:600;line-height:1.5;}
+  .exposure-banner .eb-text strong{color:var(--gold-light);font-weight:900;}
+
   /* ---------- Sections ---------- */
   main{padding-bottom:40px;}
   section{padding:36px 0;border-bottom:1px solid var(--gray-300);scroll-margin-top:58px;}
@@ -814,7 +831,7 @@ style="background-image:url('https://mcg-marketing-hub.azurewebsites.net/output/
         <div class="hc-price">$900,000</div>
         <div class="hc-meta">
 Commercial
-        </div>
+<br>Listed Apr 3, 2026 &middot; 124 Days on Market        </div>
       </div>
       <div class="agent-card">
         <span class="ac-name">Cameron Torabi</span>
@@ -825,6 +842,13 @@ Commercial
   </div>
 </header>
 
+<div class="wrap">
+  <div class="exposure-banner">
+    <span class="eb-mark">M</span>
+    <span class="eb-text">To date, MCG has presented your property to more than 38,700 prospective buyers across 43+ national and regional channels — including 26 this month.</span>
+  </div>
+</div>
+
 <!-- ==========================================================
      2. STICKY TAB NAV
      ========================================================== -->
@@ -833,7 +857,7 @@ Commercial
     <a href="#summary">Summary</a>
 <a href="#month-in-review">Month in Review</a>    <a href="#market-position">Market Position</a>
 <a href="#views">Views</a><a href="#reach">Marketing Reach</a>    <a href="#activity">Activity</a>
-  </div>
+<a href="#buyermap">Buyer Map</a>  </div>
 </nav>
 
 <main>
@@ -846,28 +870,28 @@ Commercial
   <section id="summary" style="padding-top:26px;">
     <div class="section-head">
       <h2>Summary</h2>
-      <p class="section-sub">Headline marketing activity for Jul 1, 2026 – Jul 31, 2026</p>
+      <p class="section-sub">Consolidated marketing activity for Jul 1, 2026 – Jul 31, 2026</p>
     </div>
     <div class="stat-grid">
       <div class="stat-tile highlight ">
         <div class="label">Total Marketing Views</div>
-        <div class="value">1,250</div>
+        <div class="value">38,709</div>
         <div class="sub">Combined listing views across MCG&#39;s on-site listing widget and syndication network placements this period</div>
       </div>
       <div class="stat-tile  ">
-        <div class="label">Marketplace Impressions</div>
-        <div class="value">1,250</div>
-        <div class="sub">Impressions across the commercial marketplace network</div>
+        <div class="label">Display Ad Views</div>
+        <div class="value">1,309</div>
+        <div class="sub">Off-site ad impressions on partner publications</div>
       </div>
       <div class="stat-tile  ">
-        <div class="label">MCG Placement Score</div>
-        <div class="value">95/100</div>
-        <div class="sub">Excellent</div>
+        <div class="label">Top-of-Search Placements</div>
+        <div class="value">858</div>
+        <div class="sub">Times the listing ranked first in buyer searches</div>
       </div>
       <div class="stat-tile  ">
         <div class="label">Website Views</div>
-        <div class="value">23</div>
-        <div class="sub">18 unique visitors</div>
+        <div class="value">26</div>
+        <div class="sub">20 unique visitors</div>
       </div>
       <div class="stat-tile  ">
         <div class="label">Email Reach</div>
@@ -881,7 +905,7 @@ Commercial
       </div>
       <div class="stat-tile  ">
         <div class="label">Saved / Favorites</div>
-        <div class="value">34</div>
+        <div class="value">1</div>
         <div class="sub">Buyers who saved this listing</div>
       </div>
     </div>
@@ -893,7 +917,7 @@ Commercial
   <section id="views">
     <div class="section-head">
       <h2>Views</h2>
-      <p class="section-sub">Daily view activity and where those views originate</p>
+      <p class="section-sub">Daily exposure activity and where that traffic originates</p>
     </div>
 
 
@@ -910,9 +934,9 @@ Commercial
           <text x="53" y="78.0" text-anchor="middle" font-size="11" font-weight="700" fill="var(--navy)">0</text>
           <rect x="140" y="18.0" width="26" rx="4"
                 height="70.0" fill="var(--navy)"
-                class="hoverable" data-tip="This period: 1,250 views"/>
+                class="hoverable" data-tip="This period: 38,709 views"/>
           <text x="153" y="106" text-anchor="middle" font-size="10" fill="var(--gray-500)">Current</text>
-          <text x="153" y="8.0" text-anchor="middle" font-size="11" font-weight="700" fill="var(--navy)">1,250</text>
+          <text x="153" y="8.0" text-anchor="middle" font-size="11" font-weight="700" fill="var(--navy)">38,709</text>
         </svg>
         <div class="tooltip" id="tip-views"></div>
       </div>
@@ -926,35 +950,35 @@ Commercial
       <h3>Top traffic sources</h3>
       <p class="chart-caption">Where views on the MCG website and MCG's national syndication partners originated, combined.</p>
       <div class="bar-row">
-        <div class="b-label">Mcg&#39;S Commercial Marketplace Network.Com</div>
-        <div class="bar-track"><div class="bar-fill" style="width:50.0%;background:#ab012e;"></div></div>
-        <div class="b-value">50.0% &middot; 9</div>
+        <div class="b-label">Property Search Page</div>
+        <div class="bar-track"><div class="bar-fill" style="width:95.5%;background:#ab012e;"></div></div>
+        <div class="b-value">95.5% &middot; 35,792</div>
       </div>
       <div class="bar-row">
-        <div class="b-label">Direct</div>
-        <div class="bar-track"><div class="bar-fill" style="width:33.3%;background:#3568c9;"></div></div>
-        <div class="b-value">33.3% &middot; 6</div>
+        <div class="b-label">Display Ads</div>
+        <div class="bar-track"><div class="bar-fill" style="width:3.7%;background:#3568c9;"></div></div>
+        <div class="b-value">3.7% &middot; 1,373</div>
       </div>
       <div class="bar-row">
-        <div class="b-label">Mcgmarketinghub.Z13.Web.Core.Windows.Net</div>
-        <div class="bar-track"><div class="bar-fill" style="width:5.6%;background:#eda100;"></div></div>
-        <div class="b-value">5.6% &middot; 1</div>
+        <div class="b-label">Greatschools</div>
+        <div class="bar-track"><div class="bar-fill" style="width:0.4%;background:#eda100;"></div></div>
+        <div class="b-value">0.4% &middot; 134</div>
       </div>
       <div class="bar-row">
-        <div class="b-label">Torabic.Github.Io</div>
-        <div class="bar-track"><div class="bar-fill" style="width:5.6%;background:#1baf7a;"></div></div>
-        <div class="b-value">5.6% &middot; 1</div>
+        <div class="b-label">Detail Page Views</div>
+        <div class="bar-track"><div class="bar-fill" style="width:0.2%;background:#1baf7a;"></div></div>
+        <div class="b-value">0.2% &middot; 79</div>
       </div>
       <div class="bar-row">
         <div class="b-label">Other</div>
-        <div class="bar-track"><div class="bar-fill" style="width:5.6%;background:#9a9aa6;"></div></div>
-        <div class="b-value">5.6% &middot; 1</div>
+        <div class="bar-track"><div class="bar-fill" style="width:0.3%;background:#9a9aa6;"></div></div>
+        <div class="b-value">0.3% &middot; 101</div>
       </div>
       <div class="legend">
-        <span class="sw"><span class="dot" style="background:#ab012e"></span>Mcg&#39;S Commercial Marketplace Network.Com</span>
-        <span class="sw"><span class="dot" style="background:#3568c9"></span>Direct</span>
-        <span class="sw"><span class="dot" style="background:#eda100"></span>Mcgmarketinghub.Z13.Web.Core.Windows.Net</span>
-        <span class="sw"><span class="dot" style="background:#1baf7a"></span>Torabic.Github.Io</span>
+        <span class="sw"><span class="dot" style="background:#ab012e"></span>Property Search Page</span>
+        <span class="sw"><span class="dot" style="background:#3568c9"></span>Display Ads</span>
+        <span class="sw"><span class="dot" style="background:#eda100"></span>Greatschools</span>
+        <span class="sw"><span class="dot" style="background:#1baf7a"></span>Detail Page Views</span>
         <span class="sw"><span class="dot" style="background:#9a9aa6"></span>Other</span>
       </div>
     </div>
@@ -966,66 +990,140 @@ Commercial
   <section id="reach">
     <div class="section-head">
       <h2>Marketing Reach</h2>
-      <p class="section-sub">Targeted display advertising and where this listing has been published</p>
+      <p class="section-sub">Targeted display advertising and the publications carrying your listing</p>
     </div>
 
 
-    <p class="pub-intro">This listing is marketed to the commercial investor audience through MCG&#39;s national syndication partners — the most capable platforms in residential and commercial real estate marketing. Figures below are pulled directly from that network's live listing dashboard.</p>
+    <p class="pub-intro">Your listing has appeared on <strong>39 recognizable publications</strong> &mdash; from national news and sports to lifestyle and finance sites &mdash; through MCG&#39;s national syndication partners — the most capable platforms in residential and commercial real estate marketing.</p>
     <div class="pub-stat-row">
-      <div class="pub-stat"><div class="p-val">1,250</div><div class="p-lbl">Page views</div></div>
-      <div class="pub-stat"><div class="p-val">227</div><div class="p-lbl">Unique visitors</div></div>
-      <div class="pub-stat"><div class="p-val">25</div><div class="p-lbl">OM / flyer opens</div></div>
-      <div class="pub-stat"><div class="p-val">0</div><div class="p-lbl">Offers received</div></div>
+      <div class="pub-stat"><div class="p-val">1,309</div><div class="p-lbl">Ad views</div></div>
+      <div class="pub-stat"><div class="p-val">306</div><div class="p-lbl">Sites displayed on</div></div>
+      <div class="pub-stat"><div class="p-val">311</div><div class="p-lbl">Users reached</div></div>
+      <div class="pub-stat"><div class="p-val">5,228</div><div class="p-lbl">Contacts targeted</div></div>
     </div>
-
-    <div class="card chart-card" style="margin-bottom:16px;">
-      <h3>MCG Placement Score</h3>
-      <div class="mcg-gauge-wrap">
-        <svg width="140" height="90" viewBox="0 0 140 90" role="img" aria-label="MCG Placement Score gauge">
-          <path d="M 15 80 A 55 55 0 0 1 125 80" fill="none" stroke="var(--gray-300)" stroke-width="14" stroke-linecap="round"/>
-          <path d="M 15 80 A 55 55 0 0 1 125 80" fill="none" stroke="var(--crimson)"
-                stroke-width="14" stroke-linecap="round"
-                stroke-dasharray="164.2 999"/>
-          <text x="70" y="72" text-anchor="middle" font-size="22" font-weight="900" fill="var(--navy)">95</text>
-          <text x="70" y="86" text-anchor="middle" font-size="9" fill="var(--gray-500)">out of 100</text>
-        </svg>
-        <div class="mcg-gauge-numbers">
-          <div class="cg-big">Excellent</div>
-          <span class="cg-grade">MCG Placement Score</span>
-        </div>
+    <div class="logo-grid">
+      <div class="logo-tile" title="espn.com">
+        <img src="https://imagescdn.homes.com/i2/5MyCCJuRVNXKNTXxGOY6QkKwd8-zDf_1HeU0Nqmclrg/117/image.png?p=1" alt="Espn" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="cnn.com">
+        <img src="https://imagescdn.homes.com/i2/XGlY4oRqrEYAuWJVRzJim3FKG6Es9r2hz3SG5BM4y-M/117/image.png?p=1" alt="Cnn" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="foxnews.com">
+        <img src="https://imagescdn.homes.com/i2/7OHOl4geNpZK68aJFaZWx_HKkH6Bsm5Dfglnx_3uRhM/117/image.png?p=1" alt="Foxnews" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="msn.com">
+        <img src="https://imagescdn.homes.com/i2/DMa7i9oCH1mgGyaI0rRkcv7HtBWenGZN-jDTYlclqP4/117/image.png?p=1" alt="Msn" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="mapquest.com">
+        <img src="https://imagescdn.homes.com/i2/OjvCIOEsha9WYZi5hbT4IZkMsnhyFPq-XHTmsr2TbqQ/117/image.png?p=1" alt="Mapquest" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="nypost.com">
+        <img src="https://imagescdn.homes.com/i2/SkAhHtwZ44EO42x_ZJ8OuzauQ318nW2Bu2uasAzgjRM/117/image.png?p=1" alt="Nypost" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="weather.com">
+        <img src="https://imagescdn.homes.com/i2/SIXxCUS903L4FPNAd7BYyvLvcb69_jCZnM7pV0CZ73E/117/image.png?p=1" alt="Weather" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="usnews.com">
+        <img src="https://imagescdn.homes.com/i2/Of4nSCRwlgY17_U2JnrXJ5hKCZ0XEOYrbSeeghqsHGc/117/image.png?p=1" alt="Usnews" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="yahoo.com">
+        <img src="https://imagescdn.homes.com/i2/LKIhpj9D5QrsTLwMz96e6i4k6WwmgO0pLdFU5c6tJh8/117/image.png?p=1" alt="Yahoo" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="bbc.com">
+        <img src="https://imagescdn.homes.com/i2/3h2b3kbk6Xt6LI5uHvk7ivzRC6r86ZvDy3G2J0zgGJQ/117/image.png?p=1" alt="Bbc" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="cbsnews.com">
+        <img src="https://imagescdn.homes.com/i2/ctikbI1THI3qvENEJKrXu6cKapZ6aHnV3gHVURVNMYg/117/image.jpg?p=1" alt="Cbsnews" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="ebay.com">
+        <img src="https://imagescdn.homes.com/i2/--40jooK24bZq8_MDXCkgEluzJMCNMk8Wtu_DS64nVw/117/image.png?p=1" alt="Ebay" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="people.com">
+        <img src="https://imagescdn.homes.com/i2/ckNGEWmlMMr34jK--A7VNYvg9R8iS3ciqcaHMK6woiE/117/image.png?p=1" alt="People" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="accuweather.com">
+        <img src="https://imagescdn.homes.com/i2/uj4uZndcO6IFm6PgK3X2Z61GZkmMk6eMVKds-nL730U/117/image.png?p=1" alt="Accuweather" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="investing.com">
+        <img src="https://imagescdn.homes.com/i2/WnXxS4MH7MeK47z0V-jK_H53IyvFM0D4K9DhbvKDV6E/117/image.png?p=1" alt="Investing" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="allrecipes.com">
+        <img src="https://imagescdn.homes.com/i2/JgPdVVcFU6W4gAurFCg9kY0Vha3ii0vM4bTAcdfp05Y/117/image.png?p=1" alt="Allrecipes" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="nytimes.com">
+        <img src="https://imagescdn.homes.com/i2/RypJG_xvCGZKN-mcQXeR2NJhzD73lFhRg9ULWi-4nWg/117/image.png?p=1" alt="Nytimes" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="jcpenney.com">
+        <img src="https://imagescdn.homes.com/i2/kqyT7hhMRKLanaqpWkF59vg-jRsjS99sMy4FaMiIiek/117/image.png?p=1" alt="Jcpenney" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="parade.com">
+        <img src="https://imagescdn.homes.com/i2/BBm0yzOXAwxSNhVDK3okA0GV1MIDkhQFdTt6TPXtb0A/117/image.png?p=1" alt="Parade" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="huffpost.com">
+        <img src="https://imagescdn.homes.com/i2/ytpbtec72M06PSDh3DqpS0e6I2yx_ZVzDVLmZl9EUf8/117/image.jpg?p=1" alt="Huffpost" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="hgtv.com">
+        <img src="https://imagescdn.homes.com/i2/cVczVTjcZk1857Qfy7xVYPPhVB3TqrUTh_FcLkKYenE/117/image.png?p=1" alt="Hgtv" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="fortune.com">
+        <img src="https://imagescdn.homes.com/i2/FCYk3IACs8UYG2qdQav4ffm0RvxBg4ZsWfdJJprS_8I/117/image.jpg?p=1" alt="Fortune" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="tvguide.com">
+        <img src="https://imagescdn.homes.com/i2/_j2DcsdSVQ9HeEygXuMfyDXG1CrrEUeG0DbapEgGim8/117/image.png?p=1" alt="Tvguide" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="npr.org">
+        <img src="https://imagescdn.homes.com/i2/MtM6RbLGn82WPgbJNoLuo0mXQaIJR5fbRz1vKqJTtPs/117/image.jpg?p=1" alt="Npr" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="9news.com">
+        <img src="https://imagescdn.homes.com/i2/MUFM6SwfN7c01f1mjUHH4fdm8nytt3bCUhudQ6Yyz3s/117/image.png?p=1" alt="9News" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="iheart.com">
+        <img src="https://imagescdn.homes.com/i2/SrLdhlmouVm8gM_BA2a3Qnip_cDoGWvDiQwvvdQ4TSg/117/image.png?p=1" alt="Iheart" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="wfmz.com">
+        <img src="https://imagescdn.homes.com/i2/NmsZ3WLABbbDHN1lOZhdNOVZ825h8dO_Niv9yT8XZ3w/117/image.png?p=1" alt="Wfmz" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="tennessean.com">
+        <img src="https://imagescdn.homes.com/i2/YeJ-Afd0YF3dBQmunlhatZYzxdtkKPJ5687mqtKE2ko/117/image.jpg?p=1" alt="Tennessean" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="cbc.ca">
+        <img src="https://imagescdn.homes.com/i2/9YD-H8DCn7FqpJxRd6yQJVS3WhvnUPrjfjSQK4_hNOg/117/image.png?p=1" alt="Cbc" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="eonline.com">
+        <img src="https://imagescdn.homes.com/i2/QmzNAS4TDYrJ8P6BhvXQv0IwqOdc8NEv8hv10nUGCcI/117/image.png?p=1" alt="Eonline" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="bestbuy.com">
+        <img src="https://imagescdn.homes.com/i2/-emDzb2yapcAe6NIfiEykGTavlW9mgcPWzbeP8c5l8w/117/image.png?p=1" alt="Bestbuy" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="cnbc.com">
+        <img src="https://imagescdn.homes.com/i2/4N-aBaNfB7cFldeXQ0KTKtXG0-_jLeLH_cM3eMSaYR8/117/image.png?p=1" alt="Cnbc" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="bostonherald.com">
+        <img src="https://imagescdn.homes.com/i2/UUFuLNzsPZFRiBgsi-1QsPKJYq_yUnWil-2GW9om_2Q/117/image.png?p=1" alt="Bostonherald" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="ncaa.com">
+        <img src="https://imagescdn.homes.com/i2/keDJQx_DQFmxg-uYHmTxQZEOgKAu_jDBtYvS8p3Sen4/117/image.png?p=1" alt="Ncaa" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="5newsonline.com">
+        <img src="https://imagescdn.homes.com/i2/CR2rOVdhgXV8CXjuwBYUQqVZeWA9HgSlTg3AW36PqNY/117/image.png?p=1" alt="5Newsonline" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="wxyz.com">
+        <img src="https://imagescdn.homes.com/i2/MiS0ZImUbKt9X_s6PdTQbFOnym7YoOTNMBp1OCSMe0M/117/image.png?p=1" alt="Wxyz" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="washingtonexaminer.com">
+        <img src="https://imagescdn.homes.com/i2/WEFysusx6jkiPPxxCQMS3HK2fr8BU9_DDVpJs3ar_fA/117/image.png?p=1" alt="Washingtonexaminer" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="kshb.com">
+        <img src="https://imagescdn.homes.com/i2/Kx4ixnLjO9IUDddX54qQAJA9hPI7jCkWgXLMkCKUato/117/image.png?p=1" alt="Kshb" loading="lazy" width="94" height="32">
+      </div>
+      <div class="logo-tile" title="katu.com">
+        <img src="https://imagescdn.homes.com/i2/ypfAI-R9iGvDJXWTkxOcKkjmOzJFXSG7_-5HQGdDHPs/117/image.png?p=1" alt="Katu" loading="lazy" width="94" height="32">
       </div>
     </div>
-
-    <div class="card chart-card" style="margin-bottom:16px;">
-      <h3>Buyer engagement funnel</h3>
-      <p class="chart-caption">From page visit through to a phone click, this period&rsquo;s full-funnel activity.</p>
-      <div class="funnel-row">
-        <div class="f-label">Visited page</div>
-        <div class="funnel-track"><div class="funnel-fill" style="width:100.0%;"></div></div>
-        <div class="f-value">227</div>
-      </div>
-      <div class="funnel-row">
-        <div class="f-label">Saved property</div>
-        <div class="funnel-track"><div class="funnel-fill" style="width:15.0%;"></div></div>
-        <div class="f-value">34</div>
-      </div>
-      <div class="funnel-row">
-        <div class="f-label">Opened OM / flyer</div>
-        <div class="funnel-track"><div class="funnel-fill" style="width:11.0%;"></div></div>
-        <div class="f-value">25</div>
-      </div>
-      <div class="funnel-row">
-        <div class="f-label">Requested info</div>
-        <div class="funnel-track"><div class="funnel-fill" style="width:0.0%;"></div></div>
-        <div class="f-value">0</div>
-      </div>
-      <div class="funnel-row">
-        <div class="f-label">Clicked phone</div>
-        <div class="funnel-track"><div class="funnel-fill" style="width:6.6%;"></div></div>
-        <div class="f-value">15</div>
-      </div>
+    <div class="pub-list-full">
+      <strong>Full publication list (39)</strong>
+      espn.com &amp;middot; cnn.com &amp;middot; foxnews.com &amp;middot; msn.com &amp;middot; mapquest.com &amp;middot; nypost.com &amp;middot; weather.com &amp;middot; usnews.com &amp;middot; yahoo.com &amp;middot; bbc.com &amp;middot; cbsnews.com &amp;middot; ebay.com &amp;middot; people.com &amp;middot; accuweather.com &amp;middot; investing.com &amp;middot; allrecipes.com &amp;middot; nytimes.com &amp;middot; jcpenney.com &amp;middot; parade.com &amp;middot; huffpost.com &amp;middot; hgtv.com &amp;middot; fortune.com &amp;middot; tvguide.com &amp;middot; npr.org &amp;middot; 9news.com &amp;middot; iheart.com &amp;middot; wfmz.com &amp;middot; tennessean.com &amp;middot; cbc.ca &amp;middot; eonline.com &amp;middot; bestbuy.com &amp;middot; cnbc.com &amp;middot; bostonherald.com &amp;middot; ncaa.com &amp;middot; 5newsonline.com &amp;middot; wxyz.com &amp;middot; washingtonexaminer.com &amp;middot; kshb.com &amp;middot; katu.com
     </div>
-
 
   </section>
 
@@ -1037,12 +1135,244 @@ Commercial
       <h2>Activity</h2>
       <p class="section-sub">Recognition earned and outreach touches logged this period, most recent first</p>
     </div>
-    <div class="empty-note">No marketing activity logged for this period.</div>
+    <div class="card">
+      <ul class="feed-list">
+        <li class="feed-item">
+          <div class="feed-left">
+            <span class="feed-icon milestone" aria-hidden="true">★</span>
+            <span class="feed-text">
+<span class="feed-kicker">Milestone</span>              Your listing is now considered Popular
+            </span>
+          </div>
+          <div class="feed-date">Apr 10, 2026</div>
+        </li>
+        <li class="feed-item">
+          <div class="feed-left">
+            <span class="feed-icon milestone" aria-hidden="true">★</span>
+            <span class="feed-text">
+<span class="feed-kicker">Milestone</span>              Your listing was listed as New Listing
+            </span>
+          </div>
+          <div class="feed-date">Apr 3, 2026</div>
+        </li>
+      </ul>
+    </div>
   </section>
 
   <!-- ==========================================================
        7. BUYER MAP
        ========================================================== -->
+  <section id="buyermap">
+    <div class="section-head">
+      <h2>Buyer Map</h2>
+      <p class="section-sub">See where buyers are discovering your listing <span class="badge-total">30,210 mapped views</span></p>
+    </div>
+    <div class="card map-card">
+      <div class="map-svg-wrap">
+        <svg viewBox="0 0 1000 520" width="100%" role="img" aria-label="Map of the continental United States showing where buyer interest in this listing originated">
+          <path class="us-outline" d="M50,80 L80,50 L120,35 L190,25 L300,20 L420,18 L550,20 L620,45 L580,65 L660,40 L720,60 L780,35 L830,45 L900,58 L880,90 L830,110 L850,140 L820,170 L840,215 L800,250 L820,290 L780,340 L830,400 L870,460 L820,480 L800,430 L750,390 L650,410 L550,400 L480,440 L400,450 L300,430 L280,375 L250,340 L200,375 L190,430 L150,420 L100,375 L60,345 L20,300 L30,250 L10,220 L30,180 L20,150 L40,110 Z"/>
+          <circle class="map-marker hoverable" cx="673.6" cy="144.9" r="5.7" data-tip="13 views"></circle>
+          <circle class="map-marker hoverable" cx="152.1" cy="292.9" r="5.7" data-tip="13 views"></circle>
+          <circle class="map-marker hoverable" cx="585.8" cy="372.6" r="5.7" data-tip="13 views"></circle>
+          <circle class="map-marker hoverable" cx="394.5" cy="220.4" r="5.7" data-tip="13 views"></circle>
+          <circle class="map-marker hoverable" cx="759.6" cy="193.3" r="5.7" data-tip="13 views"></circle>
+          <circle class="map-marker hoverable" cx="498.1" cy="284.5" r="5.7" data-tip="13 views"></circle>
+          <circle class="map-marker hoverable" cx="501.5" cy="278.0" r="5.7" data-tip="13 views"></circle>
+          <circle class="map-marker hoverable" cx="250.7" cy="281.8" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="642.3" cy="141.6" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="701.2" cy="445.2" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="594.0" cy="268.0" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="669.2" cy="315.2" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="444.6" cy="388.7" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="435.0" cy="237.0" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="41.0" cy="275.7" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="525.2" cy="202.7" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="499.1" cy="378.1" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="518.3" cy="283.0" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="643.4" cy="267.3" r="5.7" data-tip="12 views"></circle>
+          <circle class="map-marker hoverable" cx="68.9" cy="303.9" r="5.8" data-tip="14 views"></circle>
+          <circle class="map-marker hoverable" cx="847.5" cy="122.7" r="5.8" data-tip="14 views"></circle>
+          <circle class="map-marker hoverable" cx="63.7" cy="310.9" r="5.8" data-tip="14 views"></circle>
+          <circle class="map-marker hoverable" cx="437.5" cy="389.8" r="5.8" data-tip="14 views"></circle>
+          <circle class="map-marker hoverable" cx="695.6" cy="427.8" r="5.8" data-tip="14 views"></circle>
+          <circle class="map-marker hoverable" cx="116.7" cy="280.5" r="5.8" data-tip="14 views"></circle>
+          <circle class="map-marker hoverable" cx="480.6" cy="65.3" r="5.8" data-tip="14 views"></circle>
+          <circle class="map-marker hoverable" cx="604.7" cy="215.6" r="5.9" data-tip="16 views"></circle>
+          <circle class="map-marker hoverable" cx="434.3" cy="391.8" r="5.9" data-tip="16 views"></circle>
+          <circle class="map-marker hoverable" cx="746.8" cy="200.3" r="5.9" data-tip="16 views"></circle>
+          <circle class="map-marker hoverable" cx="646.6" cy="122.9" r="5.9" data-tip="16 views"></circle>
+          <circle class="map-marker hoverable" cx="594.8" cy="312.3" r="5.9" data-tip="16 views"></circle>
+          <circle class="map-marker hoverable" cx="88.8" cy="96.9" r="5.9" data-tip="16 views"></circle>
+          <circle class="map-marker hoverable" cx="500.8" cy="195.6" r="5.9" data-tip="16 views"></circle>
+          <circle class="map-marker hoverable" cx="629.4" cy="192.0" r="5.9" data-tip="16 views"></circle>
+          <circle class="map-marker hoverable" cx="349.7" cy="257.2" r="5.9" data-tip="16 views"></circle>
+          <circle class="map-marker hoverable" cx="333.6" cy="279.2" r="5.9" data-tip="16 views"></circle>
+          <circle class="map-marker hoverable" cx="81.8" cy="97.4" r="5.9" data-tip="15 views"></circle>
+          <circle class="map-marker hoverable" cx="444.3" cy="199.4" r="5.9" data-tip="15 views"></circle>
+          <circle class="map-marker hoverable" cx="50.5" cy="298.4" r="5.9" data-tip="15 views"></circle>
+          <circle class="map-marker hoverable" cx="382.1" cy="376.8" r="5.9" data-tip="15 views"></circle>
+          <circle class="map-marker hoverable" cx="586.3" cy="309.8" r="5.9" data-tip="15 views"></circle>
+          <circle class="map-marker hoverable" cx="768.8" cy="210.3" r="5.9" data-tip="15 views"></circle>
+          <circle class="map-marker hoverable" cx="478.3" cy="249.6" r="5.9" data-tip="15 views"></circle>
+          <circle class="map-marker hoverable" cx="162.9" cy="316.4" r="5.9" data-tip="15 views"></circle>
+          <circle class="map-marker hoverable" cx="442.1" cy="269.5" r="5.9" data-tip="15 views"></circle>
+          <circle class="map-marker hoverable" cx="480.7" cy="377.2" r="5.9" data-tip="15 views"></circle>
+          <circle class="map-marker hoverable" cx="568.4" cy="110.1" r="6.0" data-tip="18 views"></circle>
+          <circle class="map-marker hoverable" cx="487.3" cy="320.4" r="6.0" data-tip="18 views"></circle>
+          <circle class="map-marker hoverable" cx="443.0" cy="337.3" r="6.0" data-tip="18 views"></circle>
+          <circle class="map-marker hoverable" cx="776.9" cy="185.7" r="6.0" data-tip="17 views"></circle>
+          <circle class="map-marker hoverable" cx="412.2" cy="331.4" r="6.0" data-tip="17 views"></circle>
+          <circle class="map-marker hoverable" cx="429.5" cy="321.4" r="6.0" data-tip="17 views"></circle>
+          <circle class="map-marker hoverable" cx="550.0" cy="167.6" r="6.0" data-tip="17 views"></circle>
+          <circle class="map-marker hoverable" cx="88.2" cy="309.3" r="6.1" data-tip="20 views"></circle>
+          <circle class="map-marker hoverable" cx="529.8" cy="338.0" r="6.1" data-tip="20 views"></circle>
+          <circle class="map-marker hoverable" cx="433.6" cy="151.3" r="6.1" data-tip="20 views"></circle>
+          <circle class="map-marker hoverable" cx="449.2" cy="203.6" r="6.1" data-tip="20 views"></circle>
+          <circle class="map-marker hoverable" cx="597.7" cy="186.4" r="6.1" data-tip="20 views"></circle>
+          <circle class="map-marker hoverable" cx="745.4" cy="230.5" r="6.1" data-tip="20 views"></circle>
+          <circle class="map-marker hoverable" cx="255.8" cy="266.3" r="6.1" data-tip="19 views"></circle>
+          <circle class="map-marker hoverable" cx="820.0" cy="75.8" r="6.1" data-tip="19 views"></circle>
+          <circle class="map-marker hoverable" cx="449.4" cy="245.8" r="6.1" data-tip="19 views"></circle>
+          <circle class="map-marker hoverable" cx="174.4" cy="172.8" r="6.2" data-tip="21 views"></circle>
+          <circle class="map-marker hoverable" cx="678.2" cy="415.2" r="6.2" data-tip="21 views"></circle>
+          <circle class="map-marker hoverable" cx="421.2" cy="311.0" r="6.2" data-tip="21 views"></circle>
+          <circle class="map-marker hoverable" cx="469.4" cy="333.7" r="6.2" data-tip="21 views"></circle>
+          <circle class="map-marker hoverable" cx="476.9" cy="241.3" r="6.3" data-tip="23 views"></circle>
+          <circle class="map-marker hoverable" cx="65.1" cy="301.0" r="6.3" data-tip="23 views"></circle>
+          <circle class="map-marker hoverable" cx="468.6" cy="248.9" r="6.3" data-tip="22 views"></circle>
+          <circle class="map-marker hoverable" cx="427.3" cy="372.3" r="6.3" data-tip="22 views"></circle>
+          <circle class="map-marker hoverable" cx="414.4" cy="334.5" r="6.3" data-tip="22 views"></circle>
+          <circle class="map-marker hoverable" cx="461.5" cy="316.6" r="6.3" data-tip="22 views"></circle>
+          <circle class="map-marker hoverable" cx="679.1" cy="410.5" r="6.3" data-tip="22 views"></circle>
+          <circle class="map-marker hoverable" cx="59.1" cy="307.0" r="6.4" data-tip="26 views"></circle>
+          <circle class="map-marker hoverable" cx="405.3" cy="269.5" r="6.4" data-tip="26 views"></circle>
+          <circle class="map-marker hoverable" cx="488.2" cy="292.3" r="6.4" data-tip="26 views"></circle>
+          <circle class="map-marker hoverable" cx="510.5" cy="352.9" r="6.4" data-tip="26 views"></circle>
+          <circle class="map-marker hoverable" cx="752.9" cy="201.3" r="6.4" data-tip="26 views"></circle>
+          <circle class="map-marker hoverable" cx="450.3" cy="171.3" r="6.4" data-tip="25 views"></circle>
+          <circle class="map-marker hoverable" cx="421.4" cy="317.0" r="6.4" data-tip="24 views"></circle>
+          <circle class="map-marker hoverable" cx="446.7" cy="277.5" r="6.4" data-tip="24 views"></circle>
+          <circle class="map-marker hoverable" cx="564.1" cy="111.6" r="6.4" data-tip="24 views"></circle>
+          <circle class="map-marker hoverable" cx="813.5" cy="153.2" r="6.5" data-tip="28 views"></circle>
+          <circle class="map-marker hoverable" cx="473.2" cy="239.2" r="6.5" data-tip="28 views"></circle>
+          <circle class="map-marker hoverable" cx="501.4" cy="255.7" r="6.5" data-tip="27 views"></circle>
+          <circle class="map-marker hoverable" cx="440.8" cy="376.8" r="6.5" data-tip="27 views"></circle>
+          <circle class="map-marker hoverable" cx="332.2" cy="312.2" r="6.5" data-tip="27 views"></circle>
+          <circle class="map-marker hoverable" cx="569.7" cy="139.8" r="6.5" data-tip="27 views"></circle>
+          <circle class="map-marker hoverable" cx="625.3" cy="304.8" r="6.6" data-tip="30 views"></circle>
+          <circle class="map-marker hoverable" cx="5.5" cy="199.9" r="6.6" data-tip="30 views"></circle>
+          <circle class="map-marker hoverable" cx="466.5" cy="314.3" r="6.6" data-tip="29 views"></circle>
+          <circle class="map-marker hoverable" cx="853.8" cy="125.6" r="6.6" data-tip="29 views"></circle>
+          <circle class="map-marker hoverable" cx="392.5" cy="390.7" r="6.7" data-tip="32 views"></circle>
+          <circle class="map-marker hoverable" cx="556.2" cy="285.1" r="6.7" data-tip="32 views"></circle>
+          <circle class="map-marker hoverable" cx="441.9" cy="381.7" r="6.7" data-tip="31 views"></circle>
+          <circle class="map-marker hoverable" cx="460.2" cy="238.9" r="6.7" data-tip="31 views"></circle>
+          <circle class="map-marker hoverable" cx="552.1" cy="271.4" r="6.7" data-tip="31 views"></circle>
+          <circle class="map-marker hoverable" cx="751.6" cy="202.2" r="6.7" data-tip="31 views"></circle>
+          <circle class="map-marker hoverable" cx="411.8" cy="323.5" r="6.8" data-tip="35 views"></circle>
+          <circle class="map-marker hoverable" cx="566.8" cy="133.4" r="6.8" data-tip="34 views"></circle>
+          <circle class="map-marker hoverable" cx="635.9" cy="263.7" r="6.8" data-tip="34 views"></circle>
+          <circle class="map-marker hoverable" cx="520.5" cy="203.4" r="6.8" data-tip="34 views"></circle>
+          <circle class="map-marker hoverable" cx="626.8" cy="196.2" r="6.8" data-tip="34 views"></circle>
+          <circle class="map-marker hoverable" cx="660.7" cy="422.0" r="6.8" data-tip="33 views"></circle>
+          <circle class="map-marker hoverable" cx="3.2" cy="203.9" r="6.9" data-tip="37 views"></circle>
+          <circle class="map-marker hoverable" cx="177.4" cy="339.4" r="7.0" data-tip="39 views"></circle>
+          <circle class="map-marker hoverable" cx="453.2" cy="233.2" r="7.0" data-tip="38 views"></circle>
+          <circle class="map-marker hoverable" cx="428.9" cy="263.0" r="7.0" data-tip="38 views"></circle>
+          <circle class="map-marker hoverable" cx="504.8" cy="266.6" r="7.1" data-tip="43 views"></circle>
+          <circle class="map-marker hoverable" cx="420.7" cy="325.3" r="7.1" data-tip="43 views"></circle>
+          <circle class="map-marker hoverable" cx="598.8" cy="182.9" r="7.1" data-tip="42 views"></circle>
+          <circle class="map-marker hoverable" cx="587.1" cy="313.5" r="7.1" data-tip="41 views"></circle>
+          <circle class="map-marker hoverable" cx="496.0" cy="285.6" r="7.2" data-tip="45 views"></circle>
+          <circle class="map-marker hoverable" cx="587.5" cy="259.5" r="7.2" data-tip="45 views"></circle>
+          <circle class="map-marker hoverable" cx="431.5" cy="263.1" r="7.2" data-tip="44 views"></circle>
+          <circle class="map-marker hoverable" cx="531.6" cy="383.6" r="7.2" data-tip="44 views"></circle>
+          <circle class="map-marker hoverable" cx="471.7" cy="142.6" r="7.2" data-tip="44 views"></circle>
+          <circle class="map-marker hoverable" cx="492.8" cy="281.8" r="7.3" data-tip="48 views"></circle>
+          <circle class="map-marker hoverable" cx="71.1" cy="320.3" r="7.3" data-tip="47 views"></circle>
+          <circle class="map-marker hoverable" cx="72.3" cy="329.4" r="7.3" data-tip="46 views"></circle>
+          <circle class="map-marker hoverable" cx="651.6" cy="178.9" r="7.4" data-tip="51 views"></circle>
+          <circle class="map-marker hoverable" cx="415.1" cy="327.6" r="7.4" data-tip="51 views"></circle>
+          <circle class="map-marker hoverable" cx="416.8" cy="18.1" r="7.4" data-tip="50 views"></circle>
+          <circle class="map-marker hoverable" cx="500.0" cy="299.9" r="7.4" data-tip="50 views"></circle>
+          <circle class="map-marker hoverable" cx="281.7" cy="203.3" r="7.4" data-tip="50 views"></circle>
+          <circle class="map-marker hoverable" cx="699.1" cy="462.8" r="7.5" data-tip="52 views"></circle>
+          <circle class="map-marker hoverable" cx="414.4" cy="323.2" r="7.5" data-tip="52 views"></circle>
+          <circle class="map-marker hoverable" cx="483.3" cy="290.2" r="7.5" data-tip="52 views"></circle>
+          <circle class="map-marker hoverable" cx="460.0" cy="274.1" r="7.6" data-tip="55 views"></circle>
+          <circle class="map-marker hoverable" cx="161.6" cy="315.6" r="7.7" data-tip="61 views"></circle>
+          <circle class="map-marker hoverable" cx="480.4" cy="277.6" r="7.7" data-tip="58 views"></circle>
+          <circle class="map-marker hoverable" cx="745.0" cy="198.7" r="7.8" data-tip="64 views"></circle>
+          <circle class="map-marker hoverable" cx="688.0" cy="278.8" r="7.9" data-tip="66 views"></circle>
+          <circle class="map-marker hoverable" cx="278.9" cy="185.9" r="8.0" data-tip="71 views"></circle>
+          <circle class="map-marker hoverable" cx="281.3" cy="182.7" r="8.0" data-tip="71 views"></circle>
+          <circle class="map-marker hoverable" cx="417.5" cy="320.1" r="8.0" data-tip="70 views"></circle>
+          <circle class="map-marker hoverable" cx="161.7" cy="161.4" r="8.0" data-tip="70 views"></circle>
+          <circle class="map-marker hoverable" cx="512.8" cy="374.0" r="8.0" data-tip="70 views"></circle>
+          <circle class="map-marker hoverable" cx="411.7" cy="422.7" r="8.0" data-tip="70 views"></circle>
+          <circle class="map-marker hoverable" cx="691.6" cy="252.9" r="8.0" data-tip="68 views"></circle>
+          <circle class="map-marker hoverable" cx="388.3" cy="393.0" r="8.1" data-tip="74 views"></circle>
+          <circle class="map-marker hoverable" cx="492.4" cy="256.9" r="8.2" data-tip="78 views"></circle>
+          <circle class="map-marker hoverable" cx="407.4" cy="424.8" r="8.2" data-tip="76 views"></circle>
+          <circle class="map-marker hoverable" cx="565.4" cy="132.9" r="8.2" data-tip="75 views"></circle>
+          <circle class="map-marker hoverable" cx="458.4" cy="244.8" r="8.3" data-tip="80 views"></circle>
+          <circle class="map-marker hoverable" cx="650.4" cy="126.0" r="8.4" data-tip="84 views"></circle>
+          <circle class="map-marker hoverable" cx="438.5" cy="256.0" r="8.4" data-tip="84 views"></circle>
+          <circle class="map-marker hoverable" cx="628.0" cy="308.9" r="8.5" data-tip="89 views"></circle>
+          <circle class="map-marker hoverable" cx="783.2" cy="178.5" r="8.7" data-tip="97 views"></circle>
+          <circle class="map-marker hoverable" cx="676.1" cy="411.8" r="8.8" data-tip="99 views"></circle>
+          <circle class="map-marker hoverable" cx="448.1" cy="264.9" r="8.8" data-tip="98 views"></circle>
+          <circle class="map-marker hoverable" cx="531.8" cy="280.2" r="8.9" data-tip="104 views"></circle>
+          <circle class="map-marker hoverable" cx="106.8" cy="259.1" r="8.9" data-tip="104 views"></circle>
+          <circle class="map-marker hoverable" cx="401.4" cy="377.4" r="9.1" data-tip="113 views"></circle>
+          <circle class="map-marker hoverable" cx="421.4" cy="319.4" r="9.1" data-tip="112 views"></circle>
+          <circle class="map-marker hoverable" cx="457.1" cy="259.2" r="9.1" data-tip="111 views"></circle>
+          <circle class="map-marker hoverable" cx="412.2" cy="326.4" r="9.2" data-tip="119 views"></circle>
+          <circle class="map-marker hoverable" cx="418.2" cy="324.2" r="9.3" data-tip="123 views"></circle>
+          <circle class="map-marker hoverable" cx="408.6" cy="329.1" r="9.4" data-tip="127 views"></circle>
+          <circle class="map-marker hoverable" cx="803.7" cy="161.3" r="9.4" data-tip="125 views"></circle>
+          <circle class="map-marker hoverable" cx="537.6" cy="277.4" r="9.6" data-tip="136 views"></circle>
+          <circle class="map-marker hoverable" cx="432.0" cy="150.0" r="9.8" data-tip="147 views"></circle>
+          <circle class="map-marker hoverable" cx="158.5" cy="314.7" r="9.9" data-tip="153 views"></circle>
+          <circle class="map-marker hoverable" cx="480.0" cy="257.3" r="9.9" data-tip="153 views"></circle>
+          <circle class="map-marker hoverable" cx="456.0" cy="239.7" r="10.1" data-tip="162 views"></circle>
+          <circle class="map-marker hoverable" cx="476.8" cy="237.4" r="10.2" data-tip="168 views"></circle>
+          <circle class="map-marker hoverable" cx="460.8" cy="253.4" r="10.2" data-tip="167 views"></circle>
+          <circle class="map-marker hoverable" cx="408.3" cy="227.3" r="10.8" data-tip="202 views"></circle>
+          <circle class="map-marker hoverable" cx="529.4" cy="207.4" r="10.9" data-tip="209 views"></circle>
+          <circle class="map-marker hoverable" cx="453.7" cy="198.8" r="11.0" data-tip="214 views"></circle>
+          <circle class="map-marker hoverable" cx="813.0" cy="70.5" r="11.2" data-tip="222 views"></circle>
+          <circle class="map-marker hoverable" cx="477.2" cy="64.6" r="11.6" data-tip="250 views"></circle>
+          <circle class="map-marker hoverable" cx="53.9" cy="304.1" r="11.8" data-tip="262 views"></circle>
+          <circle class="map-marker hoverable" cx="441.8" cy="387.1" r="12.1" data-tip="287 views"></circle>
+          <circle class="map-marker hoverable" cx="520.1" cy="266.7" r="12.1" data-tip="285 views"></circle>
+          <circle class="map-marker hoverable" cx="420.1" cy="321.8" r="12.9" data-tip="342 views"></circle>
+          <circle class="map-marker hoverable" cx="572.9" cy="136.0" r="14.2" data-tip="451 views"></circle>
+          <circle class="map-marker hoverable" cx="405.3" cy="273.7" r="14.9" data-tip="515 views"></circle>
+          <circle class="map-marker hoverable" cx="278.3" cy="183.3" r="15.0" data-tip="521 views"></circle>
+          <circle class="map-marker hoverable" cx="457.8" cy="275.8" r="15.2" data-tip="546 views"></circle>
+          <circle class="map-marker hoverable" cx="417.2" cy="327.7" r="19.4" data-tip="1,024 views"></circle>
+          <text class="map-marker-label" x="417.2" y="331.2">1024</text>
+          <circle class="map-marker hoverable" cx="454.2" cy="196.8" r="23.1" data-tip="1,577 views"></circle>
+          <text class="map-marker-label" x="454.2" y="200.3">1577</text>
+          <circle class="map-marker hoverable" cx="461.2" cy="258.8" r="24.4" data-tip="1,812 views"></circle>
+          <text class="map-marker-label" x="461.2" y="262.3">1812</text>
+          <circle class="map-marker hoverable" cx="460.1" cy="255.7" r="24.8" data-tip="1,874 views"></circle>
+          <text class="map-marker-label" x="460.1" y="259.2">1874</text>
+          <circle class="map-marker hoverable" cx="493.8" cy="288.2" r="25.8" data-tip="2,065 views"></circle>
+          <text class="map-marker-label" x="493.8" y="291.7">2065</text>
+          <circle class="map-marker hoverable" cx="463.2" cy="262.7" r="26.0" data-tip="2,102 views"></circle>
+          <text class="map-marker-label" x="463.2" y="266.2">2102</text>
+          <circle class="map-marker hoverable" cx="430.9" cy="259.3" r="27.0" data-tip="2,304 views"></circle>
+          <text class="map-marker-label" x="430.9" y="262.8">2304</text>
+          <circle class="map-marker hoverable" cx="463.5" cy="254.8" r="33.8" data-tip="3,861 views"></circle>
+          <text class="map-marker-label" x="463.5" y="258.3">3861</text>
+        </svg>
+      </div>
+      <p class="map-caption">Buyers from across the country are discovering this property.</p>
+      <p class="map-privacy-note">Marker positions are approximate and aggregated for buyer privacy; exact visitor addresses are not reported. 188 mapped clusters shown within the continental U.S. frame.</p>
+    </div>
+  </section>
 
   <!-- ---------- Month in review (monthly/quarterly rollups only) ---------- -->
   <section id="month-in-review">
@@ -1056,7 +1386,7 @@ Commercial
         <tr>
           <td>2026-W31</td>
           <td>Jul 27 – Aug 2</td>
-          <td>1,251</td>
+          <td>38,722</td>
           <td>25</td>
           <td>--</td>
         </tr>
@@ -1071,14 +1401,14 @@ Commercial
   <section id="market-position">
     <div class="section-head">
       <h2>Market Position</h2>
-      <p class="section-sub">Where this listing stands, using only MCG's own tracked data</p>
+      <p class="section-sub">Your listing's standing within MCG's active portfolio, based solely on data MCG has verified</p>
     </div>
 
     <div class="stat-grid">
       <div class="stat-tile highlight">
         <div class="label">Portfolio Exposure Rank</div>
-        <div class="value">#2 of 14</div>
-        <div class="sub">Ranks #2 of 14 active MCG listings for buyer views this period.</div>
+        <div class="value">#10 of 14</div>
+        <div class="sub">Ranks #10 of 14 active MCG listings for buyer views this period.</div>
       </div>
       <div class="stat-tile">
         <div class="label">Price Positioning</div>
@@ -1122,7 +1452,7 @@ Commercial
     <div class="section-head">
       <h2>Portfolio summary &amp; what's next</h2>
     </div>
-    <p class="insight-summary">3300 Blue Hill Rd has generated 1,250 page views on the network&#39;s commercial marketplace, carrying a search score of 95/100 (25 offering memorandum opens, 227 unique visitors). 3300 Blue Hill Rd logged 1273 tracked views this period, the first period with comparable data. 3300 Blue Hill Rd sits in the $500K-$999K tier, where regional demand is softening relative to sub-$500K; Benton County median DOM is currently 53 days. The period produced 25 tracked leads across the MCG website, portal, and chat channels.</p>
+    <p class="insight-summary">3300 Blue Hill Rd has been viewed 37,459 times on MCG&#39;s national syndication network with 858 top-of-search placements and 1,309 display ad views across national publications. The listing most recently earned the network&#39;s &#34;Now considered Popular&#34; recognition (Apr 10, 2026). 3300 Blue Hill Rd logged 38735 tracked views this period, the first period with comparable data. 3300 Blue Hill Rd sits in the $500K-$999K tier, where regional demand is softening relative to sub-$500K; Benton County median DOM is currently 53 days. The period produced 25 tracked leads across the MCG website, portal, and chat channels.</p>
     <div class="plan-cols">
       <div class="card plan-card recs">
         <h3>Recommendations</h3>
