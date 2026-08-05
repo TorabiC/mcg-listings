@@ -411,15 +411,15 @@ HOMES_TRAFFIC_LABEL_MAP = {
     "niche.com": "Lifestyle Network",
 }
 
-# homes.com's own agent-vs-consumer split ratio, from Cameron's reference
-# screenshot of homes.com's Activity legend ("Agent Views 139 / Consumer
-# Views 22,626 / Combined Views 22,765" -> 139/22765). The intake data MCG
-# receives from homes.com does not include a per-day agent/consumer split,
-# so the Activity chart's Agent/Consumer toggle applies this observed ratio
-# to each day's combined total rather than inventing an unrelated number.
-# This is an approximation, not a measured split -- documented here and in
-# the deliver5 report.
-HOMES_AGENT_VIEW_RATIO = 139 / 22765
+# NOTE: an earlier version of this file approximated a per-day Agent/Consumer
+# split for the Activity chart by applying a single observed ratio (from a
+# different listing/period) to each day's combined total. That produced a
+# plausible-looking but fabricated daily series -- the homes.com intake never
+# actually reports a per-day agent/consumer breakdown, only per-day COMBINED
+# views (the `daily` object) and, separately, real Agent/Consumer period
+# TOTALS (the `activity` object). build_homes_mirror_activity below now only
+# charts the real daily Combined series and surfaces the real Agent/Consumer
+# totals as stat chips -- see that function's docstring.
 
 HOMES_GLOSSARY = [
     ("Total Views", "Every time a home-shopper opened this listing across MCG's national syndication network during the reporting period."),
@@ -472,27 +472,30 @@ def build_homes_mirror_traffic(traffic_sources_raw: list[dict]) -> dict:
     return {"rows": rows, "total": total, "available": bool(rows)}
 
 
-def build_homes_mirror_activity(daily: dict) -> dict:
-    """Total / Consumer / Agent bar-chart series for the homes-mirror
-    Activity section's dropdown toggle. See HOMES_AGENT_VIEW_RATIO above."""
+def build_homes_mirror_activity(daily: dict, activity_totals: dict | None = None) -> dict:
+    """Daily Combined-Views bar-chart series for the homes-mirror Activity
+    section, plus (when the portal snapshot reports them) the real
+    Agent/Consumer period TOTALS as honest stat chips.
+
+    homes.com's intake gives us a per-day COMBINED total (`daily`) but never
+    a per-day agent/consumer split -- only period totals for those, in the
+    separate `activity` object (`agent_views`/`consumer_views`/
+    `combined_views`). The daily chart therefore only ever plots the real
+    Combined series; Agent/Consumer render as stat chips carrying the real
+    period totals, not as a fabricated second daily series (see the note
+    above this function)."""
     if not daily:
-        return {"available": False}
+        return {"available": False, "agent_consumer_available": False}
     items = sorted(daily.items())
     bars = []
-    total_combined = total_agent = total_consumer = 0
+    total_combined = 0
     for d, v in items:
         v = int(v or 0)
-        agent = round(v * HOMES_AGENT_VIEW_RATIO)
-        consumer = v - agent
         total_combined += v
-        total_agent += agent
-        total_consumer += consumer
-        bars.append({"date": d, "date_short": fmt_date_short(d), "total": v, "agent": agent, "consumer": consumer})
-    max_val = max((b["total"] for b in bars), default=0) or 1
+        bars.append({"date": d, "date_short": fmt_date_short(d), "combined": v})
+    max_val = max((b["combined"] for b in bars), default=0) or 1
     for b in bars:
-        b["total_pct"] = round(b["total"] / max_val * 100, 1)
-        b["agent_pct"] = round(b["agent"] / max_val * 100, 1)
-        b["consumer_pct"] = round(b["consumer"] / max_val * 100, 1)
+        b["combined_pct"] = round(b["combined"] / max_val * 100, 1)
     n = len(bars)
     label_every = max(1, round(n / 7))
     label_idxs = set(range(0, n, label_every))
@@ -500,12 +503,19 @@ def build_homes_mirror_activity(daily: dict) -> dict:
         label_idxs.add(n - 1)
     for i, b in enumerate(bars):
         b["show_label"] = i in label_idxs
+
+    activity_totals = activity_totals or {}
+    agent_total = activity_totals.get("agent_views")
+    consumer_total = activity_totals.get("consumer_views")
+    agent_consumer_available = agent_total is not None and consumer_total is not None
+
     return {
         "available": True,
         "bars": bars,
         "total_combined": total_combined,
-        "total_agent": total_agent,
-        "total_consumer": total_consumer,
+        "agent_consumer_available": agent_consumer_available,
+        "total_agent": int(agent_total or 0),
+        "total_consumer": int(consumer_total or 0),
     }
 
 
@@ -518,12 +528,10 @@ VISITOR_MAP_LNG_MIN = -98.5
 VISITOR_MAP_LNG_MAX = -91.8
 
 
-def build_homes_mirror_leaflet_markers(vm_raw: dict) -> dict:
-    """Converts the homes.com intake's viewport-normalized x/y marker
-    coordinates into lat/lng for the interactive Leaflet map, linearly
-    against VISITOR_MAP_LAT/LNG_*. Clips out-of-range markers same as the
-    static SVG buyer map (build_visitor_map)."""
-    markers_raw = vm_raw.get("markers") or []
+def _homes_mirror_convert_markers(markers_raw: list[dict]) -> tuple[list[dict], int, int]:
+    """Shared x/y -> lat/lng conversion for both the Total Views marker set
+    and the optional Engaged Buyer Views cluster layer (see
+    build_homes_mirror_leaflet_markers)."""
     clipped = [m for m in markers_raw if 0.0 <= m.get("x", -1) <= 1.0 and 0.0 <= m.get("y", -1) <= 1.0]
     out = []
     for m in clipped:
@@ -536,12 +544,43 @@ def build_homes_mirror_leaflet_markers(vm_raw: dict) -> dict:
         # dominate the interactive map at typical zoom levels.
         r = round(5 + (max(n, 0) ** 0.5) * 0.42, 1)
         out.append({"lat": round(lat, 5), "lng": round(lng, 5), "n": n, "r": r})
+    return out, len(clipped), len(markers_raw) - len(clipped)
+
+
+def build_homes_mirror_leaflet_markers(vm_raw: dict) -> dict:
+    """Converts the homes.com intake's viewport-normalized x/y marker
+    coordinates into lat/lng for the interactive Leaflet map, linearly
+    against VISITOR_MAP_LAT/LNG_*. Clips out-of-range markers same as the
+    static SVG buyer map (build_visitor_map).
+
+    Also looks for an optional `engaged_clusters` array on the same
+    visitor_map object (same {n,x,y} shape as `markers`, see
+    intake/README.md) -- a higher-buyer-intent cluster breakdown the portal
+    dashboard doesn't always expose. When present, it powers the Visitor
+    Map's 'Engaged Buyer Views' toggle with a real second layer; when
+    absent, `engaged.available` is False and report.html does not render
+    that toggle button at all (never a disabled/dead button standing in for
+    data that doesn't exist)."""
+    markers_raw = vm_raw.get("markers") or []
+    out, clipped_count, dropped_count = _homes_mirror_convert_markers(markers_raw)
+
+    engaged_raw = vm_raw.get("engaged_clusters") or []
+    engaged_out, engaged_clipped, engaged_dropped = _homes_mirror_convert_markers(engaged_raw)
+    engaged = {
+        "available": bool(engaged_out),
+        "markers": engaged_out,
+        "total_mapped_views": sum(m["n"] for m in engaged_out),
+        "clipped_count": engaged_clipped,
+        "dropped_count": engaged_dropped,
+    }
+
     return {
         "available": bool(out),
         "markers": out,
         "total_mapped_views": vm_raw.get("total_mapped_views", 0),
-        "clipped_count": len(clipped),
-        "dropped_count": len(markers_raw) - len(clipped),
+        "clipped_count": clipped_count,
+        "dropped_count": dropped_count,
+        "engaged": engaged,
     }
 
 
@@ -570,7 +609,7 @@ def build_homes_mirror(homes_raw: dict, homes_exposure: dict) -> dict:
         "stat_row_1": stat_row_1,
         "stat_row_2": stat_row_2,
         "traffic": build_homes_mirror_traffic(homes_raw.get("traffic_sources") or []),
-        "activity_chart": build_homes_mirror_activity(homes_raw.get("daily") or {}),
+        "activity_chart": build_homes_mirror_activity(homes_raw.get("daily") or {}, homes_raw.get("activity")),
         "leaflet": build_homes_mirror_leaflet_markers(homes_raw.get("visitor_map") or {}),
         "retargeting": {
             "ad_views": retarget_raw.get("ad_views", 0),

@@ -163,6 +163,22 @@ markers the dashboard renders off the visible US frame (e.g. Alaska/Hawaii
 insets or map padding) and the report clips them rather than guessing a
 position.
 
+**`visitor_map.engaged_clusters`** (optional): same shape as `markers`
+(array of `{"n": <count>, "x": <0-1>, "y": <0-1>}`), but sourced from the
+portal dashboard's higher-buyer-intent / "engaged" visitor view (some
+portals expose a separate map layer or filter for visitors who took a
+deeper action — e.g. saved the listing, requested a tour, viewed the floor
+plan — rather than just loading the listing page). Read it off the
+dashboard the same way as `markers`: pixel position of each engaged
+cluster divided by the map viewport's width/height. Leave this key out
+entirely if the portal dashboard you're harvesting from doesn't expose an
+engaged/buyer-intent map view this period — do not approximate it by
+filtering or re-scaling the regular `markers` array, and do not include an
+empty array "as a placeholder." `collect.py`/`generate.py` only render the
+report's "Engaged Buyer Views" map toggle when this key is present with at
+least one in-range cluster; otherwise the toggle button is omitted from
+the report entirely rather than shipping disabled.
+
 **Crexi** (`crexi.json`) — object shape:
 
 ```json
