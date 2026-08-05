@@ -462,7 +462,7 @@ TRAFFIC_ROW_COLORS = ["#AB012E", "#16162A", "#C4A35A", "#3568C9", "#1BAF7A", "#E
 # HERO_CARD_STYLE_OVERRIDE env var is a dev-only convenience for rendering
 # side-by-side variant comparisons without editing this file each time --
 # production runs are driven by the HERO_CARD_STYLE constant only.
-HERO_CARD_STYLE = os.environ.get("HERO_CARD_STYLE_OVERRIDE", "a")
+HERO_CARD_STYLE = os.environ.get("HERO_CARD_STYLE_OVERRIDE", "b")
 
 
 def build_homes_mirror_traffic(traffic_sources_raw: list[dict]) -> dict:
