@@ -35,7 +35,7 @@
     --gray-400:#9A9AA6;
     --gray-300:#C7C7D0;
     --gray-100:#ECECF1;
-    --surface:#F7F5F0;
+    --surface:#F7F7F9;
     --white:#FFFFFF;
     --good:#1E7B4D;
     --warn:#B4790E;
@@ -50,7 +50,7 @@
     margin:0;
     font-family:var(--font);
     color:var(--gray-700);
-    background:var(--gray-100);
+    background:var(--white);
     -webkit-font-smoothing:antialiased;
     line-height:1.55;
   }
@@ -86,8 +86,13 @@
     display:flex;flex-direction:column;
   }
   .hero-full.has-photo::before{
+    /* Lightened scrim (was .62/.42/.72) so the property photo reads clearly,
+       matching the listing page's un-tinted gallery hero -- text legibility
+       now comes from the opaque hero-card/agent-card, not full-image tint.
+       Kept slightly stronger at the very top/bottom where text and the
+       outlined Print/Save PDF button sit directly on the photo. */
     content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(16,16,42,.62) 0%,rgba(16,16,42,.42) 38%,rgba(16,16,42,.72) 100%);
+    background:linear-gradient(180deg,rgba(16,16,42,.42) 0%,rgba(16,16,42,.14) 38%,rgba(16,16,42,.52) 100%);
   }
   .hero-full.no-photo{background:radial-gradient(120% 140% at 15% 0%,var(--navy-2) 0%,var(--navy) 46%,#0a0a18 100%);}
   .hero-inner{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:28px 0 34px;}
@@ -107,9 +112,10 @@
 
   .hero-cards{display:flex;flex-direction:column;gap:10px;max-width:420px;margin-top:auto;}
   .hero-card{
-    background:rgba(255,255,255,0.97);color:var(--gray-900);border-radius:10px;padding:18px 20px;
-    box-shadow:0 10px 32px rgba(7,13,28,0.35);
+    position:relative;overflow:hidden;background:#fff;color:var(--gray-900);border-radius:12px;padding:18px 20px;
+    box-shadow:0 8px 24px rgba(22,22,42,.12);
   }
+  .hero-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-light) 0%,var(--gold) 50%,var(--gold-light) 100%);}
   .hero-chip{
     display:inline-flex;align-items:center;gap:6px;background:var(--crimson);color:#fff;
     font-weight:900;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;
@@ -123,7 +129,8 @@
     font-weight:800;font-size:11px;letter-spacing:0.04em;text-transform:uppercase;padding:3px 9px;border-radius:6px;margin-left:8px;
   }
   .agent-card{
-    background:rgba(255,255,255,0.92);border-radius:10px;padding:12px 16px;font-size:12.5px;color:var(--gray-700);
+    background:#fff;border-radius:12px;padding:12px 16px;font-size:12.5px;color:var(--gray-700);
+    box-shadow:0 8px 24px rgba(22,22,42,.12);
   }
   .agent-card .ac-name{display:block;font-size:14.5px;font-weight:900;color:var(--navy);}
   .agent-card .ac-firm{display:block;margin-top:1px;}
@@ -388,7 +395,12 @@
      ========================================================== */
   .hm-hero{position:relative;min-height:420px;overflow:hidden;color:#fff;background-color:var(--navy);display:flex;flex-direction:column;justify-content:space-between;}
   .hm-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;z-index:0;}
-  .hm-hero.has-photo::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(16,16,42,.55) 0%,rgba(16,16,42,.08) 30%,rgba(16,16,42,.78) 100%);}
+  /* Lightened scrim (was .55/.08/.78) so the photo reads clearly like the
+     listing page's un-tinted gallery hero -- the hero-bottom text is fully
+     backed by the opaque .hm-card stack below (see change #1), and the
+     top-bar promo badge/pill buttons already carry solid fills, so the
+     gradient no longer needs to carry legibility on its own. */
+  .hm-hero.has-photo::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(16,16,42,.30) 0%,rgba(16,16,42,.04) 30%,rgba(16,16,42,.40) 100%);}
   .hm-hero.no-photo{background:radial-gradient(120% 140% at 15% 0%,var(--navy-2) 0%,var(--navy) 46%,#0a0a18 100%);}
   .hm-hero-topbar{position:relative;z-index:3;display:flex;justify-content:flex-end;align-items:flex-start;padding:16px 20px;gap:12px;flex-wrap:wrap;}
   .hm-chip-promo{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--navy);font-weight:900;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;padding:6px 13px;border-radius:999px;box-shadow:0 4px 10px rgba(0,0,0,.25);}
@@ -405,25 +417,25 @@
      #F5F1EA, 1px #E2D9CC border, 14px radius, 0 4px 24px rgba(0,0,0,.1)
      shadow -- was a translucent white 10px-radius card with a heavier
      photo-legibility shadow (0 10px 30px rgba(7,13,28,.32)). */
-  /* FINAL APPROVAL ROUND: white card (was warm-cream #F5F1EA) per
-     Cameron's portal-style agent-card reference screenshot -- MCG colors,
-     white rounded ~14px cards with a soft shadow. */
-  .hm-card{background:#fff;color:var(--navy);border:1px solid var(--gray-100);border-radius:14px;padding:18px 20px;box-shadow:0 10px 30px rgba(16,16,42,.12);}
-  .hm-card .hm-card-title{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-500);margin-bottom:6px;}
+  /* REFINEMENT ROUND (boutique pass): crisp white card, tighter radius
+     (12px, within the 10-12px system range), a slim gold hairline accent
+     across the top edge in place of a heavier border, and a softer
+     shadow tuned to the listing-page bundle's card language
+     (0 8px 24px rgba(22,22,42,.12), was 0 10px 30px rgba(16,16,42,.12)). */
+  .hm-card{position:relative;overflow:hidden;background:#fff;color:var(--navy);border:1px solid var(--gray-100);border-radius:12px;padding:20px 22px 19px;box-shadow:0 8px 24px rgba(22,22,42,.12);}
+  .hm-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-light) 0%,var(--gold) 50%,var(--gold-light) 100%);}
+  .hm-card .hm-card-title{font-size:10.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-500);margin-bottom:7px;}
   .hm-card h1{font-family:var(--font-serif);font-size:20px;font-weight:800;margin:0 0 1px;color:var(--navy);line-height:1.2;}
-  .hm-card .hm-city{font-size:12.5px;color:var(--gray-500);font-weight:700;margin-bottom:8px;}
+  .hm-card .hm-city{font-size:12px;color:var(--gray-500);font-weight:700;margin-bottom:9px;}
   /* Price typography scale matches templates/listing.html's .cc-price
-     exactly: font-size:32px;font-weight:900;letter-spacing:-.5px;line-height:1
-     (was 25px/800, no letter-spacing/line-height set). */
+     exactly: font-size:32px;font-weight:900;letter-spacing:-.5px;line-height:1. */
   .hm-card .hm-price{font-family:var(--font-serif);font-size:32px;font-weight:900;color:var(--navy);letter-spacing:-0.5px;line-height:1;}
   /* Gold status dot + uppercase label -- same treatment as .cc-main's
      "ACTIVE LISTING · MLS #..." line on the live listing page. */
-  .hm-card .hm-status-row{display:flex;align-items:center;gap:6px;margin:6px 0 2px;}
-  .hm-card .hm-status-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;display:inline-block;}
-  /* Gold text, matching the bundle's own "FOR SALE LISTING · MLS #..."
-     line color (var(--gold)) exactly -- was a muted amber #8a6d1f. */
-  .hm-card .hm-status-label{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;}
-  .hm-card .hm-meta{font-size:12px;color:var(--gray-700);margin-top:6px;font-weight:700;}
+  .hm-card .hm-status-row{display:flex;align-items:center;gap:6px;margin:9px 0 2px;}
+  .hm-card .hm-status-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;display:inline-block;}
+  .hm-card .hm-status-label{font-size:10.5px;font-weight:700;color:var(--gold);letter-spacing:.07em;text-transform:uppercase;}
+  .hm-card .hm-meta{font-size:12px;color:var(--gray-700);margin-top:7px;font-weight:700;}
   .hm-agent-card{display:flex;align-items:center;gap:12px;}
   /* Gold ring around the logo mark -- same treatment as templates/listing.html's
      .agent-bio-photo / mini avatar rings (border:2-3px solid var(--gold) +
@@ -436,7 +448,13 @@
   .hm-agent-firm{display:block;font-size:12px;color:var(--gray-700);}
   .hm-agent-phone{display:block;font-size:12.5px;font-weight:800;color:var(--crimson);text-decoration:none;margin-top:2px;}
 
-  .hm-body{background:var(--surface);}
+  /* Was var(--surface), a warm cream (#F7F5F0) that read pinkish next to
+     the crimson/gold accents -- switched to clean white to match
+     templates/listing.html's body{background:var(--white)} treatment.
+     --surface is now a very light neutral gray reserved for the
+     occasional section-separator band (e.g. .hm-banner's container),
+     never the page canvas itself. */
+  .hm-body{background:var(--white);}
   /* Container max-width/gutter matched to the live listing pages -- confirmed
      identical (1260px / 24px side padding) across templates/listing.html's
      .page-wrap/.price-wrap/.gallery-inner/.mcg-footer-inner rules and the
@@ -475,13 +493,20 @@
 
   .hm-chart-wrap{position:relative;height:330px;margin-top:8px;}
   .hm-chart-svg{width:100%;height:100%;}
-  .hm-chart-svg .hm-bar{fill:rgba(22,22,42,.85);cursor:pointer;}
+  /* Combined Views is the only series the daily chart ever plots (see
+     build_homes_mirror_activity) -- bar color matches the Combined swatch
+     in the legend below 1:1, navy, same token used for the "Combined
+     Views" dot. Was a fixed rgba(22,22,42,.85) that didn't correspond to
+     any single legend color and stayed the same regardless of which
+     toggle option was selected. */
+  .hm-chart-svg .hm-bar{fill:var(--navy);}
   .hm-chart-svg .hm-bar:hover{fill:var(--gold);}
   .hm-chart-svg .hm-gridline{stroke:var(--gray-100);stroke-width:1;}
   .hm-chart-svg .hm-axis-label{font-size:9.5px;fill:var(--gray-500);}
   .hm-chart-svg .hm-date-label{font-size:9px;fill:var(--gray-500);}
-  .hm-legend{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:14px;font-size:12.5px;color:var(--gray-700);font-weight:700;}
+  .hm-legend{display:flex;flex-wrap:wrap;gap:16px 22px;justify-content:center;margin-top:14px;font-size:12.5px;color:var(--gray-700);font-weight:700;}
   .hm-legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;}
+  .hm-legend .hm-legend-note{font-weight:600;color:var(--gray-500);font-size:10.5px;margin-left:2px;}
 
   .hm-traffic-head{display:grid;grid-template-columns:1fr 90px;font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:var(--gray-500);border-bottom:1px solid var(--gray-300);padding-bottom:8px;margin-bottom:6px;}
   .hm-traffic-row{padding:12px 0;border-bottom:1px solid var(--gray-100);}
@@ -614,17 +639,22 @@
 
   /* Portal-style agent card (Cameron's reference screenshot), MCG-
      branded -- replaces the old horizontal mini agent card. */
-  .ha-top{display:flex;align-items:stretch;gap:0;margin-bottom:10px;}
-  .ha-photo{flex:none;width:72px;height:72px;border-radius:8px;overflow:hidden;background:var(--navy-tint);box-shadow:0 2px 8px rgba(0,0,0,.15);}
+  /* Agent card recut to the listing-page bundle's .agent-bio-photo language
+     (circular gold-ringed headshot + plain serif name, templates/listing.html
+     lines ~293-298) in place of the old square photo + full-width solid
+     crimson name block, which read as busy next to the refined property
+     card above it. */
+  .ha-top{display:flex;align-items:center;gap:13px;margin-bottom:11px;}
+  .ha-photo{flex:none;width:56px;height:56px;border-radius:50%;overflow:hidden;border:3px solid var(--gold);box-shadow:0 2px 8px rgba(22,22,42,.18);}
   .ha-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;}
-  .ha-namechip{background:var(--crimson);color:#fff;font-weight:900;font-size:14px;padding:0 14px;border-radius:0 8px 8px 0;flex:1;min-width:0;line-height:1.2;display:flex;align-items:center;}
-  .ha-role{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-500);margin-top:2px;}
-  .ha-firm{font-size:12.5px;color:var(--gray-500);margin-top:2px;}
-  .ha-bubble{background:var(--gray-100);color:var(--gray-900);border-radius:14px;border-top-left-radius:4px;padding:10px 14px;font-size:12.5px;line-height:1.5;margin:12px 0;}
-  .ha-btn{display:block;width:100%;text-align:center;background:var(--crimson);color:#fff;font-weight:900;font-size:13px;letter-spacing:.02em;padding:12px;border-radius:8px;text-decoration:none;box-sizing:border-box;}
+  .ha-namechip{background:none;color:var(--navy);font-family:var(--font-serif);font-weight:800;font-size:17px;line-height:1.25;flex:1;min-width:0;padding:0;border-radius:0;}
+  .ha-role{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#7A5E10;margin-top:10px;}
+  .ha-firm{font-size:12px;color:var(--gray-500);margin-top:2px;margin-bottom:1px;}
+  .ha-bubble{background:var(--navy-tint);color:var(--navy);border-radius:12px;border-top-left-radius:4px;padding:10px 13px;font-size:12px;line-height:1.5;margin:12px 0;}
+  .ha-btn{display:block;width:100%;text-align:center;background:var(--crimson);color:#fff;font-weight:800;font-size:12.5px;letter-spacing:.03em;padding:11px;border-radius:999px;text-decoration:none;box-sizing:border-box;transition:background .15s ease;}
   .ha-btn:hover{background:var(--crimson-2);}
-  .ha-phone{display:block;text-align:center;font-weight:900;font-size:14px;color:var(--navy);text-decoration:none;margin-top:10px;}
-  .ha-footer{text-align:center;font-size:10.5px;color:var(--gray-500);margin-top:8px;line-height:1.4;}
+  .ha-phone{display:block;text-align:center;font-weight:900;font-size:13.5px;color:var(--navy);text-decoration:none;margin-top:10px;}
+  .ha-footer{text-align:center;font-size:10px;color:var(--gray-400);margin-top:9px;line-height:1.4;}
 
   /* Minimal end-of-report strip -- replaces the dark .site-footer for
      this residential variant only (global chrome comes from the
@@ -663,8 +693,11 @@
     .hm-section{page-break-inside:avoid;padding:16px 0;}
     #hm-reach,#hm-channels,#hm-activityfeed,#hm-visitormap,#hm-glossary{page-break-before:always;}
     .hm-hero{min-height:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .hm-card,.hm-channel-card{box-shadow:none;}
+    body,.hm-body{background:#fff;}
   }
 </style>
+<meta name="copyright" content="© 2026 Mason Capital Group. All Rights Reserved. Proprietary material — no use, reproduction, or implementation without MCG's prior written consent.">
 </head>
 <body>
 <a class="skip-link" href="#summary">Skip to report content</a>
@@ -1084,5 +1117,8 @@ function mcgToggleTable(id){
 </script>
 
 <img src="https://mcg-marketing-hub.azurewebsites.net/api/reports/beacon/18772-davis-rd/2910c2fb.gif" width="1" height="1" alt="" loading="lazy" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;border:0;">
+
+<!-- MCG-IP-NOTICE v1 -->
+<div id="mcg-ip-notice" style="background:#1a2744;color:#cfd6e4;font-family:Lato,Arial,sans-serif;font-size:10.5px;line-height:1.65;padding:16px 26px;text-align:left;"><strong style="color:#ffffff;letter-spacing:.4px;">© 2026 Mason Capital Group. All Rights Reserved.</strong><br>This material — including all concepts, strategies, analyses, designs, formats, functionality, and ideas contained or embodied herein — is the proprietary intellectual property of Mason Capital Group (&quot;MCG&quot;) and is furnished solely for the recipient&rsquo;s evaluation. No part of this material may be used, reproduced, distributed, disclosed, or implemented, in whole or in part, directly or indirectly, or through any third party, without the prior written consent of MCG. Unauthorized use — including implementation of any concept, strategy, or development plan contained herein through another broker, builder, developer, or other party — is strictly prohibited. Review or acceptance of this material constitutes acknowledgment of these terms.</div>
 </body>
 </html>

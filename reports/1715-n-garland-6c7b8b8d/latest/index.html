@@ -41,7 +41,7 @@
     --gray-400:#9A9AA6;
     --gray-300:#C7C7D0;
     --gray-100:#ECECF1;
-    --surface:#F7F5F0;
+    --surface:#F7F7F9;
     --white:#FFFFFF;
     --good:#1E7B4D;
     --warn:#B4790E;
@@ -56,7 +56,7 @@
     margin:0;
     font-family:var(--font);
     color:var(--gray-700);
-    background:var(--gray-100);
+    background:var(--white);
     -webkit-font-smoothing:antialiased;
     line-height:1.55;
   }
@@ -92,8 +92,13 @@
     display:flex;flex-direction:column;
   }
   .hero-full.has-photo::before{
+    /* Lightened scrim (was .62/.42/.72) so the property photo reads clearly,
+       matching the listing page's un-tinted gallery hero -- text legibility
+       now comes from the opaque hero-card/agent-card, not full-image tint.
+       Kept slightly stronger at the very top/bottom where text and the
+       outlined Print/Save PDF button sit directly on the photo. */
     content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(16,16,42,.62) 0%,rgba(16,16,42,.42) 38%,rgba(16,16,42,.72) 100%);
+    background:linear-gradient(180deg,rgba(16,16,42,.42) 0%,rgba(16,16,42,.14) 38%,rgba(16,16,42,.52) 100%);
   }
   .hero-full.no-photo{background:radial-gradient(120% 140% at 15% 0%,var(--navy-2) 0%,var(--navy) 46%,#0a0a18 100%);}
   .hero-inner{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:28px 0 34px;}
@@ -113,9 +118,10 @@
 
   .hero-cards{display:flex;flex-direction:column;gap:10px;max-width:420px;margin-top:auto;}
   .hero-card{
-    background:rgba(255,255,255,0.97);color:var(--gray-900);border-radius:10px;padding:18px 20px;
-    box-shadow:0 10px 32px rgba(7,13,28,0.35);
+    position:relative;overflow:hidden;background:#fff;color:var(--gray-900);border-radius:12px;padding:18px 20px;
+    box-shadow:0 8px 24px rgba(22,22,42,.12);
   }
+  .hero-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-light) 0%,var(--gold) 50%,var(--gold-light) 100%);}
   .hero-chip{
     display:inline-flex;align-items:center;gap:6px;background:var(--crimson);color:#fff;
     font-weight:900;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;
@@ -129,7 +135,8 @@
     font-weight:800;font-size:11px;letter-spacing:0.04em;text-transform:uppercase;padding:3px 9px;border-radius:6px;margin-left:8px;
   }
   .agent-card{
-    background:rgba(255,255,255,0.92);border-radius:10px;padding:12px 16px;font-size:12.5px;color:var(--gray-700);
+    background:#fff;border-radius:12px;padding:12px 16px;font-size:12.5px;color:var(--gray-700);
+    box-shadow:0 8px 24px rgba(22,22,42,.12);
   }
   .agent-card .ac-name{display:block;font-size:14.5px;font-weight:900;color:var(--navy);}
   .agent-card .ac-firm{display:block;margin-top:1px;}
@@ -394,7 +401,12 @@
      ========================================================== */
   .hm-hero{position:relative;min-height:420px;overflow:hidden;color:#fff;background-color:var(--navy);display:flex;flex-direction:column;justify-content:space-between;}
   .hm-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;z-index:0;}
-  .hm-hero.has-photo::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(16,16,42,.55) 0%,rgba(16,16,42,.08) 30%,rgba(16,16,42,.78) 100%);}
+  /* Lightened scrim (was .55/.08/.78) so the photo reads clearly like the
+     listing page's un-tinted gallery hero -- the hero-bottom text is fully
+     backed by the opaque .hm-card stack below (see change #1), and the
+     top-bar promo badge/pill buttons already carry solid fills, so the
+     gradient no longer needs to carry legibility on its own. */
+  .hm-hero.has-photo::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(16,16,42,.30) 0%,rgba(16,16,42,.04) 30%,rgba(16,16,42,.40) 100%);}
   .hm-hero.no-photo{background:radial-gradient(120% 140% at 15% 0%,var(--navy-2) 0%,var(--navy) 46%,#0a0a18 100%);}
   .hm-hero-topbar{position:relative;z-index:3;display:flex;justify-content:flex-end;align-items:flex-start;padding:16px 20px;gap:12px;flex-wrap:wrap;}
   .hm-chip-promo{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--navy);font-weight:900;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;padding:6px 13px;border-radius:999px;box-shadow:0 4px 10px rgba(0,0,0,.25);}
@@ -411,25 +423,25 @@
      #F5F1EA, 1px #E2D9CC border, 14px radius, 0 4px 24px rgba(0,0,0,.1)
      shadow -- was a translucent white 10px-radius card with a heavier
      photo-legibility shadow (0 10px 30px rgba(7,13,28,.32)). */
-  /* FINAL APPROVAL ROUND: white card (was warm-cream #F5F1EA) per
-     Cameron's portal-style agent-card reference screenshot -- MCG colors,
-     white rounded ~14px cards with a soft shadow. */
-  .hm-card{background:#fff;color:var(--navy);border:1px solid var(--gray-100);border-radius:14px;padding:18px 20px;box-shadow:0 10px 30px rgba(16,16,42,.12);}
-  .hm-card .hm-card-title{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-500);margin-bottom:6px;}
+  /* REFINEMENT ROUND (boutique pass): crisp white card, tighter radius
+     (12px, within the 10-12px system range), a slim gold hairline accent
+     across the top edge in place of a heavier border, and a softer
+     shadow tuned to the listing-page bundle's card language
+     (0 8px 24px rgba(22,22,42,.12), was 0 10px 30px rgba(16,16,42,.12)). */
+  .hm-card{position:relative;overflow:hidden;background:#fff;color:var(--navy);border:1px solid var(--gray-100);border-radius:12px;padding:20px 22px 19px;box-shadow:0 8px 24px rgba(22,22,42,.12);}
+  .hm-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-light) 0%,var(--gold) 50%,var(--gold-light) 100%);}
+  .hm-card .hm-card-title{font-size:10.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-500);margin-bottom:7px;}
   .hm-card h1{font-family:var(--font-serif);font-size:20px;font-weight:800;margin:0 0 1px;color:var(--navy);line-height:1.2;}
-  .hm-card .hm-city{font-size:12.5px;color:var(--gray-500);font-weight:700;margin-bottom:8px;}
+  .hm-card .hm-city{font-size:12px;color:var(--gray-500);font-weight:700;margin-bottom:9px;}
   /* Price typography scale matches templates/listing.html's .cc-price
-     exactly: font-size:32px;font-weight:900;letter-spacing:-.5px;line-height:1
-     (was 25px/800, no letter-spacing/line-height set). */
+     exactly: font-size:32px;font-weight:900;letter-spacing:-.5px;line-height:1. */
   .hm-card .hm-price{font-family:var(--font-serif);font-size:32px;font-weight:900;color:var(--navy);letter-spacing:-0.5px;line-height:1;}
   /* Gold status dot + uppercase label -- same treatment as .cc-main's
      "ACTIVE LISTING · MLS #..." line on the live listing page. */
-  .hm-card .hm-status-row{display:flex;align-items:center;gap:6px;margin:6px 0 2px;}
-  .hm-card .hm-status-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;display:inline-block;}
-  /* Gold text, matching the bundle's own "FOR SALE LISTING · MLS #..."
-     line color (var(--gold)) exactly -- was a muted amber #8a6d1f. */
-  .hm-card .hm-status-label{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;}
-  .hm-card .hm-meta{font-size:12px;color:var(--gray-700);margin-top:6px;font-weight:700;}
+  .hm-card .hm-status-row{display:flex;align-items:center;gap:6px;margin:9px 0 2px;}
+  .hm-card .hm-status-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;display:inline-block;}
+  .hm-card .hm-status-label{font-size:10.5px;font-weight:700;color:var(--gold);letter-spacing:.07em;text-transform:uppercase;}
+  .hm-card .hm-meta{font-size:12px;color:var(--gray-700);margin-top:7px;font-weight:700;}
   .hm-agent-card{display:flex;align-items:center;gap:12px;}
   /* Gold ring around the logo mark -- same treatment as templates/listing.html's
      .agent-bio-photo / mini avatar rings (border:2-3px solid var(--gold) +
@@ -442,7 +454,13 @@
   .hm-agent-firm{display:block;font-size:12px;color:var(--gray-700);}
   .hm-agent-phone{display:block;font-size:12.5px;font-weight:800;color:var(--crimson);text-decoration:none;margin-top:2px;}
 
-  .hm-body{background:var(--surface);}
+  /* Was var(--surface), a warm cream (#F7F5F0) that read pinkish next to
+     the crimson/gold accents -- switched to clean white to match
+     templates/listing.html's body{background:var(--white)} treatment.
+     --surface is now a very light neutral gray reserved for the
+     occasional section-separator band (e.g. .hm-banner's container),
+     never the page canvas itself. */
+  .hm-body{background:var(--white);}
   /* Container max-width/gutter matched to the live listing pages -- confirmed
      identical (1260px / 24px side padding) across templates/listing.html's
      .page-wrap/.price-wrap/.gallery-inner/.mcg-footer-inner rules and the
@@ -481,13 +499,20 @@
 
   .hm-chart-wrap{position:relative;height:330px;margin-top:8px;}
   .hm-chart-svg{width:100%;height:100%;}
-  .hm-chart-svg .hm-bar{fill:rgba(22,22,42,.85);cursor:pointer;}
+  /* Combined Views is the only series the daily chart ever plots (see
+     build_homes_mirror_activity) -- bar color matches the Combined swatch
+     in the legend below 1:1, navy, same token used for the "Combined
+     Views" dot. Was a fixed rgba(22,22,42,.85) that didn't correspond to
+     any single legend color and stayed the same regardless of which
+     toggle option was selected. */
+  .hm-chart-svg .hm-bar{fill:var(--navy);}
   .hm-chart-svg .hm-bar:hover{fill:var(--gold);}
   .hm-chart-svg .hm-gridline{stroke:var(--gray-100);stroke-width:1;}
   .hm-chart-svg .hm-axis-label{font-size:9.5px;fill:var(--gray-500);}
   .hm-chart-svg .hm-date-label{font-size:9px;fill:var(--gray-500);}
-  .hm-legend{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:14px;font-size:12.5px;color:var(--gray-700);font-weight:700;}
+  .hm-legend{display:flex;flex-wrap:wrap;gap:16px 22px;justify-content:center;margin-top:14px;font-size:12.5px;color:var(--gray-700);font-weight:700;}
   .hm-legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;}
+  .hm-legend .hm-legend-note{font-weight:600;color:var(--gray-500);font-size:10.5px;margin-left:2px;}
 
   .hm-traffic-head{display:grid;grid-template-columns:1fr 90px;font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:var(--gray-500);border-bottom:1px solid var(--gray-300);padding-bottom:8px;margin-bottom:6px;}
   .hm-traffic-row{padding:12px 0;border-bottom:1px solid var(--gray-100);}
@@ -620,17 +645,22 @@
 
   /* Portal-style agent card (Cameron's reference screenshot), MCG-
      branded -- replaces the old horizontal mini agent card. */
-  .ha-top{display:flex;align-items:stretch;gap:0;margin-bottom:10px;}
-  .ha-photo{flex:none;width:72px;height:72px;border-radius:8px;overflow:hidden;background:var(--navy-tint);box-shadow:0 2px 8px rgba(0,0,0,.15);}
+  /* Agent card recut to the listing-page bundle's .agent-bio-photo language
+     (circular gold-ringed headshot + plain serif name, templates/listing.html
+     lines ~293-298) in place of the old square photo + full-width solid
+     crimson name block, which read as busy next to the refined property
+     card above it. */
+  .ha-top{display:flex;align-items:center;gap:13px;margin-bottom:11px;}
+  .ha-photo{flex:none;width:56px;height:56px;border-radius:50%;overflow:hidden;border:3px solid var(--gold);box-shadow:0 2px 8px rgba(22,22,42,.18);}
   .ha-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;}
-  .ha-namechip{background:var(--crimson);color:#fff;font-weight:900;font-size:14px;padding:0 14px;border-radius:0 8px 8px 0;flex:1;min-width:0;line-height:1.2;display:flex;align-items:center;}
-  .ha-role{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-500);margin-top:2px;}
-  .ha-firm{font-size:12.5px;color:var(--gray-500);margin-top:2px;}
-  .ha-bubble{background:var(--gray-100);color:var(--gray-900);border-radius:14px;border-top-left-radius:4px;padding:10px 14px;font-size:12.5px;line-height:1.5;margin:12px 0;}
-  .ha-btn{display:block;width:100%;text-align:center;background:var(--crimson);color:#fff;font-weight:900;font-size:13px;letter-spacing:.02em;padding:12px;border-radius:8px;text-decoration:none;box-sizing:border-box;}
+  .ha-namechip{background:none;color:var(--navy);font-family:var(--font-serif);font-weight:800;font-size:17px;line-height:1.25;flex:1;min-width:0;padding:0;border-radius:0;}
+  .ha-role{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#7A5E10;margin-top:10px;}
+  .ha-firm{font-size:12px;color:var(--gray-500);margin-top:2px;margin-bottom:1px;}
+  .ha-bubble{background:var(--navy-tint);color:var(--navy);border-radius:12px;border-top-left-radius:4px;padding:10px 13px;font-size:12px;line-height:1.5;margin:12px 0;}
+  .ha-btn{display:block;width:100%;text-align:center;background:var(--crimson);color:#fff;font-weight:800;font-size:12.5px;letter-spacing:.03em;padding:11px;border-radius:999px;text-decoration:none;box-sizing:border-box;transition:background .15s ease;}
   .ha-btn:hover{background:var(--crimson-2);}
-  .ha-phone{display:block;text-align:center;font-weight:900;font-size:14px;color:var(--navy);text-decoration:none;margin-top:10px;}
-  .ha-footer{text-align:center;font-size:10.5px;color:var(--gray-500);margin-top:8px;line-height:1.4;}
+  .ha-phone{display:block;text-align:center;font-weight:900;font-size:13.5px;color:var(--navy);text-decoration:none;margin-top:10px;}
+  .ha-footer{text-align:center;font-size:10px;color:var(--gray-400);margin-top:9px;line-height:1.4;}
 
   /* Minimal end-of-report strip -- replaces the dark .site-footer for
      this residential variant only (global chrome comes from the
@@ -669,8 +699,11 @@
     .hm-section{page-break-inside:avoid;padding:16px 0;}
     #hm-reach,#hm-channels,#hm-activityfeed,#hm-visitormap,#hm-glossary{page-break-before:always;}
     .hm-hero{min-height:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .hm-card,.hm-channel-card{box-shadow:none;}
+    body,.hm-body{background:#fff;}
   }
 </style>
+<meta name="copyright" content="© 2026 Mason Capital Group. All Rights Reserved. Proprietary material — no use, reproduction, or implementation without MCG's prior written consent.">
 </head>
 <body>
 <a class="skip-link" href="#summary">Skip to report content</a>
@@ -845,10 +878,19 @@ Listed Jun 22, 2026 &middot; 38 Days on Market      </div>
           <p class="hm-section-sub">A breakdown of agent and home buyer views.</p>
         </div>
         <div class="hm-controls">
+          <!-- homes.com's intake only ever reports a per-day COMBINED
+               total; Agent/Consumer only exist as period totals (see
+               build_homes_mirror_activity in bin/generate.py). Rather than
+               fabricate a daily agent/consumer split by scaling the
+               combined series, the daily chart only ever plots Combined,
+               and the Consumer/Agent options ship disabled with a tooltip
+               pointing at the real period totals in the legend below --
+               shown only when this listing's intake actually has those
+               totals. -->
           <select class="hm-select" id="hm-series-select" aria-label="View series">
-            <option value="total" selected>Total Views</option>
-            <option value="consumer">Consumer Views</option>
-            <option value="agent">Agent Views</option>
+            <option value="combined" selected>Combined Views (Daily)</option>
+            <option value="consumer" disabled title="Daily agent/consumer split isn't available from the source data -- see the Consumer Views period total below the chart">Consumer Views</option>
+            <option value="agent" disabled title="Daily agent/consumer split isn't available from the source data -- see the Agent Views period total below the chart">Agent Views</option>
           </select>
           <select class="hm-select" id="hm-range-select" aria-label="Date range">
             <option value="since_listed" selected>Since Listed</option>
@@ -856,15 +898,15 @@ Listed Jun 22, 2026 &middot; 38 Days on Market      </div>
         </div>
       </div>
       <div class="hm-chart-wrap">
-        <svg class="hm-chart-svg" id="hm-activity-svg" viewBox="0 0 900 330" preserveAspectRatio="none" role="img" aria-label="Daily views bar chart"></svg>
+        <svg class="hm-chart-svg" id="hm-activity-svg" viewBox="0 0 900 330" preserveAspectRatio="none" role="img" aria-label="Daily combined views bar chart"></svg>
         <div class="tooltip" id="hm-activity-tip"></div>
       </div>
       <div class="hm-legend">
-        <span><span class="dot" style="background:var(--gold)"></span>Agent Views 231</span>
-        <span><span class="dot" style="background:rgba(22,22,42,.85)"></span>Consumer Views 37,169</span>
-        <span><span class="dot" style="background:var(--crimson)"></span>Combined Views 37,400</span>
+        <span><span class="dot" style="background:var(--navy)"></span>Combined Views 37,400 <span class="hm-legend-note">&middot; daily, charted above</span></span>
+        <span><span class="dot" style="background:var(--crimson)"></span>Consumer Views 37,198 <span class="hm-legend-note">&middot; period total</span></span>
+        <span><span class="dot" style="background:var(--gold)"></span>Agent Views 202 <span class="hm-legend-note">&middot; period total</span></span>
       </div>
-      <script type="application/json" id="hm-activity-data">[{"agent": 2, "agent_pct": 0.2, "consumer": 246, "consumer_pct": 18.8, "date": "2026-06-22", "date_short": "Jun 22", "show_label": true, "total": 248, "total_pct": 18.9}, {"agent": 3, "agent_pct": 0.2, "consumer": 487, "consumer_pct": 37.2, "date": "2026-06-23", "date_short": "Jun 23", "show_label": false, "total": 490, "total_pct": 37.4}, {"agent": 3, "agent_pct": 0.2, "consumer": 408, "consumer_pct": 31.1, "date": "2026-06-24", "date_short": "Jun 24", "show_label": false, "total": 411, "total_pct": 31.4}, {"agent": 3, "agent_pct": 0.2, "consumer": 442, "consumer_pct": 33.7, "date": "2026-06-25", "date_short": "Jun 25", "show_label": false, "total": 445, "total_pct": 34.0}, {"agent": 3, "agent_pct": 0.2, "consumer": 430, "consumer_pct": 32.8, "date": "2026-06-26", "date_short": "Jun 26", "show_label": false, "total": 433, "total_pct": 33.1}, {"agent": 3, "agent_pct": 0.2, "consumer": 441, "consumer_pct": 33.7, "date": "2026-06-27", "date_short": "Jun 27", "show_label": false, "total": 444, "total_pct": 33.9}, {"agent": 3, "agent_pct": 0.2, "consumer": 558, "consumer_pct": 42.6, "date": "2026-06-28", "date_short": "Jun 28", "show_label": true, "total": 561, "total_pct": 42.8}, {"agent": 5, "agent_pct": 0.4, "consumer": 768, "consumer_pct": 58.6, "date": "2026-06-29", "date_short": "Jun 29", "show_label": false, "total": 773, "total_pct": 59.0}, {"agent": 6, "agent_pct": 0.5, "consumer": 1043, "consumer_pct": 79.6, "date": "2026-06-30", "date_short": "Jun 30", "show_label": false, "total": 1049, "total_pct": 80.1}, {"agent": 6, "agent_pct": 0.5, "consumer": 939, "consumer_pct": 71.7, "date": "2026-07-01", "date_short": "Jul 1", "show_label": false, "total": 945, "total_pct": 72.1}, {"agent": 6, "agent_pct": 0.5, "consumer": 948, "consumer_pct": 72.4, "date": "2026-07-02", "date_short": "Jul 2", "show_label": false, "total": 954, "total_pct": 72.8}, {"agent": 7, "agent_pct": 0.5, "consumer": 1151, "consumer_pct": 87.9, "date": "2026-07-03", "date_short": "Jul 3", "show_label": false, "total": 1158, "total_pct": 88.4}, {"agent": 7, "agent_pct": 0.5, "consumer": 1106, "consumer_pct": 84.4, "date": "2026-07-04", "date_short": "Jul 4", "show_label": true, "total": 1113, "total_pct": 85.0}, {"agent": 6, "agent_pct": 0.5, "consumer": 1026, "consumer_pct": 78.3, "date": "2026-07-05", "date_short": "Jul 5", "show_label": false, "total": 1032, "total_pct": 78.8}, {"agent": 8, "agent_pct": 0.6, "consumer": 1231, "consumer_pct": 94.0, "date": "2026-07-06", "date_short": "Jul 6", "show_label": false, "total": 1239, "total_pct": 94.6}, {"agent": 7, "agent_pct": 0.5, "consumer": 1141, "consumer_pct": 87.1, "date": "2026-07-07", "date_short": "Jul 7", "show_label": false, "total": 1148, "total_pct": 87.6}, {"agent": 6, "agent_pct": 0.5, "consumer": 998, "consumer_pct": 76.2, "date": "2026-07-08", "date_short": "Jul 8", "show_label": false, "total": 1004, "total_pct": 76.6}, {"agent": 7, "agent_pct": 0.5, "consumer": 1091, "consumer_pct": 83.3, "date": "2026-07-09", "date_short": "Jul 9", "show_label": false, "total": 1098, "total_pct": 83.8}, {"agent": 6, "agent_pct": 0.5, "consumer": 932, "consumer_pct": 71.1, "date": "2026-07-10", "date_short": "Jul 10", "show_label": true, "total": 938, "total_pct": 71.6}, {"agent": 7, "agent_pct": 0.5, "consumer": 1106, "consumer_pct": 84.4, "date": "2026-07-11", "date_short": "Jul 11", "show_label": false, "total": 1113, "total_pct": 85.0}, {"agent": 8, "agent_pct": 0.6, "consumer": 1235, "consumer_pct": 94.3, "date": "2026-07-12", "date_short": "Jul 12", "show_label": false, "total": 1243, "total_pct": 94.9}, {"agent": 7, "agent_pct": 0.5, "consumer": 1058, "consumer_pct": 80.8, "date": "2026-07-13", "date_short": "Jul 13", "show_label": false, "total": 1065, "total_pct": 81.3}, {"agent": 8, "agent_pct": 0.6, "consumer": 1302, "consumer_pct": 99.4, "date": "2026-07-14", "date_short": "Jul 14", "show_label": false, "total": 1310, "total_pct": 100.0}, {"agent": 7, "agent_pct": 0.5, "consumer": 1177, "consumer_pct": 89.8, "date": "2026-07-15", "date_short": "Jul 15", "show_label": false, "total": 1184, "total_pct": 90.4}, {"agent": 6, "agent_pct": 0.5, "consumer": 1038, "consumer_pct": 79.2, "date": "2026-07-16", "date_short": "Jul 16", "show_label": true, "total": 1044, "total_pct": 79.7}, {"agent": 5, "agent_pct": 0.4, "consumer": 804, "consumer_pct": 61.4, "date": "2026-07-17", "date_short": "Jul 17", "show_label": false, "total": 809, "total_pct": 61.8}, {"agent": 7, "agent_pct": 0.5, "consumer": 1215, "consumer_pct": 92.7, "date": "2026-07-18", "date_short": "Jul 18", "show_label": false, "total": 1222, "total_pct": 93.3}, {"agent": 7, "agent_pct": 0.5, "consumer": 1146, "consumer_pct": 87.5, "date": "2026-07-19", "date_short": "Jul 19", "show_label": false, "total": 1153, "total_pct": 88.0}, {"agent": 7, "agent_pct": 0.5, "consumer": 1119, "consumer_pct": 85.4, "date": "2026-07-20", "date_short": "Jul 20", "show_label": false, "total": 1126, "total_pct": 86.0}, {"agent": 7, "agent_pct": 0.5, "consumer": 1165, "consumer_pct": 88.9, "date": "2026-07-21", "date_short": "Jul 21", "show_label": false, "total": 1172, "total_pct": 89.5}, {"agent": 6, "agent_pct": 0.5, "consumer": 968, "consumer_pct": 73.9, "date": "2026-07-22", "date_short": "Jul 22", "show_label": true, "total": 974, "total_pct": 74.4}, {"agent": 7, "agent_pct": 0.5, "consumer": 1143, "consumer_pct": 87.3, "date": "2026-07-23", "date_short": "Jul 23", "show_label": false, "total": 1150, "total_pct": 87.8}, {"agent": 7, "agent_pct": 0.5, "consumer": 1134, "consumer_pct": 86.6, "date": "2026-07-24", "date_short": "Jul 24", "show_label": false, "total": 1141, "total_pct": 87.1}, {"agent": 8, "agent_pct": 0.6, "consumer": 1259, "consumer_pct": 96.1, "date": "2026-07-25", "date_short": "Jul 25", "show_label": false, "total": 1267, "total_pct": 96.7}, {"agent": 8, "agent_pct": 0.6, "consumer": 1255, "consumer_pct": 95.8, "date": "2026-07-26", "date_short": "Jul 26", "show_label": false, "total": 1263, "total_pct": 96.4}, {"agent": 7, "agent_pct": 0.5, "consumer": 1105, "consumer_pct": 84.4, "date": "2026-07-27", "date_short": "Jul 27", "show_label": false, "total": 1112, "total_pct": 84.9}, {"agent": 6, "agent_pct": 0.5, "consumer": 1019, "consumer_pct": 77.8, "date": "2026-07-28", "date_short": "Jul 28", "show_label": true, "total": 1025, "total_pct": 78.2}, {"agent": 6, "agent_pct": 0.5, "consumer": 1044, "consumer_pct": 79.7, "date": "2026-07-29", "date_short": "Jul 29", "show_label": false, "total": 1050, "total_pct": 80.2}, {"agent": 3, "agent_pct": 0.2, "consumer": 491, "consumer_pct": 37.5, "date": "2026-07-30", "date_short": "Jul 30", "show_label": true, "total": 494, "total_pct": 37.7}]</script>
+      <script type="application/json" id="hm-activity-data">[{"combined": 248, "combined_pct": 18.9, "date": "2026-06-22", "date_short": "Jun 22", "show_label": true}, {"combined": 490, "combined_pct": 37.4, "date": "2026-06-23", "date_short": "Jun 23", "show_label": false}, {"combined": 411, "combined_pct": 31.4, "date": "2026-06-24", "date_short": "Jun 24", "show_label": false}, {"combined": 445, "combined_pct": 34.0, "date": "2026-06-25", "date_short": "Jun 25", "show_label": false}, {"combined": 433, "combined_pct": 33.1, "date": "2026-06-26", "date_short": "Jun 26", "show_label": false}, {"combined": 444, "combined_pct": 33.9, "date": "2026-06-27", "date_short": "Jun 27", "show_label": false}, {"combined": 561, "combined_pct": 42.8, "date": "2026-06-28", "date_short": "Jun 28", "show_label": true}, {"combined": 773, "combined_pct": 59.0, "date": "2026-06-29", "date_short": "Jun 29", "show_label": false}, {"combined": 1049, "combined_pct": 80.1, "date": "2026-06-30", "date_short": "Jun 30", "show_label": false}, {"combined": 945, "combined_pct": 72.1, "date": "2026-07-01", "date_short": "Jul 1", "show_label": false}, {"combined": 954, "combined_pct": 72.8, "date": "2026-07-02", "date_short": "Jul 2", "show_label": false}, {"combined": 1158, "combined_pct": 88.4, "date": "2026-07-03", "date_short": "Jul 3", "show_label": false}, {"combined": 1113, "combined_pct": 85.0, "date": "2026-07-04", "date_short": "Jul 4", "show_label": true}, {"combined": 1032, "combined_pct": 78.8, "date": "2026-07-05", "date_short": "Jul 5", "show_label": false}, {"combined": 1239, "combined_pct": 94.6, "date": "2026-07-06", "date_short": "Jul 6", "show_label": false}, {"combined": 1148, "combined_pct": 87.6, "date": "2026-07-07", "date_short": "Jul 7", "show_label": false}, {"combined": 1004, "combined_pct": 76.6, "date": "2026-07-08", "date_short": "Jul 8", "show_label": false}, {"combined": 1098, "combined_pct": 83.8, "date": "2026-07-09", "date_short": "Jul 9", "show_label": false}, {"combined": 938, "combined_pct": 71.6, "date": "2026-07-10", "date_short": "Jul 10", "show_label": true}, {"combined": 1113, "combined_pct": 85.0, "date": "2026-07-11", "date_short": "Jul 11", "show_label": false}, {"combined": 1243, "combined_pct": 94.9, "date": "2026-07-12", "date_short": "Jul 12", "show_label": false}, {"combined": 1065, "combined_pct": 81.3, "date": "2026-07-13", "date_short": "Jul 13", "show_label": false}, {"combined": 1310, "combined_pct": 100.0, "date": "2026-07-14", "date_short": "Jul 14", "show_label": false}, {"combined": 1184, "combined_pct": 90.4, "date": "2026-07-15", "date_short": "Jul 15", "show_label": false}, {"combined": 1044, "combined_pct": 79.7, "date": "2026-07-16", "date_short": "Jul 16", "show_label": true}, {"combined": 809, "combined_pct": 61.8, "date": "2026-07-17", "date_short": "Jul 17", "show_label": false}, {"combined": 1222, "combined_pct": 93.3, "date": "2026-07-18", "date_short": "Jul 18", "show_label": false}, {"combined": 1153, "combined_pct": 88.0, "date": "2026-07-19", "date_short": "Jul 19", "show_label": false}, {"combined": 1126, "combined_pct": 86.0, "date": "2026-07-20", "date_short": "Jul 20", "show_label": false}, {"combined": 1172, "combined_pct": 89.5, "date": "2026-07-21", "date_short": "Jul 21", "show_label": false}, {"combined": 974, "combined_pct": 74.4, "date": "2026-07-22", "date_short": "Jul 22", "show_label": true}, {"combined": 1150, "combined_pct": 87.8, "date": "2026-07-23", "date_short": "Jul 23", "show_label": false}, {"combined": 1141, "combined_pct": 87.1, "date": "2026-07-24", "date_short": "Jul 24", "show_label": false}, {"combined": 1267, "combined_pct": 96.7, "date": "2026-07-25", "date_short": "Jul 25", "show_label": false}, {"combined": 1263, "combined_pct": 96.4, "date": "2026-07-26", "date_short": "Jul 26", "show_label": false}, {"combined": 1112, "combined_pct": 84.9, "date": "2026-07-27", "date_short": "Jul 27", "show_label": false}, {"combined": 1025, "combined_pct": 78.2, "date": "2026-07-28", "date_short": "Jul 28", "show_label": true}, {"combined": 1050, "combined_pct": 80.2, "date": "2026-07-29", "date_short": "Jul 29", "show_label": false}, {"combined": 494, "combined_pct": 37.7, "date": "2026-07-30", "date_short": "Jul 30", "show_label": true}]</script>
     </section>
     <hr class="hm-rule">
 
@@ -1236,14 +1278,13 @@ Listed Jun 22, 2026 &middot; 38 Days on Market      </div>
           <p class="hm-section-sub">See where buyers are discovering your listing.</p>
         </div>
         <div class="hm-map-toggle">
-          <button type="button" class="hm-toggle-chip active" id="hm-map-total-btn">Total Views</button>
-          <button type="button" class="hm-toggle-chip" id="hm-map-engaged-btn" disabled title="Engaged Buyer Views requires additional buyer-intent data not yet available for this listing">Engaged Buyer Views</button>
+          <button type="button" class="hm-toggle-chip active" id="hm-map-total-btn" data-caption="Total Views 32,799" data-clipped="612">Total Views</button>
         </div>
       </div>
       <div id="hm-leaflet-map"></div>
       <script type="application/json" id="hm-leaflet-data">[{"lat": 35.76492, "lng": -95.00595, "n": 6426, "r": 38.7}, {"lat": 35.78832, "lng": -95.22303, "n": 1637, "r": 22.0}, {"lat": 35.79228, "lng": -95.01868, "n": 1608, "r": 21.8}, {"lat": 35.58852, "lng": -94.80093, "n": 1576, "r": 21.7}, {"lat": 35.31564, "lng": -95.31415, "n": 1466, "r": 21.1}, {"lat": 36.22104, "lng": -95.06625, "n": 1179, "r": 19.4}, {"lat": 35.6742, "lng": -95.04213, "n": 905, "r": 17.6}, {"lat": 35.8182, "lng": -95.0026, "n": 746, "r": 16.5}, {"lat": 35.68896, "lng": -95.39455, "n": 657, "r": 15.8}, {"lat": 35.81172, "lng": -95.02538, "n": 602, "r": 15.3}, {"lat": 34.90416, "lng": -95.15, "n": 544, "r": 14.8}, {"lat": 36.64224, "lng": -94.27096, "n": 417, "r": 13.6}, {"lat": 36.31392, "lng": -96.24277, "n": 413, "r": 13.5}, {"lat": 35.66376, "lng": -94.50747, "n": 378, "r": 13.2}, {"lat": 37.13652, "lng": -94.91215, "n": 339, "r": 12.7}, {"lat": 35.35596, "lng": -95.29539, "n": 331, "r": 12.6}, {"lat": 36.14796, "lng": -94.56241, "n": 313, "r": 12.4}, {"lat": 35.47836, "lng": -97.74893, "n": 303, "r": 12.3}, {"lat": 34.97148, "lng": -95.42001, "n": 251, "r": 11.7}, {"lat": 37.57716, "lng": -98.21257, "n": 243, "r": 11.5}, {"lat": 35.40528, "lng": -97.04744, "n": 222, "r": 11.3}, {"lat": 35.44704, "lng": -93.90313, "n": 220, "r": 11.2}, {"lat": 35.3052, "lng": -97.62632, "n": 216, "r": 11.2}, {"lat": 36.5454, "lng": -95.21499, "n": 210, "r": 11.1}, {"lat": 35.33976, "lng": -95.30611, "n": 207, "r": 11.0}, {"lat": 35.73792, "lng": -94.62472, "n": 204, "r": 11.0}, {"lat": 35.6634, "lng": -94.89205, "n": 202, "r": 11.0}, {"lat": 36.00972, "lng": -95.37378, "n": 185, "r": 10.7}, {"lat": 35.325, "lng": -95.3443, "n": 185, "r": 10.7}, {"lat": 36.468, "lng": -97.02734, "n": 179, "r": 10.6}, {"lat": 35.94024, "lng": -94.9155, "n": 172, "r": 10.5}, {"lat": 36.207, "lng": -95.0696, "n": 170, "r": 10.5}, {"lat": 35.3052, "lng": -95.37177, "n": 163, "r": 10.4}, {"lat": 35.60976, "lng": -94.78552, "n": 161, "r": 10.3}, {"lat": 36.468, "lng": -92.72527, "n": 160, "r": 10.3}, {"lat": 35.64396, "lng": -94.54633, "n": 152, "r": 10.2}, {"lat": 35.7516, "lng": -95.10913, "n": 141, "r": 10.0}, {"lat": 35.68752, "lng": -95.02873, "n": 138, "r": 9.9}, {"lat": 34.99596, "lng": -94.67564, "n": 133, "r": 9.8}, {"lat": 34.86492, "lng": -95.50912, "n": 128, "r": 9.8}, {"lat": 36.31464, "lng": -96.22803, "n": 113, "r": 9.5}, {"lat": 35.37252, "lng": -95.28668, "n": 109, "r": 9.4}, {"lat": 34.92972, "lng": -94.54968, "n": 107, "r": 9.3}, {"lat": 35.31744, "lng": -95.32956, "n": 104, "r": 9.3}, {"lat": 35.95896, "lng": -98.16165, "n": 104, "r": 9.3}, {"lat": 35.80488, "lng": -94.81031, "n": 97, "r": 9.1}, {"lat": 36.71244, "lng": -93.75104, "n": 96, "r": 9.1}, {"lat": 35.42256, "lng": -95.88365, "n": 95, "r": 9.1}, {"lat": 35.65332, "lng": -93.49979, "n": 92, "r": 9.0}, {"lat": 34.38, "lng": -93.42542, "n": 89, "r": 9.0}, {"lat": 36.51048, "lng": -93.57684, "n": 88, "r": 8.9}, {"lat": 35.6328, "lng": -94.80763, "n": 86, "r": 8.9}, {"lat": 36.13932, "lng": -98.11542, "n": 84, "r": 8.8}, {"lat": 35.57484, "lng": -94.87128, "n": 82, "r": 8.8}, {"lat": 36.1764, "lng": -96.222, "n": 81, "r": 8.8}, {"lat": 35.73828, "lng": -94.72723, "n": 80, "r": 8.8}, {"lat": 37.21932, "lng": -98.2521, "n": 78, "r": 8.7}, {"lat": 35.02728, "lng": -94.31719, "n": 77, "r": 8.7}, {"lat": 36.20772, "lng": -93.11856, "n": 75, "r": 8.6}, {"lat": 35.56008, "lng": -94.83845, "n": 74, "r": 8.6}, {"lat": 36.18828, "lng": -93.06496, "n": 72, "r": 8.6}, {"lat": 35.78796, "lng": -97.39182, "n": 72, "r": 8.6}, {"lat": 35.61372, "lng": -94.77212, "n": 71, "r": 8.5}, {"lat": 34.66224, "lng": -93.6827, "n": 71, "r": 8.5}, {"lat": 36.198, "lng": -93.11052, "n": 70, "r": 8.5}, {"lat": 35.82792, "lng": -95.02069, "n": 70, "r": 8.5}, {"lat": 35.92296, "lng": -95.05285, "n": 69, "r": 8.5}, {"lat": 35.7876, "lng": -95.04548, "n": 69, "r": 8.5}, {"lat": 36.91332, "lng": -97.51443, "n": 68, "r": 8.5}, {"lat": 35.85564, "lng": -94.90478, "n": 68, "r": 8.5}, {"lat": 36.31752, "lng": -94.09743, "n": 66, "r": 8.4}, {"lat": 36.81108, "lng": -94.32992, "n": 66, "r": 8.4}, {"lat": 36.19332, "lng": -95.10444, "n": 66, "r": 8.4}, {"lat": 35.40744, "lng": -94.98451, "n": 65, "r": 8.4}, {"lat": 35.3466, "lng": -95.33358, "n": 63, "r": 8.3}, {"lat": 35.78688, "lng": -94.17314, "n": 62, "r": 8.3}, {"lat": 36.34416, "lng": -92.85458, "n": 61, "r": 8.3}, {"lat": 35.65872, "lng": -94.74934, "n": 61, "r": 8.3}, {"lat": 34.6428, "lng": -95.37981, "n": 60, "r": 8.3}, {"lat": 36.82152, "lng": -94.30111, "n": 59, "r": 8.2}, {"lat": 36.29772, "lng": -96.24076, "n": 59, "r": 8.2}, {"lat": 36.7146, "lng": -92.3896, "n": 59, "r": 8.2}, {"lat": 35.3682, "lng": -95.31214, "n": 57, "r": 8.2}, {"lat": 35.39916, "lng": -97.02734, "n": 57, "r": 8.2}, {"lat": 35.41392, "lng": -94.17582, "n": 57, "r": 8.2}, {"lat": 35.24868, "lng": -95.14129, "n": 55, "r": 8.1}, {"lat": 35.36568, "lng": -94.84448, "n": 55, "r": 8.1}, {"lat": 34.98912, "lng": -94.38553, "n": 54, "r": 8.1}, {"lat": 37.5858, "lng": -97.55731, "n": 54, "r": 8.1}, {"lat": 34.74036, "lng": -93.55942, "n": 53, "r": 8.1}, {"lat": 34.87896, "lng": -95.47964, "n": 52, "r": 8.0}, {"lat": 35.56368, "lng": -94.82304, "n": 51, "r": 8.0}, {"lat": 34.97508, "lng": -95.1567, "n": 51, "r": 8.0}, {"lat": 36.1674, "lng": -98.08795, "n": 49, "r": 7.9}, {"lat": 36.3456, "lng": -93.74434, "n": 49, "r": 7.9}, {"lat": 36.59688, "lng": -94.95034, "n": 47, "r": 7.9}, {"lat": 35.96004, "lng": -98.17438, "n": 47, "r": 7.9}, {"lat": 36.61992, "lng": -94.29106, "n": 47, "r": 7.9}, {"lat": 36.41832, "lng": -93.40331, "n": 47, "r": 7.9}, {"lat": 35.1432, "lng": -95.34966, "n": 47, "r": 7.9}, {"lat": 35.26164, "lng": -94.5537, "n": 46, "r": 7.8}, {"lat": 34.94232, "lng": -95.15067, "n": 44, "r": 7.8}, {"lat": 35.80092, "lng": -94.89205, "n": 44, "r": 7.8}, {"lat": 35.91324, "lng": -98.18711, "n": 44, "r": 7.8}, {"lat": 35.36532, "lng": -97.63436, "n": 43, "r": 7.8}, {"lat": 34.893, "lng": -95.13057, "n": 41, "r": 7.7}, {"lat": 35.00712, "lng": -95.40728, "n": 41, "r": 7.7}, {"lat": 36.02088, "lng": -98.22061, "n": 41, "r": 7.7}, {"lat": 35.76348, "lng": -95.21834, "n": 40, "r": 7.7}, {"lat": 37.58724, "lng": -98.18912, "n": 39, "r": 7.6}, {"lat": 35.80344, "lng": -94.17984, "n": 39, "r": 7.6}, {"lat": 35.88912, "lng": -95.03811, "n": 38, "r": 7.6}, {"lat": 36.20844, "lng": -95.18417, "n": 38, "r": 7.6}, {"lat": 36.7326, "lng": -93.77717, "n": 37, "r": 7.6}, {"lat": 36.44604, "lng": -97.03471, "n": 36, "r": 7.5}, {"lat": 36.60228, "lng": -92.37486, "n": 36, "r": 7.5}, {"lat": 36.24516, "lng": -93.02007, "n": 35, "r": 7.5}, {"lat": 35.35884, "lng": -95.23174, "n": 35, "r": 7.5}, {"lat": 36.6138, "lng": -92.71187, "n": 35, "r": 7.5}, {"lat": 35.77212, "lng": -94.60328, "n": 34, "r": 7.4}, {"lat": 36.66348, "lng": -94.32121, "n": 34, "r": 7.4}, {"lat": 35.71812, "lng": -95.39388, "n": 34, "r": 7.4}, {"lat": 35.32644, "lng": -95.27395, "n": 34, "r": 7.4}, {"lat": 35.76888, "lng": -97.37574, "n": 34, "r": 7.4}, {"lat": 34.92216, "lng": -95.18819, "n": 33, "r": 7.4}, {"lat": 35.244, "lng": -94.55973, "n": 33, "r": 7.4}, {"lat": 34.72884, "lng": -93.69945, "n": 33, "r": 7.4}, {"lat": 36.62748, "lng": -92.56581, "n": 32, "r": 7.4}, {"lat": 36.17532, "lng": -94.95704, "n": 32, "r": 7.4}, {"lat": 37.57284, "lng": -98.24339, "n": 32, "r": 7.4}, {"lat": 34.97508, "lng": -95.54932, "n": 32, "r": 7.4}, {"lat": 36.44136, "lng": -96.25751, "n": 31, "r": 7.3}, {"lat": 35.6526, "lng": -95.38383, "n": 31, "r": 7.3}, {"lat": 36.15156, "lng": -98.07991, "n": 30, "r": 7.3}, {"lat": 35.33184, "lng": -95.2907, "n": 30, "r": 7.3}, {"lat": 36.18648, "lng": -94.79356, "n": 29, "r": 7.3}, {"lat": 35.39196, "lng": -95.01801, "n": 29, "r": 7.3}, {"lat": 36.62208, "lng": -94.34064, "n": 29, "r": 7.3}, {"lat": 35.50752, "lng": -94.75939, "n": 29, "r": 7.3}, {"lat": 35.34372, "lng": -95.35234, "n": 28, "r": 7.2}, {"lat": 35.63316, "lng": -96.43037, "n": 28, "r": 7.2}, {"lat": 37.51416, "lng": -98.22329, "n": 27, "r": 7.2}, {"lat": 35.9694, "lng": -95.07295, "n": 27, "r": 7.2}, {"lat": 34.96572, "lng": -94.76542, "n": 26, "r": 7.1}, {"lat": 35.65116, "lng": -95.87427, "n": 26, "r": 7.1}, {"lat": 36.79884, "lng": -93.27735, "n": 26, "r": 7.1}, {"lat": 35.55504, "lng": -94.87999, "n": 26, "r": 7.1}, {"lat": 35.88192, "lng": -95.09841, "n": 25, "r": 7.1}, {"lat": 35.61192, "lng": -95.20829, "n": 25, "r": 7.1}, {"lat": 35.74944, "lng": -95.20226, "n": 25, "r": 7.1}, {"lat": 34.9794, "lng": -93.60431, "n": 25, "r": 7.1}, {"lat": 36.90288, "lng": -95.30008, "n": 25, "r": 7.1}, {"lat": 35.70444, "lng": -94.41032, "n": 24, "r": 7.1}, {"lat": 36.09072, "lng": -94.0579, "n": 24, "r": 7.1}, {"lat": 35.75808, "lng": -93.84886, "n": 24, "r": 7.1}, {"lat": 34.98732, "lng": -94.54164, "n": 24, "r": 7.1}, {"lat": 35.30484, "lng": -95.27194, "n": 23, "r": 7.0}, {"lat": 36.83844, "lng": -94.8954, "n": 23, "r": 7.0}, {"lat": 34.97508, "lng": -94.64683, "n": 23, "r": 7.0}, {"lat": 36.22536, "lng": -93.90983, "n": 23, "r": 7.0}, {"lat": 36.47304, "lng": -95.29606, "n": 23, "r": 7.0}, {"lat": 36.16956, "lng": -95.0562, "n": 23, "r": 7.0}, {"lat": 35.49492, "lng": -97.63838, "n": 22, "r": 7.0}, {"lat": 35.65476, "lng": -98.01626, "n": 22, "r": 7.0}, {"lat": 37.12212, "lng": -98.27689, "n": 22, "r": 7.0}, {"lat": 36.60444, "lng": -93.80665, "n": 22, "r": 7.0}, {"lat": 36.58068, "lng": -93.59627, "n": 21, "r": 6.9}, {"lat": 35.23392, "lng": -96.92081, "n": 21, "r": 6.9}, {"lat": 36.32112, "lng": -94.49943, "n": 21, "r": 6.9}, {"lat": 35.5572, "lng": -95.47964, "n": 20, "r": 6.9}, {"lat": 36.39024, "lng": -97.00322, "n": 20, "r": 6.9}, {"lat": 36.39132, "lng": -93.04955, "n": 20, "r": 6.9}, {"lat": 35.98812, "lng": -93.11521, "n": 20, "r": 6.9}, {"lat": 35.37216, "lng": -95.35033, "n": 20, "r": 6.9}, {"lat": 36.64152, "lng": -94.28905, "n": 19, "r": 6.8}, {"lat": 36.12096, "lng": -98.26349, "n": 19, "r": 6.8}, {"lat": 35.76096, "lng": -95.19891, "n": 19, "r": 6.8}, {"lat": 35.45712, "lng": -97.72414, "n": 18, "r": 6.8}, {"lat": 36.3222, "lng": -94.41568, "n": 18, "r": 6.8}, {"lat": 37.21068, "lng": -98.28493, "n": 18, "r": 6.8}, {"lat": 34.88508, "lng": -95.17881, "n": 18, "r": 6.8}, {"lat": 35.27028, "lng": -95.6391, "n": 18, "r": 6.8}, {"lat": 36.73584, "lng": -95.26591, "n": 18, "r": 6.8}, {"lat": 34.6662, "lng": -93.60364, "n": 18, "r": 6.8}, {"lat": 36.1836, "lng": -95.08635, "n": 18, "r": 6.8}, {"lat": 35.29044, "lng": -95.34765, "n": 17, "r": 6.7}, {"lat": 36.32508, "lng": -92.85056, "n": 17, "r": 6.7}, {"lat": 36.70956, "lng": -93.78722, "n": 17, "r": 6.7}, {"lat": 35.46252, "lng": -93.91452, "n": 17, "r": 6.7}, {"lat": 35.27352, "lng": -94.96441, "n": 17, "r": 6.7}, {"lat": 36.66024, "lng": -94.31049, "n": 17, "r": 6.7}, {"lat": 36.83088, "lng": -93.2941, "n": 16, "r": 6.7}, {"lat": 36.29844, "lng": -92.90416, "n": 16, "r": 6.7}, {"lat": 36.45324, "lng": -96.0478, "n": 16, "r": 6.7}, {"lat": 36.12672, "lng": -94.53695, "n": 16, "r": 6.7}, {"lat": 35.88588, "lng": -92.98121, "n": 16, "r": 6.7}, {"lat": 35.40096, "lng": -97.01997, "n": 16, "r": 6.7}, {"lat": 35.43948, "lng": -94.85386, "n": 16, "r": 6.7}, {"lat": 34.48908, "lng": -93.61637, "n": 16, "r": 6.7}, {"lat": 35.24724, "lng": -95.3108, "n": 16, "r": 6.7}, {"lat": 35.92764, "lng": -94.93895, "n": 16, "r": 6.7}, {"lat": 35.81892, "lng": -95.42671, "n": 15, "r": 6.6}, {"lat": 35.27712, "lng": -94.77815, "n": 15, "r": 6.6}, {"lat": 36.58068, "lng": -94.59859, "n": 15, "r": 6.6}, {"lat": 35.91324, "lng": -94.91483, "n": 15, "r": 6.6}, {"lat": 36.46332, "lng": -92.74202, "n": 14, "r": 6.6}, {"lat": 36.65448, "lng": -94.72723, "n": 14, "r": 6.6}, {"lat": 35.27928, "lng": -94.78887, "n": 14, "r": 6.6}, {"lat": 34.9182, "lng": -95.47495, "n": 14, "r": 6.6}, {"lat": 36.77544, "lng": -92.67703, "n": 14, "r": 6.6}, {"lat": 36.76068, "lng": -92.69445, "n": 14, "r": 6.6}, {"lat": 35.81568, "lng": -95.20159, "n": 14, "r": 6.6}, {"lat": 35.67096, "lng": -95.0093, "n": 14, "r": 6.6}, {"lat": 36.83232, "lng": -92.95374, "n": 14, "r": 6.6}, {"lat": 36.77328, "lng": -93.92122, "n": 14, "r": 6.6}, {"lat": 36.04716, "lng": -98.09264, "n": 13, "r": 6.5}, {"lat": 34.97292, "lng": -94.8887, "n": 13, "r": 6.5}, {"lat": 35.34444, "lng": -95.2773, "n": 13, "r": 6.5}, {"lat": 35.11224, "lng": -94.81567, "n": 13, "r": 6.5}, {"lat": 37.24956, "lng": -98.25545, "n": 13, "r": 6.5}, {"lat": 35.50824, "lng": -97.75295, "n": 13, "r": 6.5}, {"lat": 34.96896, "lng": -94.51551, "n": 13, "r": 6.5}, {"lat": 36.46692, "lng": -92.71254, "n": 13, "r": 6.5}, {"lat": 35.51472, "lng": -93.16948, "n": 13, "r": 6.5}, {"lat": 35.94312, "lng": -95.19489, "n": 13, "r": 6.5}, {"lat": 36.20448, "lng": -98.12949, "n": 13, "r": 6.5}, {"lat": 36.31608, "lng": -95.08903, "n": 13, "r": 6.5}, {"lat": 36.69732, "lng": -93.90179, "n": 12, "r": 6.5}, {"lat": 35.49384, "lng": -94.88535, "n": 12, "r": 6.5}, {"lat": 35.00316, "lng": -94.77748, "n": 12, "r": 6.5}, {"lat": 36.82692, "lng": -94.47129, "n": 12, "r": 6.5}, {"lat": 35.62488, "lng": -94.63678, "n": 12, "r": 6.5}, {"lat": 35.88444, "lng": -97.92246, "n": 12, "r": 6.5}, {"lat": 35.49348, "lng": -95.51716, "n": 12, "r": 6.5}, {"lat": 36.00468, "lng": -95.40125, "n": 12, "r": 6.5}, {"lat": 35.71776, "lng": -95.14732, "n": 12, "r": 6.5}, {"lat": 35.46324, "lng": -97.6692, "n": 12, "r": 6.5}, {"lat": 35.47836, "lng": -95.49773, "n": 12, "r": 6.5}, {"lat": 34.74684, "lng": -93.67131, "n": 11, "r": 6.4}, {"lat": 35.4654, "lng": -97.76367, "n": 11, "r": 6.4}, {"lat": 34.70976, "lng": -93.56545, "n": 11, "r": 6.4}, {"lat": 35.98956, "lng": -95.35837, "n": 11, "r": 6.4}, {"lat": 36.71172, "lng": -94.44248, "n": 11, "r": 6.4}, {"lat": 34.48404, "lng": -93.62508, "n": 11, "r": 6.4}, {"lat": 36.20376, "lng": -95.02538, "n": 11, "r": 6.4}, {"lat": 35.63352, "lng": -94.51685, "n": 11, "r": 6.4}, {"lat": 35.44236, "lng": -97.51845, "n": 11, "r": 6.4}, {"lat": 34.4394, "lng": -93.41738, "n": 11, "r": 6.4}, {"lat": 34.99056, "lng": -94.22406, "n": 11, "r": 6.4}, {"lat": 36.01296, "lng": -94.44784, "n": 11, "r": 6.4}, {"lat": 35.4384, "lng": -97.60287, "n": 11, "r": 6.4}, {"lat": 35.8056, "lng": -97.87556, "n": 11, "r": 6.4}, {"lat": 36.27648, "lng": -92.8385, "n": 10, "r": 6.3}, {"lat": 34.93224, "lng": -94.56107, "n": 10, "r": 6.3}, {"lat": 36.09684, "lng": -96.18984, "n": 10, "r": 6.3}, {"lat": 36.38412, "lng": -92.80634, "n": 10, "r": 6.3}, {"lat": 36.82692, "lng": -94.32322, "n": 10, "r": 6.3}, {"lat": 36.171, "lng": -92.95843, "n": 10, "r": 6.3}, {"lat": 36.37404, "lng": -94.8418, "n": 10, "r": 6.3}, {"lat": 36.50868, "lng": -92.69579, "n": 10, "r": 6.3}, {"lat": 34.87608, "lng": -95.13861, "n": 10, "r": 6.3}, {"lat": 35.61012, "lng": -94.38285, "n": 10, "r": 6.3}, {"lat": 35.67564, "lng": -97.83469, "n": 10, "r": 6.3}, {"lat": 36.34704, "lng": -94.10279, "n": 10, "r": 6.3}, {"lat": 36.52776, "lng": -92.72125, "n": 10, "r": 6.3}, {"lat": 36.18072, "lng": -94.59055, "n": 10, "r": 6.3}, {"lat": 35.45712, "lng": -97.71208, "n": 9, "r": 6.3}, {"lat": 36.51444, "lng": -94.79959, "n": 9, "r": 6.3}, {"lat": 35.45892, "lng": -97.5553, "n": 9, "r": 6.3}, {"lat": 37.22688, "lng": -95.01868, "n": 9, "r": 6.3}, {"lat": 34.87068, "lng": -95.19757, "n": 9, "r": 6.3}, {"lat": 36.6624, "lng": -94.33796, "n": 9, "r": 6.3}, {"lat": 36.43416, "lng": -92.79562, "n": 9, "r": 6.3}, {"lat": 34.4232, "lng": -93.41671, "n": 9, "r": 6.3}, {"lat": 36.5958, "lng": -94.25354, "n": 9, "r": 6.3}, {"lat": 35.29872, "lng": -95.24313, "n": 9, "r": 6.3}, {"lat": 36.054, "lng": -93.91117, "n": 9, "r": 6.3}, {"lat": 36.25884, "lng": -95.05285, "n": 9, "r": 6.3}, {"lat": 36.0702, "lng": -94.84314, "n": 9, "r": 6.3}, {"lat": 36.1638, "lng": -93.11856, "n": 8, "r": 6.2}, {"lat": 36.26532, "lng": -94.80964, "n": 8, "r": 6.2}, {"lat": 36.36864, "lng": -93.75372, "n": 8, "r": 6.2}, {"lat": 35.14644, "lng": -95.73223, "n": 8, "r": 6.2}, {"lat": 34.95384, "lng": -94.04316, "n": 8, "r": 6.2}, {"lat": 35.00388, "lng": -94.58988, "n": 8, "r": 6.2}, {"lat": 35.70768, "lng": -94.97513, "n": 8, "r": 6.2}, {"lat": 35.51184, "lng": -93.90648, "n": 8, "r": 6.2}, {"lat": 34.8498, "lng": -95.09573, "n": 8, "r": 6.2}, {"lat": 35.80956, "lng": -95.16943, "n": 8, "r": 6.2}, {"lat": 36.6948, "lng": -97.33822, "n": 8, "r": 6.2}, {"lat": 34.7724, "lng": -93.55205, "n": 7, "r": 6.1}, {"lat": 35.87832, "lng": -92.98992, "n": 7, "r": 6.1}, {"lat": 36.34632, "lng": -96.21932, "n": 7, "r": 6.1}, {"lat": 35.7084, "lng": -94.77212, "n": 7, "r": 6.1}, {"lat": 35.2224, "lng": -95.0294, "n": 7, "r": 6.1}, {"lat": 37.0512, "lng": -94.3125, "n": 7, "r": 6.1}, {"lat": 36.9846, "lng": -94.82237, "n": 7, "r": 6.1}, {"lat": 34.93764, "lng": -93.67332, "n": 7, "r": 6.1}, {"lat": 35.31996, "lng": -95.4113, "n": 7, "r": 6.1}, {"lat": 35.72712, "lng": -94.12825, "n": 7, "r": 6.1}, {"lat": 36.83844, "lng": -93.13129, "n": 7, "r": 6.1}, {"lat": 35.9118, "lng": -98.1114, "n": 7, "r": 6.1}, {"lat": 35.55468, "lng": -97.08898, "n": 7, "r": 6.1}, {"lat": 35.09496, "lng": -94.89339, "n": 7, "r": 6.1}, {"lat": 36.44136, "lng": -92.88808, "n": 7, "r": 6.1}, {"lat": 35.58204, "lng": -97.73419, "n": 7, "r": 6.1}, {"lat": 35.26668, "lng": -93.96745, "n": 7, "r": 6.1}, {"lat": 35.08272, "lng": -95.41532, "n": 6, "r": 6.0}, {"lat": 35.70156, "lng": -93.743, "n": 6, "r": 6.0}, {"lat": 35.99424, "lng": -94.92555, "n": 6, "r": 6.0}, {"lat": 36.17532, "lng": -94.61936, "n": 6, "r": 6.0}, {"lat": 35.26632, "lng": -95.11784, "n": 6, "r": 6.0}, {"lat": 35.54676, "lng": -97.72615, "n": 6, "r": 6.0}, {"lat": 35.77284, "lng": -95.34162, "n": 6, "r": 6.0}, {"lat": 37.34964, "lng": -94.99925, "n": 6, "r": 6.0}, {"lat": 36.77904, "lng": -94.41568, "n": 6, "r": 6.0}, {"lat": 34.4358, "lng": -95.47361, "n": 6, "r": 6.0}, {"lat": 35.4564, "lng": -97.74893, "n": 6, "r": 6.0}, {"lat": 36.18432, "lng": -93.09042, "n": 6, "r": 6.0}, {"lat": 35.81208, "lng": -94.74867, "n": 6, "r": 6.0}, {"lat": 34.80732, "lng": -93.6358, "n": 6, "r": 6.0}, {"lat": 35.3664, "lng": -95.33023, "n": 6, "r": 6.0}, {"lat": 36.6084, "lng": -94.70244, "n": 6, "r": 6.0}, {"lat": 36.144, "lng": -93.09176, "n": 6, "r": 6.0}, {"lat": 36.14364, "lng": -95.02739, "n": 6, "r": 6.0}, {"lat": 36.41472, "lng": -94.70244, "n": 6, "r": 6.0}, {"lat": 37.3266, "lng": -97.58746, "n": 6, "r": 6.0}, {"lat": 34.80192, "lng": -93.67935, "n": 6, "r": 6.0}, {"lat": 34.8624, "lng": -93.52994, "n": 6, "r": 6.0}, {"lat": 36.01548, "lng": -94.57715, "n": 6, "r": 6.0}, {"lat": 35.52372, "lng": -94.86257, "n": 6, "r": 6.0}, {"lat": 36.69984, "lng": -94.346, "n": 6, "r": 6.0}, {"lat": 37.66536, "lng": -95.83072, "n": 5, "r": 5.9}, {"lat": 36.61956, "lng": -94.72589, "n": 5, "r": 5.9}, {"lat": 34.80516, "lng": -95.15938, "n": 5, "r": 5.9}, {"lat": 36.00432, "lng": -94.83376, "n": 5, "r": 5.9}, {"lat": 37.5804, "lng": -98.232, "n": 5, "r": 5.9}, {"lat": 35.4168, "lng": -93.64786, "n": 5, "r": 5.9}, {"lat": 36.75024, "lng": -93.72893, "n": 5, "r": 5.9}, {"lat": 36.92808, "lng": -95.552, "n": 5, "r": 5.9}, {"lat": 36.33948, "lng": -94.68435, "n": 5, "r": 5.9}, {"lat": 35.61012, "lng": -97.97472, "n": 5, "r": 5.9}, {"lat": 35.27676, "lng": -95.0696, "n": 5, "r": 5.9}, {"lat": 35.03952, "lng": -94.19056, "n": 5, "r": 5.9}, {"lat": 36.1908, "lng": -94.55169, "n": 5, "r": 5.9}, {"lat": 36.70524, "lng": -94.49608, "n": 5, "r": 5.9}, {"lat": 34.9848, "lng": -94.43511, "n": 5, "r": 5.9}, {"lat": 36.21816, "lng": -93.03749, "n": 5, "r": 5.9}, {"lat": 36.5508, "lng": -94.83577, "n": 5, "r": 5.9}, {"lat": 35.49168, "lng": -97.65312, "n": 5, "r": 5.9}, {"lat": 36.91908, "lng": -92.53164, "n": 5, "r": 5.9}, {"lat": 36.17028, "lng": -94.53494, "n": 5, "r": 5.9}, {"lat": 36.225, "lng": -94.08202, "n": 5, "r": 5.9}, {"lat": 36.66024, "lng": -95.38517, "n": 5, "r": 5.9}, {"lat": 36.05292, "lng": -95.36574, "n": 4, "r": 5.8}, {"lat": 36.63828, "lng": -94.34935, "n": 4, "r": 5.8}, {"lat": 34.9362, "lng": -95.5721, "n": 4, "r": 5.8}, {"lat": 35.4816, "lng": -97.73084, "n": 4, "r": 5.8}, {"lat": 35.5176, "lng": -93.18623, "n": 4, "r": 5.8}, {"lat": 36.33912, "lng": -92.84252, "n": 4, "r": 5.8}, {"lat": 36.75816, "lng": -92.39898, "n": 4, "r": 5.8}, {"lat": 36.729, "lng": -92.37419, "n": 4, "r": 5.8}, {"lat": 37.24812, "lng": -94.22808, "n": 4, "r": 5.8}, {"lat": 36.21168, "lng": -93.01069, "n": 4, "r": 5.8}, {"lat": 36.756, "lng": -93.29075, "n": 4, "r": 5.8}, {"lat": 36.24624, "lng": -93.74568, "n": 4, "r": 5.8}, {"lat": 36.4338, "lng": -93.22442, "n": 4, "r": 5.8}, {"lat": 36.66924, "lng": -95.0897, "n": 4, "r": 5.8}, {"lat": 36.88092, "lng": -94.33126, "n": 4, "r": 5.8}, {"lat": 36.16992, "lng": -94.60797, "n": 4, "r": 5.8}, {"lat": 36.87876, "lng": -93.8435, "n": 4, "r": 5.8}, {"lat": 34.91208, "lng": -93.54736, "n": 4, "r": 5.8}, {"lat": 35.57772, "lng": -94.77614, "n": 4, "r": 5.8}, {"lat": 36.909, "lng": -93.94333, "n": 4, "r": 5.8}, {"lat": 36.58284, "lng": -94.58251, "n": 4, "r": 5.8}, {"lat": 35.10288, "lng": -94.81835, "n": 4, "r": 5.8}, {"lat": 35.65404, "lng": -96.43975, "n": 4, "r": 5.8}, {"lat": 36.4752, "lng": -92.63147, "n": 4, "r": 5.8}, {"lat": 36.06156, "lng": -93.84953, "n": 4, "r": 5.8}, {"lat": 34.95456, "lng": -95.36373, "n": 4, "r": 5.8}, {"lat": 36.61488, "lng": -94.94565, "n": 4, "r": 5.8}, {"lat": 36.17856, "lng": -93.13464, "n": 4, "r": 5.8}, {"lat": 36.59436, "lng": -94.1651, "n": 4, "r": 5.8}, {"lat": 35.6922, "lng": -95.40527, "n": 4, "r": 5.8}, {"lat": 35.72208, "lng": -93.68873, "n": 4, "r": 5.8}, {"lat": 34.87716, "lng": -94.63142, "n": 4, "r": 5.8}, {"lat": 35.85744, "lng": -93.69945, "n": 4, "r": 5.8}, {"lat": 35.29332, "lng": -95.32286, "n": 4, "r": 5.8}, {"lat": 36.84924, "lng": -94.39424, "n": 4, "r": 5.8}, {"lat": 35.24868, "lng": -94.6274, "n": 4, "r": 5.8}, {"lat": 35.77248, "lng": -94.47196, "n": 4, "r": 5.8}, {"lat": 35.44056, "lng": -93.85355, "n": 4, "r": 5.8}, {"lat": 36.41796, "lng": -98.21257, "n": 4, "r": 5.8}, {"lat": 35.95536, "lng": -93.10717, "n": 4, "r": 5.8}, {"lat": 34.60392, "lng": -95.61632, "n": 4, "r": 5.8}, {"lat": 36.64692, "lng": -94.34332, "n": 4, "r": 5.8}, {"lat": 35.41608, "lng": -97.63436, "n": 4, "r": 5.8}, {"lat": 35.41212, "lng": -93.89241, "n": 3, "r": 5.7}, {"lat": 36.51948, "lng": -95.2237, "n": 3, "r": 5.7}, {"lat": 36.58824, "lng": -92.61271, "n": 3, "r": 5.7}, {"lat": 37.494, "lng": -98.3727, "n": 3, "r": 5.7}, {"lat": 35.73144, "lng": -93.5018, "n": 3, "r": 5.7}, {"lat": 36.67248, "lng": -92.56045, "n": 3, "r": 5.7}, {"lat": 35.32356, "lng": -97.00858, "n": 3, "r": 5.7}, {"lat": 36.14076, "lng": -93.04218, "n": 3, "r": 5.7}, {"lat": 34.65936, "lng": -93.66193, "n": 3, "r": 5.7}, {"lat": 35.9568, "lng": -97.22566, "n": 3, "r": 5.7}, {"lat": 36.02232, "lng": -98.16031, "n": 3, "r": 5.7}, {"lat": 37.54836, "lng": -98.19515, "n": 3, "r": 5.7}, {"lat": 35.43552, "lng": -97.69466, "n": 3, "r": 5.7}, {"lat": 35.388, "lng": -95.32219, "n": 3, "r": 5.7}, {"lat": 36.47052, "lng": -94.47062, "n": 3, "r": 5.7}, {"lat": 37.55664, "lng": -96.95297, "n": 3, "r": 5.7}, {"lat": 36.39024, "lng": -95.30611, "n": 3, "r": 5.7}, {"lat": 36.69876, "lng": -92.4499, "n": 3, "r": 5.7}, {"lat": 36.78516, "lng": -95.23978, "n": 3, "r": 5.7}, {"lat": 36.66456, "lng": -94.29843, "n": 3, "r": 5.7}, {"lat": 34.596, "lng": -93.46361, "n": 3, "r": 5.7}, {"lat": 36.61992, "lng": -94.32724, "n": 3, "r": 5.7}, {"lat": 36.79056, "lng": -92.69646, "n": 3, "r": 5.7}, {"lat": 35.87004, "lng": -95.22705, "n": 3, "r": 5.7}, {"lat": 36.21636, "lng": -95.2773, "n": 3, "r": 5.7}, {"lat": 35.37, "lng": -95.09975, "n": 3, "r": 5.7}, {"lat": 35.47656, "lng": -93.51855, "n": 3, "r": 5.7}, {"lat": 36.32976, "lng": -93.7564, "n": 3, "r": 5.7}, {"lat": 35.7246, "lng": -97.65513, "n": 3, "r": 5.7}, {"lat": 35.60112, "lng": -94.14634, "n": 3, "r": 5.7}, {"lat": 35.91756, "lng": -93.90983, "n": 3, "r": 5.7}, {"lat": 35.58672, "lng": -94.47531, "n": 3, "r": 5.7}, {"lat": 37.2348, "lng": -95.03007, "n": 3, "r": 5.7}, {"lat": 36.63216, "lng": -92.57787, "n": 3, "r": 5.7}, {"lat": 36.45072, "lng": -92.73331, "n": 3, "r": 5.7}, {"lat": 34.9146, "lng": -95.44145, "n": 3, "r": 5.7}, {"lat": 34.42788, "lng": -95.46758, "n": 3, "r": 5.7}, {"lat": 36.63828, "lng": -94.57179, "n": 3, "r": 5.7}, {"lat": 36.4554, "lng": -92.71924, "n": 3, "r": 5.7}, {"lat": 35.39736, "lng": -96.98446, "n": 3, "r": 5.7}, {"lat": 36.21744, "lng": -94.3795, "n": 3, "r": 5.7}, {"lat": 36.76248, "lng": -95.12387, "n": 3, "r": 5.7}, {"lat": 35.63856, "lng": -97.77975, "n": 3, "r": 5.7}, {"lat": 36.53496, "lng": -95.20293, "n": 3, "r": 5.7}, {"lat": 35.28468, "lng": -95.31683, "n": 3, "r": 5.7}, {"lat": 36.36864, "lng": -92.84855, "n": 2, "r": 5.6}, {"lat": 36.21672, "lng": -94.13361, "n": 2, "r": 5.6}, {"lat": 36.3564, "lng": -92.87803, "n": 2, "r": 5.6}, {"lat": 36.4284, "lng": -92.76547, "n": 2, "r": 5.6}, {"lat": 36.04716, "lng": -93.87298, "n": 2, "r": 5.6}, {"lat": 36.89316, "lng": -97.00523, "n": 2, "r": 5.6}, {"lat": 35.34876, "lng": -93.42341, "n": 2, "r": 5.6}, {"lat": 35.89992, "lng": -94.07398, "n": 2, "r": 5.6}, {"lat": 35.33112, "lng": -94.07867, "n": 2, "r": 5.6}, {"lat": 36.6318, "lng": -94.10748, "n": 2, "r": 5.6}, {"lat": 35.69616, "lng": -95.56272, "n": 2, "r": 5.6}, {"lat": 35.5482, "lng": -94.61869, "n": 2, "r": 5.6}, {"lat": 34.60752, "lng": -93.68672, "n": 2, "r": 5.6}, {"lat": 36.42588, "lng": -93.55674, "n": 2, "r": 5.6}, {"lat": 36.16776, "lng": -95.07027, "n": 2, "r": 5.6}, {"lat": 36.68112, "lng": -92.58122, "n": 2, "r": 5.6}, {"lat": 36.12168, "lng": -93.70347, "n": 2, "r": 5.6}, {"lat": 36.46368, "lng": -92.6978, "n": 2, "r": 5.6}, {"lat": 36.12744, "lng": -94.44315, "n": 2, "r": 5.6}, {"lat": 36.37368, "lng": -96.10676, "n": 2, "r": 5.6}, {"lat": 35.49348, "lng": -93.8569, "n": 2, "r": 5.6}, {"lat": 35.02764, "lng": -95.083, "n": 2, "r": 5.6}, {"lat": 37.44648, "lng": -98.232, "n": 2, "r": 5.6}, {"lat": 34.66512, "lng": -93.71754, "n": 2, "r": 5.6}, {"lat": 35.56764, "lng": -94.51685, "n": 2, "r": 5.6}, {"lat": 35.59068, "lng": -95.30879, "n": 2, "r": 5.6}, {"lat": 36.72612, "lng": -93.81737, "n": 2, "r": 5.6}, {"lat": 35.50896, "lng": -95.35301, "n": 2, "r": 5.6}, {"lat": 35.43696, "lng": -95.34162, "n": 2, "r": 5.6}, {"lat": 37.07568, "lng": -98.29297, "n": 2, "r": 5.6}, {"lat": 35.12268, "lng": -94.06795, "n": 2, "r": 5.6}, {"lat": 35.48808, "lng": -97.71007, "n": 2, "r": 5.6}, {"lat": 35.68716, "lng": -97.0059, "n": 2, "r": 5.6}, {"lat": 35.58384, "lng": -96.423, "n": 2, "r": 5.6}, {"lat": 36.91908, "lng": -92.2958, "n": 2, "r": 5.6}, {"lat": 36.0558, "lng": -95.76707, "n": 2, "r": 5.6}, {"lat": 36.15156, "lng": -94.90813, "n": 2, "r": 5.6}, {"lat": 35.30412, "lng": -94.79088, "n": 2, "r": 5.6}, {"lat": 36.36792, "lng": -93.21169, "n": 2, "r": 5.6}, {"lat": 35.35056, "lng": -93.77717, "n": 2, "r": 5.6}, {"lat": 36.14256, "lng": -94.77547, "n": 2, "r": 5.6}, {"lat": 36.36648, "lng": -92.8653, "n": 2, "r": 5.6}, {"lat": 36.60408, "lng": -92.89009, "n": 2, "r": 5.6}, {"lat": 35.88732, "lng": -93.01069, "n": 2, "r": 5.6}, {"lat": 35.54784, "lng": -94.42104, "n": 2, "r": 5.6}, {"lat": 35.51004, "lng": -94.39424, "n": 2, "r": 5.6}, {"lat": 35.80488, "lng": -92.97317, "n": 2, "r": 5.6}, {"lat": 35.69148, "lng": -95.41934, "n": 2, "r": 5.6}, {"lat": 35.65116, "lng": -95.29539, "n": 2, "r": 5.6}, {"lat": 35.3106, "lng": -97.59081, "n": 2, "r": 5.6}, {"lat": 36.75276, "lng": -92.52762, "n": 2, "r": 5.6}, {"lat": 35.8614, "lng": -93.65322, "n": 2, "r": 5.6}, {"lat": 34.8372, "lng": -93.5219, "n": 2, "r": 5.6}, {"lat": 34.93224, "lng": -95.42738, "n": 2, "r": 5.6}, {"lat": 36.28692, "lng": -96.41094, "n": 2, "r": 5.6}, {"lat": 37.21968, "lng": -98.22061, "n": 2, "r": 5.6}, {"lat": 35.757, "lng": -93.88839, "n": 2, "r": 5.6}, {"lat": 36.11808, "lng": -94.85721, "n": 2, "r": 5.6}, {"lat": 35.3988, "lng": -94.4063, "n": 2, "r": 5.6}, {"lat": 35.30376, "lng": -94.94833, "n": 2, "r": 5.6}, {"lat": 35.44092, "lng": -95.37378, "n": 2, "r": 5.6}, {"lat": 35.55936, "lng": -97.61694, "n": 2, "r": 5.6}, {"lat": 37.43424, "lng": -94.77614, "n": 2, "r": 5.6}, {"lat": 36.81072, "lng": -93.54401, "n": 2, "r": 5.6}, {"lat": 35.9388, "lng": -93.60766, "n": 2, "r": 5.6}, {"lat": 37.30608, "lng": -92.65559, "n": 2, "r": 5.6}, {"lat": 34.43472, "lng": -95.40996, "n": 1, "r": 5.4}, {"lat": 36.55116, "lng": -93.55406, "n": 1, "r": 5.4}, {"lat": 35.35596, "lng": -94.98719, "n": 1, "r": 5.4}, {"lat": 36.44064, "lng": -98.41223, "n": 1, "r": 5.4}, {"lat": 35.964, "lng": -94.49407, "n": 1, "r": 5.4}, {"lat": 35.94312, "lng": -93.00399, "n": 1, "r": 5.4}, {"lat": 36.55044, "lng": -93.57215, "n": 1, "r": 5.4}, {"lat": 34.77672, "lng": -93.65791, "n": 1, "r": 5.4}, {"lat": 37.24344, "lng": -94.46258, "n": 1, "r": 5.4}, {"lat": 36.31392, "lng": -94.12959, "n": 1, "r": 5.4}, {"lat": 34.44876, "lng": -95.49036, "n": 1, "r": 5.4}, {"lat": 35.5068, "lng": -93.36713, "n": 1, "r": 5.4}, {"lat": 36.5292, "lng": -93.50046, "n": 1, "r": 5.4}, {"lat": 36.45684, "lng": -94.47129, "n": 1, "r": 5.4}, {"lat": 36.3474, "lng": -92.90349, "n": 1, "r": 5.4}, {"lat": 35.63136, "lng": -93.50314, "n": 1, "r": 5.4}, {"lat": 34.96392, "lng": -95.26524, "n": 1, "r": 5.4}, {"lat": 36.0468, "lng": -93.03481, "n": 1, "r": 5.4}, {"lat": 35.85708, "lng": -98.1315, "n": 1, "r": 5.4}, {"lat": 36.22536, "lng": -96.19118, "n": 1, "r": 5.4}, {"lat": 34.70652, "lng": -93.47835, "n": 1, "r": 5.4}, {"lat": 36.10116, "lng": -94.23813, "n": 1, "r": 5.4}, {"lat": 36.84348, "lng": -92.96982, "n": 1, "r": 5.4}, {"lat": 35.57484, "lng": -95.5989, "n": 1, "r": 5.4}, {"lat": 35.75988, "lng": -94.37615, "n": 1, "r": 5.4}, {"lat": 36.23472, "lng": -95.09305, "n": 1, "r": 5.4}, {"lat": 36.03924, "lng": -95.60761, "n": 1, "r": 5.4}, {"lat": 35.41572, "lng": -97.03136, "n": 1, "r": 5.4}, {"lat": 35.00784, "lng": -93.92859, "n": 1, "r": 5.4}, {"lat": 36.6084, "lng": -96.99518, "n": 1, "r": 5.4}, {"lat": 37.0926, "lng": -94.36007, "n": 1, "r": 5.4}, {"lat": 34.91856, "lng": -95.40862, "n": 1, "r": 5.4}, {"lat": 36.26424, "lng": -92.98188, "n": 1, "r": 5.4}, {"lat": 36.53712, "lng": -93.45021, "n": 1, "r": 5.4}, {"lat": 35.90532, "lng": -94.89942, "n": 1, "r": 5.4}, {"lat": 36.29412, "lng": -92.93163, "n": 1, "r": 5.4}, {"lat": 36.29736, "lng": -93.26127, "n": 1, "r": 5.4}, {"lat": 37.28484, "lng": -94.31451, "n": 1, "r": 5.4}, {"lat": 37.67472, "lng": -97.29869, "n": 1, "r": 5.4}, {"lat": 36.76608, "lng": -94.31518, "n": 1, "r": 5.4}, {"lat": 35.81172, "lng": -94.03847, "n": 1, "r": 5.4}, {"lat": 36.20952, "lng": -93.12928, "n": 1, "r": 5.4}, {"lat": 36.01584, "lng": -94.27699, "n": 1, "r": 5.4}, {"lat": 34.98912, "lng": -94.56107, "n": 1, "r": 5.4}, {"lat": 35.55144, "lng": -96.04244, "n": 1, "r": 5.4}, {"lat": 37.72152, "lng": -98.24138, "n": 1, "r": 5.4}, {"lat": 37.1304, "lng": -94.80696, "n": 1, "r": 5.4}, {"lat": 34.94988, "lng": -94.75805, "n": 1, "r": 5.4}, {"lat": 37.49976, "lng": -98.13083, "n": 1, "r": 5.4}, {"lat": 36.351, "lng": -94.40429, "n": 1, "r": 5.4}, {"lat": 36.93492, "lng": -95.28132, "n": 1, "r": 5.4}, {"lat": 36.14616, "lng": -94.55236, "n": 1, "r": 5.4}, {"lat": 35.35164, "lng": -97.60622, "n": 1, "r": 5.4}, {"lat": 34.83792, "lng": -95.61833, "n": 1, "r": 5.4}, {"lat": 35.27928, "lng": -96.81763, "n": 1, "r": 5.4}, {"lat": 36.58644, "lng": -92.56849, "n": 1, "r": 5.4}, {"lat": 35.8038, "lng": -95.36574, "n": 1, "r": 5.4}, {"lat": 36.59688, "lng": -93.41738, "n": 1, "r": 5.4}, {"lat": 35.37864, "lng": -95.28534, "n": 1, "r": 5.4}, {"lat": 36.19944, "lng": -93.92725, "n": 1, "r": 5.4}, {"lat": 37.0764, "lng": -94.91014, "n": 1, "r": 5.4}, {"lat": 34.71624, "lng": -93.48706, "n": 1, "r": 5.4}, {"lat": 37.45692, "lng": -95.98616, "n": 1, "r": 5.4}, {"lat": 35.7624, "lng": -93.44418, "n": 1, "r": 5.4}, {"lat": 36.54756, "lng": -94.1517, "n": 1, "r": 5.4}, {"lat": 37.49112, "lng": -98.22999, "n": 1, "r": 5.4}, {"lat": 36.26928, "lng": -93.16948, "n": 1, "r": 5.4}, {"lat": 35.98812, "lng": -95.37244, "n": 1, "r": 5.4}, {"lat": 36.918, "lng": -92.53901, "n": 1, "r": 5.4}, {"lat": 34.58088, "lng": -93.6894, "n": 1, "r": 5.4}, {"lat": 34.84044, "lng": -95.08032, "n": 1, "r": 5.4}, {"lat": 36.64476, "lng": -92.99327, "n": 1, "r": 5.4}, {"lat": 36.09072, "lng": -94.66626, "n": 1, "r": 5.4}, {"lat": 36.2088, "lng": -95.09238, "n": 1, "r": 5.4}, {"lat": 35.15148, "lng": -95.06692, "n": 1, "r": 5.4}, {"lat": 37.09512, "lng": -94.04852, "n": 1, "r": 5.4}, {"lat": 34.9434, "lng": -93.57751, "n": 1, "r": 5.4}, {"lat": 36.80028, "lng": -92.62008, "n": 1, "r": 5.4}, {"lat": 36.97056, "lng": -94.72321, "n": 1, "r": 5.4}, {"lat": 35.42328, "lng": -97.67992, "n": 1, "r": 5.4}, {"lat": 35.94528, "lng": -93.39527, "n": 1, "r": 5.4}, {"lat": 35.88624, "lng": -93.85087, "n": 1, "r": 5.4}, {"lat": 36.30708, "lng": -96.2689, "n": 1, "r": 5.4}, {"lat": 36.07596, "lng": -94.8954, "n": 1, "r": 5.4}, {"lat": 35.94096, "lng": -93.76578, "n": 1, "r": 5.4}, {"lat": 36.11484, "lng": -94.65621, "n": 1, "r": 5.4}, {"lat": 34.62984, "lng": -93.67667, "n": 1, "r": 5.4}, {"lat": 36.62928, "lng": -92.42712, "n": 1, "r": 5.4}, {"lat": 36.44568, "lng": -92.64621, "n": 1, "r": 5.4}, {"lat": 36.57384, "lng": -95.36574, "n": 1, "r": 5.4}, {"lat": 36.1782, "lng": -94.76006, "n": 1, "r": 5.4}, {"lat": 35.49996, "lng": -93.95003, "n": 1, "r": 5.4}, {"lat": 36.06552, "lng": -93.27668, "n": 1, "r": 5.4}, {"lat": 35.48484, "lng": -97.6893, "n": 1, "r": 5.4}, {"lat": 36.05868, "lng": -93.22777, "n": 1, "r": 5.4}, {"lat": 36.82476, "lng": -94.04785, "n": 1, "r": 5.4}, {"lat": 35.34804, "lng": -97.04141, "n": 1, "r": 5.4}, {"lat": 35.79552, "lng": -93.3879, "n": 1, "r": 5.4}, {"lat": 36.63792, "lng": -92.33801, "n": 1, "r": 5.4}, {"lat": 36.0702, "lng": -95.41867, "n": 1, "r": 5.4}, {"lat": 36.13428, "lng": -98.04641, "n": 1, "r": 5.4}, {"lat": 35.8776, "lng": -97.27055, "n": 1, "r": 5.4}, {"lat": 36.1278, "lng": -93.06094, "n": 1, "r": 5.4}, {"lat": 36.48384, "lng": -92.73733, "n": 1, "r": 5.4}]</script>
-      <p class="hm-map-caption">Total Views 32,799</p>
-      <p class="hm-map-privacy">Marker positions are approximate and aggregated for buyer privacy; exact visitor addresses are not reported. 612 mapped clusters shown.</p>
+      <p class="hm-map-caption" id="hm-map-caption">Total Views 32,799</p>
+      <p class="hm-map-privacy" id="hm-map-privacy">Marker positions are approximate and aggregated for buyer privacy; exact visitor addresses are not reported. 612 mapped clusters shown.</p>
 
       <!-- print fallback: static SVG map (no external network needed), same marker set -->
       <div class="hm-map-print-fallback card map-card">
@@ -1963,21 +2004,27 @@ function mcgToggleTable(id){
      ========================================================== -->
 <script>
 (function(){
-  // ---------- Activity chart: Total / Consumer / Agent ----------
+  // ---------- Activity chart: Combined Views (daily, real data only) ----------
+  // Only "combined" is ever a real per-day series (see
+  // build_homes_mirror_activity in bin/generate.py) -- the Consumer/Agent
+  // <option>s in #hm-series-select ship `disabled` (see report.html markup
+  // above) specifically so this never has a live value to switch to. The
+  // render function below is intentionally hardcoded to bars[i].combined
+  // rather than reading seriesSelect.value, so it can't silently start
+  // drawing a fabricated series if a future edit removes the `disabled`
+  // attribute without also adding real daily agent/consumer data.
   var activityDataEl = document.getElementById('hm-activity-data');
   if (activityDataEl) {
     var bars = JSON.parse(activityDataEl.textContent || '[]');
     var svg = document.getElementById('hm-activity-svg');
     var tip = document.getElementById('hm-activity-tip');
-    var seriesSelect = document.getElementById('hm-series-select');
     var svgns = 'http://www.w3.org/2000/svg';
     var W = 900, H = 330, padL = 40, padB = 46, padT = 10;
     var plotW = W - padL - 10, plotH = H - padT - padB;
 
     function render(){
-      var key = seriesSelect ? seriesSelect.value : 'total';
       var maxVal = 0;
-      bars.forEach(function(b){ if (b[key] > maxVal) maxVal = b[key]; });
+      bars.forEach(function(b){ if (b.combined > maxVal) maxVal = b.combined; });
       maxVal = maxVal || 1;
       var n = bars.length;
       var slot = plotW / n;
@@ -2000,7 +2047,7 @@ function mcgToggleTable(id){
       }
 
       bars.forEach(function(b, i){
-        var v = b[key];
+        var v = b.combined;
         var barH = (v / maxVal) * plotH;
         var x = padL + i * slot + (slot - barW) / 2;
         var y = padT + plotH - barH;
@@ -2010,7 +2057,7 @@ function mcgToggleTable(id){
         rect.setAttribute('rx', 2);
         rect.setAttribute('class', 'hm-bar');
         rect.addEventListener('mouseenter', function(){
-          tip.textContent = b.date + ': ' + v.toLocaleString() + ' views';
+          tip.textContent = b.date + ': ' + v.toLocaleString() + ' combined views';
           tip.classList.add('shown');
         });
         rect.addEventListener('mousemove', function(e){
@@ -2035,7 +2082,6 @@ function mcgToggleTable(id){
       });
     }
     render();
-    if (seriesSelect) seriesSelect.addEventListener('change', render);
   }
 
   // ---------- Logo carousel ----------
@@ -2071,11 +2117,26 @@ function mcgToggleTable(id){
   }
 
   // ---------- Leaflet Visitor Map (CARTO Positron light tiles) ----------
+  // Total Views and Engaged Buyer Views (when present) are two independent
+  // marker sets from the server (see hm-leaflet-data / hm-leaflet-engaged-data
+  // JSON blobs above) -- the toggle below swaps the rendered layer, it never
+  // synthesizes one set from the other. #hm-map-engaged-btn only exists in
+  // the DOM when the server-side view-model had real engaged-cluster data
+  // for this listing/period (see the hm.leaflet.engaged.available guard in
+  // the markup above), so this code never needs to handle a "toggle exists
+  // but data doesn't" case.
   var mapDataEl = document.getElementById('hm-leaflet-data');
   var mapDiv = document.getElementById('hm-leaflet-map');
+  var engagedDataEl = document.getElementById('hm-leaflet-engaged-data');
+  var totalBtn = document.getElementById('hm-map-total-btn');
+  var engagedBtn = document.getElementById('hm-map-engaged-btn');
+  var mapCaptionEl = document.getElementById('hm-map-caption');
+  var mapPrivacyEl = document.getElementById('hm-map-privacy');
+
   if (mapDataEl && mapDiv && window.L) {
     try {
-      var markers = JSON.parse(mapDataEl.textContent || '[]');
+      var totalMarkers = JSON.parse(mapDataEl.textContent || '[]');
+      var engagedMarkers = engagedDataEl ? JSON.parse(engagedDataEl.textContent || '[]') : [];
       var map = L.map(mapDiv, {scrollWheelZoom:false, center:[35.9, -94.6], zoom:6});
       L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -2085,32 +2146,52 @@ function mcgToggleTable(id){
       // Scroll-zoom only after the user clicks in, so the map never hijacks
       // page scroll while the visitor is scrolling past it.
       mapDiv.addEventListener('click', function(){ map.scrollWheelZoom.enable(); }, {once:true});
-      var bounds = [];
-      markers.forEach(function(m){
-        var circle = L.circleMarker([m.lat, m.lng], {
-          radius: m.r, color:'#fff', weight:1, fillColor:'#16162A', fillOpacity:0.85
-        }).addTo(map);
-        circle.bindTooltip(String(m.n.toLocaleString ? m.n.toLocaleString() : m.n), {
-          permanent:true, direction:'center', className:'leaflet-marker-count'
+
+      var activeCircles = [];
+      function drawMarkers(list){
+        activeCircles.forEach(function(c){ map.removeLayer(c); });
+        activeCircles = [];
+        var bounds = [];
+        list.forEach(function(m){
+          var circle = L.circleMarker([m.lat, m.lng], {
+            radius: m.r, color:'#fff', weight:1, fillColor:'#16162A', fillOpacity:0.85
+          }).addTo(map);
+          circle.bindTooltip(String(m.n.toLocaleString ? m.n.toLocaleString() : m.n), {
+            permanent:true, direction:'center', className:'leaflet-marker-count'
+          });
+          circle.on('mouseover', function(){ circle.setStyle({fillColor:'#C4A35A'}); });
+          circle.on('mouseout', function(){ circle.setStyle({fillColor:'#16162A'}); });
+          activeCircles.push(circle);
+          bounds.push([m.lat, m.lng]);
         });
-        circle.on('mouseover', function(){ circle.setStyle({fillColor:'#C4A35A'}); });
-        circle.on('mouseout', function(){ circle.setStyle({fillColor:'#16162A'}); });
-        bounds.push([m.lat, m.lng]);
-      });
-      if (bounds.length) map.fitBounds(bounds, {padding:[24, 24]});
+        if (bounds.length) map.fitBounds(bounds, {padding:[24, 24]});
+      }
+
+      drawMarkers(totalMarkers);
+
+      function setActiveLayer(btn, list){
+        if (!btn) return;
+        [totalBtn, engagedBtn].forEach(function(b){ if (b) b.classList.remove('active'); });
+        btn.classList.add('active');
+        drawMarkers(list);
+        if (mapCaptionEl && btn.dataset.caption) mapCaptionEl.textContent = btn.dataset.caption;
+        if (mapPrivacyEl && btn.dataset.clipped != null) {
+          mapPrivacyEl.textContent = 'Marker positions are approximate and aggregated for buyer privacy; exact visitor addresses are not reported. ' + btn.dataset.clipped + ' mapped clusters shown.';
+        }
+      }
+
+      if (totalBtn) totalBtn.addEventListener('click', function(){ setActiveLayer(totalBtn, totalMarkers); });
+      if (engagedBtn) engagedBtn.addEventListener('click', function(){ setActiveLayer(engagedBtn, engagedMarkers); });
     } catch (e) {
       // Leaflet CDN unreachable (e.g. sandboxed PDF render) -- the static
       // SVG .hm-map-print-fallback covers this case, no action needed.
     }
   }
-
-  // ---------- Visitor Map toggle chips (Engaged Buyer Views has no
-  // source data for this listing yet -- button ships disabled with a
-  // tooltip per spec rather than faking a second dataset). ----------
-  var totalBtn = document.getElementById('hm-map-total-btn');
-  if (totalBtn) totalBtn.addEventListener('click', function(){ totalBtn.classList.add('active'); });
 })();
 </script>
 <img src="https://mcg-marketing-hub.azurewebsites.net/api/reports/beacon/1715-n-garland/6c7b8b8d.gif" width="1" height="1" alt="" loading="lazy" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;border:0;">
+
+<!-- MCG-IP-NOTICE v1 -->
+<div id="mcg-ip-notice" style="background:#1a2744;color:#cfd6e4;font-family:Lato,Arial,sans-serif;font-size:10.5px;line-height:1.65;padding:16px 26px;text-align:left;"><strong style="color:#ffffff;letter-spacing:.4px;">© 2026 Mason Capital Group. All Rights Reserved.</strong><br>This material — including all concepts, strategies, analyses, designs, formats, functionality, and ideas contained or embodied herein — is the proprietary intellectual property of Mason Capital Group (&quot;MCG&quot;) and is furnished solely for the recipient&rsquo;s evaluation. No part of this material may be used, reproduced, distributed, disclosed, or implemented, in whole or in part, directly or indirectly, or through any third party, without the prior written consent of MCG. Unauthorized use — including implementation of any concept, strategy, or development plan contained herein through another broker, builder, developer, or other party — is strictly prohibited. Review or acceptance of this material constitutes acknowledgment of these terms.</div>
 </body>
 </html>
