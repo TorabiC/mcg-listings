@@ -36,7 +36,7 @@
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": "2026-07-30",
+      "as_of": "2026-08-05",
       "status": "fresh"
     },
     {
@@ -64,10 +64,10 @@
     "total_leads": "0",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
-      "value_display": "5m 31s",
+      "value_display": "4m 52s",
       "available": true
     },
     "window_label": "July 2026"
   },
-  "generated_at": "2026-08-05T16:12:13.844772+00:00"
+  "generated_at": "2026-08-05T16:54:02.786692+00:00"
 }
