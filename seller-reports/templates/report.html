@@ -172,6 +172,23 @@
     padding:10px 16px;font-size:13.5px;font-weight:600;margin:18px 0;
   }
 
+  /* ---------- Exposure banner -- confident lead-in below the hero,
+     built from real numbers only (see generate.py build_exposure_banner).
+     Navy/gold, matches the report's brand system rather than the
+     gold-tinted informational banners above. ---------- */
+  .exposure-banner{
+    display:flex;align-items:center;gap:14px;background:var(--navy);color:#fff;
+    border-radius:var(--radius);padding:16px 20px;margin:20px 0 6px;
+    box-shadow:var(--shadow);
+  }
+  .exposure-banner .eb-mark{
+    flex-shrink:0;width:34px;height:34px;border-radius:999px;background:var(--gold);
+    color:var(--navy);display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:15px;font-family:var(--font-serif);
+  }
+  .exposure-banner .eb-text{font-size:14.5px;font-weight:600;line-height:1.5;}
+  .exposure-banner .eb-text strong{color:var(--gold-light);font-weight:900;}
+
   /* ---------- Sections ---------- */
   main{padding-bottom:40px;}
   section{padding:36px 0;border-bottom:1px solid var(--gray-300);scroll-margin-top:58px;}
@@ -869,6 +886,15 @@
   </div>
 </header>
 
+{% if exposure_banner.available %}
+<div class="wrap">
+  <div class="exposure-banner">
+    <span class="eb-mark">M</span>
+    <span class="eb-text">{{ exposure_banner.text }}</span>
+  </div>
+</div>
+{% endif %}
+
 <!-- 4. STICKY TAB NAV (in-page section nav, approved -- unchanged; now
      stacks directly below the 44px breadcrumb bar via .hm-tabnav.tabs-sticky{top:44px}) -->
 <nav class="hm-tabnav tabs-sticky" aria-label="Report sections">
@@ -920,7 +946,7 @@
       <div class="hm-section-head">
         <div>
           <h2>{{ 'Month' if period.type == 'monthly' else 'Quarter' }} in review</h2>
-          <p class="hm-section-sub">Week-by-week breakdown for {{ period_range_display }}.</p>
+          <p class="hm-section-sub">Week-by-week performance across the {{ period_range_display }} exposure campaign.</p>
         </div>
       </div>
       {% if weekly_breakdown.available %}
@@ -955,7 +981,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Market Position</h2>
-          <p class="hm-section-sub">Where this listing stands, using only MCG's own tracked data.</p>
+          <p class="hm-section-sub">Your listing's standing within MCG's active portfolio, based solely on data MCG has verified.</p>
         </div>
       </div>
       {% if market_position.available %}
@@ -986,7 +1012,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Activity</h2>
-          <p class="hm-section-sub">A breakdown of agent and home buyer views.</p>
+          <p class="hm-section-sub">Agent and prospective-buyer engagement with your listing this period.</p>
         </div>
         <div class="hm-controls">
           <!-- ROUND 2: no disabled options -- every category is
@@ -1038,7 +1064,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Total Views</h2>
-          <p class="hm-section-sub">A breakdown of where home-shoppers are viewing your listing.</p>
+          <p class="hm-section-sub">Where prospective buyers are engaging with your listing across MCG's syndication network.</p>
         </div>
       </div>
       {% if hm.traffic.available %}
@@ -1120,7 +1146,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Full Marketing Footprint</h2>
-          <p class="hm-section-sub">Every channel MCG has working for your property &mdash; tracked, measured, and reported.</p>
+          <p class="hm-section-sub">MCG's sustained exposure campaign for your property &mdash; every active channel tracked, measured, and reported.</p>
         </div>
         <a class="hm-glossary-link" href="#hm-glossary">Glossary of Terms &rsaquo;</a>
       </div>
@@ -1156,7 +1182,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Activity Feed</h2>
-          <p class="hm-section-sub">A feed of the milestones and events your listing has achieved.</p>
+          <p class="hm-section-sub">Milestones and outreach MCG has logged on your property's behalf this period.</p>
         </div>
       </div>
       {% if activity_feed %}
@@ -1184,7 +1210,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Visitor Map</h2>
-          <p class="hm-section-sub">See where buyers are discovering your listing.</p>
+          <p class="hm-section-sub">Where MCG's marketing is putting your listing in front of buyers.</p>
         </div>
         {% if hm.leaflet.available %}
         <div class="hm-map-toggle">
@@ -1294,6 +1320,15 @@
   </div>
 </header>
 
+{% if exposure_banner.available %}
+<div class="wrap">
+  <div class="exposure-banner">
+    <span class="eb-mark">M</span>
+    <span class="eb-text">{{ exposure_banner.text }}</span>
+  </div>
+</div>
+{% endif %}
+
 <!-- ==========================================================
      2. STICKY TAB NAV
      ========================================================== -->
@@ -1322,7 +1357,7 @@
   <section id="summary" style="padding-top:26px;">
     <div class="section-head">
       <h2>Summary</h2>
-      <p class="section-sub">Headline marketing activity for {{ period_range_display }}</p>
+      <p class="section-sub">Consolidated marketing activity for {{ period_range_display }}</p>
     </div>
     {% if homes_exposure and homes_exposure.stale %}
     <div class="as-of-caption">Syndication figures below: {{ homes_exposure.stale_caption }}</div>
@@ -1347,7 +1382,7 @@
   <section id="views">
     <div class="section-head">
       <h2>Views</h2>
-      <p class="section-sub">Daily view activity and where those views originate</p>
+      <p class="section-sub">Daily exposure activity and where that traffic originates</p>
     </div>
 
     {% if homes_exposure and homes_exposure.stale %}
@@ -1431,7 +1466,7 @@
   <section id="reach">
     <div class="section-head">
       <h2>Marketing Reach</h2>
-      <p class="section-sub">Targeted display advertising and where this listing has been published</p>
+      <p class="section-sub">Targeted display advertising and the publications carrying your listing</p>
     </div>
 
     {% if homes_exposure and homes_exposure.stale %}
@@ -1622,7 +1657,7 @@
   <section id="market-position">
     <div class="section-head">
       <h2>Market Position</h2>
-      <p class="section-sub">Where this listing stands, using only MCG's own tracked data</p>
+      <p class="section-sub">Your listing's standing within MCG's active portfolio, based solely on data MCG has verified</p>
     </div>
 
     {% if market_position.available %}

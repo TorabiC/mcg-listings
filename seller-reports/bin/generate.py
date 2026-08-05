@@ -1162,11 +1162,67 @@ def build_channel_performance(src: dict, dq: dict, homes_exposure: dict | None,
         "available": len(channels) > 0,
         "channels": channels,
         "channel_count": len(channels),
+        "combined": combined,
         "combined_display": _fmt_n(combined),
         "footnote": ("Combined marketing touchpoints across all active MCG channels. "
                      "Website figures reflect this reporting period; syndication and "
                      "marketplace counters accrue from your listing date."),
     }
+
+
+def _period_phrase(period_type: str) -> str:
+    return {"weekly": "This week", "monthly": "This month", "quarterly": "This quarter"}.get(
+        period_type, "This period")
+
+
+def build_exposure_banner(channel_performance: dict | None, homes_exposure: dict | None,
+                           period_type: str) -> dict:
+    """Confident, single-sentence lead-in banner rendered just below the
+    hero -- the report's job is to convince the seller MCG is working hard
+    on their behalf, and this is the first thing they read. Built ONLY
+    from real, already-computed numbers (never fabricated); gracefully
+    downgrades to a generic sentence when those numbers are too sparse to
+    support a specific claim, and omits entirely when there is truly
+    nothing to say yet.
+
+    buyers   = combined marketing touchpoints across every currently-active
+               channel this report already tallies -- the exact same
+               number build_channel_performance's "Full Marketing
+               Footprint" section shows as combined_display.
+    channels = count of currently-active MCG marketing channels for this
+               listing, plus the number of individual publications/sites
+               actually carrying it (homes.com's publication_count) --
+               so a listing syndicated to 44 named publications through
+               one channel reads as "45+ channels", not "1 channel".
+    """
+    buyers = int((channel_performance or {}).get("combined") or 0)
+    active_channels = int((channel_performance or {}).get("channel_count") or 0)
+    publication_count = int((homes_exposure or {}).get("publication_count") or 0)
+    channels = active_channels + publication_count
+    phrase = _period_phrase(period_type)
+
+    # Confident, specific claim -- only when both figures are substantial
+    # enough to sound like results, not noise.
+    if buyers >= 500 and channels >= 3:
+        return {
+            "available": True,
+            "sparse": False,
+            "buyers_display": _fmt_n(buyers),
+            "channels_display": str(channels),
+            "text": (f"{phrase}, MCG presented your property to {_fmt_n(buyers)} prospective "
+                     f"buyers across {channels}+ national and regional channels."),
+        }
+    # Some real activity, just not enough for a specific headline number --
+    # a true, still-confident sentence rather than a hedge.
+    if buyers > 0 or active_channels > 0 or publication_count > 0:
+        return {
+            "available": True,
+            "sparse": True,
+            "buyers_display": None,
+            "channels_display": None,
+            "text": "Your property is actively marketed across MCG's national syndication network.",
+        }
+    return {"available": False, "sparse": True, "buyers_display": None, "channels_display": None, "text": None}
 
 
 def build_stats(metrics: dict, dq: dict) -> list[dict]:
@@ -1554,6 +1610,7 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     crexi_exposure = build_crexi_exposure(portals_raw, source_freshness)
     exposure_available = bool(homes_exposure or crexi_exposure)
     channel_performance = build_channel_performance(src, dq, homes_exposure, crexi_exposure, portals_raw)
+    exposure_banner = build_exposure_banner(channel_performance, homes_exposure, metrics["period"]["type"])
 
     # --- homes.com-mirror layout gate ---------------------------------
     # Applies to listings whose portals include homes.com data (i.e.
@@ -1685,6 +1742,7 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
         "homes_mirror": homes_mirror,
         "hero_card_style": HERO_CARD_STYLE,
         "channel_performance": channel_performance,
+        "exposure_banner": exposure_banner,
         "hm": hm,
         "source_freshness": source_freshness,
         "market_position": build_market_position(listing, metrics, portfolio_ranking),
