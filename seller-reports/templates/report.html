@@ -403,7 +403,6 @@
   .hm-hero-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:relative;}
   .hm-pill{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--navy);font-weight:800;font-size:12.5px;padding:9px 16px;border-radius:999px;text-decoration:none;border:none;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.18);}
   .hm-pill:hover{background:var(--gold-tint);}
-  .hm-photo-counter{display:inline-flex;align-items:center;gap:5px;background:rgba(22,22,42,.7);color:#fff;font-weight:700;font-size:12px;padding:8px 14px;border-radius:999px;}
   .hm-hero-bottom{position:relative;z-index:3;padding:0 20px 24px;display:flex;flex-direction:column;gap:10px;max-width:420px;}
   /* Hero overlay cards (property card + agent card, both share this base
      class) recut to the EXACT card design language templates/listing.html
@@ -444,7 +443,6 @@
   .hm-agent-chip{display:inline-block;background:var(--gold-tint);color:#7A5E10;font-weight:900;font-size:11.5px;padding:2px 9px;border-radius:999px;margin-bottom:3px;}
   .hm-agent-firm{display:block;font-size:12px;color:var(--gray-700);}
   .hm-agent-phone{display:block;font-size:12.5px;font-weight:800;color:var(--crimson);text-decoration:none;margin-top:2px;}
-  .hm-share-toast{position:absolute;z-index:5;top:58px;right:20px;background:var(--navy);color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s ease;}
 
   .hm-body{background:var(--surface);}
   /* Container max-width/gutter matched to the live listing pages -- confirmed
@@ -666,7 +664,7 @@
     .hm-carousel-page{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(5,1fr);}
   }
   @media print{
-    .hm-tabnav,.hm-hero-actions,.hm-banner,.hm-carousel-arrow,.hm-carousel-dots,.hm-controls,.hm-map-toggle,.hm-share-toast,.breadcrumb{display:none !important;}
+    .hm-tabnav,.hm-hero-actions,.hm-banner,.hm-carousel-arrow,.hm-carousel-dots,.hm-controls,.hm-map-toggle,.breadcrumb{display:none !important;}
     .print-logo-line{display:flex !important;}
     #hm-leaflet-map{display:none !important;}
     .hm-map-print-fallback{display:block !important;}
@@ -734,10 +732,7 @@
   <div class="gallery-badge">LISTING ANALYTICS &nbsp;&middot;&nbsp; WEEKLY REPORT</div>
   <div class="hm-hero-topbar">
     <div class="hm-hero-actions">
-      {% if hero.image_url %}<span class="hm-photo-counter">Photos</span>{% endif %}
-      <button type="button" class="hm-pill" id="hm-share-btn">Share</button>
       {% if live_listing_url %}<a class="hm-pill" id="hm-live-listing-link" href="{{ live_listing_url }}" target="_blank" rel="noopener">View Live Listing</a>{% endif %}
-      <span class="hm-share-toast" id="hm-share-toast" role="status" aria-live="polite">Link copied</span>
     </div>
   </div>
   <div class="hm-hero-bottom">
@@ -1760,27 +1755,6 @@ function mcgToggleTable(id){
      ========================================================== -->
 <script>
 (function(){
-  // ---------- Share button ----------
-  var shareBtn = document.getElementById('hm-share-btn');
-  if (shareBtn) {
-    shareBtn.addEventListener('click', function(){
-      var liveLink = document.getElementById('hm-live-listing-link');
-      var url = (liveLink && liveLink.href) || window.location.href;
-      var toast = document.getElementById('hm-share-toast');
-      function showToast(msg){
-        if (!toast) return;
-        toast.textContent = msg;
-        toast.style.opacity = '1';
-        setTimeout(function(){ toast.style.opacity = '0'; }, 1800);
-      }
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(function(){ showToast('Link copied'); }, function(){ showToast(url); });
-      } else {
-        showToast(url);
-      }
-    });
-  }
-
   // ---------- Activity chart: Total / Consumer / Agent ----------
   var activityDataEl = document.getElementById('hm-activity-data');
   if (activityDataEl) {
