@@ -194,8 +194,8 @@ def main() -> int:
             if args.dry_run:
                 print("[deploy] --dry-run: skipping commit + push.")
             else:
-                run(["git", "config", "user.email", "seller-reports@mcg-bot.local"], cwd=repo_dir, env=git_env)
-                run(["git", "config", "user.name", "MCG Seller Reports Bot"], cwd=repo_dir, env=git_env)
+                run(["git", "config", "user.email", "noreply@anthropic.com"], cwd=repo_dir, env=git_env)
+                run(["git", "config", "user.name", "Claude"], cwd=repo_dir, env=git_env)
                 run(["git", "commit", "-m", f"seller-reports: {args.period_id} report run"], cwd=repo_dir, env=git_env)
 
                 # Push over HTTPS using the askpass helper -- the token itself
