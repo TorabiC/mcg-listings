@@ -1175,54 +1175,124 @@ def _period_phrase(period_type: str) -> str:
         period_type, "This period")
 
 
-def build_exposure_banner(channel_performance: dict | None, homes_exposure: dict | None,
-                           period_type: str) -> dict:
-    """Confident, single-sentence lead-in banner rendered just below the
-    hero -- the report's job is to convince the seller MCG is working hard
-    on their behalf, and this is the first thing they read. Built ONLY
-    from real, already-computed numbers (never fabricated); gracefully
-    downgrades to a generic sentence when those numbers are too sparse to
-    support a specific claim, and omits entirely when there is truly
-    nothing to say yet.
+def _weekly_clause_phrase(period_type: str) -> str:
+    """Lower-case, mid-sentence form of _period_phrase, for the appended
+    ' -- including {Y} this week.' clause."""
+    return {"weekly": "this week", "monthly": "this month", "quarterly": "this quarter"}.get(
+        period_type, "this period")
 
-    buyers   = combined marketing touchpoints across every currently-active
-               channel this report already tallies -- the exact same
-               number build_channel_performance's "Full Marketing
-               Footprint" section shows as combined_display.
+
+def _round_down_clean(n: int) -> int:
+    """Round a headline count down to a clean, honest threshold rather than
+    a precise-looking figure -- e.g. 40,704 -> 40,700 ("more than 40,700")
+    reads as a confident claim MCG can always stand behind, never as a
+    number that will look wrong next week."""
+    if n >= 1000:
+        return (n // 100) * 100
+    if n >= 100:
+        return (n // 10) * 10
+    return n
+
+
+def build_exposure_banner(channel_performance: dict | None, homes_exposure: dict | None,
+                           period_type: str, period_activity: dict | None,
+                           src: dict | None, dq: dict | None) -> dict:
+    """Confident, single-sentence (plus an honest weekly clause) lead-in
+    banner rendered just below the hero -- the report's job is to convince
+    the seller MCG is working hard on their behalf, and this is the first
+    thing they read. Built ONLY from real, already-computed numbers (never
+    fabricated); gracefully downgrades to a generic sentence when those
+    numbers are too sparse to support a specific claim, and omits entirely
+    when there is truly nothing to say yet.
+
+    WINDOW HONESTY: the "combined touchpoints" total this report already
+    computes (build_channel_performance's `combined`) mixes a period-scoped
+    figure (this period's GA4 pageviews, this period's Constant Contact
+    sends) with cumulative-since-listing figures (homes.com's total_views,
+    Crexi's all-time impressions) -- see that function's own "Windows
+    differ by channel" docstring note and the Full Marketing Footprint
+    section's footnote, which already discloses this. That's a legitimate
+    "to date" total, but it is NOT a "this week" total, so the banner must
+    say "To date" for that figure, never "This week"/"This month" --
+    exactly the window-mixing this pipeline is built to avoid everywhere
+    else. A SEPARATE, genuinely period-scoped weekly buyer count (Y) is
+    computed here from only sources that are actually period-scoped: this
+    period's GA4 pageviews, this period's Constant Contact sends, and
+    portal view deltas from metrics.json's period_activity (which are
+    real week-over-week deltas ONLY when has_baseline is true -- see
+    collect.py build_period_activity). The weekly clause is appended only
+    when at least one of those produces a real number; otherwise it's
+    omitted rather than guessed at.
+
+    buyers_to_date = channel_performance['combined'] (unchanged calculation
+               -- see that function).
     channels = count of currently-active MCG marketing channels for this
                listing, plus the number of individual publications/sites
                actually carrying it (homes.com's publication_count) --
                so a listing syndicated to 44 named publications through
                one channel reads as "45+ channels", not "1 channel".
     """
-    buyers = int((channel_performance or {}).get("combined") or 0)
+    buyers_to_date = int((channel_performance or {}).get("combined") or 0)
     active_channels = int((channel_performance or {}).get("channel_count") or 0)
     publication_count = int((homes_exposure or {}).get("publication_count") or 0)
     channels = active_channels + publication_count
-    phrase = _period_phrase(period_type)
+
+    # --- genuinely period-scoped weekly buyer count (Y) ---------------
+    src = src or {}
+    dq = dq or {}
+    period_activity = period_activity or {}
+    weekly_buyers = 0
+    have_weekly_data = False
+
+    ga4 = src.get("ga4") or {}
+    if dq.get("ga4") == "live" and (ga4.get("pageviews") or ga4.get("users")):
+        weekly_buyers += int(ga4.get("pageviews") or 0)
+        have_weekly_data = True
+
+    cc = src.get("cc") or {}
+    cc_sent = (cc.get("totals") or {}).get("sent")
+    if dq.get("cc") == "live" and cc_sent:
+        weekly_buyers += int(cc_sent or 0)
+        have_weekly_data = True
+
+    for portal in ("homes.com", "crexi", "loopnet"):
+        entry = period_activity.get(portal) or {}
+        if entry.get("has_baseline") and entry.get("views") is not None:
+            weekly_buyers += int(entry.get("views") or 0)
+            have_weekly_data = True
+
+    weekly_clause = ""
+    if have_weekly_data and weekly_buyers > 0:
+        weekly_clause = f" — including {_fmt_n(weekly_buyers)} {_weekly_clause_phrase(period_type)}."
 
     # Confident, specific claim -- only when both figures are substantial
     # enough to sound like results, not noise.
-    if buyers >= 500 and channels >= 3:
+    if buyers_to_date >= 500 and channels >= 3:
+        rounded = _round_down_clean(buyers_to_date)
+        base = (f"To date, MCG has presented your property to more than {_fmt_n(rounded)} "
+                f"prospective buyers across {channels}+ national and regional channels")
+        text = base + weekly_clause if weekly_clause else base + "."
         return {
             "available": True,
             "sparse": False,
-            "buyers_display": _fmt_n(buyers),
+            "buyers_display": _fmt_n(rounded),
             "channels_display": str(channels),
-            "text": (f"{phrase}, MCG presented your property to {_fmt_n(buyers)} prospective "
-                     f"buyers across {channels}+ national and regional channels."),
+            "weekly_buyers_display": _fmt_n(weekly_buyers) if weekly_clause else None,
+            "text": text,
         }
     # Some real activity, just not enough for a specific headline number --
     # a true, still-confident sentence rather than a hedge.
-    if buyers > 0 or active_channels > 0 or publication_count > 0:
+    if buyers_to_date > 0 or active_channels > 0 or publication_count > 0:
         return {
             "available": True,
             "sparse": True,
             "buyers_display": None,
             "channels_display": None,
+            "weekly_buyers_display": None,
             "text": "Your property is actively marketed across MCG's national syndication network.",
         }
-    return {"available": False, "sparse": True, "buyers_display": None, "channels_display": None, "text": None}
+    return {"available": False, "sparse": True, "buyers_display": None, "channels_display": None,
+            "weekly_buyers_display": None, "text": None}
 
 
 def build_stats(metrics: dict, dq: dict) -> list[dict]:
@@ -1610,7 +1680,8 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     crexi_exposure = build_crexi_exposure(portals_raw, source_freshness)
     exposure_available = bool(homes_exposure or crexi_exposure)
     channel_performance = build_channel_performance(src, dq, homes_exposure, crexi_exposure, portals_raw)
-    exposure_banner = build_exposure_banner(channel_performance, homes_exposure, metrics["period"]["type"])
+    exposure_banner = build_exposure_banner(channel_performance, homes_exposure, metrics["period"]["type"],
+                                             metrics.get("period_activity"), src, dq)
 
     # --- homes.com-mirror layout gate ---------------------------------
     # Applies to listings whose portals include homes.com data (i.e.
