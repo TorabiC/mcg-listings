@@ -138,7 +138,7 @@ def anonymize_source_label(raw: str | None) -> str:
     s = (raw or "").strip().lower()
     if not s:
         return "Other"
-    if s == "google":
+    if s == "google" or any(tok in s for tok in ("bing", "duckduckgo", "yahoo", "search engine")):
         return "Search Engines"
     if s in ("(direct)", "direct"):
         return "Direct"
@@ -146,8 +146,14 @@ def anonymize_source_label(raw: str | None) -> str:
         return "Other"
     if any(tok in s for tok in ("brevo", "mailchimp", "constantcontact", "sp1", "sendgrid")):
         return "Email Campaigns"
-    cleaned = anonymize_text(raw) or raw
-    return cleaned.title()
+    if any(tok in s for tok in ("facebook", "instagram", "linkedin", "twitter", "t.co", "tiktok", "youtube", "pinterest", "social")):
+        return "Social Media"
+    # ALLOWLIST-ONLY policy (Cameron, 2026-08-05): anything not recognized
+    # above -- especially domain/URL/host-like referrers -- must NEVER pass
+    # through to seller-visible output. No syndication partners, no referrer
+    # hosts, no MCG infrastructure hostnames, no clues about how these
+    # reports are compiled. Everything else collapses to one masked label.
+    return "MCG Proprietary Marketing Network"
 
 # ---------------------------------------------------------------------------
 # Harvest freshness -- as-of captions
