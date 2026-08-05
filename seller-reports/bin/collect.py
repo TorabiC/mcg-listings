@@ -40,6 +40,8 @@ try:
 except ImportError:  # pragma: no cover - requests is a stated dependency
     requests = None
 
+from featured import get_featured_slugs
+
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_DIR = ROOT / "config"
 INTAKE_DIR = ROOT / "intake"
@@ -1761,6 +1763,11 @@ def main(argv=None):
     parser.add_argument("--period-id", default=None, help="Explicit period id, e.g. 2026-W29 / 2026-07 / 2026-Q3. Defaults to the period containing the day before today.")
     parser.add_argument("--slug", default="all", help="Listing slug, or 'all' (default).")
     parser.add_argument("--sample", action="store_true", help="Generate deterministic sample data instead of calling live sources.")
+    parser.add_argument("--include-unfeatured", action="store_true",
+                         help="Process every active listing in config/listings.json regardless of "
+                              "Featured Listings Cards status on the MCG website (default: "
+                              "featured-only, resolved live via bin/featured.py). Ignored when "
+                              "--slug names a specific listing.")
     args = parser.parse_args(argv)
 
     listings = load_listings()
@@ -1773,6 +1780,17 @@ def main(argv=None):
         if not listings:
             print(f"[collect] no listing with slug {args.slug!r}", file=sys.stderr)
             return 1
+    elif not args.include_unfeatured:
+        featured = get_featured_slugs()
+        featured_set = set(featured.slugs)
+        registry_slugs = {l["slug"] for l in listings}
+        skipped = sorted(registry_slugs - featured_set)
+        if skipped:
+            print(f"[collect] skipping {len(skipped)} non-featured listing(s) "
+                  f"(not live on the MCG Featured Listings page): {', '.join(skipped)}", file=sys.stderr)
+        if featured.source == "fallback":
+            print(f"[collect] {featured.warning}", file=sys.stderr)
+        listings = [l for l in listings if l["slug"] in featured_set]
 
     if args.period_id:
         period_id = args.period_id

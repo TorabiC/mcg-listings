@@ -34,6 +34,8 @@ except ImportError:  # pragma: no cover
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
 
+from featured import get_featured_slugs
+
 # ---------------------------------------------------------------------------
 # MCG brand / value-proposition constants
 # Source: mcg-value-proposition skill, verified July 7, 2026 (single national
@@ -1916,6 +1918,10 @@ def main() -> int:
     ap.add_argument("--no-pdf", dest="pdf", action="store_false")
     ap.add_argument("--pdf-dir", default=str(REPO_ROOT / "out" / "pdfs"))
     ap.add_argument("--chromium-bin", default=None)
+    ap.add_argument("--include-unfeatured", action="store_true",
+                     help="Render every active listing regardless of Featured Listings Cards "
+                          "status on the MCG website (default: featured-only, resolved live via "
+                          "bin/featured.py). Ignored when --slug names a specific listing.")
     args = ap.parse_args()
 
     listings_path = Path(args.listings)
@@ -1927,6 +1933,16 @@ def main() -> int:
 
     if args.slug == "all":
         target_slugs = list(listings_by_slug.keys())
+        if not args.include_unfeatured:
+            featured = get_featured_slugs()
+            featured_set = set(featured.slugs)
+            skipped = sorted(set(target_slugs) - featured_set)
+            if skipped:
+                print(f"[generate] skipping {len(skipped)} non-featured listing(s) "
+                      f"(not live on the MCG Featured Listings page): {', '.join(skipped)}", file=sys.stderr)
+            if featured.source == "fallback":
+                print(f"[generate] {featured.warning}", file=sys.stderr)
+            target_slugs = [s for s in target_slugs if s in featured_set]
     else:
         if args.slug not in listings_by_slug:
             print(f"ERROR: slug '{args.slug}' not found in {listings_path}", file=sys.stderr)

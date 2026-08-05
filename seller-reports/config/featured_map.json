@@ -1,0 +1,17 @@
+{
+  "_comment": "card_slug (Webflow CMS 'Featured Listings Cards' item fieldData.slug) -> registry_slug (config/listings.json listing.slug). Resolved 2026-08-05 by exact-match of each card's fieldData['webflow-page-url'] against each registry listing's links.webflow_page (14/14 registry slugs matched exactly one live-collection card; see bin/featured.py resolve_map_from_api() to re-derive/audit). The 3 originally-ambiguous cards (hwy-49-storage-facility, hwy-49-ar-72-corridor, downtown-rogers-corner) resolved unambiguously via this URL match: hwy-49-storage-facility's webflow-page-url ends '/hwy-49-storage-facility-springdale-ar', matching registry slug 3936-s-48th's links.webflow_page exactly; hwy-49-ar-72-corridor's URL ends '/hwy-49-hwy-72-development-gravette-ar', matching ar-72-gravette; downtown-rogers-corner's URL ends '/downtown-rogers-commercial-building-ar', matching 401-n-2nd. Kept even for cards currently archived/unpublished on Webflow (see get_featured_slugs() docstring) so a re-publish is picked up automatically without editing this file again.",
+  "1715-garland-ave-047-acre-development-site-fayetteville-ar-mason-capital-group": "1715-n-garland",
+  "3300-blue-hill-road": "3300-blue-hill",
+  "504-sw-e-street": "504-sw-e-st",
+  "18772-davis-road": "18772-davis-rd",
+  "hwy-49-storage-facility": "3936-s-48th",
+  "hwy-49-ar-72-corridor": "ar-72-gravette",
+  "downtown-rogers-corner": "401-n-2nd",
+  "whithorn-lane": "whithorn-ln",
+  "exminster-circle": "exminster-cir",
+  "1716-w-holly-street": "1716-w-holly",
+  "presidential-drive": "presidential-dr",
+  "sw-regional-airport-blvd": "sw-regional-airport-blvd",
+  "407-old-forge-drive": "407-old-forge",
+  "46-northfleet-ln": "46-northfleet"
+}

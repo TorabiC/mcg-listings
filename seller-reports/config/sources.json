@@ -34,8 +34,12 @@
     "credential_status": "pending -- file absent as of 2026-07-30"
   },
   "webflow": {
-    "enabled": false,
-    "credential_env_or_path": null,
-    "notes": "No analytics/page-view API. Webflow hosts the MCG site's pages, but 'website traffic' for seller reports is measured through GA4 (+ Clarity supplemental engagement, see the 'clarity' entry above) instrumented on those same Webflow-hosted pages \u2014 GA4/Clarity numbers already ARE Webflow's page-view numbers. There is deliberately no WebflowAdapter in collect.py; writing one would double-count real traffic against a second, fabricated number, which the system's no-fabricated-data policy forbids. This entry exists purely as documentation so a future maintainer doesn't go looking for a Webflow adapter that was never supposed to exist."
+    "enabled": true,
+    "credential_env_or_path": "/mnt/user-data/uploads/Second Brain/.secrets/webflow-cms-token.txt",
+    "token_file": "/mnt/user-data/uploads/Second Brain/.secrets/webflow-cms-token.txt",
+    "purpose": "featured_listings_scoping",
+    "collection_id": "6a08a82391ef70c6df6c599c",
+    "site_id": "699cb0b733f309dd4bda1b56",
+    "notes": "No analytics/page-view API, and that remains true: 'website traffic' for seller reports is still measured through GA4 (+ Clarity supplemental engagement, see the 'clarity' entry above) instrumented on Webflow-hosted pages \u2014 GA4/Clarity numbers already ARE Webflow's page-view numbers, and there is deliberately no analytics WebflowAdapter in collect.py (writing one would double-count real traffic against a second, fabricated number). This credential exists for a DIFFERENT purpose: bin/featured.py reads the Webflow CMS Data API v2 (GET /v2/collections/{collection_id}/items) against the 'Featured Listings Cards' collection to determine which listings are actually live on the MCG website's Featured Listings page right now (item counts as featured iff not isDraft and not isArchived), so collect.py/generate.py can scope a run to featured-only listings by default (see --include-unfeatured). Token from Webflow Site Settings > Apps & Integrations > API access (Data API v2 site/collection-scoped token), stored at token_file. Missing/unreachable token/API => bin/featured.py falls back to 'all registry listings' with a loud stderr warning, never a silently empty run."
   }
 }
