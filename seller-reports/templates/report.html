@@ -501,20 +501,36 @@
 
   .hm-chart-wrap{position:relative;height:330px;margin-top:8px;}
   .hm-chart-svg{width:100%;height:100%;}
-  /* Combined Views is the only series the daily chart ever plots (see
-     build_homes_mirror_activity) -- bar color matches the Combined swatch
-     in the legend below 1:1, navy, same token used for the "Combined
-     Views" dot. Was a fixed rgba(22,22,42,.85) that didn't correspond to
-     any single legend color and stayed the same regardless of which
-     toggle option was selected. */
-  .hm-chart-svg .hm-bar{fill:var(--navy);}
-  .hm-chart-svg .hm-bar:hover{fill:var(--gold);}
+  /* ROUND 2: bar fill color is set per-bar in JS (COLORS[key] in the
+     render script below), matched 1:1 to whichever category is selected
+     -- Combined=navy #16162A, Consumer=crimson #AB012E, Agent=gold
+     #C4A35A -- the exact same three hex values used for the legend dots
+     below, so the selector/bars/legend always visibly agree. .hm-bar no
+     longer hardcodes a single color here. */
+  .hm-chart-svg .hm-bar{opacity:.94;}
+  .hm-chart-svg .hm-bar:hover{opacity:1;}
   .hm-chart-svg .hm-gridline{stroke:var(--gray-100);stroke-width:1;}
   .hm-chart-svg .hm-axis-label{font-size:9.5px;fill:var(--gray-500);}
   .hm-chart-svg .hm-date-label{font-size:9px;fill:var(--gray-500);}
+  /* Category summary panel -- shown in place of the SVG bar chart when the
+     selected category has a real period TOTAL but no complete daily
+     series (see build_homes_mirror_activity's daily_series_available).
+     Never shown for Combined (always has a real daily series when the
+     section renders at all). */
+  .hm-chart-summary{display:none;padding:38px 20px 30px;text-align:center;}
+  .hm-chart-summary-value{font-family:var(--font-serif);font-size:42px;font-weight:900;line-height:1;color:var(--navy);}
+  .hm-chart-summary-bar-track{max-width:420px;margin:16px auto 0;height:12px;border-radius:6px;background:var(--gray-100);overflow:hidden;}
+  .hm-chart-summary-bar-fill{height:100%;border-radius:6px;width:0%;background:var(--navy);transition:width .2s ease;}
+  .hm-chart-summary-caption{font-size:12.5px;color:var(--gray-500);margin:10px auto 0;max-width:480px;line-height:1.5;}
   .hm-legend{display:flex;flex-wrap:wrap;gap:16px 22px;justify-content:center;margin-top:14px;font-size:12.5px;color:var(--gray-700);font-weight:700;}
   .hm-legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;}
   .hm-legend .hm-legend-note{font-weight:600;color:var(--gray-500);font-size:10.5px;margin-left:2px;}
+  /* Legend items always show their fixed category color (per spec: "must
+     visibly carry those same three colors at all times") -- .active only
+     adds a subtle emphasis (full opacity + underline) to reflect which
+     category the selector currently has open, it never changes color. */
+  .hm-legend-item{opacity:.62;transition:opacity .15s ease;padding-bottom:2px;border-bottom:2px solid transparent;}
+  .hm-legend-item.active{opacity:1;border-bottom-color:currentColor;}
 
   .hm-traffic-head{display:grid;grid-template-columns:1fr 90px;font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:var(--gray-500);border-bottom:1px solid var(--gray-300);padding-bottom:8px;margin-bottom:6px;}
   .hm-traffic-row{padding:12px 0;border-bottom:1px solid var(--gray-100);}
@@ -645,6 +661,64 @@
   @keyframes shimmer-gold{0% {background-position:0% center;} 50% {background-position:100% center;} 100% {background-position:0% center;}}
   .gallery-badge{position:absolute;top:16px;left:16px;z-index:10;padding:7px 16px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:3px;background:linear-gradient(90deg,#9a7a30 0%,#e8d48b 30%,#c4a35a 50%,#e8d48b 70%,#9a7a30 100%);background-size:200% auto;animation:shimmer-gold 3s ease infinite;color:#1a0a00;box-shadow:0 2px 10px rgba(0,0,0,.35);}
 
+  /* ==========================================================
+     HERO CARD VARIANTS (ROUND 2) -- Cameron: "still don't like...
+     simplify them so they are more refined and professional." Three
+     candidate themes for the SAME simplified content (fewer elements,
+     more whitespace, quieter than the round-1 .hm-card/.hm-agent-card2
+     design below, which stays in the file unused/dead for now in case
+     it's ever wanted back). Picked by the `hero_card_style` view-model
+     var (HERO_CARD_STYLE in bin/generate.py) -- '.hcv-a' / '.hcv-b' /
+     '.hcv-c' on the wrapping .hm-hero-bottom is the only thing that
+     changes; markup is identical across all three.
+     ========================================================== */
+  .hcv-card{border-radius:12px;padding:20px 22px;}
+  .hcv-property h1{font-family:var(--font-serif);font-size:21px;font-weight:800;margin:0 0 8px;line-height:1.2;}
+  .hcv-rule{display:none;} /* variant C only -- see .hcv-c .hcv-rule below */
+  .hcv-line{font-size:13.5px;font-weight:700;letter-spacing:.01em;}
+  .hcv-dot{margin:0 7px;opacity:.5;font-weight:400;}
+  .hcv-agent-top{display:flex;align-items:center;gap:12px;margin-bottom:13px;}
+  .hcv-agent-photo{flex:none;width:40px;height:40px;border-radius:50%;overflow:hidden;}
+  .hcv-agent-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+  .hcv-agent-name{font-family:var(--font-serif);font-weight:800;font-size:14.5px;line-height:1.25;}
+  .hcv-agent-firm{font-size:11.5px;margin-top:1px;}
+  .hcv-contact-link{display:inline-block;font-size:12.5px;font-weight:800;text-decoration:none;}
+  .hcv-contact-link:hover{opacity:.8;}
+
+  /* -- (A) Ultra-minimal white: crisp white cards, quiet ink type, no
+     hairline/chip/button clutter. -- */
+  .hcv-a .hcv-card{background:#fff;box-shadow:0 8px 24px rgba(22,22,42,.10);}
+  .hcv-a .hcv-property h1{color:var(--navy);}
+  .hcv-a .hcv-line{color:var(--gray-700);}
+  .hcv-a .hcv-agent-name{color:var(--navy);}
+  .hcv-a .hcv-agent-firm{color:var(--gray-500);}
+  .hcv-a .hcv-contact-link{color:var(--crimson);}
+  .hcv-a .hcv-agent-photo{border:2px solid var(--gray-100);}
+
+  /* -- (B) Frosted glass: translucent blurred panel over the photo,
+     white text with a soft shadow for legibility. -- */
+  .hcv-b .hcv-card{background:rgba(255,255,255,.14);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);border:1px solid rgba(255,255,255,.32);box-shadow:0 8px 28px rgba(0,0,0,.28);}
+  .hcv-b .hcv-property h1{color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.55);}
+  .hcv-b .hcv-line{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.55);}
+  .hcv-b .hcv-agent-name{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.55);}
+  .hcv-b .hcv-agent-firm{color:rgba(255,255,255,.8);}
+  .hcv-b .hcv-contact-link{color:#fff;text-decoration:underline;text-underline-offset:3px;}
+  .hcv-b .hcv-agent-photo{border:2px solid rgba(255,255,255,.65);}
+
+  /* -- (C) Navy panel: deep-navy cards, white/gold type, thin gold rule
+     between address and price. -- */
+  .hcv-c .hcv-card{background:linear-gradient(165deg,var(--navy) 0%,var(--navy-2) 100%);box-shadow:0 10px 28px rgba(0,0,0,.35);}
+  .hcv-c .hcv-property h1{color:#fff;}
+  .hcv-c .hcv-rule{display:block;height:1px;background:linear-gradient(90deg,var(--gold-light),var(--gold) 50%,var(--gold-light));margin:11px 0 12px;border:none;}
+  .hcv-c .hcv-line{color:var(--gold-light);}
+  .hcv-c .hcv-agent-name{color:#fff;}
+  .hcv-c .hcv-agent-firm{color:rgba(255,255,255,.68);}
+  .hcv-c .hcv-contact-link{color:var(--gold);}
+  .hcv-c .hcv-agent-photo{border:2px solid var(--gold);}
+
+  /* Round-1 richer card design -- kept in the file (unused once
+     hero_card_style is set) rather than deleted, in case a variant needs
+     to borrow from it later. */
   /* Portal-style agent card (Cameron's reference screenshot), MCG-
      branded -- replaces the old horizontal mini agent card. */
   /* Agent card recut to the listing-page bundle's .agent-bio-photo language
@@ -701,7 +775,9 @@
     .hm-section{page-break-inside:avoid;padding:16px 0;}
     #hm-reach,#hm-channels,#hm-activityfeed,#hm-visitormap,#hm-glossary{page-break-before:always;}
     .hm-hero{min-height:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-    .hm-card,.hm-channel-card{box-shadow:none;}
+    .hm-card,.hm-channel-card,.hcv-card{box-shadow:none;}
+    .hcv-b .hcv-card{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,.92);}
+    .hcv-b .hcv-property h1,.hcv-b .hcv-line,.hcv-b .hcv-agent-name{color:var(--navy);text-shadow:none;}
     body,.hm-body{background:#fff;}
   }
 </style>
@@ -767,35 +843,28 @@
       {% if live_listing_url %}<a class="hm-pill" id="hm-live-listing-link" href="{{ live_listing_url }}" target="_blank" rel="noopener">View Live Listing</a>{% endif %}
     </div>
   </div>
-  <div class="hm-hero-bottom">
-    <div class="hm-card">
-      <div class="hm-card-title">Listing Analytics</div>
+  <!-- ROUND 2 simplified hero cards -- one shared markup, themed by
+       hero_card_style ('a' ultra-minimal white / 'b' frosted glass /
+       'c' navy panel, see the .hcv-* CSS above and HERO_CARD_STYLE in
+       bin/generate.py). Deliberately fewer elements than round 1: no
+       card-title kicker, no separate MLS/DOM meta line, no status pill,
+       no message bubble/button/phone chip on the agent card -- just
+       address, a single price+status line, and one contact link. -->
+  <div class="hm-hero-bottom hcv-{{ hero_card_style }}">
+    <div class="hcv-card hcv-property">
       <h1>{{ street }}</h1>
-      <div class="hm-city">{{ city_state }}</div>
-      <div class="hm-price">{{ hero.price_display }}</div>
-      <div class="hm-status-row">
-        <span class="hm-status-dot"></span>
-        <span class="hm-status-label">{{ hero.status_display }} Listing{% if listing.mls_id %} &middot; MLS #{{ listing.mls_id }}{% endif %}</span>
-      </div>
-      <div class="hm-meta">
-        {% if hero.list_date_display %}Listed {{ hero.list_date_display }}{% endif %}
-        {% if hero.list_date_display and hero.dom %} &middot; {% endif %}
-        {% if hero.dom %}{{ hero.dom }} Days on Market{% endif %}
-      </div>
+      <div class="hcv-rule"></div>
+      <div class="hcv-line">{{ hero.price_display }}<span class="hcv-dot">&middot;</span>{{ hero.status_display }}</div>
     </div>
-    <!-- 3. AGENT CARD -- portal-style agent-card design (Cameron's reference
-         screenshot), MCG colors. -->
-    <div class="hm-card hm-agent-card2">
-      <div class="ha-top">
-        <div class="ha-photo"><img src="{{ cameron_headshot_data_uri }}" alt="Cameron Torabi"></div>
-        <div class="ha-namechip">{{ agent.name }}</div>
+    <div class="hcv-card hcv-agent">
+      <div class="hcv-agent-top">
+        <div class="hcv-agent-photo"><img src="{{ cameron_headshot_data_uri }}" alt="Cameron Torabi"></div>
+        <div>
+          <div class="hcv-agent-name">{{ agent.name }}</div>
+          <div class="hcv-agent-firm">{{ agent.firm }}</div>
+        </div>
       </div>
-      <div class="ha-role">Listing Agent</div>
-      <div class="ha-firm">{{ agent.firm }}</div>
-      <div class="ha-bubble">Your weekly marketing report is ready &mdash; let&rsquo;s review it together.</div>
-      <a class="ha-btn" href="{{ agent_mailto }}">Message Cameron</a>
-      <a class="ha-phone" href="tel:{{ agent.phone_tel }}">{{ agent.phone }}</a>
-      <div class="ha-footer">Only Mason Capital Group connects you to this level of listing intelligence.</div>
+      <a class="hcv-contact-link" href="{{ agent_mailto }}">Message Cameron &rarr;</a>
     </div>
   </div>
 </header>
@@ -920,21 +989,18 @@
           <p class="hm-section-sub">A breakdown of agent and home buyer views.</p>
         </div>
         <div class="hm-controls">
-          <!-- homes.com's intake only ever reports a per-day COMBINED
-               total; Agent/Consumer only exist as period totals (see
-               build_homes_mirror_activity in bin/generate.py). Rather than
-               fabricate a daily agent/consumer split by scaling the
-               combined series, the daily chart only ever plots Combined,
-               and the Consumer/Agent options ship disabled with a tooltip
-               pointing at the real period totals in the legend below --
-               shown only when this listing's intake actually has those
-               totals. -->
+          <!-- ROUND 2: no disabled options -- every category is
+               selectable. build_homes_mirror_activity in bin/generate.py
+               reports, per category, whether a real daily series exists
+               (daily_series_available) or only a real period total
+               (totals_available). The render script below picks daily
+               bars vs. an honest summary panel accordingly -- it never
+               fabricates a daily split for a category that doesn't have
+               one. -->
           <select class="hm-select" id="hm-series-select" aria-label="View series">
-            <option value="combined" selected>Combined Views (Daily)</option>
-            {% if hm.activity_chart.agent_consumer_available %}
-            <option value="consumer" disabled title="Daily agent/consumer split isn't available from the source data -- see the Consumer Views period total below the chart">Consumer Views</option>
-            <option value="agent" disabled title="Daily agent/consumer split isn't available from the source data -- see the Agent Views period total below the chart">Agent Views</option>
-            {% endif %}
+            <option value="combined" selected>Combined Views</option>
+            <option value="consumer">Consumer Views</option>
+            <option value="agent">Agent Views</option>
           </select>
           <select class="hm-select" id="hm-range-select" aria-label="Date range">
             <option value="since_listed" selected>Since Listed</option>
@@ -942,18 +1008,25 @@
         </div>
       </div>
       {% if hm.activity_chart.available %}
-      <div class="hm-chart-wrap">
-        <svg class="hm-chart-svg" id="hm-activity-svg" viewBox="0 0 900 330" preserveAspectRatio="none" role="img" aria-label="Daily combined views bar chart"></svg>
+      <div class="hm-chart-wrap" id="hm-chart-wrap">
+        <svg class="hm-chart-svg" id="hm-activity-svg" viewBox="0 0 900 330" preserveAspectRatio="none" role="img" aria-label="Daily views bar chart"></svg>
         <div class="tooltip" id="hm-activity-tip"></div>
       </div>
-      <div class="hm-legend">
-        <span><span class="dot" style="background:var(--navy)"></span>Combined Views {{ '{:,}'.format(hm.activity_chart.total_combined) }} <span class="hm-legend-note">&middot; daily, charted above</span></span>
-        {% if hm.activity_chart.agent_consumer_available %}
-        <span><span class="dot" style="background:var(--crimson)"></span>Consumer Views {{ '{:,}'.format(hm.activity_chart.total_consumer) }} <span class="hm-legend-note">&middot; period total</span></span>
-        <span><span class="dot" style="background:var(--gold)"></span>Agent Views {{ '{:,}'.format(hm.activity_chart.total_agent) }} <span class="hm-legend-note">&middot; period total</span></span>
-        {% endif %}
+      <!-- Shown instead of the bar chart when the selected category has no
+           complete daily series -- see renderSummary() below. Hidden by
+           default (Combined always has a daily series when this section
+           renders at all). -->
+      <div class="hm-chart-summary" id="hm-chart-summary">
+        <div class="hm-chart-summary-value" id="hm-chart-summary-value">&nbsp;</div>
+        <div class="hm-chart-summary-bar-track"><div class="hm-chart-summary-bar-fill" id="hm-chart-summary-bar-fill"></div></div>
+        <p class="hm-chart-summary-caption" id="hm-chart-summary-caption"></p>
       </div>
-      <script type="application/json" id="hm-activity-data">{{ hm.activity_chart.bars | tojson }}</script>
+      <div class="hm-legend">
+        <span class="hm-legend-item active" data-series="combined"><span class="dot" style="background:var(--navy)"></span>Combined Views {{ '{:,}'.format(hm.activity_chart.totals.combined) }}</span>
+        <span class="hm-legend-item" data-series="consumer"><span class="dot" style="background:var(--crimson)"></span>Consumer Views {{ '{:,}'.format(hm.activity_chart.totals.consumer) if hm.activity_chart.totals_available.consumer else '&mdash;' }}</span>
+        <span class="hm-legend-item" data-series="agent"><span class="dot" style="background:var(--gold)"></span>Agent Views {{ '{:,}'.format(hm.activity_chart.totals.agent) if hm.activity_chart.totals_available.agent else '&mdash;' }}</span>
+      </div>
+      <script type="application/json" id="hm-activity-data">{{ hm.activity_chart | tojson }}</script>
       {% else %}
       <div class="empty-note">Daily activity data unavailable this period.</div>
       {% endif %}
@@ -1812,27 +1885,46 @@ function mcgToggleTable(id){
      ========================================================== -->
 <script>
 (function(){
-  // ---------- Activity chart: Combined Views (daily, real data only) ----------
-  // Only "combined" is ever a real per-day series (see
-  // build_homes_mirror_activity in bin/generate.py) -- the Consumer/Agent
-  // <option>s in #hm-series-select ship `disabled` (see report.html markup
-  // above) specifically so this never has a live value to switch to. The
-  // render function below is intentionally hardcoded to bars[i].combined
-  // rather than reading seriesSelect.value, so it can't silently start
-  // drawing a fabricated series if a future edit removes the `disabled`
-  // attribute without also adding real daily agent/consumer data.
+  // ---------- Activity chart: Combined / Consumer / Agent (ROUND 2) ----------
+  // #hm-series-select has no disabled options -- every category is always
+  // selectable. Per category (see build_homes_mirror_activity's
+  // daily_series_available / totals_available flags in the JSON blob
+  // below): a category with a complete real daily series draws bars in
+  // its own brand color with its own y-axis scale; a category with only a
+  // real period total renders the summary panel instead (never a
+  // fabricated daily split); a category with neither shows a plain
+  // "no data yet" state. Colors are fixed brand hex, identical to the
+  // legend dots below: Combined navy #16162A, Consumer crimson #AB012E,
+  // Agent gold #C4A35A.
   var activityDataEl = document.getElementById('hm-activity-data');
   if (activityDataEl) {
-    var bars = JSON.parse(activityDataEl.textContent || '[]');
+    var chartData = JSON.parse(activityDataEl.textContent || '{}');
+    var bars = chartData.bars || [];
+    var dailyAvail = chartData.daily_series_available || {combined: true, consumer: false, agent: false};
+    var totals = chartData.totals || {combined: 0, consumer: 0, agent: 0};
+    var totalsAvail = chartData.totals_available || {combined: true, consumer: false, agent: false};
+
     var svg = document.getElementById('hm-activity-svg');
     var tip = document.getElementById('hm-activity-tip');
+    var chartWrap = document.getElementById('hm-chart-wrap');
+    var summaryPanel = document.getElementById('hm-chart-summary');
+    var summaryValueEl = document.getElementById('hm-chart-summary-value');
+    var summaryBarFillEl = document.getElementById('hm-chart-summary-bar-fill');
+    var summaryCaptionEl = document.getElementById('hm-chart-summary-caption');
+    var seriesSelect = document.getElementById('hm-series-select');
+    var legendItems = Array.prototype.slice.call(document.querySelectorAll('.hm-legend-item'));
+
+    var COLORS = {combined: '#16162A', consumer: '#AB012E', agent: '#C4A35A'};
+    var LABELS = {combined: 'Combined Views', consumer: 'Consumer Views', agent: 'Agent Views'};
+
     var svgns = 'http://www.w3.org/2000/svg';
     var W = 900, H = 330, padL = 40, padB = 46, padT = 10;
     var plotW = W - padL - 10, plotH = H - padT - padB;
 
-    function render(){
+    function renderBars(key){
+      var color = COLORS[key];
       var maxVal = 0;
-      bars.forEach(function(b){ if (b.combined > maxVal) maxVal = b.combined; });
+      bars.forEach(function(b){ if ((b[key] || 0) > maxVal) maxVal = b[key]; });
       maxVal = maxVal || 1;
       var n = bars.length;
       var slot = plotW / n;
@@ -1855,7 +1947,7 @@ function mcgToggleTable(id){
       }
 
       bars.forEach(function(b, i){
-        var v = b.combined;
+        var v = b[key] || 0;
         var barH = (v / maxVal) * plotH;
         var x = padL + i * slot + (slot - barW) / 2;
         var y = padT + plotH - barH;
@@ -1863,9 +1955,10 @@ function mcgToggleTable(id){
         rect.setAttribute('x', x); rect.setAttribute('y', y);
         rect.setAttribute('width', barW); rect.setAttribute('height', Math.max(barH, 1));
         rect.setAttribute('rx', 2);
+        rect.setAttribute('fill', color);
         rect.setAttribute('class', 'hm-bar');
         rect.addEventListener('mouseenter', function(){
-          tip.textContent = b.date + ': ' + v.toLocaleString() + ' combined views';
+          tip.textContent = b.date + ': ' + v.toLocaleString() + ' ' + LABELS[key].toLowerCase();
           tip.classList.add('shown');
         });
         rect.addEventListener('mousemove', function(e){
@@ -1889,7 +1982,48 @@ function mcgToggleTable(id){
         }
       });
     }
+
+    function renderSummary(key){
+      var color = COLORS[key];
+      var label = LABELS[key];
+      if (totalsAvail[key]) {
+        var val = totals[key] || 0;
+        var combinedTotal = totals.combined || 0;
+        var pct = combinedTotal > 0 ? Math.round((val / combinedTotal) * 1000) / 10 : 0;
+        summaryValueEl.textContent = val.toLocaleString();
+        summaryValueEl.style.color = color;
+        summaryBarFillEl.style.width = Math.min(pct, 100) + '%';
+        summaryBarFillEl.style.background = color;
+        summaryCaptionEl.textContent = label + ': ' + val.toLocaleString() + ' (' + pct + '% of Combined Views this period) — daily breakdown pending for this channel, period total shown.';
+      } else {
+        summaryValueEl.textContent = '—';
+        summaryValueEl.style.color = 'var(--gray-400)';
+        summaryBarFillEl.style.width = '0%';
+        summaryCaptionEl.textContent = 'No ' + label + ' data available yet for this listing.';
+      }
+    }
+
+    function updateLegend(key){
+      legendItems.forEach(function(el){
+        el.classList.toggle('active', el.getAttribute('data-series') === key);
+      });
+    }
+
+    function render(){
+      var key = seriesSelect ? seriesSelect.value : 'combined';
+      updateLegend(key);
+      if (dailyAvail[key]) {
+        chartWrap.style.display = '';
+        summaryPanel.style.display = 'none';
+        renderBars(key);
+      } else {
+        chartWrap.style.display = 'none';
+        summaryPanel.style.display = 'block';
+        renderSummary(key);
+      }
+    }
     render();
+    if (seriesSelect) seriesSelect.addEventListener('change', render);
   }
 
   // ---------- Logo carousel ----------

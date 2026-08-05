@@ -142,6 +142,11 @@ it. Update it every time you refresh the file.
   },
   "traffic_sources": [ {"source": "Property Search Page", "pct": 89.3, "views": 21489} ],
   "daily": { "2026-06-22": 248, "2026-06-23": 490 },
+  "daily_by_type": {
+    "combined": { "2026-06-22": 248, "2026-06-23": 490 },
+    "consumer": { "2026-06-22": 247, "2026-06-23": 489 },
+    "agent":    { "2026-06-22": 1,   "2026-06-23": 1   }
+  },
   "display_ads": {
     "retargeting": {"ad_views": 854, "sites_displayed_on": 303, "users_reached": 284},
     "contact_list_targeting": {"ad_views": 1298, "sites_displayed_on": 108, "users_reached": 137, "uploaded_contacts": 7739},
@@ -162,6 +167,35 @@ position divided by the viewport width/height) — values outside 0-1 are
 markers the dashboard renders off the visible US frame (e.g. Alaska/Hawaii
 insets or map padding) and the report clips them rather than guessing a
 position.
+
+**`daily_by_type`** (optional): the portal's per-day view count broken out
+by category, keyed `combined`/`consumer`/`agent` -- each value has the same
+shape as `daily` (a map of `YYYY-MM-DD` to a whole-number count). Only fill
+this in when the portal dashboard actually exposes a daily chart PER
+category (e.g. it lets you switch the "Total Views Since Listed" chart
+between Combined/Consumer/Agent and read a day-by-day series off each
+view) -- most dashboards only expose a per-day COMBINED total plus
+separate Agent/Consumer period TOTALS (the `activity` object above), with
+no daily breakdown for those two. In that far more common case, leave
+`daily_by_type` out entirely (or omit the `consumer`/`agent` keys from it)
+rather than estimating a daily split from `activity`'s totals or from
+`daily`'s combined series -- the report's Activity chart falls back to an
+honest period-total summary panel for any category that doesn't have a
+complete daily series here, it does not fabricate one. When present, every
+date in `combined`/`consumer`/`agent` should cover the *same* date range
+and `consumer[d] + agent[d] == combined[d]` for every date `d` -- the
+report treats a category's daily series as unusable (falls back to the
+period-total summary panel for it) if any date from `combined` is missing
+from that category's map, so a partial/misaligned daily_by_type harvest
+degrades safely rather than rendering gapped bars.
+
+**`visitor_map.engaged_total_views`** (optional, recommended alongside
+`engaged_clusters`): the portal's own ground-truth total for the "Engaged
+Buyer Views" toggle (read directly off the dashboard, not summed from
+`engaged_clusters`) -- used for the report's map caption instead of
+re-summing the marker set, so an out-of-frame/clipped cluster doesn't
+quietly shrink the displayed total below the portal's real number. Same
+convention as the top-level `visitor_map.total_mapped_views` field.
 
 **`visitor_map.engaged_clusters`** (optional): same shape as `markers`
 (array of `{"n": <count>, "x": <0-1>, "y": <0-1>}`), but sourced from the

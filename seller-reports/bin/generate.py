@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -451,6 +452,18 @@ def homes_traffic_label(raw_source: str | None) -> str:
 # distinct color per row and this clones that, brand-hue-family only.
 TRAFFIC_ROW_COLORS = ["#AB012E", "#16162A", "#C4A35A", "#3568C9", "#1BAF7A", "#EDA100"]
 
+# ROUND 2 hero card style switch -- Cameron asked for three simplified
+# overlay-card variants (property card + agent card, homes-mirror hero) to
+# choose between: 'a' ultra-minimal white, 'b' frosted glass, 'c' navy
+# panel. All three variants share identical simplified content/markup
+# (see .hcv-card in templates/report.html) -- only the CSS theme differs,
+# selected by this one constant. Once Cameron picks a winner, flip this
+# single line and every report picks it up; no template edits needed.
+# HERO_CARD_STYLE_OVERRIDE env var is a dev-only convenience for rendering
+# side-by-side variant comparisons without editing this file each time --
+# production runs are driven by the HERO_CARD_STYLE constant only.
+HERO_CARD_STYLE = os.environ.get("HERO_CARD_STYLE_OVERRIDE", "a")
+
 
 def build_homes_mirror_traffic(traffic_sources_raw: list[dict]) -> dict:
     """homes.com-style 'Top Traffic Sources' stacked-bar list -- keeps the
@@ -472,30 +485,61 @@ def build_homes_mirror_traffic(traffic_sources_raw: list[dict]) -> dict:
     return {"rows": rows, "total": total, "available": bool(rows)}
 
 
-def build_homes_mirror_activity(daily: dict, activity_totals: dict | None = None) -> dict:
-    """Daily Combined-Views bar-chart series for the homes-mirror Activity
-    section, plus (when the portal snapshot reports them) the real
-    Agent/Consumer period TOTALS as honest stat chips.
+def build_homes_mirror_activity(
+    daily: dict,
+    daily_by_type: dict | None = None,
+    activity_totals: dict | None = None,
+) -> dict:
+    """Activity chart view-model for the homes-mirror Activity section's
+    Combined/Consumer/Agent selector -- ROUND 2: the selector must always be
+    engage-able (no disabled options) and each category must render its own
+    TRUE data, never a value derived from another category.
 
-    homes.com's intake gives us a per-day COMBINED total (`daily`) but never
-    a per-day agent/consumer split -- only period totals for those, in the
-    separate `activity` object (`agent_views`/`consumer_views`/
-    `combined_views`). The daily chart therefore only ever plots the real
-    Combined series; Agent/Consumer render as stat chips carrying the real
-    period totals, not as a fabricated second daily series (see the note
-    above this function)."""
-    if not daily:
-        return {"available": False, "agent_consumer_available": False}
-    items = sorted(daily.items())
+    Three real data shapes can back a category, checked in this priority
+    order:
+      1. `daily_by_type[<series>]` -- a real per-day breakdown for that
+         category (see intake/README.md's `daily_by_type` section). When a
+         category's daily series covers every date the combined series
+         covers, the selector draws real daily bars for it, each in that
+         category's brand color, with its own y-axis scale.
+      2. `activity[<series>_views]` -- a real period TOTAL with no daily
+         breakdown. When a category has a total but not a complete daily
+         series, selecting it renders an honest summary panel (period total
+         + share-of-combined bar, still in that category's color) instead
+         of fabricating daily bars.
+      3. Neither -- the summary panel renders a "no data yet" state. Still
+         not a disabled option; there's just nothing real to show.
+
+    `daily_by_type.combined`, when present, supersedes the legacy `daily`
+    object as the Combined series' source (a listing can be re-harvested
+    with a fresher/longer daily_by_type snapshot while `daily` still holds
+    an older partial range -- using `daily_by_type.combined` keeps all
+    three categories on the same date range instead of mixing two
+    different-length series under one x-axis)."""
+    daily_by_type = daily_by_type or {}
+    combined_daily = daily_by_type.get("combined") or daily or {}
+    if not combined_daily:
+        return {"available": False}
+
+    dates = sorted(combined_daily.keys())
+    consumer_daily = daily_by_type.get("consumer") or {}
+    agent_daily = daily_by_type.get("agent") or {}
+    consumer_daily_complete = bool(consumer_daily) and all(d in consumer_daily for d in dates)
+    agent_daily_complete = bool(agent_daily) and all(d in agent_daily for d in dates)
+
     bars = []
-    total_combined = 0
-    for d, v in items:
-        v = int(v or 0)
-        total_combined += v
-        bars.append({"date": d, "date_short": fmt_date_short(d), "combined": v})
-    max_val = max((b["combined"] for b in bars), default=0) or 1
-    for b in bars:
-        b["combined_pct"] = round(b["combined"] / max_val * 100, 1)
+    for d in dates:
+        row = {
+            "date": d,
+            "date_short": fmt_date_short(d),
+            "combined": int(combined_daily.get(d) or 0),
+        }
+        if consumer_daily_complete:
+            row["consumer"] = int(consumer_daily[d] or 0)
+        if agent_daily_complete:
+            row["agent"] = int(agent_daily[d] or 0)
+        bars.append(row)
+
     n = len(bars)
     label_every = max(1, round(n / 7))
     label_idxs = set(range(0, n, label_every))
@@ -504,18 +548,47 @@ def build_homes_mirror_activity(daily: dict, activity_totals: dict | None = None
     for i, b in enumerate(bars):
         b["show_label"] = i in label_idxs
 
+    daily_series_available = {
+        "combined": True,
+        "consumer": consumer_daily_complete,
+        "agent": agent_daily_complete,
+    }
+
     activity_totals = activity_totals or {}
-    agent_total = activity_totals.get("agent_views")
-    consumer_total = activity_totals.get("consumer_views")
-    agent_consumer_available = agent_total is not None and consumer_total is not None
+    total_combined = sum(int(v or 0) for v in combined_daily.values())
+    if consumer_daily_complete:
+        total_consumer = sum(int(v or 0) for v in consumer_daily.values())
+    else:
+        raw = activity_totals.get("consumer_views")
+        total_consumer = int(raw) if raw is not None else None
+    if agent_daily_complete:
+        total_agent = sum(int(v or 0) for v in agent_daily.values())
+    else:
+        raw = activity_totals.get("agent_views")
+        total_agent = int(raw) if raw is not None else None
+
+    totals_available = {
+        "combined": True,
+        "consumer": total_consumer is not None,
+        "agent": total_agent is not None,
+    }
 
     return {
         "available": True,
         "bars": bars,
+        "daily_series_available": daily_series_available,
+        "totals": {
+            "combined": total_combined,
+            "consumer": total_consumer or 0,
+            "agent": total_agent or 0,
+        },
+        "totals_available": totals_available,
+        # Legacy flat keys, kept so nothing else reading this view-model
+        # (e.g. any narrative text elsewhere) breaks.
         "total_combined": total_combined,
-        "agent_consumer_available": agent_consumer_available,
-        "total_agent": int(agent_total or 0),
-        "total_consumer": int(consumer_total or 0),
+        "total_consumer": total_consumer or 0,
+        "total_agent": total_agent or 0,
+        "agent_consumer_available": totals_available["consumer"] and totals_available["agent"],
     }
 
 
@@ -566,10 +639,20 @@ def build_homes_mirror_leaflet_markers(vm_raw: dict) -> dict:
 
     engaged_raw = vm_raw.get("engaged_clusters") or []
     engaged_out, engaged_clipped, engaged_dropped = _homes_mirror_convert_markers(engaged_raw)
+    # Prefer the intake's own engaged_total_views (the ground-truth number
+    # read directly off the portal's "Engaged Buyer Views" toggle) over
+    # summing the post-clip marker set -- same convention as the Total
+    # Views caption above, which uses vm_raw["total_mapped_views"] rather
+    # than re-summing `markers`, so an out-of-frame/clipped cluster (e.g.
+    # an Alaska/Hawaii inset marker) doesn't quietly shrink the caption
+    # below the portal's real total.
+    engaged_total = vm_raw.get("engaged_total_views")
+    if engaged_total is None:
+        engaged_total = sum(m["n"] for m in engaged_out)
     engaged = {
         "available": bool(engaged_out),
         "markers": engaged_out,
-        "total_mapped_views": sum(m["n"] for m in engaged_out),
+        "total_mapped_views": engaged_total,
         "clipped_count": engaged_clipped,
         "dropped_count": engaged_dropped,
     }
@@ -609,7 +692,11 @@ def build_homes_mirror(homes_raw: dict, homes_exposure: dict) -> dict:
         "stat_row_1": stat_row_1,
         "stat_row_2": stat_row_2,
         "traffic": build_homes_mirror_traffic(homes_raw.get("traffic_sources") or []),
-        "activity_chart": build_homes_mirror_activity(homes_raw.get("daily") or {}, homes_raw.get("activity")),
+        "activity_chart": build_homes_mirror_activity(
+            homes_raw.get("daily") or {},
+            homes_raw.get("daily_by_type"),
+            homes_raw.get("activity"),
+        ),
         "leaflet": build_homes_mirror_leaflet_markers(homes_raw.get("visitor_map") or {}),
         "retargeting": {
             "ad_views": retarget_raw.get("ad_views", 0),
@@ -1594,6 +1681,7 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
         "show_reach": show_reach,
         "show_buyermap": show_buyermap,
         "homes_mirror": homes_mirror,
+        "hero_card_style": HERO_CARD_STYLE,
         "channel_performance": channel_performance,
         "hm": hm,
         "source_freshness": source_freshness,
