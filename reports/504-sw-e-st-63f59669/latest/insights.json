@@ -2,7 +2,7 @@
   "slug": "504-sw-e-st",
   "period_id": "2026-W32",
   "talking_points": [
-    "61,910 total views this period -- 0 website + 61,910 syndication views.",
+    "62,362 total views this period -- 0 website + 62,362 syndication views.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -36,14 +36,14 @@
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": "2026-08-05",
+      "as_of": "2026-08-06",
       "status": "fresh"
     },
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-07-30",
-      "status": "stale"
+      "as_of": "2026-08-06",
+      "status": "fresh"
     },
     {
       "key": "loopnet",
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "61,910",
+    "total_views": "62,362",
     "total_leads": "0",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Aug 3 \u2013 Aug 9"
   },
-  "generated_at": "2026-08-06T16:01:51.198112+00:00"
+  "generated_at": "2026-08-06T17:06:13.294454+00:00"
 }

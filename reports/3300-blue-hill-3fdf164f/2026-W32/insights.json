@@ -2,7 +2,7 @@
   "slug": "3300-blue-hill",
   "period_id": "2026-W32",
   "talking_points": [
-    "38,709 total views this period -- 0 website + 38,709 syndication views.",
+    "39,039 total views this period -- 0 website + 39,039 syndication views.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -36,14 +36,14 @@
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": "2026-08-05",
+      "as_of": "2026-08-06",
       "status": "fresh"
     },
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-07-30",
-      "status": "stale"
+      "as_of": "2026-08-06",
+      "status": "fresh"
     },
     {
       "key": "loopnet",
@@ -60,8 +60,8 @@
     }
   ],
   "headline": {
-    "total_views": "38,709",
-    "total_leads": "25",
+    "total_views": "39,039",
+    "total_leads": "26",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
       "value_display": "1m 58s",
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Aug 3 \u2013 Aug 9"
   },
-  "generated_at": "2026-08-06T16:01:51.185527+00:00"
+  "generated_at": "2026-08-06T17:06:13.283073+00:00"
 }
