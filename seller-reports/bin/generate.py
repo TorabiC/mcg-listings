@@ -106,6 +106,9 @@ SYNDICATION_BLURB = (
 # Ordered, most-specific-first. Possessive forms handled before the bare
 # noun so we don't leave a dangling "'s". Applied case-insensitively.
 _ANON_PATTERNS = [
+    # Whole-phrase rewrites first (grammar-safe), then possessives, then bare nouns.
+    (re.compile(r"became a homes\.com member", re.IGNORECASE), "was enrolled in MCG's premier syndication program"),
+    (re.compile(r"homes\.com member", re.IGNORECASE), "premier syndication program"),
     (re.compile(r"homes\.com's", re.IGNORECASE), "the network's"),
     (re.compile(r"homes\.com", re.IGNORECASE), "MCG's national syndication network"),
     (re.compile(r"Constant Contact", re.IGNORECASE), "MCG's email marketing program"),
@@ -926,6 +929,12 @@ def build_homes_exposure(portals: dict, source_freshness: dict | None = None) ->
     milestones = sorted(homes.get("milestones") or [], key=lambda m: m.get("date", ""))
     for ms in milestones:
         ms["date_display"] = fmt_date_display(ms.get("date"))
+        # Milestone copy comes verbatim from the portal and can name vendors
+        # (e.g. "became a Homes.com Member") -- every text field must pass
+        # through anonymize_text before reaching seller-visible output.
+        for _k in ("event", "label", "text", "description", "detail"):
+            if ms.get(_k):
+                ms[_k] = anonymize_text(ms[_k])
 
     return {
         "available": True,
