@@ -49,10 +49,25 @@ TOKEN_RE = re.compile(r"gh[pousr]_[A-Za-z0-9_]{20,}")
 # ---------------------------------------------------------------------------
 # Token handling -- never print, never log, never commit.
 # ---------------------------------------------------------------------------
+def _secrets_dir_fallback(p: Path) -> Path:
+    """If MCG_SECRETS_DIR is set and `p` doesn't exist on disk (e.g. a
+    local Mac run where secrets live under $HOME/Documents/Second Brain/
+    .secrets instead of whatever cloud-session path was configured/passed
+    in), retry by basename inside MCG_SECRETS_DIR. No-op when
+    MCG_SECRETS_DIR is unset or the fallback file also doesn't exist."""
+    secrets_dir = os.environ.get("MCG_SECRETS_DIR")
+    if not secrets_dir:
+        return p
+    candidate = Path(secrets_dir) / p.name
+    return candidate if candidate.exists() else p
+
+
 def resolve_token(token_file: str | None) -> str | None:
     raw = None
     if token_file:
         p = Path(token_file)
+        if not p.exists():
+            p = _secrets_dir_fallback(p)
         if not p.exists():
             print(f"ERROR: --token-file {p} does not exist", file=sys.stderr)
             return None

@@ -44,6 +44,7 @@ zero" policy (see collect.py / generate.py module docstrings).
 from __future__ import annotations
 
 import json
+import os
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -85,12 +86,29 @@ def _load_sources_cfg() -> dict:
         return json.load(f)
 
 
+def _secrets_dir_fallback(p: Path) -> Path:
+    """If MCG_SECRETS_DIR is set and configured path `p` doesn't exist on
+    disk (e.g. a local Mac run where secrets live under $HOME/Documents/
+    Second Brain/.secrets instead of the cloud-session path baked into
+    config/sources.json), retry by basename inside MCG_SECRETS_DIR. No-op
+    when MCG_SECRETS_DIR is unset or the fallback file also doesn't exist
+    -- callers already treat a non-existent path as "credential missing"
+    and never raise, so this never changes cloud-session behavior."""
+    secrets_dir = os.environ.get("MCG_SECRETS_DIR")
+    if not secrets_dir:
+        return p
+    candidate = Path(secrets_dir) / p.name
+    return candidate if candidate.exists() else p
+
+
 def _resolve_token() -> str | None:
     cfg = _load_sources_cfg().get("webflow", {})
     token_file = cfg.get("token_file") or cfg.get("credential_env_or_path")
     if not token_file:
         return None
     p = Path(token_file)
+    if not p.exists():
+        p = _secrets_dir_fallback(p)
     if not p.exists():
         return None
     raw = p.read_text().strip()

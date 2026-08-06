@@ -156,6 +156,23 @@ def load_market_cfg():
     return load_json(CONFIG_DIR / "market-nwa.json", {})
 
 
+def _secrets_dir_fallback(p):
+    """If MCG_SECRETS_DIR is set and configured path `p` doesn't exist on
+    disk (e.g. this is a local Mac run where secrets live under
+    $HOME/Documents/Second Brain/.secrets instead of the cloud-session
+    /mnt/user-data/uploads/Second Brain/.secrets path baked into
+    config/sources.json), retry by basename inside MCG_SECRETS_DIR. No-op
+    (returns `p` unchanged) when MCG_SECRETS_DIR is unset or the fallback
+    file also doesn't exist -- callers already treat a non-existent path
+    as "credential missing" and never raise, so this never changes
+    cloud-session behavior."""
+    secrets_dir = os.environ.get("MCG_SECRETS_DIR")
+    if not secrets_dir:
+        return p
+    candidate = Path(secrets_dir) / p.name
+    return candidate if candidate.exists() else p
+
+
 def resolve_credential(slot):
     """A credential_env_or_path value is either an env var name or a file
     path. Try env var first (exact name), then treat as a path -- return
@@ -168,6 +185,8 @@ def resolve_credential(slot):
     p = Path(slot)
     if not p.is_absolute():
         p = ROOT / slot
+    if not p.exists():
+        p = _secrets_dir_fallback(p)
     if p.exists():
         try:
             return p.read_text().strip()
