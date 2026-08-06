@@ -2136,7 +2136,11 @@ def main() -> int:
         metrics = json.loads(metrics_path.read_text())
         period_links = build_period_links(data_dir, slug, metrics["period"], outdir, slug_token)
 
-        report_url = f"{args.base_url.rstrip('/')}/reports/{slug_token}/{args.period_id}/index.html"
+        # Client-facing links use the branded viewer on masoncapitalgroup.com
+        # (Webflow page /listing-reports iframes the report with automatic
+        # host failover: Azure mirror primary, Pages fallback). The raw host
+        # URL is never what a seller sees or shares.
+        report_url = f"https://www.masoncapitalgroup.com/listing-reports?r={slug_token}&p={args.period_id}"
         vm = build_view_model(listing, metrics, period_links, report_url, generated_display, portfolio_ranking)
 
         # --- render report page ---
