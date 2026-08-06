@@ -2,9 +2,9 @@
   "slug": "1715-n-garland",
   "period_id": "2026-W31",
   "talking_points": [
-    "38,713 total views this period -- 0 website + 38,713 syndication views.",
+    "165 total views this period -- 58 website + 107 syndication views.",
     "Views roughly flat vs. the prior period.",
-    "Keep the seller warm with a call this week; no urgent flags this period."
+    "2 showings logged -- follow up on buyer feedback with the seller."
   ],
   "pricing_flag": false,
   "pricing_flag_reason": null,
@@ -30,44 +30,44 @@
     {
       "key": "tawk",
       "label": "live chat",
-      "as_of": null,
-      "status": "missing"
+      "as_of": "2026-08-02",
+      "status": "fresh"
     },
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": "2026-08-05",
+      "as_of": null,
       "status": "fresh"
     },
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
       "as_of": null,
-      "status": "missing"
+      "status": "fresh"
     },
     {
       "key": "loopnet",
       "label": "MCG's commercial marketplace network",
       "as_of": null,
-      "status": "missing"
+      "status": "fresh"
     },
     {
       "key": "clarity",
       "label": "MCG website analytics",
-      "as_of": null,
-      "status": "missing",
-      "coverage_days": 0
+      "as_of": "2026-07-31",
+      "status": "stale",
+      "coverage_days": 3
     }
   ],
   "headline": {
-    "total_views": "38,713",
-    "total_leads": "0",
+    "total_views": "165",
+    "total_leads": "3",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
-      "value_display": "7m 26s",
+      "value_display": "1m 23s",
       "available": true
     },
     "window_label": "Week of Jul 27 \u2013 Aug 2"
   },
-  "generated_at": "2026-08-05T22:08:57.863754+00:00"
+  "generated_at": "2026-08-06T15:30:33.507116+00:00"
 }
