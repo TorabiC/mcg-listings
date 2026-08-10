@@ -2,8 +2,8 @@
   "slug": "presidential-dr",
   "period_id": "2026-W33",
   "talking_points": [
-    "55,669 total views this period -- 0 website + 55,669 syndication views.",
-    "Views trending up 0.5% vs. the prior period.",
+    "57,066 total views this period -- 0 website + 57,066 syndication views.",
+    "Views trending up 3.0% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "55,669",
+    "total_views": "57,066",
     "total_leads": "2",
     "page_engagement": {
       "metric": null,
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-10T11:57:55.101638+00:00"
+  "generated_at": "2026-08-10T13:11:17.029958+00:00"
 }

@@ -2,8 +2,8 @@
   "slug": "exminster-cir",
   "period_id": "2026-W33",
   "talking_points": [
-    "69,043 total views this period -- 0 website + 69,043 syndication views.",
-    "Views trending up 0.4% vs. the prior period.",
+    "70,328 total views this period -- 0 website + 70,328 syndication views.",
+    "Views trending up 2.3% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "69,043",
+    "total_views": "70,328",
     "total_leads": "1",
     "page_engagement": {
       "metric": null,
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-10T11:57:55.108687+00:00"
+  "generated_at": "2026-08-10T13:11:17.037643+00:00"
 }

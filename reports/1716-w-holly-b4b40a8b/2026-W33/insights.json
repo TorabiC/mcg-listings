@@ -2,8 +2,8 @@
   "slug": "1716-w-holly",
   "period_id": "2026-W33",
   "talking_points": [
-    "59,754 total views this period -- 0 website + 59,754 syndication views.",
-    "Views roughly flat vs. the prior period.",
+    "61,005 total views this period -- 0 website + 61,005 syndication views.",
+    "Views trending up 2.1% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "59,754",
+    "total_views": "61,005",
     "total_leads": "4",
     "page_engagement": {
       "metric": null,
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-10T11:57:55.083605+00:00"
+  "generated_at": "2026-08-10T13:11:17.008726+00:00"
 }

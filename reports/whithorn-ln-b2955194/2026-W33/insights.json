@@ -2,8 +2,8 @@
   "slug": "whithorn-ln",
   "period_id": "2026-W33",
   "talking_points": [
-    "64,167 total views this period -- 0 website + 64,167 syndication views.",
-    "Views trending up 0.3% vs. the prior period.",
+    "65,057 total views this period -- 0 website + 65,057 syndication views.",
+    "Views trending up 1.7% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "64,167",
+    "total_views": "65,057",
     "total_leads": "1",
     "page_engagement": {
       "metric": null,
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-10T11:57:55.105069+00:00"
+  "generated_at": "2026-08-10T13:11:17.033681+00:00"
 }
