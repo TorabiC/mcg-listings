@@ -266,13 +266,13 @@
     border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);
   }
   .logo-tile{
-    display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;background:var(--gray-100);
-    border-radius:8px;padding:10px;
+    display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;background:#fff;
+    border:1px solid var(--gray-300);border-radius:8px;padding:12px 14px;box-shadow:var(--shadow);
   }
   .logo-tile img{
-    max-width:100%;max-height:32px;filter:grayscale(100%);opacity:0.72;transition:filter .18s ease,opacity .18s ease,transform .18s ease;
+    width:100%;height:100%;max-width:100%;max-height:30px;object-fit:contain;transition:transform .18s ease;
   }
-  .logo-tile:hover img{filter:grayscale(0%);opacity:1;transform:scale(1.04);}
+  .logo-tile:hover img{transform:scale(1.04);}
   .pub-list-full{margin-top:16px;font-size:12px;color:var(--gray-500);line-height:1.9;}
   .pub-list-full strong{color:var(--gray-700);display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px;}
   @media (min-width:640px){ .logo-grid{grid-template-columns:repeat(6,1fr);} .pub-stat-row{grid-template-columns:repeat(4,1fr);} }
@@ -578,8 +578,8 @@
   .hm-carousel-track-wrap{overflow:hidden;flex:1;}
   .hm-carousel-track{display:flex;transition:transform .35s ease;}
   .hm-carousel-page{flex:0 0 100%;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(3,1fr);gap:12px;}
-  .hm-logo-tile{background:#fff;border:1px solid var(--gray-300);border-radius:8px;display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;padding:10px;}
-  .hm-logo-tile img{max-width:100%;max-height:32px;}
+  .hm-logo-tile{background:#fff;border:1px solid var(--gray-300);border-radius:8px;display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;padding:12px 14px;box-shadow:var(--shadow);}
+  .hm-logo-tile img{width:100%;height:100%;max-width:100%;max-height:30px;object-fit:contain;}
   .hm-carousel-arrow{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--gray-300);background:#fff;color:var(--navy);font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .hm-carousel-arrow:hover{background:var(--navy-tint);}
   .hm-carousel-arrow:disabled{opacity:.35;cursor:default;}
@@ -974,21 +974,26 @@
     <hr class="hm-rule">
     {% endif %}
 
-    <!-- Market Position: portfolio rank + price context + DOM framing,
-         built ONLY from data MCG legitimately has on file. No external
-         comps, no invented market averages. -->
+    <!-- Market Position: per-listing prominence (top-of-search + engaged
+         buyer views) + price context + DOM framing, built ONLY from data
+         MCG legitimately has on file. No external comps, no invented
+         market averages, and never a cross-portfolio listing-count/rank
+         comparison -- see build_market_position's docstring. -->
     <section id="hm-market-position" class="hm-section">
       <div class="hm-section-head">
         <div>
           <h2>Market Position</h2>
-          <p class="hm-section-sub">Your listing's standing within MCG's active portfolio, based solely on data MCG has verified.</p>
+          <p class="hm-section-sub">Your listing's standing in the marketplace, based solely on data MCG has verified.</p>
         </div>
       </div>
       {% if market_position.available %}
       <div class="hm-stat-rows">
         <div class="hm-stat-row">
-          {% if market_position.rank.available %}
-          <div class="hm-stat-tile"><div class="hm-stat-label">Portfolio Exposure Rank</div><div class="hm-stat-value">#{{ market_position.rank.position }} of {{ market_position.rank.of }}</div></div>
+          {% if market_position.top_of_search.available %}
+          <div class="hm-stat-tile"><div class="hm-stat-label">Top-of-Search Appearances</div><div class="hm-stat-value">{{ market_position.top_of_search.value_display }}</div></div>
+          {% endif %}
+          {% if market_position.engaged.available %}
+          <div class="hm-stat-tile"><div class="hm-stat-label">Engaged Buyer Views</div><div class="hm-stat-value">{{ market_position.engaged.value_display }}</div></div>
           {% endif %}
           {% if market_position.price.available %}
           <div class="hm-stat-tile"><div class="hm-stat-label">Price Positioning</div><div class="hm-stat-value">{{ market_position.price.value_display }}</div></div>
@@ -998,9 +1003,11 @@
           {% endif %}
         </div>
       </div>
-      {% if market_position.rank.available %}<p class="hm-section-sub" style="margin-top:10px;">{{ market_position.rank.sentence }}</p>{% endif %}
+      {% if market_position.top_of_search.available %}<p class="hm-section-sub" style="margin-top:10px;">{{ market_position.top_of_search.sentence }}</p>{% endif %}
+      {% if market_position.engaged.available %}<p class="hm-section-sub">{{ market_position.engaged.sentence }}</p>{% endif %}
       {% if market_position.price.available %}<p class="hm-section-sub">{{ market_position.price.sentence }}</p>{% endif %}
       {% if market_position.dom.available %}<p class="hm-section-sub">{{ market_position.dom.sentence }}</p>{% endif %}
+      {% if market_position.brand_line %}<p class="hm-section-sub" style="margin-top:6px;font-weight:700;color:var(--navy);">{{ market_position.brand_line }}</p>{% endif %}
       {% else %}
       <div class="empty-note">Market position figures are not yet available for this listing.</div>
       {% endif %}
@@ -1110,7 +1117,7 @@
       </div>
 
       <div class="hm-popular-sites-head">Popular Sites Where Your Ads Appear</div>
-      <p class="hm-section-sub" style="margin-bottom:6px;">A sample of the recognizable publications where MCG's national syndication network has placed a display ad for your listing.</p>
+      <p class="hm-section-sub" style="margin-bottom:6px;">A selection of the publications featuring your listing &mdash; {{ hm.publication_count }} placements individually tracked for this property.</p>
       <div class="hm-carousel">
         <button type="button" class="hm-carousel-arrow" id="hm-carousel-prev" aria-label="Previous logos">&#10094;</button>
         <div class="hm-carousel-track-wrap">
@@ -1483,6 +1490,7 @@
       <div class="pub-stat"><div class="p-val">{{ '{:,}'.format(homes_exposure.users_reached_total) }}</div><div class="p-lbl">Users reached</div></div>
       <div class="pub-stat"><div class="p-val">{{ '{:,}'.format(homes_exposure.contacts_targeted) }}</div><div class="p-lbl">Contacts targeted</div></div>
     </div>
+    <p class="hm-section-sub" style="margin-bottom:6px;">A selection of the publications featuring your listing &mdash; {{ homes_exposure.publication_count }} placements individually tracked for this property.</p>
     <div class="logo-grid">
       {% for pub in homes_exposure.publications %}
       <div class="logo-tile" title="{{ pub.domain }}">
@@ -1651,22 +1659,31 @@
   </section>
   {% endif %}
 
-  <!-- ---------- Market Position: portfolio rank + price context + DOM
-       framing, built ONLY from data MCG legitimately has on file. No
-       external comps, no invented market averages. ---------- -->
+  <!-- ---------- Market Position: per-listing prominence (top-of-search +
+       engaged buyer views) + price context + DOM framing, built ONLY from
+       data MCG legitimately has on file. No external comps, no invented
+       market averages, and never a cross-portfolio listing-count/rank
+       comparison. ---------- -->
   <section id="market-position">
     <div class="section-head">
       <h2>Market Position</h2>
-      <p class="section-sub">Your listing's standing within MCG's active portfolio, based solely on data MCG has verified</p>
+      <p class="section-sub">Your listing's standing in the marketplace, based solely on data MCG has verified</p>
     </div>
 
     {% if market_position.available %}
     <div class="stat-grid">
-      {% if market_position.rank.available %}
+      {% if market_position.top_of_search.available %}
       <div class="stat-tile highlight">
-        <div class="label">Portfolio Exposure Rank</div>
-        <div class="value">#{{ market_position.rank.position }} of {{ market_position.rank.of }}</div>
-        <div class="sub">{{ market_position.rank.sentence }}</div>
+        <div class="label">Top-of-Search Appearances</div>
+        <div class="value">{{ market_position.top_of_search.value_display }}</div>
+        <div class="sub">{{ market_position.top_of_search.sentence }}</div>
+      </div>
+      {% endif %}
+      {% if market_position.engaged.available %}
+      <div class="stat-tile">
+        <div class="label">Engaged Buyer Views</div>
+        <div class="value">{{ market_position.engaged.value_display }}</div>
+        <div class="sub">{{ market_position.engaged.sentence }}</div>
       </div>
       {% endif %}
       {% if market_position.price.available %}
@@ -1684,6 +1701,7 @@
       </div>
       {% endif %}
     </div>
+    {% if market_position.brand_line %}<p class="section-sub" style="margin-top:10px;font-weight:700;">{{ market_position.brand_line }}</p>{% endif %}
     {% else %}
     <div class="empty-note">Market position figures are not yet available for this listing.</div>
     {% endif %}
@@ -1774,7 +1792,7 @@
   <!-- ---------- What's next (supplementary) ---------- -->
   <section id="next">
     <div class="section-head">
-      <h2>Portfolio summary &amp; what's next</h2>
+      <h2>Summary &amp; what's next</h2>
     </div>
     {% if insights.summary %}
     <p class="insight-summary">{{ insights.summary }}</p>

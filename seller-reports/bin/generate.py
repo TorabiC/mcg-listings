@@ -193,6 +193,32 @@ CHROMIUM_CANDIDATES = [
 
 
 # ---------------------------------------------------------------------------
+# homes.com publication-logo CDN -- request a 2x-resolution source so the
+# "Popular Sites Where Your Ads Appear" grid renders crisp on retina
+# displays instead of a browser upscaling a ~117px-wide PNG. The intake's
+# publication_logo_cdn URLs are of the form
+#   https://imagescdn.homes.com/i2/<hash>/<width>/image.png?p=1
+# -- the numeric path segment is the requested pixel width the CDN resizes
+# to. Doubling it asks the CDN for a 2x source while the template still
+# renders the logo at its original (1x) display size via explicit
+# width/height, giving retina crispness without changing layout. Falls
+# back to the original URL unchanged if the pattern doesn't match (a
+# working 1x logo is always better than a broken one).
+# ---------------------------------------------------------------------------
+_HOMES_CDN_SIZE_RE = re.compile(r"(/i2/[^/]+/)(\d+)(/image\.(?:png|jpg|jpeg))", re.IGNORECASE)
+
+
+def homes_cdn_2x(url: str | None) -> str | None:
+    if not url:
+        return url
+    m = _HOMES_CDN_SIZE_RE.search(url)
+    if not m:
+        return url
+    doubled = str(int(m.group(2)) * 2)
+    return url[:m.start(2)] + doubled + url[m.end(2):]
+
+
+# ---------------------------------------------------------------------------
 # Formatting helpers
 # ---------------------------------------------------------------------------
 def fmt_int(n) -> str:
@@ -917,7 +943,7 @@ def build_homes_exposure(portals: dict, source_freshness: dict | None = None) ->
     pubs = []
     for p in publications:
         label = p.split(".")[0].replace("-", " ").title()
-        pubs.append({"domain": p, "logo": logo_cdn.get(p), "name": label})
+        pubs.append({"domain": p, "logo": homes_cdn_2x(logo_cdn.get(p)), "name": label})
 
     retarget = display_ads.get("retargeting") or {}
     contact = display_ads.get("contact_list_targeting") or {}
@@ -1074,15 +1100,21 @@ def build_channel_performance(src: dict, dq: dict, homes_exposure: dict | None,
         combined += int(ga4.get("pageviews", 0) or 0)
 
     if homes_exposure:
+        # Lead with the verified, approved portfolio-level reach figure
+        # (187 websites -- MCG_PROOF["featured_sites"]) rather than this
+        # listing's individually-tracked publication count, which reads as
+        # an undersell next to it. The tracked count stays on the card as a
+        # quiet secondary stat, not the headline.
         channels.append({
             "key": "syndication", "icon": "network",
             "name": "National Syndication Network",
-            "tagline": "MCG's premier residential syndication partners",
+            "tagline": f"Featured across {MCG_PROOF['featured_sites']} websites nationwide",
             "stats": [
                 {"label": "Total views since listing", "value": _fmt_n(homes_exposure.get("total_views", 0))},
                 {"label": "Display ad impressions", "value": _fmt_n(homes_exposure.get("display_ad_views", 0))},
                 {"label": "Top-of-search placements", "value": _fmt_n(homes_exposure.get("top_of_search", 0))},
-                {"label": "Publications carrying your listing", "value": _fmt_n(homes_exposure.get("publication_count", 0))},
+                {"label": "Placements individually tracked for this property",
+                 "value": _fmt_n(homes_exposure.get("publication_count", 0))},
             ],
         })
         combined += int(homes_exposure.get("total_views", 0) or 0)
@@ -1242,15 +1274,18 @@ def build_exposure_banner(channel_performance: dict | None, homes_exposure: dict
     buyers_to_date = channel_performance['combined'] (unchanged calculation
                -- see that function).
     channels = count of currently-active MCG marketing channels for this
-               listing, plus the number of individual publications/sites
-               actually carrying it (homes.com's publication_count) --
-               so a listing syndicated to 44 named publications through
-               one channel reads as "45+ channels", not "1 channel".
+               listing, plus (when the listing is actively syndicated
+               through the national network) the verified, approved
+               portfolio-level reach figure -- MCG_PROOF["featured_sites"],
+               187 websites nationwide -- rather than this listing's own
+               individually-tracked publication count, so the banner reads
+               "45+ national and regional channels" against the real,
+               approved network size instead of undersizing it.
     """
     buyers_to_date = int((channel_performance or {}).get("combined") or 0)
     active_channels = int((channel_performance or {}).get("channel_count") or 0)
-    publication_count = int((homes_exposure or {}).get("publication_count") or 0)
-    channels = active_channels + publication_count
+    syndication_sites = int(MCG_PROOF["featured_sites"]) if homes_exposure else 0
+    channels = active_channels + syndication_sites
 
     # --- genuinely period-scoped weekly buyer count (Y) ---------------
     src = src or {}
@@ -1297,7 +1332,7 @@ def build_exposure_banner(channel_performance: dict | None, homes_exposure: dict
         }
     # Some real activity, just not enough for a specific headline number --
     # a true, still-confident sentence rather than a hedge.
-    if buyers_to_date > 0 or active_channels > 0 or publication_count > 0:
+    if buyers_to_date > 0 or active_channels > 0 or syndication_sites > 0:
         return {
             "available": True,
             "sparse": True,
@@ -1655,60 +1690,45 @@ def build_activity_feed(activity: list[dict], milestones: list[dict] | None) -> 
 
 
 # ---------------------------------------------------------------------------
-# Market Position -- exposure rank + price context + DOM framing, built
-# ONLY from data we legitimately have. No external comps, no invented
-# market averages: if cross-portfolio data is unavailable this renders
-# with just the price-context and DOM pieces.
+# Market Position -- per-listing prominence + price context + DOM framing,
+# built ONLY from data we legitimately have. No external comps, no invented
+# market averages, and (per Cameron) NEVER a cross-portfolio "#N of M MCG
+# listings" rank or any other portfolio-size hint -- on a small portfolio
+# that immediately signals "this brokerage doesn't have many listings",
+# which is the opposite of what this section is for. Prominence is framed
+# entirely in terms of this listing's own verified numbers (top-of-search
+# placements, engaged buyer views) plus the one standing, approved
+# portfolio-level brand fact (187 syndication sites) that reads as
+# evidence of MCG's system rather than a headcount of MCG's listings.
 # ---------------------------------------------------------------------------
-def _listing_period_total_views(metrics: dict) -> int:
-    src = metrics.get("sources", {})
-    idx_v = int((src.get("idx") or {}).get("views", 0) or 0)
-    ga4_v = int((src.get("ga4") or {}).get("pageviews", 0) or 0)
-    portal_v = sum(int((p or {}).get("views", 0) or 0) for p in (src.get("portals") or {}).values())
-    return idx_v + ga4_v + portal_v
-
-
-def load_portfolio_ranking(data_dir: Path, listings: list[dict], period_id: str) -> list[dict]:
-    """Total views for every active listing that has a metrics.json for
-    this exact period_id -- the same total_views figure the Views section
-    itself reports, so the rank agrees with what's on the page. Listings
-    with no metrics.json for this period (e.g. newly added, or this period
-    hasn't been collected for them) are simply absent from the ranking
-    rather than assumed to be zero."""
-    ranking = []
-    for l in listings:
-        if l.get("status") != "active":
-            continue
-        mp = data_dir / l["slug"] / period_id / "metrics.json"
-        if not mp.exists():
-            continue
-        try:
-            m = json.loads(mp.read_text())
-        except (ValueError, OSError):
-            continue
-        ranking.append({"slug": l["slug"], "total_views": _listing_period_total_views(m)})
-    return ranking
-
-
-def build_market_position(listing: dict, metrics: dict, portfolio_ranking: list[dict] | None) -> dict:
+def build_market_position(listing: dict, metrics: dict, homes_exposure: dict | None,
+                           engaged_views: int | None) -> dict:
     period_end = metrics.get("period", {}).get("end")
 
-    # (a) exposure rank within the MCG portfolio for this period.
-    rank = {"available": False}
-    if portfolio_ranking and len(portfolio_ranking) > 1:
-        ordered = sorted(portfolio_ranking, key=lambda r: -r["total_views"])
-        position = next((i for i, r in enumerate(ordered) if r["slug"] == listing["slug"]), None)
-        if position is not None:
-            rank = {
-                "available": True,
-                "position": position + 1,
-                "of": len(ordered),
-                "top_tier": (position + 1) <= max(1, round(len(ordered) / 3)),
-                "sentence": (
-                    f"Ranks #{position + 1} of {len(ordered)} active MCG listings for "
-                    f"buyer views this period."
-                ),
-            }
+    # (a) per-listing prominence -- top-of-search placements (homes.com
+    # summary) and engaged buyer views (visitor-map engaged-cluster total),
+    # both real, already-verified per-listing figures used elsewhere on the
+    # report, never a comparison against other MCG listings.
+    top_of_search_n = int((homes_exposure or {}).get("top_of_search") or 0)
+    top_of_search = {"available": False}
+    if top_of_search_n:
+        top_of_search = {
+            "available": True,
+            "value_display": fmt_int(top_of_search_n),
+            "sentence": (
+                f"Your listing appeared at the top of buyer search results "
+                f"{fmt_int(top_of_search_n)} time{'s' if top_of_search_n != 1 else ''}."
+            ),
+        }
+
+    engaged_n = int(engaged_views or 0)
+    engaged = {"available": False}
+    if engaged_n:
+        engaged = {
+            "available": True,
+            "value_display": fmt_int(engaged_n),
+            "sentence": f"{fmt_int(engaged_n)} engaged buyer views recorded for this property.",
+        }
 
     # (b) price context -- $/sqft or $/acre when the fields exist, else the
     # plain listing price. Never invented: only computed from fields
@@ -1745,10 +1765,15 @@ def build_market_position(listing: dict, metrics: dict, portfolio_ranking: list[
         dom["sentence"] = f"Day {dom_days} of a sustained exposure campaign for this listing."
 
     return {
-        "available": rank["available"] or price_context["available"] or dom["available"],
-        "rank": rank,
+        "available": top_of_search["available"] or engaged["available"] or price_context["available"] or dom["available"],
+        "top_of_search": top_of_search,
+        "engaged": engaged,
         "price": price_context,
         "dom": dom,
+        # The one portfolio-level fact that's safe (and approved) to show
+        # here: it's a standing brand number, not a count of MCG's active
+        # listings, so it never signals portfolio size.
+        "brand_line": f"MCG listings are featured on {MCG_PROOF['featured_sites']} websites nationwide.",
     }
 
 
@@ -1781,8 +1806,7 @@ def build_weekly_breakdown_view(metrics: dict) -> dict:
 
 
 def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
-                      report_url: str, generated_display: str,
-                      portfolio_ranking: list[dict] | None = None) -> dict:
+                      report_url: str, generated_display: str) -> dict:
     dq = metrics.get("data_quality", {})
     source_freshness = metrics.get("source_freshness", {})
     stats, total_views, total_inquiries, showings_count = build_stats(metrics, dq)
@@ -1967,7 +1991,10 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
         "exposure_banner": exposure_banner,
         "hm": hm,
         "source_freshness": source_freshness,
-        "market_position": build_market_position(listing, metrics, portfolio_ranking),
+        "market_position": build_market_position(
+            listing, metrics, homes_exposure,
+            (((hm or {}).get("leaflet") or {}).get("engaged") or {}).get("total_mapped_views"),
+        ),
         "is_rollup": metrics.get("period", {}).get("type") != "weekly",
         "weekly_breakdown": build_weekly_breakdown_view(metrics),
         "period_activity": metrics.get("period_activity", {}),
@@ -2251,13 +2278,6 @@ def main() -> int:
 
     generated_display = dt.datetime.now().strftime("%B %-d, %Y")
 
-    # Cross-portfolio exposure ranking for the Market Position section --
-    # computed once per run over every active listing's metrics.json for
-    # this exact period_id (not just the slugs being rendered this
-    # invocation), so a single-slug `--slug` run still ranks correctly
-    # against the full portfolio.
-    portfolio_ranking = load_portfolio_ranking(data_dir, listings, args.period_id)
-
     results = []
     for slug in target_slugs:
         listing = listings_by_slug[slug]
@@ -2277,7 +2297,7 @@ def main() -> int:
         # host failover: Azure mirror primary, Pages fallback). The raw host
         # URL is never what a seller sees or shares.
         report_url = f"https://www.masoncapitalgroup.com/listing-reports?r={slug_token}&p={args.period_id}"
-        vm = build_view_model(listing, metrics, period_links, report_url, generated_display, portfolio_ranking)
+        vm = build_view_model(listing, metrics, period_links, report_url, generated_display)
 
         # --- render report page ---
         html = report_tmpl.render(**vm)
