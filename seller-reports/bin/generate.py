@@ -193,29 +193,53 @@ CHROMIUM_CANDIDATES = [
 
 
 # ---------------------------------------------------------------------------
-# homes.com publication-logo CDN -- request a 2x-resolution source so the
-# "Popular Sites Where Your Ads Appear" grid renders crisp on retina
-# displays instead of a browser upscaling a ~117px-wide PNG. The intake's
-# publication_logo_cdn URLs are of the form
-#   https://imagescdn.homes.com/i2/<hash>/<width>/image.png?p=1
-# -- the numeric path segment is the requested pixel width the CDN resizes
-# to. Doubling it asks the CDN for a 2x source while the template still
-# renders the logo at its original (1x) display size via explicit
-# width/height, giving retina crispness without changing layout. Falls
-# back to the original URL unchanged if the pattern doesn't match (a
-# working 1x logo is always better than a broken one).
+# homes.com publication-logo self-hosting -- imagescdn.homes.com enforces
+# hotlink protection and 403s essentially all requests that don't come from
+# an active homes.com browser session, including the exact URLs the page
+# itself renders. Seller-facing reports/flyers must never reference
+# imagescdn.homes.com directly (it renders as a broken image for sellers).
+# Instead we self-host a snapshot of each publication's logo under
+# seller-reports/assets/publogos/ and serve it from the mcgmarketinghub
+# Azure static-site mirror. The mapping below is built at generate time
+# from whatever files exist in that directory, keyed by a slugified
+# publication domain (TLD stripped, lowercased, non-alnum -> hyphen) so it
+# can be extended by simply dropping a new <slug>.<ext> file in the folder.
+# Publications with no local snapshot fall back to a plain text chip in the
+# template (never a broken CDN URL).
 # ---------------------------------------------------------------------------
-_HOMES_CDN_SIZE_RE = re.compile(r"(/i2/[^/]+/)(\d+)(/image\.(?:png|jpg|jpeg))", re.IGNORECASE)
+_PUBLOGOS_DIR = REPO_ROOT / "assets" / "publogos"
+_PUBLOGOS_BASE_URL = "https://mcgmarketinghub.z13.web.core.windows.net/reports/_assets/publogos"
+_PUB_TLD_SUFFIXES = (".co.uk", ".com", ".org", ".net", ".io")
 
 
-def homes_cdn_2x(url: str | None) -> str | None:
-    if not url:
-        return url
-    m = _HOMES_CDN_SIZE_RE.search(url)
-    if not m:
-        return url
-    doubled = str(int(m.group(2)) * 2)
-    return url[:m.start(2)] + doubled + url[m.end(2):]
+def _slugify_pub_domain(domain: str) -> str:
+    d = domain.strip().lower()
+    for suf in _PUB_TLD_SUFFIXES:
+        if d.endswith(suf):
+            d = d[: -len(suf)]
+            break
+    return re.sub(r"[^a-z0-9]+", "-", d).strip("-")
+
+
+def _load_publogos_map() -> dict:
+    mapping: dict = {}
+    if _PUBLOGOS_DIR.is_dir():
+        for f in _PUBLOGOS_DIR.iterdir():
+            if f.is_file() and f.suffix.lower() in (".png", ".jpg", ".jpeg"):
+                mapping[f.stem.lower()] = f"{_PUBLOGOS_BASE_URL}/{f.name}"
+    return mapping
+
+
+_PUBLOGOS_MAP = _load_publogos_map()
+
+
+def self_hosted_pub_logo(domain: str | None) -> str | None:
+    """Return the self-hosted mirror URL for a publication's logo, or None
+    if we don't have a local snapshot (template falls back to a text chip).
+    """
+    if not domain:
+        return None
+    return _PUBLOGOS_MAP.get(_slugify_pub_domain(domain))
 
 
 # ---------------------------------------------------------------------------
@@ -939,11 +963,10 @@ def build_homes_exposure(portals: dict, source_freshness: dict | None = None) ->
 
     display_ads = homes.get("display_ads") or {}
     publications = display_ads.get("publications") or []
-    logo_cdn = display_ads.get("publication_logo_cdn") or {}
     pubs = []
     for p in publications:
         label = p.split(".")[0].replace("-", " ").title()
-        pubs.append({"domain": p, "logo": homes_cdn_2x(logo_cdn.get(p)), "name": label})
+        pubs.append({"domain": p, "logo": self_hosted_pub_logo(p), "name": label})
 
     retarget = display_ads.get("retargeting") or {}
     contact = display_ads.get("contact_list_targeting") or {}
@@ -1103,8 +1126,8 @@ def build_channel_performance(src: dict, dq: dict, homes_exposure: dict | None,
         # Lead with the verified, approved portfolio-level reach figure
         # (187 websites -- MCG_PROOF["featured_sites"]) rather than this
         # listing's individually-tracked publication count, which reads as
-        # an undersell next to it. The tracked count stays on the card as a
-        # quiet secondary stat, not the headline.
+        # an undersell next to it. The tracked count itself is not surfaced
+        # as seller-visible copy anywhere on this card.
         channels.append({
             "key": "syndication", "icon": "network",
             "name": "National Syndication Network",
@@ -1113,8 +1136,6 @@ def build_channel_performance(src: dict, dq: dict, homes_exposure: dict | None,
                 {"label": "Total views since listing", "value": _fmt_n(homes_exposure.get("total_views", 0))},
                 {"label": "Display ad impressions", "value": _fmt_n(homes_exposure.get("display_ad_views", 0))},
                 {"label": "Top-of-search placements", "value": _fmt_n(homes_exposure.get("top_of_search", 0))},
-                {"label": "Placements individually tracked for this property",
-                 "value": _fmt_n(homes_exposure.get("publication_count", 0))},
             ],
         })
         combined += int(homes_exposure.get("total_views", 0) or 0)
@@ -1463,9 +1484,6 @@ def build_flyer_stats(metrics: dict, dq: dict, stats: list[dict], total_views: i
     if homes_exposure and homes_exposure.get("favorites"):
         fallback_pool.append({"key": "favorites", "label": "Favorites",
                                "value_display": fmt_int(homes_exposure["favorites"])})
-    if homes_exposure and homes_exposure.get("publication_count"):
-        fallback_pool.append({"key": "publications", "label": "Publications featuring your listing",
-                               "value_display": fmt_int(homes_exposure["publication_count"])})
     if homes_exposure and homes_exposure.get("top_of_search"):
         fallback_pool.append({"key": "top_of_search", "label": "Top-of-search appearances",
                                "value_display": fmt_int(homes_exposure["top_of_search"])})

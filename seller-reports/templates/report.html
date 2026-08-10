@@ -1095,7 +1095,7 @@
       <div class="hm-section-head">
         <div><h2>Marketing Reach<span class="hm-member-chip">MCG Member Benefit</span></h2></div>
       </div>
-      <p class="hm-reach-intro">As a benefit of listing with MCG, your property is automatically enrolled in targeted display advertising across {{ hm.publication_count }} recognizable publications &mdash; retargeting recent visitors and reaching MCG's own buyer &amp; investor contact list.</p>
+      <p class="hm-reach-intro">As a benefit of listing with MCG, your property is automatically enrolled in targeted display advertising across a network of recognizable publications &mdash; retargeting recent visitors and reaching MCG's own buyer &amp; investor contact list.</p>
 
       <div class="hm-substat-group">
         <h3>Retargeting</h3>
@@ -1117,7 +1117,7 @@
       </div>
 
       <div class="hm-popular-sites-head">Popular Sites Where Your Ads Appear</div>
-      <p class="hm-section-sub" style="margin-bottom:6px;">A selection of the publications featuring your listing &mdash; {{ hm.publication_count }} placements individually tracked for this property.</p>
+      <p class="hm-section-sub" style="margin-bottom:6px;">A selection of the publications featuring your listing.</p>
       <div class="hm-carousel">
         <button type="button" class="hm-carousel-arrow" id="hm-carousel-prev" aria-label="Previous logos">&#10094;</button>
         <div class="hm-carousel-track-wrap">
@@ -1137,7 +1137,7 @@
       </div>
       <div class="hm-carousel-dots" id="hm-carousel-dots"></div>
       <div class="hm-pub-list">
-        <strong>Full publication list ({{ hm.publication_count }})</strong>
+        <strong>Full publication list</strong>
         {{ hm.publications | map(attribute='domain') | join(' · ') }}
       </div>
     </section>
@@ -1483,14 +1483,14 @@
     {% endif %}
 
     {% if homes_exposure %}
-    <p class="pub-intro">Your listing has appeared on <strong>{{ homes_exposure.publication_count }} recognizable publications</strong> &mdash; from national news and sports to lifestyle and finance sites &mdash; through {{ syndication_blurb }}</p>
+    <p class="pub-intro">Your listing has appeared on <strong>recognizable publications</strong> &mdash; from national news and sports to lifestyle and finance sites &mdash; through {{ syndication_blurb }}</p>
     <div class="pub-stat-row">
       <div class="pub-stat"><div class="p-val">{{ '{:,}'.format(homes_exposure.ad_views_total) }}</div><div class="p-lbl">Ad views</div></div>
       <div class="pub-stat"><div class="p-val">{{ '{:,}'.format(homes_exposure.sites_displayed_on) }}</div><div class="p-lbl">Sites displayed on</div></div>
       <div class="pub-stat"><div class="p-val">{{ '{:,}'.format(homes_exposure.users_reached_total) }}</div><div class="p-lbl">Users reached</div></div>
       <div class="pub-stat"><div class="p-val">{{ '{:,}'.format(homes_exposure.contacts_targeted) }}</div><div class="p-lbl">Contacts targeted</div></div>
     </div>
-    <p class="hm-section-sub" style="margin-bottom:6px;">A selection of the publications featuring your listing &mdash; {{ homes_exposure.publication_count }} placements individually tracked for this property.</p>
+    <p class="hm-section-sub" style="margin-bottom:6px;">A selection of the publications featuring your listing.</p>
     <div class="logo-grid">
       {% for pub in homes_exposure.publications %}
       <div class="logo-tile" title="{{ pub.domain }}">
@@ -1503,7 +1503,7 @@
       {% endfor %}
     </div>
     <div class="pub-list-full">
-      <strong>Full publication list ({{ homes_exposure.publication_count }})</strong>
+      <strong>Full publication list</strong>
       {{ homes_exposure.publications | map(attribute='domain') | join(' &middot; ') }}
     </div>
 
