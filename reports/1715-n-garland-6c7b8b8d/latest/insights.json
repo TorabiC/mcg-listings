@@ -1,9 +1,9 @@
 {
   "slug": "1715-n-garland",
-  "period_id": "2026-W32",
+  "period_id": "2026-W33",
   "talking_points": [
-    "38,713 total views this period -- 0 website + 38,713 syndication views.",
-    "Views roughly flat vs. the prior period.",
+    "49,680 total views this period -- 0 website + 49,680 syndication views.",
+    "Views trending up 7.0% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-08-09",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-08-09",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-08-09",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
@@ -36,7 +36,7 @@
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": "2026-08-05",
+      "as_of": "2026-08-10",
       "status": "fresh"
     },
     {
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "38,713",
+    "total_views": "49,680",
     "total_leads": "0",
     "page_engagement": {
-      "metric": "avg_engagement_seconds",
-      "value_display": "0m 2s",
-      "available": true
+      "metric": null,
+      "value_display": "--",
+      "available": false
     },
-    "window_label": "Week of Aug 3 \u2013 Aug 9"
+    "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-10T13:49:25.991924+00:00"
+  "generated_at": "2026-08-10T13:58:21.353710+00:00"
 }

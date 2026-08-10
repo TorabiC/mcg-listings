@@ -258,13 +258,13 @@
     border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);
   }
   .logo-tile{
-    display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;background:var(--gray-100);
-    border-radius:8px;padding:10px;
+    display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;background:#fff;
+    border:1px solid var(--gray-300);border-radius:8px;padding:12px 14px;box-shadow:var(--shadow);
   }
   .logo-tile img{
-    max-width:100%;max-height:32px;filter:grayscale(100%);opacity:0.72;transition:filter .18s ease,opacity .18s ease,transform .18s ease;
+    width:100%;height:100%;max-width:100%;max-height:30px;object-fit:contain;transition:transform .18s ease;
   }
-  .logo-tile:hover img{filter:grayscale(0%);opacity:1;transform:scale(1.04);}
+  .logo-tile:hover img{transform:scale(1.04);}
   .pub-list-full{margin-top:16px;font-size:12px;color:var(--gray-500);line-height:1.9;}
   .pub-list-full strong{color:var(--gray-700);display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px;}
   @media (min-width:640px){ .logo-grid{grid-template-columns:repeat(6,1fr);} .pub-stat-row{grid-template-columns:repeat(4,1fr);} }
@@ -570,8 +570,8 @@
   .hm-carousel-track-wrap{overflow:hidden;flex:1;}
   .hm-carousel-track{display:flex;transition:transform .35s ease;}
   .hm-carousel-page{flex:0 0 100%;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(3,1fr);gap:12px;}
-  .hm-logo-tile{background:#fff;border:1px solid var(--gray-300);border-radius:8px;display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;padding:10px;}
-  .hm-logo-tile img{max-width:100%;max-height:32px;}
+  .hm-logo-tile{background:#fff;border:1px solid var(--gray-300);border-radius:8px;display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;padding:12px 14px;box-shadow:var(--shadow);}
+  .hm-logo-tile img{width:100%;height:100%;max-width:100%;max-height:30px;object-fit:contain;}
   .hm-carousel-arrow{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--gray-300);background:#fff;color:var(--navy);font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .hm-carousel-arrow:hover{background:var(--navy-tint);}
   .hm-carousel-arrow:disabled{opacity:.35;cursor:default;}
@@ -845,7 +845,7 @@ Land
 <div class="wrap">
   <div class="exposure-banner">
     <span class="eb-mark">M</span>
-    <span class="eb-text">To date, MCG has presented your property to more than 61,000 prospective buyers across 12+ national and regional channels — including 1,251 this week.</span>
+    <span class="eb-text">To date, MCG has presented your property to more than 61,000 prospective buyers across 190+ national and regional channels — including 1,251 this week.</span>
   </div>
 </div>
 
@@ -980,33 +980,34 @@ Land
       <div class="pub-stat"><div class="p-val">60</div><div class="p-lbl">Users reached</div></div>
       <div class="pub-stat"><div class="p-val">5,228</div><div class="p-lbl">Contacts targeted</div></div>
     </div>
+    <p class="hm-section-sub" style="margin-bottom:6px;">A selection of the publications featuring your listing &mdash; 9 placements individually tracked for this property.</p>
     <div class="logo-grid">
       <div class="logo-tile" title="Cameron Torabi">
-        <img src="https://imagescdn.homes.com/i2/KjQHqfNXZ9KMGaRALTLUBLUB1_YeYKzs91DAGtXZR7s/116/image.jpg?t=p&amp;p=1" alt="Cameron Torabi" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/KjQHqfNXZ9KMGaRALTLUBLUB1_YeYKzs91DAGtXZR7s/232/image.jpg?t=p&amp;p=1" alt="Cameron Torabi" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="msn.com">
-        <img src="https://imagescdn.homes.com/i2/DMa7i9oCH1mgGyaI0rRkcv7HtBWenGZN-jDTYlclqP4/117/image.png?p=1" alt="Msn" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/DMa7i9oCH1mgGyaI0rRkcv7HtBWenGZN-jDTYlclqP4/234/image.png?p=1" alt="Msn" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="usatoday.com">
-        <img src="https://imagescdn.homes.com/i2/nCcqQLDoBwHTU1atv3aMrLT3S3LHH30zLbb-hWfyEqA/117/image.png?p=1" alt="Usatoday" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/nCcqQLDoBwHTU1atv3aMrLT3S3LHH30zLbb-hWfyEqA/234/image.png?p=1" alt="Usatoday" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="yahoo.com">
-        <img src="https://imagescdn.homes.com/i2/LKIhpj9D5QrsTLwMz96e6i4k6WwmgO0pLdFU5c6tJh8/117/image.png?p=1" alt="Yahoo" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/LKIhpj9D5QrsTLwMz96e6i4k6WwmgO0pLdFU5c6tJh8/234/image.png?p=1" alt="Yahoo" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="accuweather.com">
-        <img src="https://imagescdn.homes.com/i2/uj4uZndcO6IFm6PgK3X2Z61GZkmMk6eMVKds-nL730U/117/image.png?p=1" alt="Accuweather" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/uj4uZndcO6IFm6PgK3X2Z61GZkmMk6eMVKds-nL730U/234/image.png?p=1" alt="Accuweather" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="t-mobile.com">
-        <img src="https://imagescdn.homes.com/i2/bATy82cQpuN5IZyxB8DBT7q19AaTWxDVYiPXImR3fR0/117/image.png?p=1" alt="T Mobile" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/bATy82cQpuN5IZyxB8DBT7q19AaTWxDVYiPXImR3fR0/234/image.png?p=1" alt="T Mobile" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="mlb.com">
-        <img src="https://imagescdn.homes.com/i2/8bNfUOojY-mgbX1xsL0V9mx-xogXBuLU6HMI4y9a1Yc/117/image.png?p=1" alt="Mlb" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/8bNfUOojY-mgbX1xsL0V9mx-xogXBuLU6HMI4y9a1Yc/234/image.png?p=1" alt="Mlb" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="soundcloud.com">
-        <img src="https://imagescdn.homes.com/i2/-lXvv8Vx2W0UhI135dd8shXA03RKIeQE6lahMVGsphw/117/image.png?p=1" alt="Soundcloud" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/-lXvv8Vx2W0UhI135dd8shXA03RKIeQE6lahMVGsphw/234/image.png?p=1" alt="Soundcloud" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="5newsonline.com">
-        <img src="https://imagescdn.homes.com/i2/CR2rOVdhgXV8CXjuwBYUQqVZeWA9HgSlTg3AW36PqNY/117/image.png?p=1" alt="5Newsonline" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/CR2rOVdhgXV8CXjuwBYUQqVZeWA9HgSlTg3AW36PqNY/234/image.png?p=1" alt="5Newsonline" loading="lazy" width="94" height="32">
       </div>
     </div>
     <div class="pub-list-full">
@@ -1303,20 +1304,22 @@ Land
 
   <!-- ---------- Month in review (monthly/quarterly rollups only) ---------- -->
 
-  <!-- ---------- Market Position: portfolio rank + price context + DOM
-       framing, built ONLY from data MCG legitimately has on file. No
-       external comps, no invented market averages. ---------- -->
+  <!-- ---------- Market Position: per-listing prominence (top-of-search +
+       engaged buyer views) + price context + DOM framing, built ONLY from
+       data MCG legitimately has on file. No external comps, no invented
+       market averages, and never a cross-portfolio listing-count/rank
+       comparison. ---------- -->
   <section id="market-position">
     <div class="section-head">
       <h2>Market Position</h2>
-      <p class="section-sub">Your listing's standing within MCG's active portfolio, based solely on data MCG has verified</p>
+      <p class="section-sub">Your listing's standing in the marketplace, based solely on data MCG has verified</p>
     </div>
 
     <div class="stat-grid">
       <div class="stat-tile highlight">
-        <div class="label">Portfolio Exposure Rank</div>
-        <div class="value">#6 of 12</div>
-        <div class="sub">Ranks #6 of 12 active MCG listings for buyer views this period.</div>
+        <div class="label">Top-of-Search Appearances</div>
+        <div class="value">3,268</div>
+        <div class="sub">Your listing appeared at the top of buyer search results 3,268 times.</div>
       </div>
       <div class="stat-tile">
         <div class="label">Price Positioning</div>
@@ -1324,7 +1327,7 @@ Land
         <div class="sub">Listed at $1,800,000.</div>
       </div>
     </div>
-  </section>
+<p class="section-sub" style="margin-top:10px;font-weight:700;">MCG listings are featured on 187 websites nationwide.</p>  </section>
 
   <!-- ---------- Market position (supplementary) ---------- -->
   <section id="market">
@@ -1358,7 +1361,7 @@ Land
   <!-- ---------- What's next (supplementary) ---------- -->
   <section id="next">
     <div class="section-head">
-      <h2>Portfolio summary &amp; what's next</h2>
+      <h2>Summary &amp; what's next</h2>
     </div>
     <p class="insight-summary">1716 W Holly St has been viewed 60,907 times on MCG&#39;s national syndication network with 3,268 top-of-search placements and 277 display ad views across national publications. The listing most recently earned the network&#39;s &#34;The price for your listing has dropped by 10%&#34; recognition (Jun 29, 2026). 1716 W Holly St logged 61005 tracked views this period, up 2.1% from the prior period. 1716 W Holly St sits in the resilient luxury tier, which is holding relative to the mid-range; Washington County median DOM is currently 46 days. The period produced 4 tracked leads across the MCG website, portal, and chat channels.</p>
     <div class="plan-cols">

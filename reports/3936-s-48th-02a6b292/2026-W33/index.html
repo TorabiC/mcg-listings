@@ -258,13 +258,13 @@
     border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);
   }
   .logo-tile{
-    display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;background:var(--gray-100);
-    border-radius:8px;padding:10px;
+    display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;background:#fff;
+    border:1px solid var(--gray-300);border-radius:8px;padding:12px 14px;box-shadow:var(--shadow);
   }
   .logo-tile img{
-    max-width:100%;max-height:32px;filter:grayscale(100%);opacity:0.72;transition:filter .18s ease,opacity .18s ease,transform .18s ease;
+    width:100%;height:100%;max-width:100%;max-height:30px;object-fit:contain;transition:transform .18s ease;
   }
-  .logo-tile:hover img{filter:grayscale(0%);opacity:1;transform:scale(1.04);}
+  .logo-tile:hover img{transform:scale(1.04);}
   .pub-list-full{margin-top:16px;font-size:12px;color:var(--gray-500);line-height:1.9;}
   .pub-list-full strong{color:var(--gray-700);display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px;}
   @media (min-width:640px){ .logo-grid{grid-template-columns:repeat(6,1fr);} .pub-stat-row{grid-template-columns:repeat(4,1fr);} }
@@ -570,8 +570,8 @@
   .hm-carousel-track-wrap{overflow:hidden;flex:1;}
   .hm-carousel-track{display:flex;transition:transform .35s ease;}
   .hm-carousel-page{flex:0 0 100%;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(3,1fr);gap:12px;}
-  .hm-logo-tile{background:#fff;border:1px solid var(--gray-300);border-radius:8px;display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;padding:10px;}
-  .hm-logo-tile img{max-width:100%;max-height:32px;}
+  .hm-logo-tile{background:#fff;border:1px solid var(--gray-300);border-radius:8px;display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;padding:12px 14px;box-shadow:var(--shadow);}
+  .hm-logo-tile img{width:100%;height:100%;max-width:100%;max-height:30px;object-fit:contain;}
   .hm-carousel-arrow{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--gray-300);background:#fff;color:var(--navy);font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .hm-carousel-arrow:hover{background:var(--navy-tint);}
   .hm-carousel-arrow:disabled{opacity:.35;cursor:default;}
@@ -1012,28 +1012,25 @@ Land
 
   <!-- ---------- Month in review (monthly/quarterly rollups only) ---------- -->
 
-  <!-- ---------- Market Position: portfolio rank + price context + DOM
-       framing, built ONLY from data MCG legitimately has on file. No
-       external comps, no invented market averages. ---------- -->
+  <!-- ---------- Market Position: per-listing prominence (top-of-search +
+       engaged buyer views) + price context + DOM framing, built ONLY from
+       data MCG legitimately has on file. No external comps, no invented
+       market averages, and never a cross-portfolio listing-count/rank
+       comparison. ---------- -->
   <section id="market-position">
     <div class="section-head">
       <h2>Market Position</h2>
-      <p class="section-sub">Your listing's standing within MCG's active portfolio, based solely on data MCG has verified</p>
+      <p class="section-sub">Your listing's standing in the marketplace, based solely on data MCG has verified</p>
     </div>
 
     <div class="stat-grid">
-      <div class="stat-tile highlight">
-        <div class="label">Portfolio Exposure Rank</div>
-        <div class="value">#12 of 12</div>
-        <div class="sub">Ranks #12 of 12 active MCG listings for buyer views this period.</div>
-      </div>
       <div class="stat-tile">
         <div class="label">Price Positioning</div>
         <div class="value">$2,500,000</div>
         <div class="sub">Listed at $2,500,000.</div>
       </div>
     </div>
-  </section>
+<p class="section-sub" style="margin-top:10px;font-weight:700;">MCG listings are featured on 187 websites nationwide.</p>  </section>
 
   <!-- ---------- Market position (supplementary) ---------- -->
   <section id="market">
@@ -1067,7 +1064,7 @@ Land
   <!-- ---------- What's next (supplementary) ---------- -->
   <section id="next">
     <div class="section-head">
-      <h2>Portfolio summary &amp; what's next</h2>
+      <h2>Summary &amp; what's next</h2>
     </div>
     <p class="insight-summary">3936 S 48th St has generated 47 page views on the network&#39;s commercial marketplace, carrying a search score of 95/100 (3 offering memorandum opens, 11 unique visitors). 3936 S 48th St logged 47 tracked views this period, flat versus the prior period. 3936 S 48th St sits in the resilient luxury tier, which is holding relative to the mid-range; Washington County median DOM is currently 46 days. The period produced 3 tracked leads across the MCG website, portal, and chat channels.</p>
     <div class="plan-cols">

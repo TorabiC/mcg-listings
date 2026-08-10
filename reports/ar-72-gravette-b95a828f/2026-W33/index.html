@@ -258,13 +258,13 @@
     border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);
   }
   .logo-tile{
-    display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;background:var(--gray-100);
-    border-radius:8px;padding:10px;
+    display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;background:#fff;
+    border:1px solid var(--gray-300);border-radius:8px;padding:12px 14px;box-shadow:var(--shadow);
   }
   .logo-tile img{
-    max-width:100%;max-height:32px;filter:grayscale(100%);opacity:0.72;transition:filter .18s ease,opacity .18s ease,transform .18s ease;
+    width:100%;height:100%;max-width:100%;max-height:30px;object-fit:contain;transition:transform .18s ease;
   }
-  .logo-tile:hover img{filter:grayscale(0%);opacity:1;transform:scale(1.04);}
+  .logo-tile:hover img{transform:scale(1.04);}
   .pub-list-full{margin-top:16px;font-size:12px;color:var(--gray-500);line-height:1.9;}
   .pub-list-full strong{color:var(--gray-700);display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px;}
   @media (min-width:640px){ .logo-grid{grid-template-columns:repeat(6,1fr);} .pub-stat-row{grid-template-columns:repeat(4,1fr);} }
@@ -570,8 +570,8 @@
   .hm-carousel-track-wrap{overflow:hidden;flex:1;}
   .hm-carousel-track{display:flex;transition:transform .35s ease;}
   .hm-carousel-page{flex:0 0 100%;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(3,1fr);gap:12px;}
-  .hm-logo-tile{background:#fff;border:1px solid var(--gray-300);border-radius:8px;display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;padding:10px;}
-  .hm-logo-tile img{max-width:100%;max-height:32px;}
+  .hm-logo-tile{background:#fff;border:1px solid var(--gray-300);border-radius:8px;display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;padding:12px 14px;box-shadow:var(--shadow);}
+  .hm-logo-tile img{width:100%;height:100%;max-width:100%;max-height:30px;object-fit:contain;}
   .hm-carousel-arrow{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--gray-300);background:#fff;color:var(--navy);font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .hm-carousel-arrow:hover{background:var(--navy-tint);}
   .hm-carousel-arrow:disabled{opacity:.35;cursor:default;}
@@ -845,7 +845,7 @@ Land
 <div class="wrap">
   <div class="exposure-banner">
     <span class="eb-mark">M</span>
-    <span class="eb-text">To date, MCG has presented your property to more than 45,200 prospective buyers across 29+ national and regional channels — including 758 this week.</span>
+    <span class="eb-text">To date, MCG has presented your property to more than 45,200 prospective buyers across 189+ national and regional channels — including 758 this week.</span>
   </div>
 </div>
 
@@ -980,87 +980,88 @@ Land
       <div class="pub-stat"><div class="p-val">1,502</div><div class="p-lbl">Users reached</div></div>
       <div class="pub-stat"><div class="p-val">5,228</div><div class="p-lbl">Contacts targeted</div></div>
     </div>
+    <p class="hm-section-sub" style="margin-bottom:6px;">A selection of the publications featuring your listing &mdash; 27 placements individually tracked for this property.</p>
     <div class="logo-grid">
       <div class="logo-tile" title="Cameron Torabi">
-        <img src="https://imagescdn.homes.com/i2/KjQHqfNXZ9KMGaRALTLUBLUB1_YeYKzs91DAGtXZR7s/116/image.jpg?t=p&amp;p=1" alt="Cameron Torabi" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/KjQHqfNXZ9KMGaRALTLUBLUB1_YeYKzs91DAGtXZR7s/232/image.jpg?t=p&amp;p=1" alt="Cameron Torabi" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="dailymail.co.uk">
-        <img src="https://imagescdn.homes.com/i2/KElWLee_xmneFe7dzQnPx16PObA3F8kqz1Zg2qdizsk/117/image.png?p=1" alt="Dailymail" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/KElWLee_xmneFe7dzQnPx16PObA3F8kqz1Zg2qdizsk/234/image.png?p=1" alt="Dailymail" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="cnn.com">
-        <img src="https://imagescdn.homes.com/i2/XGlY4oRqrEYAuWJVRzJim3FKG6Es9r2hz3SG5BM4y-M/117/image.png?p=1" alt="Cnn" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/XGlY4oRqrEYAuWJVRzJim3FKG6Es9r2hz3SG5BM4y-M/234/image.png?p=1" alt="Cnn" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="foxbusiness.com">
-        <img src="https://imagescdn.homes.com/i2/L_QQfQDaK5yodv-fnTlYYDCryZiyLMXy4QndzBlSsQ4/117/image.jpg?p=1" alt="Foxbusiness" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/L_QQfQDaK5yodv-fnTlYYDCryZiyLMXy4QndzBlSsQ4/234/image.jpg?p=1" alt="Foxbusiness" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="foxnews.com">
-        <img src="https://imagescdn.homes.com/i2/7OHOl4geNpZK68aJFaZWx_HKkH6Bsm5Dfglnx_3uRhM/117/image.png?p=1" alt="Foxnews" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/7OHOl4geNpZK68aJFaZWx_HKkH6Bsm5Dfglnx_3uRhM/234/image.png?p=1" alt="Foxnews" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="msn.com">
-        <img src="https://imagescdn.homes.com/i2/DMa7i9oCH1mgGyaI0rRkcv7HtBWenGZN-jDTYlclqP4/117/image.png?p=1" alt="Msn" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/DMa7i9oCH1mgGyaI0rRkcv7HtBWenGZN-jDTYlclqP4/234/image.png?p=1" alt="Msn" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="mapquest.com">
-        <img src="https://imagescdn.homes.com/i2/OjvCIOEsha9WYZi5hbT4IZkMsnhyFPq-XHTmsr2TbqQ/117/image.png?p=1" alt="Mapquest" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/OjvCIOEsha9WYZi5hbT4IZkMsnhyFPq-XHTmsr2TbqQ/234/image.png?p=1" alt="Mapquest" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="nypost.com">
-        <img src="https://imagescdn.homes.com/i2/SkAhHtwZ44EO42x_ZJ8OuzauQ318nW2Bu2uasAzgjRM/117/image.png?p=1" alt="Nypost" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/SkAhHtwZ44EO42x_ZJ8OuzauQ318nW2Bu2uasAzgjRM/234/image.png?p=1" alt="Nypost" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="weather.com">
-        <img src="https://imagescdn.homes.com/i2/SIXxCUS903L4FPNAd7BYyvLvcb69_jCZnM7pV0CZ73E/117/image.png?p=1" alt="Weather" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/SIXxCUS903L4FPNAd7BYyvLvcb69_jCZnM7pV0CZ73E/234/image.png?p=1" alt="Weather" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="yahoo.com">
-        <img src="https://imagescdn.homes.com/i2/LKIhpj9D5QrsTLwMz96e6i4k6WwmgO0pLdFU5c6tJh8/117/image.png?p=1" alt="Yahoo" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/LKIhpj9D5QrsTLwMz96e6i4k6WwmgO0pLdFU5c6tJh8/234/image.png?p=1" alt="Yahoo" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="bbc.com">
-        <img src="https://imagescdn.homes.com/i2/3h2b3kbk6Xt6LI5uHvk7ivzRC6r86ZvDy3G2J0zgGJQ/117/image.png?p=1" alt="Bbc" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/3h2b3kbk6Xt6LI5uHvk7ivzRC6r86ZvDy3G2J0zgGJQ/234/image.png?p=1" alt="Bbc" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="cbsnews.com">
-        <img src="https://imagescdn.homes.com/i2/ctikbI1THI3qvENEJKrXu6cKapZ6aHnV3gHVURVNMYg/117/image.jpg?p=1" alt="Cbsnews" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/ctikbI1THI3qvENEJKrXu6cKapZ6aHnV3gHVURVNMYg/234/image.jpg?p=1" alt="Cbsnews" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="kohls.com">
-        <img src="https://imagescdn.homes.com/i2/u-HtrWRK8z-XyY5mPWQy5jx75FFYR9EG2fLpZ-Yjzx0/117/image.png?p=1" alt="Kohls" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/u-HtrWRK8z-XyY5mPWQy5jx75FFYR9EG2fLpZ-Yjzx0/234/image.png?p=1" alt="Kohls" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="accuweather.com">
-        <img src="https://imagescdn.homes.com/i2/uj4uZndcO6IFm6PgK3X2Z61GZkmMk6eMVKds-nL730U/117/image.png?p=1" alt="Accuweather" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/uj4uZndcO6IFm6PgK3X2Z61GZkmMk6eMVKds-nL730U/234/image.png?p=1" alt="Accuweather" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="nytimes.com">
-        <img src="https://imagescdn.homes.com/i2/RypJG_xvCGZKN-mcQXeR2NJhzD73lFhRg9ULWi-4nWg/117/image.png?p=1" alt="Nytimes" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/RypJG_xvCGZKN-mcQXeR2NJhzD73lFhRg9ULWi-4nWg/234/image.png?p=1" alt="Nytimes" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="imdb.com">
-        <img src="https://imagescdn.homes.com/i2/-lj5_hjnVFZhyjOjvV4ha0T33OYlk7o_iAls3yt6ViM/117/image.png?p=1" alt="Imdb" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/-lj5_hjnVFZhyjOjvV4ha0T33OYlk7o_iAls3yt6ViM/234/image.png?p=1" alt="Imdb" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="huffpost.com">
-        <img src="https://imagescdn.homes.com/i2/ytpbtec72M06PSDh3DqpS0e6I2yx_ZVzDVLmZl9EUf8/117/image.jpg?p=1" alt="Huffpost" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/ytpbtec72M06PSDh3DqpS0e6I2yx_ZVzDVLmZl9EUf8/234/image.jpg?p=1" alt="Huffpost" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="ksl.com">
-        <img src="https://imagescdn.homes.com/i2/CLA-QiVjq8-e-3oIrBKomvtnnUntx6y5OUQfCaaN30s/117/image.jpg?p=1" alt="Ksl" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/CLA-QiVjq8-e-3oIrBKomvtnnUntx6y5OUQfCaaN30s/234/image.jpg?p=1" alt="Ksl" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="hollywoodreporter.com">
-        <img src="https://imagescdn.homes.com/i2/O6BzsZ3BQqgysPuHldGFsV-kmgM0o12iDNGScW4IVS0/117/image.png?p=1" alt="Hollywoodreporter" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/O6BzsZ3BQqgysPuHldGFsV-kmgM0o12iDNGScW4IVS0/234/image.png?p=1" alt="Hollywoodreporter" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="belk.com">
-        <img src="https://imagescdn.homes.com/i2/y30A5cmitp8W7aJRC5jo2HPt98ATSPXITuhIXa1Zc44/117/image.png?p=1" alt="Belk" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/y30A5cmitp8W7aJRC5jo2HPt98ATSPXITuhIXa1Zc44/234/image.png?p=1" alt="Belk" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="wsbtv.com">
-        <img src="https://imagescdn.homes.com/i2/Ke6CFP0Qhd-bGRcDbNLLrfzRRts0_fFQRo4C23CD4UQ/117/image.png?p=1" alt="Wsbtv" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/Ke6CFP0Qhd-bGRcDbNLLrfzRRts0_fFQRo4C23CD4UQ/234/image.png?p=1" alt="Wsbtv" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="salon.com">
-        <img src="https://imagescdn.homes.com/i2/kga7GO0K7tILu-YwEBTf6iKGgqIF1NKfP5T3ZyLwMQo/117/image.png?p=1" alt="Salon" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/kga7GO0K7tILu-YwEBTf6iKGgqIF1NKfP5T3ZyLwMQo/234/image.png?p=1" alt="Salon" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="nationalreview.com">
-        <img src="https://imagescdn.homes.com/i2/ZscA4YBncnZ-E0mHGD6A7OTZljs_Qq2UQzllzWiF-04/117/image.jpg?p=1" alt="Nationalreview" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/ZscA4YBncnZ-E0mHGD6A7OTZljs_Qq2UQzllzWiF-04/234/image.jpg?p=1" alt="Nationalreview" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="sporcle.com">
-        <img src="https://imagescdn.homes.com/i2/BlfnneLbCCovtgRMZspgM4yEIC4XhUtHHuKO14IizFQ/117/image.png?p=1" alt="Sporcle" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/BlfnneLbCCovtgRMZspgM4yEIC4XhUtHHuKO14IizFQ/234/image.png?p=1" alt="Sporcle" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="fox59.com">
-        <img src="https://imagescdn.homes.com/i2/gc12hKVEE4hIWnWwwOqs3o7wx8hj6j7NcfcP9y6ScUQ/117/image.png?p=1" alt="Fox59" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/gc12hKVEE4hIWnWwwOqs3o7wx8hj6j7NcfcP9y6ScUQ/234/image.png?p=1" alt="Fox59" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="rottentomatoes.com">
-        <img src="https://imagescdn.homes.com/i2/iZHe9Q_haKSQC932wsgg7fmBSLOtGlvqzmPiBg_hO7c/117/image.png?p=1" alt="Rottentomatoes" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/iZHe9Q_haKSQC932wsgg7fmBSLOtGlvqzmPiBg_hO7c/234/image.png?p=1" alt="Rottentomatoes" loading="lazy" width="94" height="32">
       </div>
       <div class="logo-tile" title="whnt.com">
-        <img src="https://imagescdn.homes.com/i2/NF6ClOjWjzi4CLxFhnwyiw2CLbpxO2Qjn_L9GlZrlcE/117/image.png?p=1" alt="Whnt" loading="lazy" width="94" height="32">
+        <img src="https://imagescdn.homes.com/i2/NF6ClOjWjzi4CLxFhnwyiw2CLbpxO2Qjn_L9GlZrlcE/234/image.png?p=1" alt="Whnt" loading="lazy" width="94" height="32">
       </div>
     </div>
     <div class="pub-list-full">
@@ -1337,20 +1338,22 @@ Land
 
   <!-- ---------- Month in review (monthly/quarterly rollups only) ---------- -->
 
-  <!-- ---------- Market Position: portfolio rank + price context + DOM
-       framing, built ONLY from data MCG legitimately has on file. No
-       external comps, no invented market averages. ---------- -->
+  <!-- ---------- Market Position: per-listing prominence (top-of-search +
+       engaged buyer views) + price context + DOM framing, built ONLY from
+       data MCG legitimately has on file. No external comps, no invented
+       market averages, and never a cross-portfolio listing-count/rank
+       comparison. ---------- -->
   <section id="market-position">
     <div class="section-head">
       <h2>Market Position</h2>
-      <p class="section-sub">Your listing's standing within MCG's active portfolio, based solely on data MCG has verified</p>
+      <p class="section-sub">Your listing's standing in the marketplace, based solely on data MCG has verified</p>
     </div>
 
     <div class="stat-grid">
       <div class="stat-tile highlight">
-        <div class="label">Portfolio Exposure Rank</div>
-        <div class="value">#10 of 12</div>
-        <div class="sub">Ranks #10 of 12 active MCG listings for buyer views this period.</div>
+        <div class="label">Top-of-Search Appearances</div>
+        <div class="value">1,944</div>
+        <div class="sub">Your listing appeared at the top of buyer search results 1,944 times.</div>
       </div>
       <div class="stat-tile">
         <div class="label">Price Positioning</div>
@@ -1358,7 +1361,7 @@ Land
         <div class="sub">Listed at $3,168,000.</div>
       </div>
     </div>
-  </section>
+<p class="section-sub" style="margin-top:10px;font-weight:700;">MCG listings are featured on 187 websites nationwide.</p>  </section>
 
   <!-- ---------- Market position (supplementary) ---------- -->
   <section id="market">
@@ -1392,7 +1395,7 @@ Land
   <!-- ---------- What's next (supplementary) ---------- -->
   <section id="next">
     <div class="section-head">
-      <h2>Portfolio summary &amp; what's next</h2>
+      <h2>Summary &amp; what's next</h2>
     </div>
     <p class="insight-summary">AR-72 has been viewed 45,171 times on MCG&#39;s national syndication network with 1,944 top-of-search placements and 20,082 display ad views across national publications. The listing most recently earned the network&#39;s &#34;The price for your listing has increased by 135%&#34; recognition (Jun 4, 2026). AR-72 logged 45238 tracked views this period, up 1.7% from the prior period. AR-72 sits in the resilient luxury tier, which is holding relative to the mid-range; Benton County median DOM is currently 53 days. The period produced 2 tracked leads across the MCG website, portal, and chat channels.</p>
     <div class="plan-cols">
