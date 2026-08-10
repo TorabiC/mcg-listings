@@ -50,7 +50,7 @@ import argparse
 import json
 import subprocess
 import sys
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -70,6 +70,21 @@ DEFAULT_DEPLOY_CLONE = REPO_ROOT.parent / "mcg-listings-deploy"
 def current_iso_week() -> str:
     today = date.today()
     iso_year, iso_week, _ = today.isocalendar()
+    return f"{iso_year}-W{iso_week:02d}"
+
+
+def previous_iso_week() -> str:
+    """The most recently COMPLETED ISO week relative to today -- the 'send
+    week' a seller is actually reviewing/being e-mailed once the current
+    week is still in progress. Portal dashboards (homes.com/Crexi) only
+    ever expose their current/all-time snapshot, so a report rendered once
+    at send time goes stale the moment the portal counts one more view or
+    favorite (Cameron, 2026-08-10: Garland's flyer showed 48,664 views/1
+    favorite when the live portal already showed 49,680/2). Re-running
+    collect+generate for this same week every day keeps it current for as
+    long as it's the one actually being reviewed/sent."""
+    prior = date.today() - timedelta(days=7)
+    iso_year, iso_week, _ = prior.isocalendar()
     return f"{iso_year}-W{iso_week:02d}"
 
 
@@ -275,6 +290,23 @@ def main(argv=None) -> int:
     weekly_summary = run_period("weekly", weekly_period_id, featured_slugs or [],
                                  args.skip_harvest, args.pdf, args.include_unfeatured, args.dry_run)
     periods.append(weekly_summary)
+
+    # Also re-run the most recently COMPLETED ISO week every time this
+    # scheduled cycle fires -- see previous_iso_week()'s docstring. Portal
+    # cumulative counters (views/favorites/top-of-search/engaged) keep
+    # moving after a period's report was first generated, so the
+    # completed week's report/flyer/insights need to keep re-freshing from
+    # current intake for as long as they're still the ones being reviewed
+    # or sent, not just once at collection time. Skipped when it's the
+    # same period already run above (e.g. --period-id was explicitly set
+    # to something in the past) to avoid a redundant duplicate run.
+    if not args.skip_harvest:
+        prior_week_id = previous_iso_week()
+        if prior_week_id != weekly_period_id:
+            prior_week_summary = run_period("weekly", prior_week_id, featured_slugs or [],
+                                             args.skip_harvest, args.pdf, args.include_unfeatured,
+                                             args.dry_run)
+            periods.append(prior_week_summary)
 
     if args.monthly_too:
         monthly_summary = run_period("monthly", current_month(), featured_slugs or [],

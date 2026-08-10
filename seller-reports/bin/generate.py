@@ -1077,6 +1077,170 @@ def _fmt_n(n) -> str:
         return "0"
 
 
+# ---------------------------------------------------------------------------
+# Freshest cumulative snapshot -- portal dashboards (homes.com, Crexi,
+# LoopNet) only expose a CURRENT/all-time snapshot, never a historical one,
+# so intake/<slug>/homes_com.json etc. are overwritten by every harvest run
+# with "whatever the dashboard says right now". collect.py copies that
+# snapshot into metrics.json's sources.portals.<portal> at whatever moment
+# it ran for a given period -- fine for period-scoped deltas (those are
+# computed separately, see period_activity/trend), but the cumulative
+# ("since listing") sub-fields riding along in that copy (total_views,
+# favorites, top_of_search_results, engaged_total_views, ...) go stale the
+# moment the portal counts one more view. Cameron, 2026-08-10: Garland's
+# flyer said 48,664 views / 1 favorite while the live portal already showed
+# 49,680 / 2 -- the flyer was rendered from an old metrics.json copy, not
+# the newest intake.
+#
+# Fix: re-read the intake file fresh at generate time, for EVERY period
+# being (re)generated, and overlay it in place of metrics.json's embedded
+# copy before any exposure/summary figures are built from it. The intake
+# snapshot files are already the exact same shape collect.py embeds (see
+# PortalIntakeAdapter._normalize_portal_object) so this is a safe,
+# shape-compatible swap. Only overlays when the intake file's own
+# harvested_at is at least as new as what metrics.json already has on file
+# for that portal (never regresses to an older snapshot sitting on disk).
+# Falls back to metrics.json's embedded copy, untouched, when no intake
+# file exists for that slug/portal -- never fabricates a number.
+# ---------------------------------------------------------------------------
+def freshen_cumulative_portals(intake_dir, slug: str, portals_raw: dict,
+                                source_freshness: dict) -> tuple[dict, dict]:
+    if not intake_dir or not slug:
+        return portals_raw, source_freshness
+    portals_raw = dict(portals_raw)
+    source_freshness = dict(source_freshness)
+    fnames = {"homes.com": "homes_com.json", "crexi": "crexi.json", "loopnet": "loopnet.json"}
+    for portal, fname in fnames.items():
+        path = Path(intake_dir) / slug / fname
+        if not path.exists():
+            continue
+        try:
+            fresh = json.loads(path.read_text())
+        except (ValueError, OSError):
+            continue
+        if isinstance(fresh, list):
+            fresh = fresh[0] if fresh else None
+        if not isinstance(fresh, dict):
+            continue
+        harvested_at = fresh.get("harvested_at")
+        existing_as_of = (source_freshness.get(portal) or {}).get("as_of")
+        if harvested_at and existing_as_of and str(harvested_at) < str(existing_as_of):
+            continue  # on-disk intake is older than what this period already has -- keep the newer one
+        portals_raw[portal] = fresh
+        if harvested_at:
+            source_freshness[portal] = {**(source_freshness.get(portal) or {}),
+                                         "as_of": harvested_at, "status": "fresh"}
+    return portals_raw, source_freshness
+
+
+# ---------------------------------------------------------------------------
+# Combined (all-channel) summary -- the report's top-level Summary tiles,
+# the flyer's Total-views tile, and the exposure banner must show a number
+# that's the sum of every DISTINCT real view/favorite counter this listing
+# has on file, so it can never read as smaller than a single source a
+# seller might separately be looking at on a portal's own dashboard.
+# Portal-specific numbers stay put in their own labeled sections (e.g. the
+# homes-mirror "Summary" stat-row -- that IS the portal's own dashboard
+# mirror by design, and the "Full Marketing Footprint" per-channel cards --
+# each one explicitly labeled as that one channel); only the TOP-LEVEL
+# figures below become combined.
+#
+# Inclusion list (each a DISTINCT surface -- no double counting):
+#   total views = homes.com summary.total_views   (via homes_exposure, itself
+#                   freshened by freshen_cumulative_portals above)
+#               + Crexi page_views                 (via crexi_exposure, same)
+#               + LoopNet views, if intake exists for it
+#                   (sources.portals.loopnet.views -- no LoopNet listing is
+#                   on file as of 2026-08-10; included for when one is)
+#               + GA4 listing-page pageviews        (sources.ga4.pageviews --
+#                   period-scoped, not cumulative; still a distinct real
+#                   surface, never fabricated)
+#               + IDX/website views                 (sources.idx.views -- 0 on
+#                   Cameron's current IDX Broker plan, see IdxAdapter.
+#                   fetch_live; included for completeness/future-proofing)
+#   favorites   = homes.com summary.favorites       (via homes_exposure)
+#               + IDX favorites                     (sources.idx.favorites --
+#                   also 0 on the current plan, same reason as above)
+#               + Crexi "Saved property" leads, if the field exists
+#                   (portals.crexi.dashboard_deep.leads.saved_property)
+# NOT included (would double-count): sources.portals.<portal>.views/saves --
+# the SAME normalized figures already inside homes_exposure/crexi_exposure
+# above, just under a different key (see PortalIntakeAdapter.
+# _normalize_portal_object in collect.py).
+# ---------------------------------------------------------------------------
+def build_combined_summary(metrics: dict, dq: dict, homes_exposure: dict | None,
+                            crexi_exposure: dict | None, portals_raw: dict,
+                            source_freshness: dict) -> dict:
+    src = metrics.get("sources", {})
+    idx = src.get("idx") or {} if dq.get("idx") != "missing" else {}
+    ga4 = src.get("ga4") or {} if dq.get("ga4") != "missing" else {}
+    loopnet = portals_raw.get("loopnet") or {}
+    crexi_raw = portals_raw.get("crexi") or {}
+
+    view_addends = []
+    total_views = 0
+    if homes_exposure:
+        v = int(homes_exposure.get("total_views") or 0)
+        view_addends.append(("homes.com total views", v)); total_views += v
+    if crexi_exposure:
+        v = int(crexi_exposure.get("page_views") or 0)
+        view_addends.append(("Crexi page views", v)); total_views += v
+    if loopnet.get("views"):
+        v = int(loopnet.get("views") or 0)
+        view_addends.append(("LoopNet views", v)); total_views += v
+    if ga4.get("pageviews"):
+        v = int(ga4.get("pageviews") or 0)
+        view_addends.append(("GA4 listing-page pageviews", v)); total_views += v
+    if idx.get("views"):
+        v = int(idx.get("views") or 0)
+        view_addends.append(("IDX/website views", v)); total_views += v
+
+    fav_addends = []
+    favorites = 0
+    if homes_exposure:
+        v = int(homes_exposure.get("favorites") or 0)
+        fav_addends.append(("homes.com favorites", v)); favorites += v
+    if idx.get("favorites"):
+        v = int(idx.get("favorites") or 0)
+        fav_addends.append(("IDX favorites", v)); favorites += v
+    crexi_saved = ((crexi_raw.get("dashboard_deep") or {}).get("leads") or {}).get("saved_property")
+    if crexi_saved:
+        v = int(crexi_saved or 0)
+        fav_addends.append(("Crexi saved-property leads", v)); favorites += v
+
+    # Freshness label: newest as_of among the cumulative ("since listing")
+    # sources actually included above -- homes.com/Crexi/LoopNet. GA4/IDX
+    # are period-scoped, not cumulative, so they don't carry an "as of
+    # {date}" freshness concept the same way.
+    included_cumulative_portals = [
+        p for p, frag in (("homes.com", "homes.com"), ("crexi", "Crexi"), ("loopnet", "LoopNet"))
+        if any(frag in label for label, _ in view_addends)
+    ]
+    as_of_candidates = [
+        source_freshness.get(p, {}).get("as_of")
+        for p in included_cumulative_portals if source_freshness.get(p, {}).get("as_of")
+    ]
+    as_of = max(as_of_candidates) if as_of_candidates else None
+    as_of_display = fmt_date_display(as_of) if as_of else None
+
+    caption = "Combined across all marketing channels"
+    if as_of_display:
+        caption += f" — updated {as_of_display}"
+
+    return {
+        "available": bool(view_addends),
+        "total_views": total_views,
+        "total_views_display": fmt_int(total_views),
+        "favorites": favorites,
+        "favorites_display": fmt_int(favorites) if fav_addends else None,
+        "view_addends": view_addends,
+        "favorite_addends": fav_addends,
+        "as_of": as_of,
+        "as_of_display": as_of_display,
+        "caption": caption,
+    }
+
+
 def build_channel_performance(src: dict, dq: dict, homes_exposure: dict | None,
                               crexi_exposure: dict | None, portals_raw: dict) -> dict:
     """Multi-channel performance blocks for the 'Full Marketing Footprint'
@@ -1264,7 +1428,8 @@ def _round_down_clean(n: int) -> int:
 
 def build_exposure_banner(channel_performance: dict | None, homes_exposure: dict | None,
                            period_type: str, period_activity: dict | None,
-                           src: dict | None, dq: dict | None) -> dict:
+                           src: dict | None, dq: dict | None,
+                           combined_summary: dict | None = None) -> dict:
     """Confident, single-sentence (plus an honest weekly clause) lead-in
     banner rendered just below the hero -- the report's job is to convince
     the seller MCG is working hard on their behalf, and this is the first
@@ -1303,7 +1468,17 @@ def build_exposure_banner(channel_performance: dict | None, homes_exposure: dict
                "45+ national and regional channels" against the real,
                approved network size instead of undersizing it.
     """
-    buyers_to_date = int((channel_performance or {}).get("combined") or 0)
+    # buyers_to_date is a superset of build_combined_summary's pure view
+    # count (it also folds in email sends/campaigns -- a legitimate,
+    # separately-documented "touchpoints" concept, see the docstring
+    # above), so it's already >= any single view source by construction.
+    # The max() is a belt-and-suspenders floor: it guarantees the banner
+    # can never show fewer prospective buyers than the combined view count
+    # the summary tiles and flyer are showing right above/below it.
+    buyers_to_date = max(
+        int((channel_performance or {}).get("combined") or 0),
+        int((combined_summary or {}).get("total_views") or 0),
+    )
     active_channels = int((channel_performance or {}).get("channel_count") or 0)
     syndication_sites = int(MCG_PROOF["featured_sites"]) if homes_exposure else 0
     channels = active_channels + syndication_sites
@@ -1462,7 +1637,7 @@ def build_stats(metrics: dict, dq: dict) -> list[dict]:
 def build_flyer_stats(metrics: dict, dq: dict, stats: list[dict], total_views: int,
                        total_inquiries: int, showings_count: int,
                        homes_exposure: dict | None, crexi_exposure: dict | None,
-                       portals_raw: dict) -> list[dict]:
+                       portals_raw: dict, combined_summary: dict | None = None) -> list[dict]:
     src = metrics.get("sources", {})
     cc = src.get("cc", {})
     cc_missing = dq.get("cc") == "missing"
@@ -1481,7 +1656,13 @@ def build_flyer_stats(metrics: dict, dq: dict, stats: list[dict], total_views: i
     if engaged_total:
         fallback_pool.append({"key": "engaged_views", "label": "Engaged buyer views",
                                "value_display": fmt_int(engaged_total)})
-    if homes_exposure and homes_exposure.get("favorites"):
+    # Favorites: combined across every channel that has one (homes.com +
+    # IDX + Crexi saved-property, see build_combined_summary) rather than
+    # homes.com alone, same reasoning as the views tile above.
+    if combined_summary and combined_summary.get("favorites_display"):
+        fallback_pool.append({"key": "favorites", "label": "Favorites",
+                               "value_display": combined_summary["favorites_display"]})
+    elif homes_exposure and homes_exposure.get("favorites"):
         fallback_pool.append({"key": "favorites", "label": "Favorites",
                                "value_display": fmt_int(homes_exposure["favorites"])})
     if homes_exposure and homes_exposure.get("top_of_search"):
@@ -1568,7 +1749,8 @@ def build_flyer_preheader_summary(flyer_stats: list[dict]) -> str:
 
 def build_summary_tiles(metrics: dict, dq: dict, homes_exposure: dict | None,
                          crexi_exposure: dict | None, total_views: int,
-                         total_inquiries: int, showings_count: int) -> list[dict]:
+                         total_inquiries: int, showings_count: int,
+                         combined_summary: dict | None = None) -> list[dict]:
     """Homes.com-style stat-tile grid for the Summary section: each channel
     gets its own tile (never double-counted into another tile), plus one
     clearly-labeled combined headline. Order matches the target layout."""
@@ -1589,8 +1771,13 @@ def build_summary_tiles(metrics: dict, dq: dict, homes_exposure: dict | None,
             "available": True,
             "highlight": True,
             "value_display": fmt_int(total_views),
-            "sub": "Combined listing views across MCG's on-site listing widget and "
-                   "syndication network placements this period",
+            # combined_summary's caption ("Combined across all marketing
+            # channels — updated {date}") when the combined figure is what
+            # total_views actually is (see build_view_model); falls back to
+            # the older, period-scoped description when it isn't.
+            "sub": (combined_summary["caption"] if combined_summary and combined_summary.get("available")
+                    else "Combined listing views across MCG's on-site listing widget and "
+                         "syndication network placements this period"),
         },
     ]
 
@@ -1641,7 +1828,16 @@ def build_summary_tiles(metrics: dict, dq: dict, homes_exposure: dict | None,
         "sub": f"{showings_count} showing{'s' if showings_count != 1 else ''} logged this period",
     })
 
-    if homes_exposure:
+    if combined_summary and combined_summary.get("favorites_display"):
+        # Combined across every channel that has a favorites/saves concept
+        # (homes.com + IDX + Crexi saved-property) -- see
+        # build_combined_summary; never just homes.com alone.
+        tiles.append({
+            "key": "saved", "label": "Saved / Favorites", "available": True,
+            "value_display": combined_summary["favorites_display"],
+            "sub": "Combined across all marketing channels",
+        })
+    elif homes_exposure:
         tiles.append({
             "key": "saved", "label": "Saved / Favorites", "available": True,
             "value_display": fmt_int(homes_exposure["favorites"]),
@@ -1824,7 +2020,8 @@ def build_weekly_breakdown_view(metrics: dict) -> dict:
 
 
 def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
-                      report_url: str, generated_display: str) -> dict:
+                      report_url: str, generated_display: str,
+                      intake_dir: Path | None = None) -> dict:
     dq = metrics.get("data_quality", {})
     source_freshness = metrics.get("source_freshness", {})
     stats, total_views, total_inquiries, showings_count = build_stats(metrics, dq)
@@ -1861,17 +2058,48 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     # --- portal exposure (homes.com / Crexi) -- compute first so both the
     # merged traffic-sources chart and the summary tiles can use it. ---
     portals_raw = src.get("portals", {})
+    # Overlay the freshest on-disk intake snapshot in place of whatever
+    # metrics.json froze at collection time, for cumulative ("since
+    # listing") figures -- see freshen_cumulative_portals's docstring
+    # (Cameron, 2026-08-10: stale flyer numbers). Everything downstream
+    # (homes_exposure, crexi_exposure, hm, market_position's engaged views,
+    # traffic_merged, source_freshness on the final view-model) reads from
+    # this freshened portals_raw/source_freshness, not the raw metrics.json
+    # copies.
+    portals_raw, source_freshness = freshen_cumulative_portals(
+        intake_dir, listing.get("slug", ""), portals_raw, source_freshness)
     homes_exposure = build_homes_exposure(portals_raw, source_freshness)
     crexi_exposure = build_crexi_exposure(portals_raw, source_freshness)
     exposure_available = bool(homes_exposure or crexi_exposure)
     channel_performance = build_channel_performance(src, dq, homes_exposure, crexi_exposure, portals_raw)
+
+    # --- combined (all-channel) summary -- see build_combined_summary.
+    # Feeds the report's top-level Summary tiles, the flyer's Total-views
+    # tile, and (as a floor) the exposure banner -- never the per-channel
+    # cards (Full Marketing Footprint) or the homes-mirror Summary section,
+    # which intentionally stay portal-specific. ---
+    combined_summary = build_combined_summary(metrics, dq, homes_exposure, crexi_exposure,
+                                               portals_raw, source_freshness)
+    if combined_summary["available"]:
+        for _s in stats:
+            if _s.get("key") == "views":
+                _s["value_display"] = combined_summary["total_views_display"]
+                _s["sub"] = combined_summary["caption"]
+                break
+        display_total_views = combined_summary["total_views"]
+    else:
+        display_total_views = total_views
+
     exposure_banner = build_exposure_banner(channel_performance, homes_exposure, metrics["period"]["type"],
-                                             metrics.get("period_activity"), src, dq)
+                                             metrics.get("period_activity"), src, dq, combined_summary)
 
     # --- flyer (email) stat tiles -- flyer.html-only, see build_flyer_stats
-    # docstring; the report page keeps using `stats` untouched. ---
-    flyer_stats = build_flyer_stats(metrics, dq, stats, total_views, total_inquiries,
-                                     showings_count, homes_exposure, crexi_exposure, portals_raw)
+    # docstring; the report page's `stats` list keeps its other tiles
+    # untouched (only the "views" entry was freshened to the combined
+    # figure above). ---
+    flyer_stats = build_flyer_stats(metrics, dq, stats, display_total_views, total_inquiries,
+                                     showings_count, homes_exposure, crexi_exposure, portals_raw,
+                                     combined_summary)
     flyer_preheader_summary = build_flyer_preheader_summary(flyer_stats)
 
     # --- homes.com-mirror layout gate ---------------------------------
@@ -1904,7 +2132,8 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     showings = [{**s, "feedback": anonymize_text(s.get("feedback", ""))} for s in showings]
 
     summary_tiles = build_summary_tiles(metrics, dq, homes_exposure, crexi_exposure,
-                                         total_views, total_inquiries, showings_count)
+                                         display_total_views, total_inquiries, showings_count,
+                                         combined_summary)
     activity_feed = build_activity_feed(activity, (homes_exposure or {}).get("milestones"))
 
     if homes_exposure:
@@ -2007,6 +2236,7 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
         "hero_card_style": HERO_CARD_STYLE,
         "channel_performance": channel_performance,
         "exposure_banner": exposure_banner,
+        "combined_summary": combined_summary,
         "hm": hm,
         "source_freshness": source_freshness,
         "market_position": build_market_position(
@@ -2235,6 +2465,10 @@ def main() -> int:
     ap.add_argument("--listings", default=str(REPO_ROOT / "config" / "listings.json"),
                      help="path to listings.json (or listings.sample.json for testing)")
     ap.add_argument("--data-dir", default=str(REPO_ROOT / "data"))
+    ap.add_argument("--intake-dir", default=str(REPO_ROOT / "intake"),
+                     help="root dir of portal-scoped intake snapshots (homes_com.json/crexi.json/"
+                          "loopnet.json) -- read fresh at generate time for cumulative since-listing "
+                          "figures, see freshen_cumulative_portals()")
     ap.add_argument("--templates-dir", default=str(REPO_ROOT / "templates"))
     ap.add_argument("--flyers-dir", default=str(REPO_ROOT / "out" / "flyers"))
     ap.add_argument("--base-url", default="https://torabic.github.io/mcg-listings",
@@ -2275,6 +2509,7 @@ def main() -> int:
         target_slugs = [args.slug]
 
     data_dir = Path(args.data_dir)
+    intake_dir = Path(args.intake_dir)
     outdir = Path(args.outdir)
     flyers_dir = Path(args.flyers_dir)
     pdf_dir = Path(args.pdf_dir)
@@ -2315,7 +2550,7 @@ def main() -> int:
         # host failover: Azure mirror primary, Pages fallback). The raw host
         # URL is never what a seller sees or shares.
         report_url = f"https://www.masoncapitalgroup.com/listing-reports?r={slug_token}&p={args.period_id}"
-        vm = build_view_model(listing, metrics, period_links, report_url, generated_display)
+        vm = build_view_model(listing, metrics, period_links, report_url, generated_display, intake_dir)
 
         # --- render report page ---
         html = report_tmpl.render(**vm)
