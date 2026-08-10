@@ -2110,7 +2110,7 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     # Approved standard design for EVERY listing with portal data (Cameron
     # 2026-08-10) -- the residential-only gate made commercial/land listings
     # fall back to the old pre-approval layout.
-    homes_mirror = bool(homes_exposure)
+    homes_mirror = True  # one approved design for every listing; sections without data use their stand-ins
     hm = build_homes_mirror(portals_raw.get("homes.com") or {}, homes_exposure) if homes_mirror else None
 
     traffic_merged = build_traffic_sources_merged(portals_raw, src.get("ga4", {}).get("top_sources", []))
