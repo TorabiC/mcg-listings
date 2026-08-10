@@ -111,6 +111,7 @@
   .btn-print-hero:hover{background:rgba(196,163,90,0.18);}
 
   .hero-cards{display:flex;flex-direction:column;gap:10px;max-width:420px;margin-top:auto;}
+  @media (max-width:700px){ .hero-cards{max-width:100%;} }
   .hero-card{
     position:relative;overflow:hidden;background:#fff;color:var(--gray-900);border-radius:12px;padding:18px 20px;
     box-shadow:0 8px 24px rgba(22,22,42,.12);
@@ -122,7 +123,7 @@
   }
   .hero-card h1{font-family:var(--font-serif);font-size:22px;margin:10px 0 1px;color:var(--navy);font-weight:800;letter-spacing:-0.01em;line-height:1.2;}
   .hero-card .hc-city{font-size:13px;color:var(--gray-500);font-weight:700;margin-bottom:10px;}
-  .hero-card .hc-price{font-family:var(--font-serif);font-size:26px;font-weight:800;color:var(--navy);letter-spacing:-0.01em;}
+  .hero-card .hc-price{font-family:var(--font-serif);font-size:clamp(21px,6vw,26px);font-weight:800;color:var(--navy);letter-spacing:-0.01em;}
   .hero-card .hc-meta{font-size:12.5px;color:var(--gray-700);margin-top:7px;font-weight:600;}
   .hero-status{
     display:inline-flex;align-items:center;gap:6px;background:var(--navy-tint);color:var(--navy);
@@ -206,8 +207,8 @@
   }
   .stat-tile.unavailable{opacity:0.55;}
   .stat-tile .label{font-size:12px;color:var(--gray-500);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}
-  .stat-tile .value{font-size:28px;font-weight:900;color:var(--navy);margin:6px 0 2px;}
-  .stat-tile.highlight .value{font-size:38px;}
+  .stat-tile .value{font-size:clamp(22px,6vw,28px);font-weight:900;color:var(--navy);margin:6px 0 2px;}
+  .stat-tile.highlight .value{font-size:clamp(28px,8vw,38px);}
   .stat-tile .sub{font-size:12.5px;color:var(--gray-500);}
   .delta{display:inline-flex;align-items:center;gap:3px;font-weight:800;font-size:12.5px;margin-left:6px;}
   .delta.up{color:var(--good);}
@@ -225,7 +226,9 @@
   .bar-track{background:var(--gray-100);border-radius:4px;height:14px;position:relative;}
   .bar-fill{height:14px;border-radius:4px;min-width:4px;}
   .bar-row .b-value{font-size:12.5px;font-weight:800;color:var(--gray-900);text-align:right;font-variant-numeric:tabular-nums;}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   table.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+  @media (max-width:559px){ table.tbl{min-width:520px;} }
   table.tbl caption{text-align:left;font-size:11px;color:var(--gray-500);padding-bottom:6px;}
   table.tbl th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.03em;color:var(--gray-500);padding:6px 8px;border-bottom:1px solid var(--gray-300);}
   table.tbl td{padding:8px 8px;border-bottom:1px solid var(--gray-100);font-variant-numeric:tabular-nums;}
@@ -385,7 +388,12 @@
   }
   @media (max-width:639px){
     .brand-bar .brand-logo{height:26px;}
-    .hero-card .hc-price{font-size:23px;}
+  }
+  @media (max-width:479px){
+    .bar-row{grid-template-columns:96px 1fr 54px;gap:8px;}
+    .funnel-row{grid-template-columns:104px 1fr 50px;gap:8px;}
+    .stat-grid{grid-template-columns:1fr;}
+    .stat-tile.highlight{grid-column:auto;}
   }
 
   @media print{
@@ -425,6 +433,7 @@
   .hm-pill{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--navy);font-weight:800;font-size:12.5px;padding:9px 16px;border-radius:999px;text-decoration:none;border:none;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.18);}
   .hm-pill:hover{background:var(--gold-tint);}
   .hm-hero-bottom{position:relative;z-index:3;padding:0 20px 24px;display:flex;flex-direction:column;gap:10px;max-width:420px;}
+  @media (max-width:700px){ .hm-hero-bottom{max-width:100%;} }
   /* Hero overlay cards (property card + agent card, both share this base
      class) recut to the EXACT card design language templates/listing.html
      uses for its sidebar "contact card" stack -- confirmed byte-identical on
@@ -446,7 +455,7 @@
   .hm-card .hm-city{font-size:12px;color:var(--gray-500);font-weight:700;margin-bottom:9px;}
   /* Price typography scale matches templates/listing.html's .cc-price
      exactly: font-size:32px;font-weight:900;letter-spacing:-.5px;line-height:1. */
-  .hm-card .hm-price{font-family:var(--font-serif);font-size:32px;font-weight:900;color:var(--navy);letter-spacing:-0.5px;line-height:1;}
+  .hm-card .hm-price{font-family:var(--font-serif);font-size:clamp(24px,7vw,32px);font-weight:900;color:var(--navy);letter-spacing:-0.5px;line-height:1;}
   /* Gold status dot + uppercase label -- same treatment as .cc-main's
      "ACTIVE LISTING · MLS #..." line on the live listing page. */
   .hm-card .hm-status-row{display:flex;align-items:center;gap:6px;margin:9px 0 2px;}
@@ -503,10 +512,10 @@
   .hm-stat-tile{flex:1 1 0;min-width:120px;padding:16px 18px;border-right:1px solid var(--gray-100);}
   .hm-stat-tile:last-child{border-right:none;}
   .hm-stat-tile .hm-stat-label{font-size:11.5px;font-weight:800;color:var(--gray-500);text-transform:uppercase;letter-spacing:.03em;}
-  .hm-stat-tile .hm-stat-value{font-family:var(--font);font-size:30px;font-weight:900;color:var(--navy);margin-top:6px;line-height:1;}
+  .hm-stat-tile .hm-stat-value{font-family:var(--font);font-size:clamp(22px,6vw,30px);font-weight:900;color:var(--navy);margin-top:6px;line-height:1;}
 
   .hm-controls{display:flex;gap:8px;flex-wrap:wrap;}
-  .hm-select{appearance:none;background:#fff;border:1px solid var(--gray-300);border-radius:6px;padding:8px 26px 8px 12px;font-size:12.5px;font-weight:700;color:var(--gray-700);cursor:pointer;}
+  .hm-select{appearance:none;background:#fff;border:1px solid var(--gray-300);border-radius:6px;padding:10px 30px 10px 14px;min-height:40px;box-sizing:border-box;font-size:12.5px;font-weight:700;color:var(--gray-700);cursor:pointer;}
 
   .hm-chart-wrap{position:relative;height:330px;margin-top:8px;}
   .hm-chart-svg{width:100%;height:100%;}
@@ -572,7 +581,7 @@
   .hm-carousel-page{flex:0 0 100%;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(3,1fr);gap:12px;}
   .hm-logo-tile{background:#fff;border:1px solid var(--gray-300);border-radius:8px;display:flex;align-items:center;justify-content:center;aspect-ratio:2/1;padding:12px 14px;box-shadow:var(--shadow);}
   .hm-logo-tile img{width:100%;height:100%;max-width:100%;max-height:30px;object-fit:contain;}
-  .hm-carousel-arrow{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--gray-300);background:#fff;color:var(--navy);font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .hm-carousel-arrow{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--gray-300);background:#fff;color:var(--navy);font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .hm-carousel-arrow:hover{background:var(--navy-tint);}
   .hm-carousel-arrow:disabled{opacity:.35;cursor:default;}
   .hm-carousel-dots{display:flex;justify-content:center;gap:6px;margin-top:10px;}
@@ -591,10 +600,11 @@
   .hm-feed-date{font-size:12.5px;color:var(--gray-500);font-weight:700;white-space:nowrap;flex:none;text-align:right;}
 
   .hm-map-toggle{display:flex;gap:8px;}
-  .hm-toggle-chip{border:1px solid var(--gray-300);background:#fff;color:var(--gray-700);font-weight:800;font-size:12px;padding:7px 14px;border-radius:999px;cursor:pointer;}
+  .hm-toggle-chip{border:1px solid var(--gray-300);background:#fff;color:var(--gray-700);font-weight:800;font-size:12px;padding:11px 16px;min-height:40px;box-sizing:border-box;display:inline-flex;align-items:center;border-radius:999px;cursor:pointer;}
   .hm-toggle-chip.active{background:var(--navy);color:#fff;border-color:var(--navy);}
   .hm-toggle-chip:disabled{opacity:.4;cursor:not-allowed;}
   #hm-leaflet-map{height:420px;border-radius:8px;overflow:hidden;border:1px solid var(--gray-300);}
+  @media (max-width:640px){ #hm-leaflet-map{height:320px;} }
   .hm-map-caption{text-align:center;font-size:14px;font-weight:800;color:var(--navy);margin-top:14px;}
   .hm-map-privacy{text-align:center;font-size:11.5px;color:var(--gray-500);margin-top:6px;max-width:560px;margin-left:auto;margin-right:auto;}
   .hm-map-print-fallback{display:none;}
@@ -610,7 +620,7 @@
 
   /* --- Full Marketing Footprint (multi-channel) --- */
   .hm-footprint-band{background:linear-gradient(120deg,var(--navy) 0%,var(--navy-2) 70%);border-radius:14px;padding:26px 28px;margin:14px 0 20px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;border:1px solid rgba(196,163,90,.35);}
-  .hm-footprint-number{font-family:var(--font-serif);font-size:44px;font-weight:900;color:var(--gold);line-height:1;letter-spacing:-1px;}
+  .hm-footprint-number{font-family:var(--font-serif);font-size:clamp(30px,8vw,44px);font-weight:900;color:var(--gold);line-height:1;letter-spacing:-1px;}
   .hm-footprint-label{font-size:13.5px;font-weight:700;color:#EDE9DF;max-width:420px;line-height:1.45;}
   .hm-channel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;}
   .hm-channel-card{background:#fff;border:1px solid var(--gray-100);border-radius:14px;padding:18px 20px;box-shadow:0 4px 18px rgba(16,16,42,.06);display:flex;flex-direction:column;gap:12px;}
@@ -631,7 +641,7 @@
   .hm-cs-value{font-size:17px;font-weight:900;color:var(--navy);white-space:nowrap;order:2;}
   .hm-cs-label{font-size:12.5px;color:var(--gray-700);font-weight:600;order:1;}
   .hm-footnote{font-size:11.5px;color:var(--gray-500);margin-top:14px;line-height:1.5;}
-  @media (max-width:640px){.hm-footprint-number{font-size:34px;}.hm-channel-grid{grid-template-columns:1fr;}}
+  @media (max-width:640px){.hm-channel-grid{grid-template-columns:1fr;}}
   .hm-glossary-list{list-style:none;margin:0;padding:0;}
   .hm-glossary-list li{padding:12px 0;border-bottom:1px solid var(--gray-100);}
   .hm-glossary-list dt{font-weight:900;color:var(--navy);font-size:13.5px;margin:0;}
@@ -775,6 +785,12 @@
   @media (max-width:759px){
     .hm-stat-tile{flex:1 1 50%;border-bottom:1px solid var(--gray-100);}
     .hm-carousel-page{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(5,1fr);}
+  }
+  @media (max-width:479px){
+    .hm-carousel-page{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(8,1fr);}
+    .hm-stat-tile{flex:1 1 100%;border-right:none;}
+    .hm-channel-stats li{flex-wrap:wrap;row-gap:4px;}
+    .hm-cs-value{white-space:normal;text-align:right;}
   }
   @media print{
     .hm-tabnav,.hm-hero-actions,.hm-banner,.hm-carousel-arrow,.hm-carousel-dots,.hm-controls,.hm-map-toggle,.breadcrumb{display:none !important;}
