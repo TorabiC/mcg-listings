@@ -1,49 +1,45 @@
 {
   "portal": "crexi",
-  "views": 1250,
-  "leads": 25,
+  "views": 1341,
+  "leads": 26,
   "name": "3300 Blue Hill Road",
-  "price": 900000,
   "search_score": 95,
-  "page_views": 1250,
-  "visitors": 227,
-  "om_flyer_opens": 25,
+  "page_views": 1341,
+  "visitors": 240,
+  "om_flyer_opens": 26,
   "offers": 0,
   "crexi_property_id": 2448248,
-  "impressions_all_time": 52885,
+  "impressions_all_time": 53633,
+  "status": "Active",
   "source_url": "https://www.crexi.com/property/2448248/dashboard",
-  "harvested_at": "2026-07-30",
+  "harvested_at": "2026-08-06",
+  "price": 900000,
+  "harvest_note": "Valuation Snapshot now shows 'No Data, Yet' (was populated with 93 entries as of 2026-07-30) -- Crexi's own panel, not a harvest gap; the calculator apparently has no entries in whatever window it currently displays. Not carrying the stale 07-30 numbers forward.",
   "dashboard_deep": {
-    "total_actions": 314,
+    "total_actions": 334,
     "email_campaigns_sent": 2,
     "property_updates": 7,
     "leads": {
       "top_prospects": 29,
-      "opened_om_flyer": 25,
-      "requested_info": 0,
+      "opened_om": 0,
+      "opened_flyer": 26,
+      "requested_info": 1,
       "clicked_phone": 15,
       "clicked_email": 3,
-      "saved_property": 34,
-      "visited_page": 227
+      "saved_property": 39,
+      "visited_page": 240
     },
     "email_marketing": {
       "essential": {
-        "opened": 861,
-        "clicked": 16,
-        "click_pct": 2.0
+        "opened": 1047,
+        "clicked": 12,
+        "click_pct": 1.0
       },
       "featured": {
-        "opened": 298,
-        "clicked": 3,
+        "opened": 446,
+        "clicked": 4,
         "click_pct": 1.0
       }
-    },
-    "valuation_snapshot": {
-      "entries": 93,
-      "purchase_price_median": 895400,
-      "purchase_price_avg": 900000,
-      "down_payment_median": 233900,
-      "down_payment_avg": 180000
     }
   }
 }

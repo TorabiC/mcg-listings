@@ -1,25 +1,28 @@
 {
   "portal": "crexi",
-  "views": 128,
+  "views": 129,
   "leads": 2,
   "name": "407 Old Forge Drive",
-  "price": 728000,
   "search_score": 82,
-  "page_views": 128,
+  "page_views": 129,
   "visitors": 32,
   "om_flyer_opens": 2,
   "offers": 0,
   "crexi_property_id": 2372669,
-  "impressions_all_time": 24824,
+  "impressions_all_time": 25094,
+  "status": "Active",
   "source_url": "https://www.crexi.com/property/2372669/dashboard",
-  "harvested_at": "2026-07-30",
+  "harvested_at": "2026-08-06",
+  "price": 728000,
+  "harvest_note": "Opened-OM count differs slightly between the My Listings card/Activity Overview (5, all-time) and the Leads panel (4) -- likely a rolling-window vs all-time discrepancy on Crexi's own dashboard, not a parsing error. om_flyer_opens/leads below uses the Leads-panel Opened Flyer count (2), consistent with every prior harvest of this field.",
   "dashboard_deep": {
-    "total_actions": 44,
+    "total_actions": 45,
     "email_campaigns_sent": 21,
     "property_updates": 11,
     "leads": {
       "top_prospects": 19,
-      "opened_om_flyer": 3,
+      "opened_om": 4,
+      "opened_flyer": 2,
       "requested_info": 0,
       "clicked_phone": 2,
       "clicked_email": 1,
@@ -28,12 +31,12 @@
     },
     "email_marketing": {
       "essential": {
-        "opened": 465,
+        "opened": 492,
         "clicked": 3,
         "click_pct": 1.0
       },
       "featured": {
-        "opened": 91,
+        "opened": 164,
         "clicked": 1,
         "click_pct": 1.0
       }

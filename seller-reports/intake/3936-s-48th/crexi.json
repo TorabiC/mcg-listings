@@ -3,7 +3,6 @@
   "views": 47,
   "leads": 3,
   "name": "3936 S 48th St",
-  "price": 2500000,
   "search_score": 95,
   "page_views": 47,
   "visitors": 11,
@@ -11,6 +10,7 @@
   "offers": 0,
   "crexi_property_id": 2321524,
   "impressions_all_time": 3938,
+  "status": "Active",
   "source_url": "https://www.crexi.com/property/2321524/dashboard",
-  "harvested_at": "2026-07-30"
+  "harvested_at": "2026-08-06"
 }
