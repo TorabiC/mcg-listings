@@ -1,0 +1,73 @@
+{
+  "slug": "407-old-forge",
+  "period_id": "2026-W33",
+  "talking_points": [
+    "207,960 total views this period -- 0 website + 207,960 syndication views.",
+    "Views trending up 1.9% vs. the prior period.",
+    "Keep the seller warm with a call this week; no urgent flags this period."
+  ],
+  "pricing_flag": false,
+  "pricing_flag_reason": null,
+  "health": [
+    {
+      "key": "idx",
+      "label": "the MCG website",
+      "as_of": "2026-08-16",
+      "status": "fresh"
+    },
+    {
+      "key": "cc",
+      "label": "MCG's email marketing program",
+      "as_of": "2026-08-16",
+      "status": "fresh"
+    },
+    {
+      "key": "ga4",
+      "label": "MCG website analytics",
+      "as_of": "2026-08-16",
+      "status": "fresh"
+    },
+    {
+      "key": "tawk",
+      "label": "live chat",
+      "as_of": null,
+      "status": "missing"
+    },
+    {
+      "key": "homes.com",
+      "label": "MCG's national syndication partners",
+      "as_of": "2026-08-10",
+      "status": "fresh"
+    },
+    {
+      "key": "crexi",
+      "label": "MCG's commercial marketplace network",
+      "as_of": "2026-08-06",
+      "status": "stale"
+    },
+    {
+      "key": "loopnet",
+      "label": "MCG's commercial marketplace network",
+      "as_of": null,
+      "status": "missing"
+    },
+    {
+      "key": "clarity",
+      "label": "MCG website analytics",
+      "as_of": null,
+      "status": "missing",
+      "coverage_days": 0
+    }
+  ],
+  "headline": {
+    "total_views": "207,960",
+    "total_leads": "2",
+    "page_engagement": {
+      "metric": null,
+      "value_display": "--",
+      "available": false
+    },
+    "window_label": "Week of Aug 10 \u2013 Aug 16"
+  },
+  "generated_at": "2026-08-10T13:58:21.362021+00:00"
+}
