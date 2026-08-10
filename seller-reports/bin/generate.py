@@ -1385,6 +1385,134 @@ def build_stats(metrics: dict, dq: dict) -> list[dict]:
     return stats, total_views, total_inquiries, showings_count
 
 
+# ---------------------------------------------------------------------------
+# Flyer (email) stat tiles -- a flyer-only re-presentation of build_stats()'s
+# output. The report PAGE keeps using `stats` exactly as build_stats()
+# produces it (with its "--"/"None logged" empty-state copy); this function
+# is consumed ONLY by flyer.html, which renders each tile as a bare number
+# with no sub-line, so a literal "0" there reads as a failure to a seller
+# even when it's simply an honest zero for the period. Every tile below
+# instead runs a strict, no-fabrication fallback chain:
+#   (a) this period's real value, if > 0 -- used as-is.
+#   (b) else a real cumulative/to-date value that already exists on
+#       metrics.json (never invented), label suffixed "(to date)".
+#   (c) else the tile is swapped for a different real, non-zero metric
+#       drawn from FLYER_FALLBACK tiles (never a vendor name -- see
+#       CHANNEL_LABELS/anonymize_text policy elsewhere in this file).
+# If nothing in the chain has a real non-zero number, the tile is dropped
+# rather than rendered as "0" -- flyer_stats can legitimately be shorter
+# than 4 tiles.
+# ---------------------------------------------------------------------------
+def build_flyer_stats(metrics: dict, dq: dict, stats: list[dict], total_views: int,
+                       total_inquiries: int, showings_count: int,
+                       homes_exposure: dict | None, crexi_exposure: dict | None,
+                       portals_raw: dict) -> list[dict]:
+    src = metrics.get("sources", {})
+    cc = src.get("cc", {})
+    cc_missing = dq.get("cc") == "missing"
+    cc_to_date = cc.get("email_campaigns_to_date") or {}
+    email_sent = cc.get("totals", {}).get("sent", 0) if not cc_missing else 0
+
+    stats_by_key = {s.get("key"): s for s in stats}
+
+    # ---- pool of "strong metric" fallback tiles (c), in priority order --
+    # each entry only added when its value is real, already present in the
+    # data, and non-zero; consumed at most once per render so two zeroed
+    # tiles never both fall back to the exact same replacement metric.
+    fallback_pool = []
+    homes_vm_raw = (portals_raw.get("homes.com") or {}).get("visitor_map") or {}
+    engaged_total = homes_vm_raw.get("engaged_total_views")
+    if engaged_total:
+        fallback_pool.append({"key": "engaged_views", "label": "Engaged buyer views",
+                               "value_display": fmt_int(engaged_total)})
+    if homes_exposure and homes_exposure.get("favorites"):
+        fallback_pool.append({"key": "favorites", "label": "Favorites",
+                               "value_display": fmt_int(homes_exposure["favorites"])})
+    if homes_exposure and homes_exposure.get("publication_count"):
+        fallback_pool.append({"key": "publications", "label": "Publications featuring your listing",
+                               "value_display": fmt_int(homes_exposure["publication_count"])})
+    if homes_exposure and homes_exposure.get("top_of_search"):
+        fallback_pool.append({"key": "top_of_search", "label": "Top-of-search appearances",
+                               "value_display": fmt_int(homes_exposure["top_of_search"])})
+    # Commercial-listing equivalents so a Crexi-only (no homes.com) listing
+    # still has real fallback metrics to draw from.
+    if crexi_exposure and crexi_exposure.get("page_views"):
+        fallback_pool.append({"key": "marketplace_views", "label": "Marketplace page views",
+                               "value_display": fmt_int(crexi_exposure["page_views"])})
+    if crexi_exposure and crexi_exposure.get("om_flyer_opens"):
+        fallback_pool.append({"key": "om_opens", "label": "Marketing document opens",
+                               "value_display": fmt_int(crexi_exposure["om_flyer_opens"])})
+
+    used_pool_keys: set[str] = set()
+
+    def next_fallback():
+        for f in fallback_pool:
+            if f["key"] not in used_pool_keys:
+                used_pool_keys.add(f["key"])
+                return {**f, "delta_display": None, "delta_dir": None}
+        return None
+
+    flyer_stats = []
+
+    # -- Views: no separate to-date figure exists beyond the period value
+    # itself (portal view counters are already cumulative-since-listing --
+    # see SCHEMA.md -- so they're already folded into total_views), so a
+    # zero here goes straight from (a) to (c).
+    if total_views > 0:
+        flyer_stats.append(stats_by_key["views"])
+    else:
+        fb = next_fallback()
+        if fb:
+            flyer_stats.append(fb)
+
+    # -- Inquiries: same reasoning as views -- portal lead counters are
+    # already cumulative and already folded into total_inquiries, so there
+    # is no additional real to-date figure to surface separately; (a) -> (c).
+    if total_inquiries > 0:
+        flyer_stats.append(stats_by_key["inquiries"])
+    else:
+        fb = next_fallback()
+        if fb:
+            flyer_stats.append(fb)
+
+    # -- Showings: no to-date/cumulative showings figure exists anywhere in
+    # the data model, so (a) -> (c) directly. Never render "0 showings".
+    if showings_count > 0:
+        flyer_stats.append(stats_by_key["showings"])
+    else:
+        fb = next_fallback()
+        if fb:
+            flyer_stats.append(fb)
+
+    # -- Email reach: this period's sends, else the real cumulative-to-date
+    # reach from campaigns sent before this window (e.g. the original
+    # just-listed announcement blast), else pool fallback.
+    if not cc_missing and email_sent > 0:
+        flyer_stats.append(stats_by_key["email"])
+    elif cc_to_date.get("sends"):
+        flyer_stats.append({
+            "key": "email", "label": "Email reach (to date)",
+            "value_display": fmt_int(cc_to_date["sends"]),
+            "delta_display": None, "delta_dir": None,
+        })
+    else:
+        fb = next_fallback()
+        if fb:
+            flyer_stats.append(fb)
+
+    return flyer_stats
+
+
+def build_flyer_preheader_summary(flyer_stats: list[dict]) -> str:
+    """Plain-text preheader clause built from whatever flyer tiles actually
+    rendered (build_flyer_stats) -- never assumes specific tiles/positions
+    exist, since a sparse listing can swap or drop tiles entirely."""
+    if not flyer_stats:
+        return "the latest activity on your listing"
+    parts = [f"{s['value_display']} {s['label'].lower()}" for s in flyer_stats[:2]]
+    return ", ".join(parts)
+
+
 def build_summary_tiles(metrics: dict, dq: dict, homes_exposure: dict | None,
                          crexi_exposure: dict | None, total_views: int,
                          total_inquiries: int, showings_count: int) -> list[dict]:
@@ -1698,6 +1826,12 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     exposure_banner = build_exposure_banner(channel_performance, homes_exposure, metrics["period"]["type"],
                                              metrics.get("period_activity"), src, dq)
 
+    # --- flyer (email) stat tiles -- flyer.html-only, see build_flyer_stats
+    # docstring; the report page keeps using `stats` untouched. ---
+    flyer_stats = build_flyer_stats(metrics, dq, stats, total_views, total_inquiries,
+                                     showings_count, homes_exposure, crexi_exposure, portals_raw)
+    flyer_preheader_summary = build_flyer_preheader_summary(flyer_stats)
+
     # --- homes.com-mirror layout gate ---------------------------------
     # Applies to listings whose portals include homes.com data (i.e.
     # residential -- Crexi/commercial listings never set this and always
@@ -1802,6 +1936,8 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
         "missing_sections": missing_sections,
         "any_sample": bool(sample_sections),
         "stats": stats,
+        "flyer_stats": flyer_stats,
+        "flyer_preheader_summary": flyer_preheader_summary,
         "summary_tiles": summary_tiles,
         "activity": activity,
         "activity_feed": activity_feed,
