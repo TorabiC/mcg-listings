@@ -9,10 +9,10 @@
   "om_flyer_opens": 4,
   "offers": 0,
   "crexi_property_id": 2448209,
-  "impressions_all_time": 8557,
+  "impressions_all_time": 8559,
   "status": "Active",
   "source_url": "https://www.crexi.com/property/2448209/dashboard",
-  "harvested_at": "2026-08-13T15:57:20.849267+00:00",
+  "harvested_at": "2026-08-13T16:31:21.950235+00:00",
   "price": 1800000,
   "dashboard_deep": {
     "total_actions": 37,
@@ -41,7 +41,7 @@
       }
     }
   },
-  "impressions": 8557,
-  "search_impressions": 8557,
+  "impressions": 8559,
+  "search_impressions": 8559,
   "flyers_opened": 4
 }
