@@ -1,16 +1,19 @@
 {
   "portal": "crexi",
-  "views": 50,
+  "views": 51,
   "leads": 1,
   "name": "Exminster Circle Bella Vista",
   "search_score": 95,
-  "page_views": 50,
+  "page_views": 51,
   "visitors": 4,
   "om_flyer_opens": 1,
   "offers": 0,
   "crexi_property_id": 2359223,
-  "impressions_all_time": 10347,
+  "impressions_all_time": 10348,
   "status": "Active",
   "source_url": "https://www.crexi.com/property/2359223/dashboard",
-  "harvested_at": "2026-08-06"
+  "harvested_at": "2026-08-13T15:57:46.556821+00:00",
+  "impressions": 10348,
+  "search_impressions": 10348,
+  "flyers_opened": 1
 }

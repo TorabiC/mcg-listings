@@ -1,14 +1,14 @@
 {
   "portal": "homes.com",
-  "views": 46762,
+  "views": 47081,
   "saves": 0,
   "analytics_id": "8yybf7pxp1wq1",
   "analytics_url": "https://www.homes.com/customer/dashboard/analytics/listing/8yybf7pxp1wq1/",
   "listed": "2026-02-20",
   "days_on_market": 174,
   "summary": {
-    "total_views": 46762,
-    "display_ad_views": 23612,
+    "total_views": 47081,
+    "display_ad_views": 23960,
     "detail_page_views": 436,
     "top_of_search_results": 555,
     "favorites": 11,
@@ -26,17 +26,17 @@
   "traffic_sources": [
     {
       "source": "Display Ads",
-      "pct": 50.71,
-      "views": 23711
+      "pct": 51.04,
+      "views": 24030
     },
     {
       "source": "Property Search Page",
-      "pct": 41.72,
+      "pct": 41.43,
       "views": 19507
     },
     {
       "source": "New Homes Search",
-      "pct": 5.34,
+      "pct": 5.31,
       "views": 2499
     },
     {
@@ -46,7 +46,7 @@
     },
     {
       "source": "Emails",
-      "pct": 0.69,
+      "pct": 0.68,
       "views": 322
     },
     {
@@ -59,14 +59,14 @@
   "daily_by_type_note": "This listing has been active 174 days, so homes.com renders the Activity chart as weekly buckets rather than daily bars; extracted via pixel-accurate SVG rect measurement, with bar dates assigned by interpolating from the chart's own date-axis tick labels (not assumed from listed date). Sums (agent/consumer/combined) match on-page ground truth exactly.",
   "display_ads": {
     "retargeting": {
-      "ad_views": 3458,
-      "sites_displayed_on": 758,
+      "ad_views": 3487,
+      "sites_displayed_on": 763,
       "users_reached": 738
     },
     "contact_list_targeting": {
-      "ad_views": 20154,
-      "sites_displayed_on": 1147,
-      "users_reached": 1569,
+      "ad_views": 20473,
+      "sites_displayed_on": 1160,
+      "users_reached": 1595,
       "uploaded_contacts": 5228
     },
     "publications": [

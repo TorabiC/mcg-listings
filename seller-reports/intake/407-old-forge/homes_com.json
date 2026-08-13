@@ -1,14 +1,14 @@
 {
   "portal": "homes.com",
-  "views": 211175,
+  "views": 211424,
   "saves": 0,
   "analytics_id": "q6c39prfpbv9s",
   "analytics_url": "https://www.homes.com/customer/dashboard/analytics/listing/q6c39prfpbv9s/",
   "listed": "2026-02-20",
   "days_on_market": 174,
   "summary": {
-    "total_views": 211175,
-    "display_ad_views": 32732,
+    "total_views": 211424,
+    "display_ad_views": 33035,
     "detail_page_views": 594,
     "top_of_search_results": 20507,
     "favorites": 11,
@@ -25,13 +25,13 @@
   "traffic_sources": [
     {
       "source": "Property Search Page",
-      "pct": 82.23,
+      "pct": 82.13,
       "views": 173652
     },
     {
       "source": "Display Ads",
-      "pct": 15.7,
-      "views": 33157
+      "pct": 15.8,
+      "views": 33406
     },
     {
       "source": "GreatSchools",
@@ -58,14 +58,14 @@
   "daily_by_type_note": "This listing has been active 174 days, so homes.com renders the Activity chart as weekly buckets rather than daily bars; extracted via pixel-accurate SVG rect measurement, with bar dates assigned by interpolating from the chart's own date-axis tick labels (not assumed from listed date). Sums (agent/consumer/combined) match on-page ground truth exactly.",
   "display_ads": {
     "retargeting": {
-      "ad_views": 10939,
-      "sites_displayed_on": 2227,
-      "users_reached": 3582
+      "ad_views": 10993,
+      "sites_displayed_on": 2234,
+      "users_reached": 3586
     },
     "contact_list_targeting": {
-      "ad_views": 21793,
-      "sites_displayed_on": 1120,
-      "users_reached": 1543,
+      "ad_views": 22042,
+      "sites_displayed_on": 1127,
+      "users_reached": 1566,
       "uploaded_contacts": 5228
     },
     "publications": [

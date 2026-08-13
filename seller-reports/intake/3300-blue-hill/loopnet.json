@@ -1,8 +1,10 @@
 {
   "portal": "loopnet",
-  "views": 5135,
-  "page_views": 5135,
-  "harvested_at": "2026-08-10T18:56:58+00:00",
+  "views": 5169,
+  "page_views": 5169,
+  "harvested_at": "2026-08-13T15:58:38.329315+00:00",
   "manual_update": "Cameron 2026-08-10",
-  "source_url": "manual entry"
+  "source_url": "https://listingmanager.costar.com/my-listings/list",
+  "views_window": "90_day",
+  "harvest_method": "chrome-applescript"
 }

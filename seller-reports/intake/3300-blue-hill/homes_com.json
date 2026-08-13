@@ -8,7 +8,7 @@
   "days_on_market": 132,
   "summary": {
     "total_views": 39298,
-    "display_ad_views": 1384,
+    "display_ad_views": 1405,
     "detail_page_views": 79,
     "top_of_search_results": 867,
     "favorites": 1
@@ -54,8 +54,8 @@
   "daily_by_type_note": "This listing has been active 132 days, so homes.com renders the Activity chart as weekly buckets rather than daily bars; extracted via pixel-accurate SVG rect measurement, with bar dates assigned by interpolating from the chart's own date-axis tick labels (not assumed from listed date). Sums (agent/consumer/combined) match on-page ground truth exactly.",
   "display_ads": {
     "retargeting": {
-      "ad_views": 1202,
-      "sites_displayed_on": 318,
+      "ad_views": 1223,
+      "sites_displayed_on": 324,
       "users_reached": 266
     },
     "contact_list_targeting": {

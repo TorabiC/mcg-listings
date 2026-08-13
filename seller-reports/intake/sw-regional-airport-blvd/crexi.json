@@ -1,18 +1,18 @@
 {
   "portal": "crexi",
-  "views": 64,
+  "views": 65,
   "leads": 1,
   "name": "SW Regional Airport Blvd",
   "search_score": 95,
-  "page_views": 64,
-  "visitors": 11,
+  "page_views": 65,
+  "visitors": 12,
   "om_flyer_opens": 1,
   "offers": 0,
   "crexi_property_id": 2317492,
-  "impressions_all_time": 6166,
+  "impressions_all_time": 6167,
   "status": "Active",
   "source_url": "https://www.crexi.com/property/2317492/dashboard",
-  "harvested_at": "2026-08-06",
+  "harvested_at": "2026-08-13T15:57:33.836534+00:00",
   "secondary_listing": {
     "name": "3500B SW Regional Airport Blvd",
     "crexi_property_id": 2317495,
@@ -21,5 +21,7 @@
     "flyers": 1,
     "source_url": "https://www.crexi.com/property/2317495/dashboard",
     "note": "A second, separate Crexi listing record for what appears to be the same or an adjacent parcel -- not merged into the primary record above since it has its own distinct property id and stats; surfaced here for visibility rather than silently dropped."
-  }
+  },
+  "impressions": 6167,
+  "search_impressions": 6167
 }

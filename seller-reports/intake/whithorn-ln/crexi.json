@@ -1,17 +1,20 @@
 {
   "portal": "crexi",
-  "views": 65,
+  "views": 66,
   "leads": 1,
   "name": "Whithorn Lane",
   "search_score": 95,
-  "page_views": 65,
+  "page_views": 66,
   "visitors": 7,
   "om_flyer_opens": 1,
   "offers": 0,
   "crexi_property_id": 2343084,
-  "impressions_all_time": 6214,
+  "impressions_all_time": 6215,
   "status": "Active",
   "source_url": "https://www.crexi.com/property/2343084/dashboard",
-  "harvested_at": "2026-08-06",
-  "harvest_note": "Crexi's own street text for this listing reads 'Whithorn Dr' (not 'Ln' as in the registry address) -- same listing (name, city, price bracket all match the prior harvest), just Crexi's own spelling."
+  "harvested_at": "2026-08-13T15:57:43.429324+00:00",
+  "harvest_note": "Crexi's own street text for this listing reads 'Whithorn Dr' (not 'Ln' as in the registry address) -- same listing (name, city, price bracket all match the prior harvest), just Crexi's own spelling.",
+  "impressions": 6215,
+  "search_impressions": 6215,
+  "flyers_opened": 1
 }

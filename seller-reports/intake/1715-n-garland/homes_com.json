@@ -8,7 +8,7 @@
   "days_on_market": 52,
   "summary": {
     "total_views": 53065,
-    "display_ad_views": 3114,
+    "display_ad_views": 3138,
     "detail_page_views": 192,
     "top_of_search_results": 5653,
     "favorites": 2,
@@ -57,9 +57,9 @@
   "daily_by_type_note": "Extracted from this listing's Activity chart via pixel-accurate SVG rect measurement (daily bars).",
   "display_ads": {
     "retargeting": {
-      "ad_views": 1783,
-      "sites_displayed_on": 553,
-      "users_reached": 1018
+      "ad_views": 1807,
+      "sites_displayed_on": 554,
+      "users_reached": 1070
     },
     "contact_list_targeting": {
       "ad_views": 1331,
