@@ -969,6 +969,12 @@
           {% endfor %}
         </div>
       </div>
+      {% if homes_exposure.baseline_note %}
+      <!-- Accuracy disclosure, not gap messaging -- only renders when a
+           config-driven relist baseline was actually applied (see
+           apply_homes_baseline_carry_forward in generate.py). -->
+      <p class="hm-footnote">{{ homes_exposure.baseline_note }}</p>
+      {% endif %}
     </section>
     <hr class="hm-rule">
 

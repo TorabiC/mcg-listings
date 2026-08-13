@@ -336,6 +336,23 @@
           "loopnet"
         ]
       },
+      "portal_pause": {
+        "homes.com": {
+          "since": "2026-08-12",
+          "reason": "homes.com listing expired 2026-08-12; relist expected week of 2026-08-17. Pause AUTO-LIFTS 2026-08-19 -- if the relist has happened, harvest resumes by itself; if not, the daily FAILED returns as a true signal rather than hiding a two-week blind spot. AT RELIST also update links.homes_analytics_id to the NEW homes.com listing id (the harvester finds the listing by that id) -- the portal_baseline block then carries the prior period totals forward automatically",
+          "until": "2026-08-19"
+        }
+      },
+      "portal_baseline": {
+        "homes.com": {
+          "total_views": 45171,
+          "display_ad_views": 20082,
+          "detail_page_views": 158,
+          "top_of_search": 1944,
+          "as_of": "2026-08-10",
+          "note": "prior listing period; carried forward across 2026-08 relist"
+        }
+      },
       "notes": "Land development parcel, 10.56 AC, on the AR-72 corridor. Added to registry 2026-07-17 per Cameron roster confirmation (14 active listings / 17 MLS entries)."
     },
     {
@@ -505,6 +522,24 @@
           "crexi",
           "loopnet"
         ]
+      },
+      "portal_pause": {
+        "homes.com": {
+          "since": "2026-08-13",
+          "reason": "homes.com listing expired 2026-08-13; relist expected week of 2026-08-17. Pause AUTO-LIFTS 2026-08-19 -- if the relist has happened, harvest resumes by itself; if not, the daily FAILED returns as a true signal rather than hiding a two-week blind spot. AT RELIST also update links.homes_analytics_id to the NEW homes.com listing id (the harvester finds the listing by that id) -- the portal_baseline block then carries the prior period totals forward automatically",
+          "until": "2026-08-19"
+        }
+      },
+      "portal_baseline": {
+        "homes.com": {
+          "total_views": 57030,
+          "display_ad_views": 20615,
+          "detail_page_views": 202,
+          "top_of_search": 4246,
+          "favorites": 3,
+          "as_of": "2026-08-10",
+          "note": "prior listing period; carried forward across 2026-08 relist"
+        }
       },
       "notes": "Land parcel, 1.16 AC. Added to registry 2026-07-17 per Cameron roster confirmation."
     },

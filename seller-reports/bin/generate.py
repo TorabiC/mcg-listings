@@ -1030,6 +1030,16 @@ def build_homes_exposure(portals: dict, source_freshness: dict | None = None) ->
             if ms.get(_k):
                 ms[_k] = anonymize_text(ms[_k])
 
+    # Set by freshen_cumulative_portals when this listing's homes.com
+    # summary figures above include a config-driven relist baseline
+    # carry-forward (see apply_homes_baseline_carry_forward) -- surfaced
+    # here so every template/section reading homes_exposure can render the
+    # same one-sentence accuracy footnote next to the same carried totals,
+    # without each needing to know about portal_baseline/relist detection
+    # itself. None for every ordinary (non-relisted / no-baseline-configured)
+    # listing, so this changes nothing for them.
+    baseline_note = homes.get("_baseline_note")
+
     return {
         "available": True,
         "total_views": summary.get("total_views", 0),
@@ -1055,6 +1065,8 @@ def build_homes_exposure(portals: dict, source_freshness: dict | None = None) ->
         "listed_date": homes.get("listed"),
         "stale": bool(stale_caption),
         "stale_caption": stale_caption,
+        "baseline_applied": bool(baseline_note),
+        "baseline_note": baseline_note.get("footnote") if baseline_note else None,
     }
 
 
@@ -1130,6 +1142,119 @@ def _fmt_n(n) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Relist baseline carry-forward -- homes.com issues a brand-new listing id
+# on relist, whose Total Views/Display Ad Views/Detail Page Views/Top of
+# Search/Favorites counters all restart near zero. Without correction, a
+# seller's headline homes.com figures would appear to COLLAPSE the moment
+# the relist lands (e.g. ar-72-gravette: 45,171 -> a few dozen), which reads
+# as the listing suddenly losing all its marketing traction rather than
+# what actually happened (a portal-side id swap). Cameron's decision
+# (2026-08-13): prior-period totals are a baseline, and new activity adds
+# on top, so the headline number never drops.
+#
+# Config: an optional per-listing listings.json block,
+#   "portal_baseline": {"homes.com": {"total_views": N, "display_ad_views": N,
+#     "detail_page_views": N, "top_of_search": N, "favorites": N,
+#     "as_of": "YYYY-MM-DD", "note": "..."}}
+# covering exactly the summary fields build_homes_exposure surfaces
+# (HOMES_BASELINE_FIELD_MAP maps each baseline key to its summary-dict key;
+# "top_of_search" -> "top_of_search_results" is the one name mismatch).
+# Only the fields actually present in the config are carried forward --
+# never invent a number for a field Cameron didn't supply.
+# ---------------------------------------------------------------------------
+HOMES_BASELINE_FIELD_MAP = {
+    "total_views": "total_views",
+    "display_ad_views": "display_ad_views",
+    "detail_page_views": "detail_page_views",
+    "top_of_search": "top_of_search_results",
+    "favorites": "favorites",
+}
+
+
+def detect_homes_relist_reset(harvested_total_views, baseline_total_views,
+                               reset_threshold: float = 0.5) -> bool:
+    """True iff the freshly harvested homes.com cumulative total_views looks
+    like a relist reset (a brand-new listing id whose counters restarted
+    near zero) rather than a continuation of the same listing -- detected
+    from the DATA itself (harvested total dramatically lower than the
+    configured baseline), not trusted from config alone, since a
+    portal_baseline block can be configured days before the relist actually
+    lands and reads still-continuous. "Dramatically lower" = under
+    `reset_threshold` (default 50%) of the baseline. When the harvested
+    total is >= that fraction of the baseline, the portal is treated as
+    continuous -- either no relist has happened yet, or the on-page total
+    already includes the prior history -- and the harvested figures are
+    used as-is so the baseline is never double-counted. Any missing/
+    non-numeric input (None, a still-untouched summary, a misconfigured
+    baseline) returns False rather than raising -- "can't tell" means
+    "don't touch the figures"."""
+    try:
+        harvested = float(harvested_total_views)
+        baseline = float(baseline_total_views)
+    except (TypeError, ValueError):
+        return False
+    if baseline <= 0:
+        return False
+    return harvested < baseline * reset_threshold
+
+
+def apply_homes_baseline_carry_forward(summary: dict, baseline: dict | None) -> tuple[dict, dict | None]:
+    """Adds a configured prior-listing-period baseline on top of a freshly
+    harvested homes.com `summary` dict, IF a relist reset is detected (see
+    detect_homes_relist_reset) -- pure function, no I/O, so it's directly
+    unit-testable.
+
+    Returns (summary', note_info):
+      * When no baseline is configured, or one is configured but no reset
+        was detected (continuous portal), summary is returned UNCHANGED
+        (same object, not even copied) and note_info is None -- normal
+        listings render exactly as before this feature existed.
+      * When a reset IS detected, summary' is a new dict with every
+        baseline-configured field (per HOMES_BASELINE_FIELD_MAP) equal to
+        (freshly harvested value, defaulting missing/None to 0) + (baseline
+        value), and note_info is a small dict carrying the seller-facing
+        footnote text plus the raw baseline for anything downstream (e.g.
+        tests) that wants to inspect what was carried forward.
+
+    Never raises on a missing/None/non-numeric harvested value -- treated
+    as 0 before adding the baseline (e.g. a brand-new listing id that
+    hasn't accrued a single view yet still gets its full prior-period
+    baseline, not a crash)."""
+    if not baseline:
+        return summary, None
+    if not detect_homes_relist_reset(summary.get("total_views"), baseline.get("total_views")):
+        return summary, None
+
+    summary = dict(summary)
+    carried_fields = []
+    for baseline_key, summary_key in HOMES_BASELINE_FIELD_MAP.items():
+        if baseline_key not in baseline or baseline[baseline_key] is None:
+            continue
+        try:
+            base_val = float(baseline[baseline_key])
+        except (TypeError, ValueError):
+            continue
+        try:
+            cur_val = float(summary.get(summary_key) or 0)
+        except (TypeError, ValueError):
+            cur_val = 0.0
+        summary[summary_key] = int(round(cur_val + base_val))
+        carried_fields.append(summary_key)
+
+    as_of_display = fmt_date_display(baseline.get("as_of")) if baseline.get("as_of") else None
+    footnote = "Includes activity from the prior listing period" + (
+        f" (through {as_of_display})" if as_of_display else "") + "."
+    note_info = {
+        "applied": True,
+        "carried_fields": carried_fields,
+        "as_of": baseline.get("as_of"),
+        "as_of_display": as_of_display,
+        "footnote": footnote,
+    }
+    return summary, note_info
+
+
+# ---------------------------------------------------------------------------
 # Freshest cumulative snapshot -- portal dashboards (homes.com, Crexi,
 # LoopNet) only expose a CURRENT/all-time snapshot, never a historical one,
 # so intake/<slug>/homes_com.json etc. are overwritten by every harvest run
@@ -1154,10 +1279,31 @@ def _fmt_n(n) -> str:
 # for that portal (never regresses to an older snapshot sitting on disk).
 # Falls back to metrics.json's embedded copy, untouched, when no intake
 # file exists for that slug/portal -- never fabricates a number.
+#
+# Relist baseline is applied HERE too (immediately after the intake overlay,
+# before returning) -- this is the single earliest point in the whole data
+# path where portals_raw["homes.com"]["summary"] takes its final cumulative
+# shape for this render; build_homes_exposure, build_combined_summary, and
+# build_homes_mirror (stat_row_1) all read that same dict afterward, so
+# patching it once here means every downstream builder automatically
+# inherits the carried-forward total with no risk of one section showing
+# the baseline and another showing the raw post-relist figure. (The daily
+# Activity chart -- build_homes_mirror_activity, fed from `daily`/
+# `daily_by_type`/`activity`, not `summary` -- is deliberately NOT touched:
+# those are the chart's own period-window agent/consumer/combined figures,
+# a genuinely different metric from the cumulative "Total Views" summary
+# figure (verified against real intake: ar-72-gravette's summary.total_views
+# is 45,171 while its activity.combined_views, the chart-window sum, is
+# 25,260) -- and build_homes_mirror_activity's own docstring already commits
+# to "each category must render its own TRUE data, never a value derived
+# from another category". Fabricating baseline history into daily bars we
+# never harvested would violate that and misrepresent day-by-day activity
+# that didn't happen.
 # ---------------------------------------------------------------------------
 def freshen_cumulative_portals(intake_dir, slug: str, portals_raw: dict,
                                 source_freshness: dict,
-                                period_start: str | None = None) -> tuple[dict, dict]:
+                                period_start: str | None = None,
+                                listing: dict | None = None) -> tuple[dict, dict]:
     if not intake_dir or not slug:
         return portals_raw, source_freshness
     portals_raw = dict(portals_raw)
@@ -1180,6 +1326,15 @@ def freshen_cumulative_portals(intake_dir, slug: str, portals_raw: dict,
         existing_as_of = (source_freshness.get(portal) or {}).get("as_of")
         if harvested_at and existing_as_of and str(harvested_at) < str(existing_as_of):
             continue  # on-disk intake is older than what this period already has -- keep the newer one
+        if portal == "homes.com" and isinstance(fresh.get("summary"), dict):
+            # config-driven relist baseline carry-forward -- see the module
+            # comment above this function for why HERE is the right place.
+            baseline_cfg = ((listing or {}).get("portal_baseline") or {}).get("homes.com")
+            new_summary, baseline_note = apply_homes_baseline_carry_forward(fresh["summary"], baseline_cfg)
+            if baseline_note:
+                fresh = dict(fresh)
+                fresh["summary"] = new_summary
+                fresh["_baseline_note"] = baseline_note
         portals_raw[portal] = fresh
         if harvested_at:
             # The overlay above always applies the freshest on-disk intake
@@ -2149,7 +2304,7 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     # copies.
     portals_raw, source_freshness = freshen_cumulative_portals(
         intake_dir, listing.get("slug", ""), portals_raw, source_freshness,
-        metrics.get("period", {}).get("start"))
+        metrics.get("period", {}).get("start"), listing=listing)
     homes_exposure = build_homes_exposure(portals_raw, source_freshness)
     crexi_exposure = build_crexi_exposure(portals_raw, source_freshness)
     exposure_available = bool(homes_exposure or crexi_exposure)
