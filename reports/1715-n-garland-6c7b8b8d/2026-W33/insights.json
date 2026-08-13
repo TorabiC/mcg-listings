@@ -3,7 +3,7 @@
   "period_id": "2026-W33",
   "talking_points": [
     "53,067 total views this period -- Combined across all marketing channels \u2014 updated Aug 13, 2026.",
-    "Views trending up 14.2% vs. the prior period.",
+    "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -64,10 +64,10 @@
     "total_leads": "0",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
-      "value_display": "0m 6s",
+      "value_display": "0m 13s",
       "available": true
     },
     "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-13T13:06:08.208953+00:00"
+  "generated_at": "2026-08-13T15:59:21.831853+00:00"
 }
