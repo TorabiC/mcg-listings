@@ -2,8 +2,8 @@
   "slug": "3300-blue-hill",
   "period_id": "2026-W33",
   "talking_points": [
-    "45,924 total views this period -- Combined across all marketing channels \u2014 updated Aug 13, 2026.",
-    "Views trending up 0.1% vs. the prior period.",
+    "46,158 total views this period -- Combined across all marketing channels \u2014 updated Aug 13, 2026.",
+    "Views trending up 0.5% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "45,924",
+    "total_views": "46,158",
     "total_leads": "26",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-13T15:59:21.846707+00:00"
+  "generated_at": "2026-08-13T16:33:24.183147+00:00"
 }
