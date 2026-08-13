@@ -951,6 +951,9 @@
       {% if homes_exposure.stale %}
       <div class="as-of-caption">{{ homes_exposure.stale_caption }}</div>
       {% endif %}
+      {% if crexi_exposure.stale %}
+      <div class="as-of-caption">{{ crexi_exposure.stale_caption }}</div>
+      {% endif %}
       {% if combined_summary.available %}
       <p class="hm-section-sub" style="margin:14px 0 6px;">Your national syndication partner&rsquo;s own dashboard, for reference:</p>
       {% endif %}
@@ -1050,7 +1053,7 @@
       <div class="hm-section-head">
         <div>
           <h2>Activity</h2>
-          <p class="hm-section-sub">Agent and prospective-buyer engagement with your listing this period.</p>
+          <p class="hm-section-sub">Agent and prospective-buyer engagement with your listing since your listing went live.</p>
         </div>
         <div class="hm-controls">
           <!-- ROUND 2: no disabled options -- every category is
@@ -1252,7 +1255,7 @@
         </div>
         {% if hm.leaflet.available %}
         <div class="hm-map-toggle">
-          <button type="button" class="hm-toggle-chip active" id="hm-map-total-btn" data-caption="Total Views {{ '{:,}'.format(hm.leaflet.total_mapped_views) }}" data-clipped="{{ hm.leaflet.clipped_count }}">Total Views</button>
+          <button type="button" class="hm-toggle-chip active" id="hm-map-total-btn" data-caption="Mapped Views {{ '{:,}'.format(hm.leaflet.total_mapped_views) }}" data-clipped="{{ hm.leaflet.clipped_count }}">Mapped Views</button>
           {% if hm.leaflet.engaged.available %}
           <!-- Only rendered when the intake's visitor_map.engaged_clusters
                key is present with real data (see build_homes_mirror_leaflet_markers
@@ -1270,7 +1273,8 @@
       {% if hm.leaflet.engaged.available %}
       <script type="application/json" id="hm-leaflet-engaged-data">{{ hm.leaflet.engaged.markers | tojson }}</script>
       {% endif %}
-      <p class="hm-map-caption" id="hm-map-caption">Total Views {{ '{:,}'.format(hm.leaflet.total_mapped_views) }}</p>
+      <p class="hm-map-caption" id="hm-map-caption">Mapped Views {{ '{:,}'.format(hm.leaflet.total_mapped_views) }}</p>
+      <p class="hm-section-sub" id="hm-map-explainer">{{ '{:,}'.format(hm.leaflet.total_mapped_views) }} of {{ '{:,}'.format(homes_exposure.total_views | default(0)) }} total views could be matched to an approximate buyer location.</p>
       <p class="hm-map-privacy" id="hm-map-privacy">Marker positions are approximate and aggregated for buyer privacy; exact visitor addresses are not reported. {{ hm.leaflet.clipped_count }} mapped clusters shown.</p>
 
       <!-- print fallback: static SVG map (no external network needed), same marker set -->
@@ -1284,7 +1288,7 @@
             {% endfor %}
           </svg>
         </div>
-        <p class="map-caption">Total Views {{ '{:,}'.format(hm.leaflet.total_mapped_views) }}</p>
+        <p class="map-caption">Mapped Views {{ '{:,}'.format(hm.leaflet.total_mapped_views) }}</p>
       </div>
       {% else %}
       <div class="empty-note">Visitor map data unavailable this period.</div>

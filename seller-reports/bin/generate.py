@@ -274,24 +274,47 @@ def fmt_price(listing: dict) -> str:
     return f"${price:,.0f}"
 
 
+def _parse_flex_date(iso_date: str) -> dt.date | None:
+    """Parse either a bare ISO date ("2026-08-10") or a full ISO datetime
+    ("2026-08-10T18:56:58+00:00", as returned by harvested_at fields) into a
+    date. Falls back to slicing the leading 10 chars (YYYY-MM-DD) for
+    anything else that doesn't parse cleanly. Returns None if unparsable."""
+    try:
+        return dt.datetime.fromisoformat(iso_date).date()
+    except (ValueError, TypeError):
+        pass
+    try:
+        return dt.date.fromisoformat(iso_date[:10])
+    except (ValueError, TypeError):
+        return None
+
+
 def fmt_date_display(iso_date: str | None) -> str:
     if not iso_date:
         return ""
-    try:
-        d = dt.date.fromisoformat(iso_date)
-        return d.strftime("%b %-d, %Y") if hasattr(d, "strftime") else iso_date
-    except ValueError:
+    # dt.date.fromisoformat() throws on full ISO datetimes (e.g.
+    # "2026-08-10T18:56:58+00:00", as returned by harvested_at fields), and
+    # the previous bare `except: return iso_date` leaked that raw timestamp
+    # verbatim into seller-facing copy (Cameron, 2026-08-13). _parse_flex_date
+    # handles both bare dates and full ISO datetimes.
+    d = _parse_flex_date(iso_date)
+    if d is None:
         return iso_date
+    return d.strftime("%b %-d, %Y") if hasattr(d, "strftime") else iso_date
 
 
 def fmt_date_short(iso_date: str | None) -> str:
     if not iso_date:
         return ""
-    try:
-        d = dt.date.fromisoformat(iso_date)
-        return d.strftime("%b %-d")
-    except ValueError:
+    # Same fix as fmt_date_display: dt.date.fromisoformat() throws on full
+    # ISO datetimes (e.g. "2026-08-10T18:56:58+00:00"), and a bare
+    # `except: return iso_date` would leak that raw timestamp verbatim into
+    # seller-facing copy. _parse_flex_date handles both bare dates and full
+    # ISO datetimes.
+    d = _parse_flex_date(iso_date)
+    if d is None:
         return iso_date
+    return d.strftime("%b %-d")
 
 
 def type_display(type_str: str) -> str:
@@ -728,28 +751,50 @@ def build_homes_mirror_leaflet_markers(vm_raw: dict) -> dict:
     }
 
 
-def build_homes_mirror(homes_raw: dict, homes_exposure: dict) -> dict:
+def build_homes_mirror(homes_raw: dict, homes_exposure: dict | None) -> dict:
     """Assembles the full view-model the homes-mirror template branch reads.
-    Only called when homes_mirror (residential + live homes.com portal data)
-    is true -- see build_view_model."""
-    stat_row_1 = [
-        {"label": "Total Views", "value": fmt_int(homes_exposure["total_views"])},
-        {"label": "Display Ad Views", "value": fmt_int(homes_exposure["display_ad_views"])},
-        {"label": "Detail Page Views", "value": fmt_int(homes_exposure["detail_page_views"])},
-        {"label": "Top of Search Results", "value": fmt_int(homes_exposure["top_of_search"])},
-        {"label": "Favorites", "value": fmt_int(homes_exposure["favorites"])},
-    ]
-    stat_row_2 = [
-        {"label": "3D Tour Views", "value": fmt_int(homes_exposure["matterport_views"])},
-        {"label": "Floor Plan Views", "value": fmt_int(homes_exposure["floor_plan_views"])},
-        {"label": "3D Tour View Time", "value": f"{fmt_int(homes_exposure['matterport_minutes'])} min"},
-    ]
-    pubs = homes_exposure.get("publications") or []
+    Called for EVERY listing regardless of homes.com data (the homes-mirror
+    layout is the one approved design for every listing, per Cameron
+    2026-08-10 -- see build_view_model/homes_mirror), including
+    marketplace-only listings (Crexi/LoopNet, no homes.com portal at all --
+    e.g. 3936-s-48th) whose `homes_exposure` is None (build_homes_exposure
+    returns None when there's no homes.com `summary` block on file).
+
+    homes_exposure being None/falsy must degrade gracefully to an empty
+    Summary stat-row/Marketing-Reach state -- NEVER fabricate homes.com
+    figures for a listing that isn't on that portal, and NEVER raise
+    (Cameron/2026-08-13: this crashed generate.py's entire run for
+    marketplace-only listings, most likely why W33 regen was skipped for
+    them in production). The other sub-builders below
+    (build_homes_mirror_traffic / _activity / _leaflet_markers) already
+    tolerate an empty input dict and return their own {"available": False}
+    -- the template's existing empty-note branches for those sections
+    (e.g. "Visitor map data unavailable this period") already handle that
+    correctly; only the stat rows / publications built directly from
+    homes_exposure here needed an explicit guard."""
+    if homes_exposure:
+        stat_row_1 = [
+            {"label": "Total Views", "value": fmt_int(homes_exposure["total_views"])},
+            {"label": "Display Ad Views", "value": fmt_int(homes_exposure["display_ad_views"])},
+            {"label": "Detail Page Views", "value": fmt_int(homes_exposure["detail_page_views"])},
+            {"label": "Top of Search Results", "value": fmt_int(homes_exposure["top_of_search"])},
+            {"label": "Favorites", "value": fmt_int(homes_exposure["favorites"])},
+        ]
+        stat_row_2 = [
+            {"label": "3D Tour Views", "value": fmt_int(homes_exposure["matterport_views"])},
+            {"label": "Floor Plan Views", "value": fmt_int(homes_exposure["floor_plan_views"])},
+            {"label": "3D Tour View Time", "value": f"{fmt_int(homes_exposure['matterport_minutes'])} min"},
+        ]
+        pubs = homes_exposure.get("publications") or []
+    else:
+        stat_row_1 = []
+        stat_row_2 = []
+        pubs = []
     display_ads_raw = homes_raw.get("display_ads") or {}
     retarget_raw = display_ads_raw.get("retargeting") or {}
     contact_raw = display_ads_raw.get("contact_list_targeting") or {}
     return {
-        "available": True,
+        "available": bool(homes_exposure),
         "stat_row_1": stat_row_1,
         "stat_row_2": stat_row_2,
         "traffic": build_homes_mirror_traffic(homes_raw.get("traffic_sources") or []),
@@ -1050,7 +1095,14 @@ def build_crexi_exposure(portals: dict, source_freshness: dict | None = None) ->
             "benchmark_note": INDUSTRY_BENCHMARK_NOTE,
         }
 
-    impressions = dashboard.get("impressions_all_time")
+    # impressions_all_time lives at the TOP level of the crexi intake
+    # object (alongside page_views), not nested under dashboard_deep --
+    # dashboard_deep only holds the leads/marketing_blasts sub-objects.
+    # Reading it off `dashboard` here always returned None, which silently
+    # fell through to the page_views fallback below (Cameron, 2026-08-13:
+    # blue-hill's Crexi impressions rendered as 1,416 -- the page_views
+    # count -- instead of the real 54,023).
+    impressions = crexi.get("impressions_all_time")
     return {
         "available": True,
         "search_score": score,
@@ -1104,11 +1156,13 @@ def _fmt_n(n) -> str:
 # file exists for that slug/portal -- never fabricates a number.
 # ---------------------------------------------------------------------------
 def freshen_cumulative_portals(intake_dir, slug: str, portals_raw: dict,
-                                source_freshness: dict) -> tuple[dict, dict]:
+                                source_freshness: dict,
+                                period_start: str | None = None) -> tuple[dict, dict]:
     if not intake_dir or not slug:
         return portals_raw, source_freshness
     portals_raw = dict(portals_raw)
     source_freshness = dict(source_freshness)
+    period_start_date = _parse_flex_date(period_start) if period_start else None
     fnames = {"homes.com": "homes_com.json", "crexi": "crexi.json", "loopnet": "loopnet.json"}
     for portal, fname in fnames.items():
         path = Path(intake_dir) / slug / fname
@@ -1128,8 +1182,28 @@ def freshen_cumulative_portals(intake_dir, slug: str, portals_raw: dict,
             continue  # on-disk intake is older than what this period already has -- keep the newer one
         portals_raw[portal] = fresh
         if harvested_at:
+            # The overlay above always applies the freshest on-disk intake
+            # (that's the whole point -- never show stale-er data than what
+            # we have). But "fresh" as a STATUS means "captured inside this
+            # reporting period", per freshness_caption()/collect.py's own
+            # convention -- unconditionally stamping "fresh" here silently
+            # overwrote collect.py's correct "stale" classification whenever
+            # the overlay applied, and freshness_caption() never fires for a
+            # "fresh"-tagged source, so the seller-visible "Figures as of
+            # ..." note disappeared (Cameron, 2026-08-10/13: 3936-s-48th's
+            # W33 report kept showing "updated Aug 6" -- a harvest from
+            # BEFORE the W33 period even started on Aug 10 -- with no
+            # staleness note). Only mark "fresh" when the harvest actually
+            # falls within or after this period's start date; otherwise
+            # preserve "stale" with the real as_of so the per-portal
+            # freshness caption renders.
+            harvested_date = _parse_flex_date(str(harvested_at))
+            if period_start_date and harvested_date and harvested_date >= period_start_date:
+                status = "fresh"
+            else:
+                status = "stale"
             source_freshness[portal] = {**(source_freshness.get(portal) or {}),
-                                         "as_of": harvested_at, "status": "fresh"}
+                                         "as_of": harvested_at, "status": status}
     return portals_raw, source_freshness
 
 
@@ -1313,7 +1387,14 @@ def build_channel_performance(src: dict, dq: dict, homes_exposure: dict | None,
         if crexi_exposure.get("search_score") is not None:
             stats.append({"label": "MCG placement score", "value": f"{crexi_exposure['search_score']} / 100"})
         if crexi_exposure.get("impressions"):
-            stats.insert(0, {"label": "Marketplace impressions", "value": _fmt_n(crexi_exposure["impressions"])})
+            # Only surface a distinct "Marketplace impressions" line when a
+            # genuine impressions_all_time figure exists (impressions_is_deep)
+            # -- when it doesn't, "impressions" is just the page_views
+            # fallback (see build_crexi_exposure), and printing both lines
+            # produced a duplicate "impressions: 1,416 / page views: 1,416"
+            # (Cameron, 2026-08-13).
+            if crexi_exposure.get("impressions_is_deep"):
+                stats.insert(0, {"label": "Marketplace impressions", "value": _fmt_n(crexi_exposure["impressions"])})
             combined += int(crexi_exposure.get("impressions") or 0)
         else:
             combined += int(crexi_exposure.get("page_views", 0) or 0)
@@ -2067,7 +2148,8 @@ def build_view_model(listing: dict, metrics: dict, period_links: list[dict],
     # this freshened portals_raw/source_freshness, not the raw metrics.json
     # copies.
     portals_raw, source_freshness = freshen_cumulative_portals(
-        intake_dir, listing.get("slug", ""), portals_raw, source_freshness)
+        intake_dir, listing.get("slug", ""), portals_raw, source_freshness,
+        metrics.get("period", {}).get("start"))
     homes_exposure = build_homes_exposure(portals_raw, source_freshness)
     crexi_exposure = build_crexi_exposure(portals_raw, source_freshness)
     exposure_available = bool(homes_exposure or crexi_exposure)
