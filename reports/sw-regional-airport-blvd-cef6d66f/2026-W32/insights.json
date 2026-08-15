@@ -2,7 +2,7 @@
   "slug": "sw-regional-airport-blvd",
   "period_id": "2026-W32",
   "talking_points": [
-    "95,344 total views this period -- Combined across all marketing channels \u2014 updated Aug 14, 2026.",
+    "95,344 total views this period -- Combined across all marketing channels \u2014 updated Aug 15, 2026.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -36,13 +36,13 @@
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": "2026-08-14",
+      "as_of": "2026-08-15",
       "status": "fresh"
     },
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-08-14",
+      "as_of": "2026-08-15",
       "status": "fresh"
     },
     {
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Aug 3 \u2013 Aug 9"
   },
-  "generated_at": "2026-08-14T11:03:39.456066+00:00"
+  "generated_at": "2026-08-15T11:03:05.164968+00:00"
 }
