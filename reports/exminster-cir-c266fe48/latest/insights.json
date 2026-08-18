@@ -1,6 +1,6 @@
 {
   "slug": "exminster-cir",
-  "period_id": "2026-W34",
+  "period_id": "2026-W33",
   "talking_points": [
     "72,212 total views this period -- Combined across all marketing channels \u2014 updated Aug 18, 2026.",
     "Views trending up 0.5% vs. the prior period.",
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
@@ -67,7 +67,7 @@
       "value_display": "--",
       "available": false
     },
-    "window_label": "Week of Aug 17 \u2013 Aug 23"
+    "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-18T11:02:20.157183+00:00"
+  "generated_at": "2026-08-18T11:03:04.770798+00:00"
 }
