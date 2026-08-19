@@ -1,9 +1,9 @@
 {
   "slug": "1715-n-garland",
-  "period_id": "2026-W34",
+  "period_id": "2026-W33",
   "talking_points": [
     "57,920 total views this period -- Combined across all marketing channels \u2014 updated Aug 19, 2026.",
-    "Views trending up 5.3% vs. the prior period.",
+    "Views trending up 7.3% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
@@ -64,10 +64,10 @@
     "total_leads": "0",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
-      "value_display": "0m 9s",
+      "value_display": "0m 13s",
       "available": true
     },
-    "window_label": "Week of Aug 17 \u2013 Aug 23"
+    "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-19T11:02:52.477828+00:00"
+  "generated_at": "2026-08-19T11:03:36.441779+00:00"
 }
