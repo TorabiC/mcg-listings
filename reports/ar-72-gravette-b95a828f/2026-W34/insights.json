@@ -2,7 +2,7 @@
   "slug": "ar-72-gravette",
   "period_id": "2026-W34",
   "talking_points": [
-    "45,528 total views this period -- Combined across all marketing channels \u2014 updated Aug 19, 2026.",
+    "45,529 total views this period -- Combined across all marketing channels \u2014 updated Aug 20, 2026.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -42,7 +42,7 @@
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-08-19",
+      "as_of": "2026-08-20",
       "status": "fresh"
     },
     {
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "45,528",
+    "total_views": "45,529",
     "total_leads": "2",
     "page_engagement": {
-      "metric": null,
-      "value_display": "--",
-      "available": false
+      "metric": "avg_engagement_seconds",
+      "value_display": "0m 1s",
+      "available": true
     },
     "window_label": "Week of Aug 17 \u2013 Aug 23"
   },
-  "generated_at": "2026-08-19T11:02:52.498418+00:00"
+  "generated_at": "2026-08-20T11:04:01.859303+00:00"
 }

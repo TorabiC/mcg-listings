@@ -2,8 +2,8 @@
   "slug": "46-northfleet",
   "period_id": "2026-W34",
   "talking_points": [
-    "48,815 total views this period -- Combined across all marketing channels \u2014 updated Aug 19, 2026.",
-    "Views trending up 2.1% vs. the prior period.",
+    "49,000 total views this period -- Combined across all marketing channels \u2014 updated Aug 20, 2026.",
+    "Views trending up 0.3% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -36,13 +36,13 @@
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": "2026-08-19",
+      "as_of": "2026-08-20",
       "status": "fresh"
     },
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-08-19",
+      "as_of": "2026-08-20",
       "status": "fresh"
     },
     {
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "48,815",
+    "total_views": "49,000",
     "total_leads": "4",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
-      "value_display": "9m 51s",
+      "value_display": "10m 47s",
       "available": true
     },
     "window_label": "Week of Aug 17 \u2013 Aug 23"
   },
-  "generated_at": "2026-08-19T11:02:52.482244+00:00"
+  "generated_at": "2026-08-20T11:04:01.843974+00:00"
 }
