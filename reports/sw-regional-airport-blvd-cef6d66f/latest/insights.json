@@ -1,9 +1,9 @@
 {
   "slug": "sw-regional-airport-blvd",
-  "period_id": "2026-W34",
+  "period_id": "2026-W33",
   "talking_points": [
-    "98,219 total views this period -- Combined across all marketing channels \u2014 updated Aug 20, 2026.",
-    "Views trending up 0.4% vs. the prior period.",
+    "98,218 total views this period -- Combined across all marketing channels \u2014 updated Aug 20, 2026.",
+    "Views trending up 3.0% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
@@ -49,7 +49,7 @@
       "key": "loopnet",
       "label": "MCG's commercial marketplace network",
       "as_of": "2026-08-13",
-      "status": "stale"
+      "status": "fresh"
     },
     {
       "key": "clarity",
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "98,219",
+    "total_views": "98,218",
     "total_leads": "1",
     "page_engagement": {
-      "metric": "avg_engagement_seconds",
-      "value_display": "1m 29s",
-      "available": true
+      "metric": null,
+      "value_display": "--",
+      "available": false
     },
-    "window_label": "Week of Aug 17 \u2013 Aug 23"
+    "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-20T11:04:01.865043+00:00"
+  "generated_at": "2026-08-20T11:04:46.689187+00:00"
 }
