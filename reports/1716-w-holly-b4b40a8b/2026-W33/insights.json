@@ -2,8 +2,8 @@
   "slug": "1716-w-holly",
   "period_id": "2026-W33",
   "talking_points": [
-    "64,705 total views this period -- Combined across all marketing channels \u2014 updated Aug 20, 2026.",
-    "Views trending up 2.7% vs. the prior period.",
+    "64,706 total views this period -- Combined across all marketing channels \u2014 updated Aug 21, 2026.",
+    "Views trending up 2.8% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -36,13 +36,13 @@
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": "2026-08-20",
+      "as_of": "2026-08-21",
       "status": "fresh"
     },
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-08-20",
+      "as_of": "2026-08-21",
       "status": "fresh"
     },
     {
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "64,705",
+    "total_views": "64,706",
     "total_leads": "4",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-20T11:04:46.676619+00:00"
+  "generated_at": "2026-08-21T11:05:21.949525+00:00"
 }

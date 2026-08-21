@@ -1,9 +1,9 @@
 {
   "slug": "46-northfleet",
-  "period_id": "2026-W34",
+  "period_id": "2026-W33",
   "talking_points": [
-    "49,366 total views this period -- Combined across all marketing channels \u2014 updated Aug 21, 2026.",
-    "Views trending up 0.6% vs. the prior period.",
+    "49,419 total views this period -- Combined across all marketing channels \u2014 updated Aug 21, 2026.",
+    "Views trending up 4.1% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "49,366",
+    "total_views": "49,419",
     "total_leads": "4",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
-      "value_display": "5m 6s",
+      "value_display": "19m 50s",
       "available": true
     },
-    "window_label": "Week of Aug 17 \u2013 Aug 23"
+    "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-21T11:04:36.125089+00:00"
+  "generated_at": "2026-08-21T11:05:21.941963+00:00"
 }
