@@ -2,7 +2,7 @@
   "slug": "presidential-dr",
   "period_id": "2026-W34",
   "talking_points": [
-    "57,403 total views this period -- Combined across all marketing channels \u2014 updated Aug 21, 2026.",
+    "57,403 total views this period -- Combined across all marketing channels \u2014 updated Aug 22, 2026.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -42,7 +42,7 @@
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-08-21",
+      "as_of": "2026-08-22",
       "status": "fresh"
     },
     {
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Aug 17 \u2013 Aug 23"
   },
-  "generated_at": "2026-08-21T11:04:36.160251+00:00"
+  "generated_at": "2026-08-22T11:04:33.312976+00:00"
 }
