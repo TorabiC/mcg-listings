@@ -1,9 +1,9 @@
 {
   "slug": "3936-s-48th",
-  "period_id": "2026-W34",
+  "period_id": "2026-W33",
   "talking_points": [
     "564 total views this period -- Combined across all marketing channels \u2014 updated Aug 22, 2026.",
-    "Views roughly flat vs. the prior period.",
+    "Views trending up 0.2% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
@@ -49,7 +49,7 @@
       "key": "loopnet",
       "label": "MCG's commercial marketplace network",
       "as_of": "2026-08-13",
-      "status": "stale"
+      "status": "fresh"
     },
     {
       "key": "clarity",
@@ -67,7 +67,7 @@
       "value_display": "--",
       "available": false
     },
-    "window_label": "Week of Aug 17 \u2013 Aug 23"
+    "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-22T11:04:33.301972+00:00"
+  "generated_at": "2026-08-22T11:05:17.459976+00:00"
 }
