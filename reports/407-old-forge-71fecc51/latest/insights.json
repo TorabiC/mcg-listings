@@ -1,9 +1,9 @@
 {
   "slug": "407-old-forge",
-  "period_id": "2026-W34",
+  "period_id": "2026-W33",
   "talking_points": [
-    "221,497 total views this period -- Combined across all marketing channels \u2014 updated Aug 23, 2026.",
-    "Views trending up 0.4% vs. the prior period.",
+    "221,495 total views this period -- Combined across all marketing channels \u2014 updated Aug 23, 2026.",
+    "Views trending up 4.2% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-16",
       "status": "fresh"
     },
     {
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "221,497",
+    "total_views": "221,495",
     "total_leads": "2",
     "page_engagement": {
       "metric": null,
       "value_display": "--",
       "available": false
     },
-    "window_label": "Week of Aug 17 \u2013 Aug 23"
+    "window_label": "Week of Aug 10 \u2013 Aug 16"
   },
-  "generated_at": "2026-08-23T11:05:51.998843+00:00"
+  "generated_at": "2026-08-23T11:06:33.934264+00:00"
 }
