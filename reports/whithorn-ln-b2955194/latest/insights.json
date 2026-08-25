@@ -1,9 +1,9 @@
 {
   "slug": "whithorn-ln",
-  "period_id": "2026-W34",
+  "period_id": "2026-W35",
   "talking_points": [
-    "70,236 total views this period -- Combined across all marketing channels \u2014 updated Aug 24, 2026.",
-    "Views trending up 0.1% vs. the prior period.",
+    "70,236 total views this period -- Combined across all marketing channels \u2014 updated Aug 25, 2026.",
+    "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
@@ -36,13 +36,13 @@
     {
       "key": "homes.com",
       "label": "MCG's national syndication partners",
-      "as_of": "2026-08-24",
+      "as_of": "2026-08-25",
       "status": "fresh"
     },
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-08-24",
+      "as_of": "2026-08-25",
       "status": "fresh"
     },
     {
@@ -67,7 +67,7 @@
       "value_display": "--",
       "available": false
     },
-    "window_label": "Week of Aug 17 \u2013 Aug 23"
+    "window_label": "Week of Aug 24 \u2013 Aug 30"
   },
-  "generated_at": "2026-08-24T11:07:36.339016+00:00"
+  "generated_at": "2026-08-25T11:06:23.679304+00:00"
 }
