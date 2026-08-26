@@ -1,9 +1,9 @@
 {
   "slug": "exminster-cir",
-  "period_id": "2026-W35",
+  "period_id": "2026-W34",
   "talking_points": [
     "76,656 total views this period -- Combined across all marketing channels \u2014 updated Aug 26, 2026.",
-    "Views trending up 0.9% vs. the prior period.",
+    "Views trending up 1.7% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-08-30",
+      "as_of": "2026-08-23",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-08-30",
+      "as_of": "2026-08-23",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-08-30",
+      "as_of": "2026-08-23",
       "status": "fresh"
     },
     {
@@ -67,7 +67,7 @@
       "value_display": "--",
       "available": false
     },
-    "window_label": "Week of Aug 24 \u2013 Aug 30"
+    "window_label": "Week of Aug 17 \u2013 Aug 23"
   },
-  "generated_at": "2026-08-26T11:05:50.358265+00:00"
+  "generated_at": "2026-08-26T11:06:33.278062+00:00"
 }
