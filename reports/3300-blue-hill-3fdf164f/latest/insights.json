@@ -1,9 +1,9 @@
 {
   "slug": "3300-blue-hill",
-  "period_id": "2026-W34",
+  "period_id": "2026-W35",
   "talking_points": [
-    "48,980 total views this period -- Combined across all marketing channels \u2014 updated Aug 26, 2026.",
-    "Views trending up 2.0% vs. the prior period.",
+    "48,974 total views this period -- Combined across all marketing channels \u2014 updated Aug 27, 2026.",
+    "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-08-23",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
@@ -42,7 +42,7 @@
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-08-26",
+      "as_of": "2026-08-27",
       "status": "fresh"
     },
     {
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "48,980",
+    "total_views": "48,974",
     "total_leads": "26",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
-      "value_display": "2m 37s",
+      "value_display": "0m 7s",
       "available": true
     },
-    "window_label": "Week of Aug 17 \u2013 Aug 23"
+    "window_label": "Week of Aug 24 \u2013 Aug 30"
   },
-  "generated_at": "2026-08-26T11:06:33.255372+00:00"
+  "generated_at": "2026-08-27T11:05:45.058965+00:00"
 }
