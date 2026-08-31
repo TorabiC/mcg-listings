@@ -1,6 +1,6 @@
 {
   "slug": "presidential-dr",
-  "period_id": "2026-W36",
+  "period_id": "2026-W35",
   "talking_points": [
     "57,402 total views this period -- Combined across all marketing channels \u2014 updated Aug 31, 2026.",
     "Views roughly flat vs. the prior period.",
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-09-06",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-09-06",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-09-06",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
@@ -67,7 +67,7 @@
       "value_display": "--",
       "available": false
     },
-    "window_label": "Week of Aug 31 \u2013 Sep 6"
+    "window_label": "Week of Aug 24 \u2013 Aug 30"
   },
-  "generated_at": "2026-08-31T11:06:26.025870+00:00"
+  "generated_at": "2026-08-31T11:07:08.000544+00:00"
 }
