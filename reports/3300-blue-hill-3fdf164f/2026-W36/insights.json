@@ -2,8 +2,8 @@
   "slug": "3300-blue-hill",
   "period_id": "2026-W36",
   "talking_points": [
-    "48,994 total views this period -- Combined across all marketing channels \u2014 updated Aug 31, 2026.",
-    "Views roughly flat vs. the prior period.",
+    "49,035 total views this period -- Combined across all marketing channels \u2014 updated Sep 1, 2026.",
+    "Views trending up 0.1% vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
   "pricing_flag": false,
@@ -42,7 +42,7 @@
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-08-31",
+      "as_of": "2026-09-01",
       "status": "fresh"
     },
     {
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "48,994",
+    "total_views": "49,035",
     "total_leads": "26",
     "page_engagement": {
-      "metric": null,
-      "value_display": "--",
-      "available": false
+      "metric": "avg_engagement_seconds",
+      "value_display": "1m 31s",
+      "available": true
     },
     "window_label": "Week of Aug 31 \u2013 Sep 6"
   },
-  "generated_at": "2026-08-31T11:06:26.006974+00:00"
+  "generated_at": "2026-09-01T11:06:34.958734+00:00"
 }

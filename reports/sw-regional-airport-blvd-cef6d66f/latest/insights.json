@@ -1,8 +1,8 @@
 {
   "slug": "sw-regional-airport-blvd",
-  "period_id": "2026-W35",
+  "period_id": "2026-W36",
   "talking_points": [
-    "102,389 total views this period -- Combined across all marketing channels \u2014 updated Aug 31, 2026.",
+    "102,385 total views this period -- Combined across all marketing channels \u2014 updated Sep 1, 2026.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-08-30",
+      "as_of": "2026-09-06",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-08-30",
+      "as_of": "2026-09-06",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-08-30",
+      "as_of": "2026-09-06",
       "status": "fresh"
     },
     {
@@ -37,12 +37,12 @@
       "key": "homes.com",
       "label": "MCG's national syndication partners",
       "as_of": "2026-08-26",
-      "status": "fresh"
+      "status": "stale"
     },
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-08-31",
+      "as_of": "2026-09-01",
       "status": "fresh"
     },
     {
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "102,389",
+    "total_views": "102,385",
     "total_leads": "1",
     "page_engagement": {
-      "metric": "avg_engagement_seconds",
-      "value_display": "0m 23s",
-      "available": true
+      "metric": null,
+      "value_display": "--",
+      "available": false
     },
-    "window_label": "Week of Aug 24 \u2013 Aug 30"
+    "window_label": "Week of Aug 31 \u2013 Sep 6"
   },
-  "generated_at": "2026-08-31T11:07:07.993288+00:00"
+  "generated_at": "2026-09-01T11:06:34.983419+00:00"
 }
