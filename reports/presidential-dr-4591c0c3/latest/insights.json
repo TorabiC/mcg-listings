@@ -1,8 +1,8 @@
 {
   "slug": "presidential-dr",
-  "period_id": "2026-W36",
+  "period_id": "2026-W35",
   "talking_points": [
-    "57,402 total views this period -- Combined across all marketing channels \u2014 updated Sep 1, 2026.",
+    "57,403 total views this period -- Combined across all marketing channels \u2014 updated Sep 1, 2026.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-09-06",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-09-06",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-09-06",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "57,402",
+    "total_views": "57,403",
     "total_leads": "2",
     "page_engagement": {
       "metric": null,
       "value_display": "--",
       "available": false
     },
-    "window_label": "Week of Aug 31 \u2013 Sep 6"
+    "window_label": "Week of Aug 24 \u2013 Aug 30"
   },
-  "generated_at": "2026-09-01T11:06:34.990704+00:00"
+  "generated_at": "2026-09-01T11:07:18.931770+00:00"
 }
