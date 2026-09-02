@@ -1,8 +1,8 @@
 {
   "slug": "1716-w-holly",
-  "period_id": "2026-W36",
+  "period_id": "2026-W35",
   "talking_points": [
-    "67,424 total views this period -- Combined across all marketing channels \u2014 updated Sep 2, 2026.",
+    "67,442 total views this period -- Combined across all marketing channels \u2014 updated Sep 2, 2026.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-09-06",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-09-06",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-09-06",
+      "as_of": "2026-08-30",
       "status": "fresh"
     },
     {
@@ -37,7 +37,7 @@
       "key": "homes.com",
       "label": "MCG's national syndication partners",
       "as_of": "2026-08-26",
-      "status": "stale"
+      "status": "fresh"
     },
     {
       "key": "crexi",
@@ -60,14 +60,14 @@
     }
   ],
   "headline": {
-    "total_views": "67,424",
+    "total_views": "67,442",
     "total_leads": "4",
     "page_engagement": {
-      "metric": null,
-      "value_display": "--",
-      "available": false
+      "metric": "avg_engagement_seconds",
+      "value_display": "2m 39s",
+      "available": true
     },
-    "window_label": "Week of Aug 31 \u2013 Sep 6"
+    "window_label": "Week of Aug 24 \u2013 Aug 30"
   },
-  "generated_at": "2026-09-02T11:06:28.694661+00:00"
+  "generated_at": "2026-09-02T11:07:11.296466+00:00"
 }
