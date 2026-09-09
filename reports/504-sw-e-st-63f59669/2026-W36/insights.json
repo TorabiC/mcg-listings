@@ -2,7 +2,7 @@
   "slug": "504-sw-e-st",
   "period_id": "2026-W36",
   "talking_points": [
-    "70,961 total views this period -- Combined across all marketing channels \u2014 updated Sep 8, 2026.",
+    "70,963 total views this period -- Combined across all marketing channels \u2014 updated Sep 9, 2026.",
     "Views roughly flat vs. the prior period.",
     "Keep the seller warm with a call this week; no urgent flags this period."
   ],
@@ -42,7 +42,7 @@
     {
       "key": "crexi",
       "label": "MCG's commercial marketplace network",
-      "as_of": "2026-09-08",
+      "as_of": "2026-09-09",
       "status": "fresh"
     },
     {
@@ -60,7 +60,7 @@
     }
   ],
   "headline": {
-    "total_views": "70,961",
+    "total_views": "70,963",
     "total_leads": "0",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
@@ -69,5 +69,5 @@
     },
     "window_label": "Week of Aug 31 \u2013 Sep 6"
   },
-  "generated_at": "2026-09-08T11:07:45.812686+00:00"
+  "generated_at": "2026-09-09T11:08:00.905794+00:00"
 }
