@@ -1,6 +1,6 @@
 {
   "slug": "sw-regional-airport-blvd",
-  "period_id": "2026-W37",
+  "period_id": "2026-W36",
   "talking_points": [
     "102,387 total views this period -- Combined across all marketing channels \u2014 updated Sep 11, 2026.",
     "Views roughly flat vs. the prior period.",
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-09-13",
+      "as_of": "2026-09-06",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-09-13",
+      "as_of": "2026-09-06",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-09-13",
+      "as_of": "2026-09-06",
       "status": "fresh"
     },
     {
@@ -67,7 +67,7 @@
       "value_display": "--",
       "available": false
     },
-    "window_label": "Week of Sep 7 \u2013 Sep 13"
+    "window_label": "Week of Aug 31 \u2013 Sep 6"
   },
-  "generated_at": "2026-09-11T11:06:54.902833+00:00"
+  "generated_at": "2026-09-11T11:07:58.097886+00:00"
 }
