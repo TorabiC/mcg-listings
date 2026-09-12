@@ -1,6 +1,6 @@
 {
   "slug": "504-sw-e-st",
-  "period_id": "2026-W37",
+  "period_id": "2026-W36",
   "talking_points": [
     "70,964 total views this period -- Combined across all marketing channels \u2014 updated Sep 12, 2026.",
     "Views roughly flat vs. the prior period.",
@@ -12,19 +12,19 @@
     {
       "key": "idx",
       "label": "the MCG website",
-      "as_of": "2026-09-13",
+      "as_of": "2026-09-06",
       "status": "fresh"
     },
     {
       "key": "cc",
       "label": "MCG's email marketing program",
-      "as_of": "2026-09-13",
+      "as_of": "2026-09-06",
       "status": "fresh"
     },
     {
       "key": "ga4",
       "label": "MCG website analytics",
-      "as_of": "2026-09-13",
+      "as_of": "2026-09-06",
       "status": "fresh"
     },
     {
@@ -64,10 +64,10 @@
     "total_leads": "0",
     "page_engagement": {
       "metric": "avg_engagement_seconds",
-      "value_display": "0m 11s",
+      "value_display": "6m 40s",
       "available": true
     },
-    "window_label": "Week of Sep 7 \u2013 Sep 13"
+    "window_label": "Week of Aug 31 \u2013 Sep 6"
   },
-  "generated_at": "2026-09-12T11:07:43.001587+00:00"
+  "generated_at": "2026-09-12T11:08:44.493434+00:00"
 }
