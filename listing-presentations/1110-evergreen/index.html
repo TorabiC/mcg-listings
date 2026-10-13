@@ -40,9 +40,10 @@ a { color: inherit; text-decoration: none; }
 
 /* ===== UTILITY ===== */
 .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-.section { padding: 80px 0; }
+.section { padding: 96px 0; }
 .section-alt { background: var(--off-white); }
 .section-dark { background: var(--navy); color: var(--white); }
+.section-dark + .section, .section + .section-alt, .section-alt + .section { border-top: none; }
 .text-gold { color: var(--gold); }
 .text-crimson { color: var(--crimson); }
 .text-center { text-align: center; }
@@ -77,14 +78,15 @@ a { color: inherit; text-decoration: none; }
 /* ===== HERO ===== */
 .hero {
   position: relative; min-height: 100vh; display: flex; align-items: flex-end;
-  background: linear-gradient(180deg, rgba(22,22,42,0.92) 0%, rgba(22,22,42,0.55) 50%, rgba(22,22,42,0.92) 100%), url('hero.jpg') center/cover no-repeat;
+  background: linear-gradient(180deg, rgba(22,22,42,0.88) 0%, rgba(22,22,42,0.45) 40%, rgba(22,22,42,0.85) 100%), url('hero.jpg') center/cover no-repeat;
   padding: 120px 0 80px; overflow: hidden; margin-bottom: -120px; z-index: 1;
+  width: 100vw; margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%);
 }
-html.in-iframe .hero { min-height: 900px; }
-.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--crimson); z-index: 2; }
-.hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 200px; background: linear-gradient(180deg, transparent 0%, var(--off-white) 100%); z-index: 2; pointer-events: none; }
+html.in-iframe .hero { min-height: 900px; width: 100%; margin-left: 0; margin-right: 0; }
+.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--crimson) 0%, var(--gold) 100%); z-index: 2; }
+.hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 240px; background: linear-gradient(180deg, transparent 0%, var(--off-white) 100%); z-index: 2; pointer-events: none; }
 .hero + .section, .hero + .section-alt { position: relative; z-index: 2; }
-.hero .container { position: relative; z-index: 1; width: 100%; }
+.hero .container { position: relative; z-index: 1; width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 .hero-badge {
   display: inline-block; background: var(--crimson); color: var(--white);
   font-size: 11px; font-weight: 900; letter-spacing: 5px; padding: 10px 24px;
@@ -102,10 +104,11 @@ html.in-iframe .hero { min-height: 900px; }
 .hero-logo .sub { font-size: 9px; color: var(--crimson); letter-spacing: 1px; }
 
 /* ===== SECTION HEADERS ===== */
-.section-header { margin-bottom: 48px; }
-.section-header .label { margin-bottom: 12px; display: block; }
-.section-header h2 { font-family: var(--font-serif); font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.15; margin-bottom: 16px; }
-.section-header p { font-size: 17px; color: var(--gray-500); max-width: 640px; line-height: 1.7; }
+.section-header { margin-bottom: 56px; }
+.section-header .label { margin-bottom: 14px; display: block; color: var(--crimson); }
+.section-header h2 { font-family: var(--font-serif); font-size: clamp(30px, 4.5vw, 46px); font-weight: 700; line-height: 1.12; margin-bottom: 18px; }
+.section-header h2 em { font-style: italic; color: var(--crimson); }
+.section-header p { font-size: 17px; color: var(--gray-500); max-width: 640px; line-height: 1.75; }
 .section-header.centered p { margin-left: auto; margin-right: auto; }
 
 /* ===== ABOUT BROKER SECTION ===== */
@@ -482,8 +485,41 @@ html.in-iframe .hero { min-height: 900px; }
 .qr-placeholder img { width: 100%; height: 100%; border-radius: 4px; object-fit: contain; }
 
 /* ===== ANIMATIONS ===== */
-.animate { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.animate { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .animate.visible { opacity: 1; transform: translateY(0); }
+.animate-fade { opacity: 0; transition: opacity 0.8s ease-out; }
+.animate-fade.visible { opacity: 1; }
+.animate-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.animate-left.visible { opacity: 1; transform: translateX(0); }
+.animate-right { opacity: 0; transform: translateX(40px); transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.animate-right.visible { opacity: 1; transform: translateX(0); }
+.animate-scale { opacity: 0; transform: scale(0.95); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.animate-scale.visible { opacity: 1; transform: scale(1); }
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+
+/* ===== ENHANCED HOVER EFFECTS ===== */
+.val-card, .snapshot-card, .investor-card, .proactive-card, .why-card, .target-card, .snap-card, .value-card {
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s ease !important;
+}
+.val-card:hover, .snapshot-card:hover, .investor-card:hover, .proactive-card:hover, .why-card:hover, .target-card:hover, .snap-card:hover, .value-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 20px 60px rgba(22,22,42,0.15) !important;
+}
+.cma-table-wrap { transition: box-shadow 0.3s ease; }
+.cma-table-wrap:hover { box-shadow: 0 8px 32px rgba(22,22,42,0.08); }
+.section-header h2 { transition: letter-spacing 0.4s ease; }
+.accent-line, .accent-line-gold { transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); width: 60px; }
+.animate.visible .accent-line, .animate.visible .accent-line-gold,
+.visible .accent-line, .visible .accent-line-gold { width: 80px; }
+
+/* ===== PARALLAX-STYLE HERO ===== */
+@supports (background-attachment: fixed) {
+  .hero { background-attachment: fixed; }
+  @media (max-width: 768px) { .hero { background-attachment: scroll; } }
+}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 992px) {
@@ -505,7 +541,7 @@ html.in-iframe .hero { min-height: 900px; }
 }
 @media (max-width: 600px) {
   .container { padding: 0 16px; }
-  .section { padding: 56px 0; }
+  .section { padding: 64px 0; }
   .value-grid { grid-template-columns: 1fr; }
   .snapshot-grid { grid-template-columns: 1fr 1fr; }
   .homes-stats-row { grid-template-columns: 1fr 1fr; }
@@ -565,7 +601,7 @@ html.in-iframe .hero { min-height: 900px; }
   .section-alt { background: var(--off-white) !important; }
   .value-card, .why-card, .snap-card, .platform-card, .investor-card, .target-card, .mp-feature { break-inside: avoid; }
   .matterport-section { background: var(--navy) !important; }
-  .animate { opacity: 1 !important; transform: none !important; }
+  .animate, .animate-fade, .animate-left, .animate-right, .animate-scale { opacity: 1 !important; transform: none !important; }
   .cma-table-wrap { overflow: visible; }
   .cma-table { min-width: unset; }
   a[href]::after { content: none !important; }
@@ -623,10 +659,10 @@ html.in-iframe .hero { min-height: 900px; }
 <section class="section" id="broker">
   <div class="container">
     <div class="broker-grid">
-      <div class="broker-img-wrap">
+      <div class="broker-img-wrap animate-left">
         <img src="broker-headshot.jpg" alt="Cameron Torabi — Principal Broker, Mason Capital Group">
       </div>
-      <div class="broker-details">
+      <div class="broker-details animate-right">
         <div class="section-header">
           <span class="label text-crimson">Your Broker</span>
           <h2>Cameron Torabi</h2>
@@ -652,13 +688,13 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- THE MCG DIFFERENCE — PROACTIVE APPROACH -->
 <section class="section section-dark" id="proactive-approach">
   <div class="container">
-    <div class="section-header text-center centered mb-48">
+    <div class="section-header text-center centered mb-48 animate">
       <span class="label text-gold">A Different Kind of Broker</span>
       <h2 style="color:var(--white)">We Don't Wait for Opportunities.<br>We Create Them.</h2>
       <div class="accent-line-gold accent-line-center mb-24" style="margin-top:16px"></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">
-      <div>
+      <div class="animate-left">
         <p style="color:var(--gray-300);font-size:16px;line-height:1.8;margin-bottom:24px;">
           Shiv, you've experienced this firsthand &mdash; three times now. Each time we connected, it wasn't because you reached out to me. It was because I was actively canvassing for on-and-off-market properties that matched the specific needs of my clients. That's how I found 1110 Evergreen Street, and that's how I found you.
         </p>
@@ -669,8 +705,8 @@ html.in-iframe .hero { min-height: 900px; }
           I operate differently. I manage your property like a portfolio manager manages an asset &mdash; with a targeted acquisition strategy, direct outreach to qualified buyers, and a network built through years of proactive relationship-building. Your property won't sit waiting to be discovered. I'll put it directly in front of the buyers, investors, and operators who need it.
         </p>
       </div>
-      <div>
-        <div style="background:rgba(196,163,90,0.08);border:1px solid rgba(196,163,90,0.25);padding:40px 32px;margin-bottom:24px;">
+      <div class="animate-right">
+        <div style="background:rgba(196,163,90,0.08);border:1px solid rgba(196,163,90,0.25);padding:40px 32px;margin-bottom:24px;border-radius:4px;">
           <h4 style="font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--gold);margin-bottom:20px;">The Portfolio Manager Approach</h4>
           <div style="display:flex;flex-direction:column;gap:16px;">
             <div style="display:flex;gap:12px;align-items:flex-start;">
@@ -707,29 +743,29 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- WHY MASON CAPITAL GROUP — VALUE PROPOSITIONS -->
 <section class="section section-alt" id="why-mcg-intro">
   <div class="container">
-    <div class="section-header text-center centered mb-48">
+    <div class="section-header text-center centered mb-48 animate">
       <span class="label text-crimson">The MCG Advantage</span>
       <h2>Why Mason Capital Group Is the<br>Right Choice for Your Commercial Listing</h2>
       <div class="accent-line accent-line-center mb-24" style="margin-top:16px"></div>
       <p>We're not just brokers — we're a full-service real estate investment firm. That means we bring a level of market intelligence, marketing firepower, and transaction expertise that traditional agents simply can't match. For a commercial asset like 1110 Evergreen, that distinction matters.</p>
     </div>
     <div class="value-grid">
-      <div class="value-card animate">
+      <div class="value-card animate-scale stagger-1">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="32" height="28" rx="3" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M10 26V18" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M18 26V14" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M26 26V10" stroke="#ab012e" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="16" r="2" fill="#ab012e"/><circle cx="18" cy="12" r="2" fill="#ab012e"/><circle cx="26" cy="8" r="2" fill="#ab012e"/><line x1="10" y1="16" x2="18" y2="12" stroke="#ab012e" stroke-width="1.5"/><line x1="18" y1="12" x2="26" y2="8" stroke="#ab012e" stroke-width="1.5"/></svg></div>
         <h4>Licensed Principal Broker</h4>
         <p>As a Principal Broker in Arkansas, I bring executive-level expertise to every commercial transaction. This means I price your property with precision based on real market data — not guesswork — so you maximize your return.</p>
       </div>
-      <div class="value-card animate">
+      <div class="value-card animate-scale stagger-2">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="15" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="6" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="2" fill="#ab012e"/><line x1="18" y1="3" x2="18" y2="9" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="27" x2="18" y2="33" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="9" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="27" y1="18" x2="33" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/></svg></div>
         <h4>Investment-Grade Marketing</h4>
         <p>We market your property the way institutional investors market assets — with professional photography, digital offering memorandums, targeted digital ad campaigns, and syndication across nearly 100 platforms including Zillow, Realtor.com, Redfin, Crexi, and LoopNet.</p>
       </div>
-      <div class="value-card animate">
+      <div class="value-card animate-scale stagger-3">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="10" r="5" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="8" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="28" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><path d="M18 15V20" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><path d="M18 20L8 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/><path d="M18 20L28 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/></svg></div>
         <h4>Commercial &amp; Investor Network</h4>
         <p>Our active investor network and relationships with childcare operators, school groups, retail tenants, and NWA buy-and-hold investors mean your property gets seen by serious, qualified buyers from day one — not just casual browsers.</p>
       </div>
-      <div class="value-card animate">
+      <div class="value-card animate-scale stagger-4">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 4L22 14H32L24 20L27 31L18 24L9 31L12 20L4 14H14L18 4Z" stroke="#c4a35a" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M14 18L17 21L23 15" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h4>Premium Portal Placement</h4>
         <p>As a premium member agent on the nation's top real estate portals, your listing gets priority placement above non-member listings, a larger display with your agent photo, and 25X more buyer exposure. This translates to 540% more favorites and 515% more shares.</p>
@@ -751,13 +787,13 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- PROPERTY DETAILS -->
 <section class="section" id="details">
   <div class="container">
-    <div class="section-header mb-48">
+    <div class="section-header mb-48 animate">
       <span class="label text-crimson">Property Details</span>
       <h2>1110 Evergreen Street</h2>
       <div class="accent-line mb-16" style="margin-top:12px"></div>
       <p>A 12,322 SF commercial facility on 1.97 acres with C-2 zoning in Bentonville, directly across from Walmart Global Headquarters. Move-in ready with mobile walls, LED lighting, and ample parking. Ideal for childcare/school operators, retail tenants, corporate end-users, or long-term buy-and-hold investors seeking stable NWA commercial assets.</p>
     </div>
-    <div class="details-grid">
+    <div class="details-grid animate-fade">
       <table class="detail-table">
         <caption>Property Facts</caption>
         <tr><td>Property Type</td><td>Commercial / Retail / Childcare-School</td></tr>
@@ -807,13 +843,13 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- VALUATION -->
 <section class="section section-dark" id="valuation">
   <div class="container">
-    <div class="section-header text-center centered mb-48">
+    <div class="section-header text-center centered mb-48 animate">
       <span class="label text-gold">Market Analysis</span>
       <h2 style="color:var(--white)">Your Property's Market Position</h2>
       <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
       <p style="color:var(--gray-300)">Using comparable market analysis across active, pending, sold, and expired commercial properties in the Bentonville corridor, we've established a data-driven market position for your property. This CMA provides the foundation for a strategic pricing decision.</p>
     </div>
-    <div class="val-cards mb-48">
+    <div class="val-cards mb-48 animate">
       <div class="val-card">
         <div class="val-label">Average Sold Price</div>
         <div class="val-amount">$1,487,500</div>
@@ -896,7 +932,7 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- CMA / COMPARABLES -->
 <section class="section section-alt" id="cma">
   <div class="container">
-    <div class="section-header mb-48">
+    <div class="section-header mb-48 animate">
       <span class="label text-crimson">Comparative Market Analysis</span>
       <h2>Comparable Sales &amp; Active Listings</h2>
       <div class="accent-line mb-16" style="margin-top:12px"></div>
@@ -904,7 +940,7 @@ html.in-iframe .hero { min-height: 900px; }
       <p style="font-size:13px;color:var(--crimson);font-weight:600;margin-top:12px;margin-bottom:0;">&#128204; Each listing below is interactive — click any address to view the full property details on masoncapitalgroup.com for deeper understanding and comparison.</p>
     </div>
 
-    <div class="cma-table-wrap">
+    <div class="cma-table-wrap animate-fade">
       <table class="cma-table">
         <thead>
           <tr>
@@ -1083,28 +1119,15 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- TAX HISTORY -->
 <section class="section">
   <div class="container">
-    <div class="section-header mb-48">
+    <div class="section-header mb-48 animate">
       <span class="label text-crimson">Public Records</span>
       <h2>Tax Assessment</h2>
       <div class="accent-line mb-16" style="margin-top:12px"></div>
       <p>Current annual tax for 1110 Evergreen Street, Bentonville, AR 72712 is $20,864. This reflects the commercial assessment on a 12,322 SF facility on 1.97 acres with C-2 zoning.</p>
     </div>
 
-    <!-- Tax Bar Chart -->
-    <div class="chart-container animate mb-32">
-      <h4>Annual Tax &mdash; Current Year</h4>
-      <div class="bar-chart" style="height:220px">
-        <div class="bar-group">
-          <div class="bar-value" style="color:var(--crimson);font-weight:900">$20,864</div>
-          <div class="bar" style="height:100%; background:linear-gradient(180deg, #d4304f, var(--crimson));"></div>
-          <div class="bar-label" style="font-weight:900;color:var(--crimson)">Current</div>
-        </div>
-      </div>
-      <p style="text-align:center;font-size:13px;color:var(--gray-500);margin-top:16px;">Source: Benton County Assessor. Commercial property assessment.</p>
-    </div>
-
     <!-- Property Records Table -->
-    <div class="cma-table-wrap" style="margin-top:24px;">
+    <div class="cma-table-wrap animate-fade" style="margin-top:24px;">
       <table class="tax-table">
         <thead>
           <tr><th style="text-align:left;">Property Record</th><th style="text-align:left;">Detail</th></tr>
@@ -1127,7 +1150,7 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- GLOBAL MARKETING / SYNDICATION -->
 <section class="section section-dark" id="syndication">
   <div class="container">
-    <div class="section-header text-center centered mb-48">
+    <div class="section-header text-center centered mb-48 animate">
       <span class="label text-gold">Global Marketing Reach</span>
       <h2 style="color:var(--white)">Your Property Advertised on<br>Nearly 100 Platforms</h2>
       <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
@@ -1181,17 +1204,17 @@ html.in-iframe .hero { min-height: 900px; }
 
     <!-- Investor / Builder / Developer Targeting -->
     <div class="investor-cards">
-      <div class="investor-card animate">
+      <div class="investor-card animate-scale stagger-1">
         <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="6" width="26" height="22" rx="2" stroke="#c4a35a" stroke-width="2"/><path d="M11 6V3a1 1 0 011-1h8a1 1 0 011 1v3" stroke="#c4a35a" stroke-width="2"/><path d="M3 14h26" stroke="rgba(196,163,90,0.4)" stroke-width="1.5"/><circle cx="16" cy="14" r="3" fill="#c4a35a"/></svg></div>
         <h4>Investor Targeting</h4>
         <p>Your property is showcased on Crexi, LoopNet, and other commercial real estate portals where active investors search for acquisition opportunities. We also leverage our private investor network for off-market introductions to NWA buy-and-hold investors.</p>
       </div>
-      <div class="investor-card animate">
+      <div class="investor-card animate-scale stagger-2">
         <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 28h24" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M8 28V16l8-10 8 10v12" stroke="#c4a35a" stroke-width="2" stroke-linejoin="round" fill="none"/><rect x="13" y="20" width="6" height="8" stroke="#c4a35a" stroke-width="1.5" fill="none"/><path d="M2 16l14-12 14 12" stroke="#c4a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         <h4>End-User &amp; Operator Outreach</h4>
         <p>Targeted advertising and direct outreach to childcare operators, school organizations, retail tenants, and corporate users looking for move-in ready commercial space in Bentonville's premier location across from Walmart Global HQ.</p>
       </div>
-      <div class="investor-card animate">
+      <div class="investor-card animate-scale stagger-3">
         <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="#c4a35a" stroke-width="2"/><ellipse cx="16" cy="16" rx="6" ry="13" stroke="#c4a35a" stroke-width="1.5" fill="none"/><path d="M3 12h26M3 20h26" stroke="rgba(196,163,90,0.5)" stroke-width="1.5"/><path d="M16 3v26" stroke="rgba(196,163,90,0.3)" stroke-width="1"/></svg></div>
         <h4>International Exposure</h4>
         <p>Through platforms like Juwai.com, Investorist, and global MLS syndication networks, your property reaches qualified international buyers — particularly those targeting NWA for its economic growth driven by Walmart, Tyson, and J.B. Hunt.</p>
@@ -1203,14 +1226,14 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- MCG DIGITAL MARKETING PLATFORM -->
 <section class="section" id="homes">
   <div class="container">
-    <div class="section-header text-center centered mb-48">
+    <div class="section-header text-center centered mb-48 animate">
       <span class="label text-crimson">MCG Digital Marketing Platform</span>
       <h2>Your Listing Gets<br>Unmatched Digital Exposure</h2>
       <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
       <p>Through our exclusive premium platform partnerships, I give your listing a level of digital exposure and buyer engagement that other agents in this market simply cannot offer.</p>
     </div>
 
-    <div class="homes-grid mb-48">
+    <div class="homes-grid mb-48 animate-fade">
       <div>
         <div class="homes-feature-list">
           <div class="homes-feature">
@@ -1246,7 +1269,7 @@ html.in-iframe .hero { min-height: 900px; }
       </div>
     </div>
 
-    <div class="homes-stats-row">
+    <div class="homes-stats-row animate">
       <div class="homes-stat"><div class="big">110M+</div><div class="sm">Monthly Visitors</div></div>
       <div class="homes-stat"><div class="big">143M+</div><div class="sm">Network Reach</div></div>
       <div class="homes-stat"><div class="big">14K+</div><div class="sm">Buyers Reached</div></div>
@@ -1255,14 +1278,14 @@ html.in-iframe .hero { min-height: 900px; }
 
     <!-- How We Find Your Buyer -->
     <div style="margin-top:64px;">
-      <div class="section-header text-center centered mb-48">
+      <div class="section-header text-center centered mb-48 animate">
         <span class="label text-crimson">Precision Marketing</span>
         <h2>How We Find<br>Your Buyer</h2>
         <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
         <p>We don't just list your property — we actively market it to qualified buyers through precision campaigns across multiple channels.</p>
       </div>
 
-      <div class="reach-banner">
+      <div class="reach-banner animate">
         <div class="reach-cell">
           <div class="reach-num">110M<span style="font-size:24px">+</span></div>
           <div class="reach-unit">Monthly Visitors</div>
@@ -1299,7 +1322,7 @@ html.in-iframe .hero { min-height: 900px; }
       </div>
 
       <!-- CoStar Network Visual -->
-      <div class="network-visual">
+      <div class="network-visual animate-fade">
         <div class="network-center">
           <div class="nc-label">Your Listing Reaches</div>
           <div class="nc-brand">Our Exclusive Partner Network</div>
@@ -1327,29 +1350,29 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- WHY MCG (COMPETITION) -->
 <section class="section section-dark">
   <div class="container">
-    <div class="section-header text-center centered mb-48">
+    <div class="section-header text-center centered mb-48 animate">
       <span class="label text-gold">Superior to the Competition</span>
       <h2 style="color:var(--white)">What Sets Mason Capital Group<br>Apart from Traditional Agents</h2>
       <div class="accent-line-gold accent-line-center mb-16" style="margin-top:16px"></div>
       <p style="color:var(--gray-300)">When comparing Mason Capital Group to traditional brokerages in Northwest Arkansas, the differences are clear. Here's what you get with us that you won't find anywhere else.</p>
     </div>
     <div class="why-grid">
-      <div class="why-card animate">
+      <div class="why-card animate stagger-1">
         <div class="num">01</div>
         <h4>Proactive Off-Market Discovery</h4>
         <p>I didn't wait for this listing to come to me — I found 1110 Evergreen while proactively searching for opportunities for another client. I contacted you directly, and I've already shown this property multiple times to qualified buyers before it's even listed. Traditional agents wait for business. We go find it. That's the difference between a reactive agent and a proactive investment firm.</p>
       </div>
-      <div class="why-card animate">
+      <div class="why-card animate stagger-2">
         <div class="num">02</div>
         <h4>Full-Service Investment Firm, Not Just a Brokerage</h4>
         <p>Most agents work for a traditional brokerage and follow a cookie-cutter approach. Mason Capital Group operates as a real estate investment and trust firm — which means we bring institutional-level market analysis, negotiation power, and marketing sophistication to every commercial listing. We understand how investors think because we are investors.</p>
       </div>
-      <div class="why-card animate">
+      <div class="why-card animate stagger-3">
         <div class="num">03</div>
         <h4>Technology-Forward Marketing</h4>
         <p>From premium portal priority placement and professional aerial media to digital retargeting across 1,000+ websites, custom offering memorandums, and AI-powered market analytics — we deploy a marketing technology stack that most traditional agents simply don't have access to.</p>
       </div>
-      <div class="why-card animate">
+      <div class="why-card animate stagger-4">
         <div class="num">04</div>
         <h4>Nearly 100 Platform Syndication</h4>
         <p>Your listing doesn't just go on the MLS. We syndicate to Zillow, Realtor.com, Redfin, Crexi, LoopNet, and nearly 100 additional platforms — targeting commercial buyers, investors, childcare operators, and end-users nationally and internationally. The previous listing's failure to sell in 344 days was a marketing problem, not a property problem.</p>
@@ -1371,29 +1394,29 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- MARKET SNAPSHOT -->
 <section class="section section-alt">
   <div class="container">
-    <div class="section-header text-center centered mb-48">
+    <div class="section-header text-center centered mb-48 animate">
       <span class="label text-crimson">Market Snapshot</span>
       <h2>Bentonville Commercial Real Estate at a Glance</h2>
       <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
       <p>Bentonville continues to be one of the fastest-growing commercial real estate markets in Northwest Arkansas, driven by Walmart's Global HQ expansion, Fortune 500 vendor presence, and sustained population growth.</p>
     </div>
     <div class="snapshot-grid">
-      <div class="snap-card animate">
+      <div class="snap-card animate-scale stagger-1">
         <div class="snap-val">$2.52M</div>
         <div class="snap-label">Avg Active Price</div>
         <div class="snap-change" style="color:#2e7d32">8 active comps</div>
       </div>
-      <div class="snap-card animate">
+      <div class="snap-card animate-scale stagger-2">
         <div class="snap-val">89</div>
         <div class="snap-label">Avg Days on Market</div>
         <div class="snap-change" style="color:var(--gold)">Sold comps average</div>
       </div>
-      <div class="snap-card animate">
+      <div class="snap-card animate-scale stagger-3">
         <div class="snap-val">$524.77</div>
         <div class="snap-label">Avg $/SF (Active)</div>
         <div class="snap-change" style="color:#2e7d32">Strong market</div>
       </div>
-      <div class="snap-card animate">
+      <div class="snap-card animate-scale stagger-4">
         <div class="snap-val">$1.49M</div>
         <div class="snap-label">Avg Sold Price</div>
         <div class="snap-change" style="color:var(--gray-500)">Bentonville corridor</div>
@@ -1405,14 +1428,14 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- WEBSITE & SMART SIGNAGE -->
 <section class="section" id="web-signage">
   <div class="container">
-    <div class="section-header text-center centered mb-48">
+    <div class="section-header text-center centered mb-48 animate">
       <span class="label text-crimson">Digital Infrastructure</span>
       <h2>A Website Built for<br>Global Reach</h2>
       <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
       <p>Our state-of-the-art website isn't just a local listing page — it's a global marketing engine optimized to attract buyers, investors, and commercial operators from around the world.</p>
     </div>
 
-    <div class="web-global-grid mb-48">
+    <div class="web-global-grid mb-48 animate-fade">
       <div>
         <div class="web-feature-list">
           <div class="web-feature">
@@ -1499,9 +1522,9 @@ document.querySelectorAll('.nav-links a').forEach(function(link) {
   });
 });
 
-// Scroll Animations
+// Scroll Animations — enhanced with multiple animation types
 (function() {
-  var els = document.querySelectorAll('.animate');
+  var els = document.querySelectorAll('.animate, .animate-fade, .animate-left, .animate-right, .animate-scale');
   if (!els.length) return;
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
@@ -1510,8 +1533,33 @@ document.querySelectorAll('.nav-links a').forEach(function(link) {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   els.forEach(function(el) { observer.observe(el); });
+})();
+
+// Parallax-lite: subtle shift on hero background
+(function() {
+  var hero = document.querySelector('.hero');
+  if (!hero || window.innerWidth < 768) return;
+  window.addEventListener('scroll', function() {
+    var scrolled = window.pageYOffset;
+    if (scrolled < window.innerHeight * 1.2) {
+      hero.style.backgroundPositionY = (50 + scrolled * 0.03) + '%';
+    }
+  }, { passive: true });
+})();
+
+// Nav background opacity on scroll
+(function() {
+  var nav = document.querySelector('.nav');
+  if (!nav) return;
+  window.addEventListener('scroll', function() {
+    if (window.pageYOffset > 100) {
+      nav.style.background = 'rgba(22,22,42,0.98)';
+    } else {
+      nav.style.background = 'rgba(22,22,42,0.95)';
+    }
+  }, { passive: true });
 })();
 
 // Smooth scroll offset for fixed nav
