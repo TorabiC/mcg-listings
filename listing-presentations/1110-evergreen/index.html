@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script>if(window.self!==window.top)document.documentElement.classList.add('in-iframe');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Listing Presentation — 1110 Evergreen Street, Bentonville | Mason Capital Group</title>
 <meta name="description" content="Comprehensive market analysis and listing presentation for 1110 Evergreen Street, Bentonville, AR 72712. Prepared by Cameron Torabi, Principal Broker at Mason Capital Group Real Estate Investment & Trust.">
@@ -76,21 +75,16 @@ a { color: inherit; text-decoration: none; }
 .nav-links a:hover { color: var(--gold); }
 .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 24px; cursor: pointer; }
 
-/* ===== IN-IFRAME OVERRIDES ===== */
-html.in-iframe .nav { position: relative; top: auto; left: auto; right: auto; z-index: 10; margin-top: 80px; }
-html.in-iframe .hero { padding-top: 40px; }
-
 /* ===== HERO ===== */
 .hero {
   position: relative; min-height: 720px; display: flex; align-items: flex-end;
   background:
-    linear-gradient(180deg, rgba(22,22,42,0.35) 0%, rgba(22,22,42,0.10) 30%, rgba(22,22,42,0.08) 50%, rgba(22,22,42,0.30) 70%, rgba(22,22,42,0.80) 100%),
-    url('hero.jpg') center/cover no-repeat;
-  padding: 120px 0 80px; overflow: hidden; margin-bottom: -100px; z-index: 1;
+    linear-gradient(180deg, rgba(22,22,42,0.80) 0%, rgba(22,22,42,0.45) 35%, rgba(22,22,42,0.40) 55%, rgba(22,22,42,0.65) 75%, rgba(22,22,42,0.95) 100%),
+    url('hero.jpg') center 40%/cover no-repeat;
+  padding: 120px 0 80px; overflow: hidden;
 }
 .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--crimson); z-index: 2; }
-.hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 200px; background: linear-gradient(180deg, transparent 0%, var(--white) 100%); z-index: 2; pointer-events: none; }
-.hero + .section, .hero + .section-alt { position: relative; z-index: 2; }
+.hero::after  { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: var(--crimson); z-index: 2; }
 .hero .container { position: relative; z-index: 1; width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 .hero-badge {
   display: inline-block; background: var(--crimson); color: var(--white);
@@ -1697,6 +1691,49 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   ];
   map.fitBounds(L.latLngBounds(allCoords).pad(0.15));
 })();
+</script>
+
+<!-- In-iframe nav + hero adjustments (matches North Walton design) -->
+<script>
+if (window.self !== window.top) {
+  // Make all scroll animations visible immediately (iframe doesn't scroll itself)
+  document.querySelectorAll('.animate, .animate-fade, .animate-left, .animate-right, .animate-scale').forEach(function(el) {
+    el.classList.add('visible');
+  });
+
+  // Nav: keep fixed but offset below Webflow's 72px global nav, transparent background
+  var navEl = document.querySelector('.nav');
+  if (navEl) {
+    navEl.style.top = '72px';
+    navEl.style.background = 'transparent';
+    navEl.style.backdropFilter = 'none';
+    navEl.style.webkitBackdropFilter = 'none';
+    navEl.style.borderBottom = 'none';
+    var navStyle = document.createElement('style');
+    navStyle.textContent = [
+      '.nav-links a { color: rgba(255,255,255,0.9) !important; text-shadow: 0 1px 4px rgba(0,0,0,0.7); }',
+      '.nav-links a:hover { color: var(--gold) !important; }',
+      '@media(max-width:860px){.nav-links{top:136px !important; background:rgba(22,22,42,0.95) !important; backdrop-filter:blur(12px) !important;}}'
+    ].join('\n');
+    document.head.appendChild(navStyle);
+  }
+
+  // Hero: size to viewport, add padding for nav clearance
+  var heroEl = document.querySelector('.hero');
+  if (heroEl) {
+    var screenH = window.screen.availHeight || window.screen.height || 900;
+    var heroH = Math.max(720, screenH - 180);
+    heroEl.style.minHeight = heroH + 'px';
+    heroEl.style.paddingTop = '156px';
+  }
+
+  // Listen for parent viewport height to refine hero sizing
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'parentViewportHeight' && heroEl) {
+      heroEl.style.minHeight = Math.max(720, e.data.height - 136) + 'px';
+    }
+  });
+}
 </script>
 
 <!-- postMessage height reporter for iframe embedding -->
