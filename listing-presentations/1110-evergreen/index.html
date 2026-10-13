@@ -57,16 +57,7 @@ a { color: inherit; text-decoration: none; }
 .mb-48 { margin-bottom: 48px; }
 .mb-64 { margin-bottom: 64px; }
 
-/* ===== LANGUAGE TOGGLE ===== */
-.lang-toggle {
-  position: fixed; bottom: 24px; right: 24px; z-index: 200;
-  background: var(--navy); color: var(--white); border: 2px solid var(--gold);
-  border-radius: 50px; padding: 10px 20px; font-size: 13px; font-weight: 700;
-  cursor: pointer; display: flex; align-items: center; gap: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3); transition: all 0.3s;
-}
-.lang-toggle:hover { background: var(--crimson); border-color: var(--crimson); }
-.lang-toggle .flag { font-size: 18px; }
+
 
 /* ===== NAVIGATION ===== */
 .nav {
@@ -86,12 +77,13 @@ a { color: inherit; text-decoration: none; }
 /* ===== HERO ===== */
 .hero {
   position: relative; min-height: 100vh; display: flex; align-items: flex-end;
-  background: linear-gradient(180deg, rgba(22,22,42,0.7) 0%, rgba(22,22,42,0.85) 100%), url('hero.jpg') center/cover no-repeat;
-  padding: 120px 0 80px; overflow: hidden;
+  background: linear-gradient(180deg, rgba(22,22,42,0.92) 0%, rgba(22,22,42,0.55) 50%, rgba(22,22,42,0.92) 100%), url('hero.jpg') center/cover no-repeat;
+  padding: 120px 0 80px; overflow: hidden; margin-bottom: -120px; z-index: 1;
 }
 html.in-iframe .hero { min-height: 900px; }
 .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--crimson); z-index: 2; }
-.hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: var(--crimson); z-index: 2; }
+.hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 200px; background: linear-gradient(180deg, transparent 0%, var(--off-white) 100%); z-index: 2; pointer-events: none; }
+.hero + .section, .hero + .section-alt { position: relative; z-index: 2; }
 .hero .container { position: relative; z-index: 1; width: 100%; }
 .hero-badge {
   display: inline-block; background: var(--crimson); color: var(--white);
@@ -540,7 +532,6 @@ html.in-iframe .hero { min-height: 900px; }
   .reach-num { font-size: 36px; }
   .sign-visual { padding: 32px 20px; }
   .cta-section h2 { font-size: clamp(24px, 6vw, 36px); }
-  .lang-toggle { bottom: 16px; right: 16px; padding: 8px 14px; font-size: 11px; }
 }
 @media (max-width: 380px) {
   .hero-stats { gap: 16px; }
@@ -550,12 +541,23 @@ html.in-iframe .hero { min-height: 900px; }
   .platform-grid { grid-template-columns: 1fr; }
 }
 
+
+/* Proactive approach section responsive */
+@media (max-width: 768px) {
+  #proactive-approach [style*="grid-template-columns: 1fr 1fr"] ,
+  #proactive-approach [style*="grid-template-columns:1fr 1fr"] {
+    display: block !important;
+  }
+  #proactive-approach [style*="grid-template-columns:1fr 1fr"] > div:last-child {
+    margin-top: 32px;
+  }
+}
 /* ===== PRINT STYLES ===== */
 @media print {
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
   html { font-size: 11px; }
   body { background: white; }
-  .nav, .nav-toggle, .lang-toggle { display: none !important; }
+  .nav, .nav-toggle { display: none !important; }
   .hero { min-height: auto; padding: 60px 0 48px; background: var(--navy) !important; page-break-after: always; }
   .hero::before, .hero::after { background: var(--crimson) !important; }
   .section { padding: 40px 0; }
@@ -572,11 +574,7 @@ html.in-iframe .hero { min-height: 900px; }
 </head>
 <body>
 
-<!-- LANGUAGE TOGGLE BUTTON -->
-<button class="lang-toggle" id="langToggle" onclick="toggleLanguage()">
-  <span class="flag">&#127474;&#127485;</span>
-  <span id="langLabel">Espanol</span>
-</button>
+
 
 <!-- NAV -->
 <nav class="nav">
@@ -584,14 +582,14 @@ html.in-iframe .hero { min-height: 900px; }
     <div><strong style="font-family:var(--font-serif);font-size:18px;color:var(--white);">Mason Capital Group</strong><span style="font-family:var(--font-sans);font-size:9px;color:var(--crimson);letter-spacing:1px;display:block;">REAL ESTATE INVESTMENT &amp; TRUST</span></div>
   </div>
   <div class="nav-links" id="navLinks">
-    <a href="#property" data-en="Property" data-es="Propiedad">Property</a>
-    <a href="#why-mcg-intro" data-en="Why MCG" data-es="Por Que MCG">Why MCG</a>
-    <a href="#details" data-en="Details" data-es="Detalles">Details</a>
-    <a href="#valuation" data-en="Valuation" data-es="Valuacion">Valuation</a>
-    <a href="#syndication" data-en="Marketing" data-es="Marketing">Marketing</a>
-    <a href="#homes" data-en="Platform" data-es="Plataforma">Platform</a>
-    <a href="#web-signage" data-en="Digital" data-es="Digital">Digital</a>
-    <a href="#contact" data-en="Contact" data-es="Contacto">Contact</a>
+    <a href="#property">Property</a>
+    <a href="#why-mcg-intro">Why MCG</a>
+    <a href="#details">Details</a>
+    <a href="#valuation">Valuation</a>
+    <a href="#syndication">Marketing</a>
+    <a href="#homes">Platform</a>
+    <a href="#web-signage">Digital</a>
+    <a href="#contact">Contact</a>
   </div>
   <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">&#9776;</button>
 </nav>
@@ -599,21 +597,24 @@ html.in-iframe .hero { min-height: 900px; }
 <!-- HERO -->
 <section class="hero" id="property">
   <div class="container">
-    <div class="hero-badge" data-en="LISTING PRESENTATION" data-es="PRESENTACION DE LISTADO">LISTING PRESENTATION</div>
+    <div class="hero-logo-img" style="margin-bottom:32px;">
+      <img src="https://torabic.github.io/mcg-listings/listing-presentations/garman-horsebarn-rd/mcg-logo-horizontal-white.png" alt="Mason Capital Group" style="height:48px;opacity:0.9;">
+    </div>
+    <div class="hero-badge">LISTING PRESENTATION</div>
     <div class="hero-title">1110 Evergreen<br>Street</div>
     <div class="hero-address">BENTONVILLE, ARKANSAS 72712</div>
     <div style="width:80px;height:3px;background:var(--crimson);margin-bottom:28px"></div>
-    <div class="hero-price" data-en="Market Analysis" data-es="Analisis de Mercado">Market Analysis</div>
+    <div class="hero-price">$3,450,000 &ndash; $4,000,000</div>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="val">12,322 SF</div><div class="lbl" data-en="Heated Structure" data-es="Estructura Calefaccionada">Heated Structure</div></div>
-      <div class="hero-stat"><div class="val">C-2 Zoning</div><div class="lbl" data-en="Zoning" data-es="Zonificacion">Zoning</div></div>
-      <div class="hero-stat"><div class="val">1.97 Acres</div><div class="lbl" data-en="Lot Size" data-es="Tamano del Lote">Lot Size</div></div>
-      <div class="hero-stat"><div class="val">2004</div><div class="lbl" data-en="Year Built" data-es="Ano de Construccion">Year Built</div></div>
+      <div class="hero-stat"><div class="val">12,322 SF</div><div class="lbl">Heated Structure</div></div>
+      <div class="hero-stat"><div class="val">C-2 Zoning</div><div class="lbl">Zoning</div></div>
+      <div class="hero-stat"><div class="val">1.97 Acres</div><div class="lbl">Lot Size</div></div>
+      <div class="hero-stat"><div class="val">2004</div><div class="lbl">Year Built</div></div>
     </div>
-    <div class="hero-tagline" data-en="Prepared for Shiv &amp; Partners &bull; October 2026 &bull; Benton County" data-es="Preparado para Shiv y Socios &bull; Octubre 2026 &bull; Condado de Benton">Prepared for Shiv &amp; Partners &nbsp;&bull;&nbsp; October 2026 &nbsp;&bull;&nbsp; Benton County</div>
+    <div class="hero-tagline">Prepared for Shiv &amp; Partners &nbsp;&bull;&nbsp; October 2026 &nbsp;&bull;&nbsp; Benton County</div>
     <div class="hero-logo">
-      <div class="name" style="font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--white);opacity:0.85;">Mason Capital Group</div>
-      <div class="sub" style="font-size:9px;color:var(--crimson);letter-spacing:1px;">REAL ESTATE INVESTMENT &amp; TRUST</div>
+      <div class="name" style="font-family:var(--font-serif);font-size:16px;font-weight:700;color:var(--white);opacity:0.7;">Mason Capital Group</div>
+      <div class="sub" style="font-size:8px;color:var(--gold);letter-spacing:1px;opacity:0.7;">REAL ESTATE INVESTMENT &amp; TRUST</div>
     </div>
   </div>
 </section>
@@ -627,12 +628,12 @@ html.in-iframe .hero { min-height: 900px; }
       </div>
       <div class="broker-details">
         <div class="section-header">
-          <span class="label text-crimson" data-en="Your Broker" data-es="Su Corredor">Your Broker</span>
+          <span class="label text-crimson">Your Broker</span>
           <h2>Cameron Torabi</h2>
         </div>
         <div class="title">Principal Broker</div>
-        <p data-en="Shiv, I want to be upfront about something: I didn't find this property by accident. While actively searching for opportunities for another client, I identified 1110 Evergreen Street as an exceptional commercial asset sitting right across from Walmart's Global Headquarters. I contacted you directly because I recognized what most brokers overlook — the rare combination of a move-in ready 12,322 SF facility on nearly 2 acres with C-2 zoning in one of the highest-traffic commercial corridors in Northwest Arkansas." data-es="Shiv, quiero ser directo sobre algo: no encontre esta propiedad por accidente. Mientras buscaba activamente oportunidades para otro cliente, identifique 1110 Evergreen Street como un activo comercial excepcional ubicado justo frente a la Sede Global de Walmart. Lo contacte directamente porque reconoci lo que la mayoria de los corredores pasan por alto.">Shiv, I want to be upfront about something: I didn't find this property by accident. While actively searching for opportunities for another client, I identified 1110 Evergreen Street as an exceptional commercial asset sitting right across from Walmart's Global Headquarters. I contacted you directly because I recognized what most brokers overlook — the rare combination of a move-in ready 12,322 SF facility on nearly 2 acres with C-2 zoning in one of the highest-traffic commercial corridors in Northwest Arkansas.</p>
-        <p data-en="I've already shown this property multiple times to serious buyers — before it's even listed. That's the difference between a proactive investment-minded broker and a traditional agent who waits for listings to come to them. With over 30 years of experience and $2.4 billion in transaction history, Mason Capital Group brings institutional-level market intelligence, a private network of investors and end-users, and a marketing platform that traditional agents simply cannot match. We don't just list properties — we position them strategically to attract the right buyer at the right price." data-es="Ya he mostrado esta propiedad multiples veces a compradores serios — antes de que este siquiera listada. Esa es la diferencia entre un corredor proactivo con mentalidad de inversion y un agente tradicional que espera a que los listados lleguen a ellos. Con mas de 30 anos de experiencia y $2.4 mil millones en historial de transacciones, Mason Capital Group aporta inteligencia de mercado de nivel institucional.">I've already shown this property multiple times to serious buyers — before it's even listed. That's the difference between a proactive investment-minded broker and a traditional agent who waits for listings to come to them. With over 30 years of experience and $2.4 billion in transaction history, Mason Capital Group brings institutional-level market intelligence, a private network of investors and end-users, and a marketing platform that traditional agents simply cannot match. We don't just list properties — we position them strategically to attract the right buyer at the right price.</p>
+        <p>Shiv, I want to be upfront about something: I didn't find this property by accident. While actively searching for opportunities for another client, I identified 1110 Evergreen Street as an exceptional commercial asset sitting right across from Walmart's Global Headquarters. I contacted you directly because I recognized what most brokers overlook — the rare combination of a move-in ready 12,322 SF facility on nearly 2 acres with C-2 zoning in one of the highest-traffic commercial corridors in Northwest Arkansas.</p>
+        <p>I've already shown this property multiple times to serious buyers — before it's even listed. That's the difference between a proactive investment-minded broker and a traditional agent who waits for listings to come to them. With over 30 years of experience and $2.4 billion in transaction history, Mason Capital Group brings institutional-level market intelligence, a private network of investors and end-users, and a marketing platform that traditional agents simply cannot match. We don't just list properties — we position them strategically to attract the right buyer at the right price.</p>
         <div class="broker-contact">
           <div class="item"><strong>PHONE</strong> (479) 925-3333</div>
           <div class="item"><strong>EMAIL</strong> Info@MasonCapitalGroup.com</div>
@@ -647,45 +648,101 @@ html.in-iframe .hero { min-height: 900px; }
   </div>
 </section>
 
+
+<!-- THE MCG DIFFERENCE — PROACTIVE APPROACH -->
+<section class="section section-dark" id="proactive-approach">
+  <div class="container">
+    <div class="section-header text-center centered mb-48">
+      <span class="label text-gold">A Different Kind of Broker</span>
+      <h2 style="color:var(--white)">We Don't Wait for Opportunities.<br>We Create Them.</h2>
+      <div class="accent-line-gold accent-line-center mb-24" style="margin-top:16px"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">
+      <div>
+        <p style="color:var(--gray-300);font-size:16px;line-height:1.8;margin-bottom:24px;">
+          Shiv, you've experienced this firsthand &mdash; three times now. Each time we connected, it wasn't because you reached out to me. It was because I was actively canvassing for on-and-off-market properties that matched the specific needs of my clients. That's how I found 1110 Evergreen Street, and that's how I found you.
+        </p>
+        <p style="color:var(--gray-300);font-size:16px;line-height:1.8;margin-bottom:24px;">
+          Most brokers list a property on the MLS, put up a sign, and wait. They hope someone finds it online. That passive approach is why listings expire &mdash; including this one, which sat for 344 days before expiring with the previous broker.
+        </p>
+        <p style="color:var(--gray-300);font-size:16px;line-height:1.8;">
+          I operate differently. I manage your property like a portfolio manager manages an asset &mdash; with a targeted acquisition strategy, direct outreach to qualified buyers, and a network built through years of proactive relationship-building. Your property won't sit waiting to be discovered. I'll put it directly in front of the buyers, investors, and operators who need it.
+        </p>
+      </div>
+      <div>
+        <div style="background:rgba(196,163,90,0.08);border:1px solid rgba(196,163,90,0.25);padding:40px 32px;margin-bottom:24px;">
+          <h4 style="font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--gold);margin-bottom:20px;">The Portfolio Manager Approach</h4>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="color:var(--gold);font-weight:900;font-size:18px;line-height:1;">&#10003;</div>
+              <p style="color:var(--gray-300);font-size:14px;line-height:1.6;">Active buyer canvassing &mdash; I identify and pursue qualified buyers before they find the listing</p>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="color:var(--gold);font-weight:900;font-size:18px;line-height:1;">&#10003;</div>
+              <p style="color:var(--gray-300);font-size:14px;line-height:1.6;">Direct investor outreach through a private network of NWA commercial investors and operators</p>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="color:var(--gold);font-weight:900;font-size:18px;line-height:1;">&#10003;</div>
+              <p style="color:var(--gray-300);font-size:14px;line-height:1.6;">On-and-off-market deal sourcing &mdash; connecting sellers with buyers who aren't yet looking publicly</p>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="color:var(--gold);font-weight:900;font-size:18px;line-height:1;">&#10003;</div>
+              <p style="color:var(--gray-300);font-size:14px;line-height:1.6;">Strategic positioning across childcare/school operators, corporate end-users, retail tenants, and buy-and-hold investors</p>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="color:var(--gold);font-weight:900;font-size:18px;line-height:1;">&#10003;</div>
+              <p style="color:var(--gray-300);font-size:14px;line-height:1.6;">Showings before the sign goes up &mdash; I've already shown this property to serious buyers</p>
+            </div>
+          </div>
+        </div>
+        <div style="background:rgba(171,1,46,0.08);border-left:4px solid var(--crimson);padding:24px 28px;">
+          <p style="font-family:var(--font-serif);font-size:18px;font-weight:700;color:var(--white);line-height:1.4;margin-bottom:8px;">&ldquo;The previous listing expired after 344 days. The difference isn't the property &mdash; it's the approach.&rdquo;</p>
+          <p style="font-size:13px;color:var(--gold);letter-spacing:1px;">CAMERON TORABI &nbsp;&bull;&nbsp; PRINCIPAL BROKER</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- WHY MASON CAPITAL GROUP — VALUE PROPOSITIONS -->
 <section class="section section-alt" id="why-mcg-intro">
   <div class="container">
     <div class="section-header text-center centered mb-48">
-      <span class="label text-crimson" data-en="The MCG Advantage" data-es="La Ventaja MCG">The MCG Advantage</span>
-      <h2 data-en="Why Mason Capital Group Is the Right Choice for Your Commercial Listing" data-es="Por Que Mason Capital Group Es la Eleccion Correcta para Su Listado Comercial">Why Mason Capital Group Is the<br>Right Choice for Your Commercial Listing</h2>
+      <span class="label text-crimson">The MCG Advantage</span>
+      <h2>Why Mason Capital Group Is the<br>Right Choice for Your Commercial Listing</h2>
       <div class="accent-line accent-line-center mb-24" style="margin-top:16px"></div>
-      <p data-en="We're not just brokers — we're a full-service real estate investment firm. That means we bring a level of market intelligence, marketing firepower, and transaction expertise that traditional agents simply can't match. For a commercial asset like 1110 Evergreen, that distinction matters." data-es="No somos solo corredores — somos una firma de inversion inmobiliaria de servicio completo. Eso significa que aportamos un nivel de inteligencia de mercado, poder de marketing y experiencia en transacciones que los agentes tradicionales simplemente no pueden igualar.">We're not just brokers — we're a full-service real estate investment firm. That means we bring a level of market intelligence, marketing firepower, and transaction expertise that traditional agents simply can't match. For a commercial asset like 1110 Evergreen, that distinction matters.</p>
+      <p>We're not just brokers — we're a full-service real estate investment firm. That means we bring a level of market intelligence, marketing firepower, and transaction expertise that traditional agents simply can't match. For a commercial asset like 1110 Evergreen, that distinction matters.</p>
     </div>
     <div class="value-grid">
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="32" height="28" rx="3" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M10 26V18" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M18 26V14" stroke="#c4a35a" stroke-width="3" stroke-linecap="round"/><path d="M26 26V10" stroke="#ab012e" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="16" r="2" fill="#ab012e"/><circle cx="18" cy="12" r="2" fill="#ab012e"/><circle cx="26" cy="8" r="2" fill="#ab012e"/><line x1="10" y1="16" x2="18" y2="12" stroke="#ab012e" stroke-width="1.5"/><line x1="18" y1="12" x2="26" y2="8" stroke="#ab012e" stroke-width="1.5"/></svg></div>
-        <h4 data-en="Licensed Principal Broker" data-es="Corredor Principal Licenciado">Licensed Principal Broker</h4>
-        <p data-en="As a Principal Broker in Arkansas, I bring executive-level expertise to every commercial transaction. This means I price your property with precision based on real market data — not guesswork — so you maximize your return." data-es="Como Corredor Principal en Arkansas, aporto experiencia de nivel ejecutivo a cada transaccion comercial.">As a Principal Broker in Arkansas, I bring executive-level expertise to every commercial transaction. This means I price your property with precision based on real market data — not guesswork — so you maximize your return.</p>
+        <h4>Licensed Principal Broker</h4>
+        <p>As a Principal Broker in Arkansas, I bring executive-level expertise to every commercial transaction. This means I price your property with precision based on real market data — not guesswork — so you maximize your return.</p>
       </div>
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="15" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="6" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="2" fill="#ab012e"/><line x1="18" y1="3" x2="18" y2="9" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="27" x2="18" y2="33" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="9" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><line x1="27" y1="18" x2="33" y2="18" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/></svg></div>
-        <h4 data-en="Investment-Grade Marketing" data-es="Marketing de Grado de Inversion">Investment-Grade Marketing</h4>
-        <p data-en="We market your property the way institutional investors market assets — with professional photography, digital offering memorandums, targeted digital ad campaigns, and syndication across nearly 100 platforms including Zillow, Realtor.com, Redfin, Crexi, and LoopNet." data-es="Comercializamos su propiedad como los inversores institucionales comercializan activos — con fotografia profesional, memorandos de oferta digital y sindicacion en casi 100 plataformas.">We market your property the way institutional investors market assets — with professional photography, digital offering memorandums, targeted digital ad campaigns, and syndication across nearly 100 platforms including Zillow, Realtor.com, Redfin, Crexi, and LoopNet.</p>
+        <h4>Investment-Grade Marketing</h4>
+        <p>We market your property the way institutional investors market assets — with professional photography, digital offering memorandums, targeted digital ad campaigns, and syndication across nearly 100 platforms including Zillow, Realtor.com, Redfin, Crexi, and LoopNet.</p>
       </div>
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="10" r="5" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="8" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><circle cx="28" cy="26" r="4" stroke="#c4a35a" stroke-width="2" fill="none"/><path d="M18 15V20" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><path d="M18 20L8 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/><path d="M18 20L28 24" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <h4 data-en="Commercial &amp; Investor Network" data-es="Red Comercial e Inversores">Commercial &amp; Investor Network</h4>
-        <p data-en="Our active investor network and relationships with childcare operators, school groups, retail tenants, and NWA buy-and-hold investors mean your property gets seen by serious, qualified buyers from day one — not just casual browsers." data-es="Nuestra red activa de inversores y relaciones con operadores de guarderias, grupos escolares e inversores de NWA significan que su propiedad es vista por compradores serios y calificados desde el primer dia.">Our active investor network and relationships with childcare operators, school groups, retail tenants, and NWA buy-and-hold investors mean your property gets seen by serious, qualified buyers from day one — not just casual browsers.</p>
+        <h4>Commercial &amp; Investor Network</h4>
+        <p>Our active investor network and relationships with childcare operators, school groups, retail tenants, and NWA buy-and-hold investors mean your property gets seen by serious, qualified buyers from day one — not just casual browsers.</p>
       </div>
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 4L22 14H32L24 20L27 31L18 24L9 31L12 20L4 14H14L18 4Z" stroke="#c4a35a" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M14 18L17 21L23 15" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h4 data-en="Premium Portal Placement" data-es="Colocacion Premium en Portales">Premium Portal Placement</h4>
-        <p data-en="As a premium member agent on the nation's top real estate portals, your listing gets priority placement above non-member listings, a larger display with your agent photo, and 25X more buyer exposure. This translates to 540% more favorites and 515% more shares." data-es="Como agente miembro premium en los principales portales inmobiliarios del pais, su listado obtiene ubicacion prioritaria sobre listados de no miembros.">As a premium member agent on the nation's top real estate portals, your listing gets priority placement above non-member listings, a larger display with your agent photo, and 25X more buyer exposure. This translates to 540% more favorites and 515% more shares.</p>
+        <h4>Premium Portal Placement</h4>
+        <p>As a premium member agent on the nation's top real estate portals, your listing gets priority placement above non-member listings, a larger display with your agent photo, and 25X more buyer exposure. This translates to 540% more favorites and 515% more shares.</p>
       </div>
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="8" width="28" height="24" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M4 16H32" stroke="#ab012e" stroke-width="2"/><path d="M18 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M11 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M25 4V8" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="22" r="2" fill="#ab012e"/><circle cx="18" cy="22" r="2" fill="#c4a35a"/><circle cx="24" cy="22" r="2" fill="#ab012e"/><circle cx="12" cy="28" r="2" fill="#c4a35a"/><circle cx="18" cy="28" r="2" fill="#ab012e"/><path d="M9 12L13 12" stroke="#c4a35a" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <h4 data-en="Professional Aerial &amp; Visual Media" data-es="Medios Aereos y Visuales Profesionales">Professional Aerial &amp; Visual Media</h4>
-        <p data-en="We provide complimentary professional drone photography, aerial videography, and interactive media for every listing. Buyers can experience your property from every angle, attracting serious out-of-area investors and corporate operators relocating to NWA." data-es="Proporcionamos fotografia profesional con drones, videografia aerea y medios interactivos de cortesia para cada listado.">We provide complimentary professional drone photography, aerial videography, and interactive media for every listing. Buyers can experience your property from every angle, attracting serious out-of-area investors and corporate operators relocating to NWA.</p>
+        <h4>Professional Aerial &amp; Visual Media</h4>
+        <p>We provide complimentary professional drone photography, aerial videography, and interactive media for every listing. Buyers can experience your property from every angle, attracting serious out-of-area investors and corporate operators relocating to NWA.</p>
       </div>
       <div class="value-card animate">
         <div class="icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 28L12 20L18 24L26 14L32 8" stroke="#ab012e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 8H32V14" stroke="#ab012e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="20" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="18" cy="24" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="26" cy="14" r="3" fill="#c4a35a" opacity="0.3"/><line x1="4" y1="32" x2="32" y2="32" stroke="#16162a" stroke-width="1.5" opacity="0.3"/></svg></div>
-        <h4 data-en="Data-Driven Pricing Strategy" data-es="Estrategia de Precios Basada en Datos">Data-Driven Pricing Strategy</h4>
-        <p data-en="Every listing begins with a comprehensive CMA, AVM analysis, and refined value assessment. We analyze comparable commercial properties, tax records, and market trends to ensure optimal pricing from day one — especially critical for a multi-use commercial asset." data-es="Cada listado comienza con un CMA integral, analisis AVM y evaluacion de valor refinada. Analizamos propiedades comerciales comparables para garantizar precios optimos.">Every listing begins with a comprehensive CMA, AVM analysis, and refined value assessment. We analyze comparable commercial properties, tax records, and market trends to ensure optimal pricing from day one — especially critical for a multi-use commercial asset.</p>
+        <h4>Data-Driven Pricing Strategy</h4>
+        <p>Every listing begins with a comprehensive CMA, AVM analysis, and refined value assessment. We analyze comparable commercial properties, tax records, and market trends to ensure optimal pricing from day one — especially critical for a multi-use commercial asset.</p>
       </div>
     </div>
   </div>
@@ -695,29 +752,29 @@ html.in-iframe .hero { min-height: 900px; }
 <section class="section" id="details">
   <div class="container">
     <div class="section-header mb-48">
-      <span class="label text-crimson" data-en="Property Details" data-es="Detalles de la Propiedad">Property Details</span>
+      <span class="label text-crimson">Property Details</span>
       <h2>1110 Evergreen Street</h2>
       <div class="accent-line mb-16" style="margin-top:12px"></div>
-      <p data-en="A 12,322 SF commercial facility on 1.97 acres with C-2 zoning in Bentonville, directly across from Walmart Global Headquarters. Move-in ready with mobile walls, LED lighting, and ample parking. Ideal for childcare/school operators, retail tenants, corporate end-users, or long-term buy-and-hold investors seeking stable NWA commercial assets." data-es="Una instalacion comercial de 12,322 SF en 1.97 acres con zonificacion C-2 en Bentonville, directamente frente a la Sede Global de Walmart. Lista para ocupar con paredes moviles, iluminacion LED y amplio estacionamiento.">A 12,322 SF commercial facility on 1.97 acres with C-2 zoning in Bentonville, directly across from Walmart Global Headquarters. Move-in ready with mobile walls, LED lighting, and ample parking. Ideal for childcare/school operators, retail tenants, corporate end-users, or long-term buy-and-hold investors seeking stable NWA commercial assets.</p>
+      <p>A 12,322 SF commercial facility on 1.97 acres with C-2 zoning in Bentonville, directly across from Walmart Global Headquarters. Move-in ready with mobile walls, LED lighting, and ample parking. Ideal for childcare/school operators, retail tenants, corporate end-users, or long-term buy-and-hold investors seeking stable NWA commercial assets.</p>
     </div>
     <div class="details-grid">
       <table class="detail-table">
-        <caption data-en="Property Facts" data-es="Datos de la Propiedad">Property Facts</caption>
-        <tr><td data-en="Property Type" data-es="Tipo de Propiedad">Property Type</td><td>Commercial / Retail / Childcare-School</td></tr>
-        <tr><td data-en="Total Acreage" data-es="Superficie Total">Total Acreage</td><td>1.97 Acres</td></tr>
-        <tr><td data-en="Heated Structure" data-es="Estructura Calefaccionada">Heated Structure</td><td>12,322 sq ft</td></tr>
-        <tr><td data-en="Zoning" data-es="Zonificacion">Zoning</td><td>C-2 (Commercial)</td></tr>
-        <tr><td data-en="Year Built" data-es="Ano de Construccion">Year Built</td><td>2004</td></tr>
-        <tr><td data-en="Annual Taxes" data-es="Impuestos Anuales">Annual Taxes</td><td>$20,864</td></tr>
+        <caption>Property Facts</caption>
+        <tr><td>Property Type</td><td>Commercial / Retail / Childcare-School</td></tr>
+        <tr><td>Total Acreage</td><td>1.97 Acres</td></tr>
+        <tr><td>Heated Structure</td><td>12,322 sq ft</td></tr>
+        <tr><td>Zoning</td><td>C-2 (Commercial)</td></tr>
+        <tr><td>Year Built</td><td>2004</td></tr>
+        <tr><td>Annual Taxes</td><td>$20,864</td></tr>
       </table>
       <table class="detail-table">
-        <caption data-en="Location &amp; Records" data-es="Ubicacion y Registros">Location &amp; Records</caption>
-        <tr><td data-en="Street Address" data-es="Direccion">Street Address</td><td>1110 Evergreen Street</td></tr>
-        <tr><td data-en="City" data-es="Ciudad">City</td><td>Bentonville</td></tr>
-        <tr><td data-en="State" data-es="Estado">State</td><td>Arkansas</td></tr>
-        <tr><td data-en="Zip Code" data-es="Codigo Postal">Zip Code</td><td>72712</td></tr>
-        <tr><td data-en="County" data-es="Condado">County</td><td>Benton County</td></tr>
-        <tr><td data-en="Previous MLS" data-es="MLS Anterior">Previous MLS</td><td>1270263 (Expired 02/28/2025)</td></tr>
+        <caption>Location &amp; Records</caption>
+        <tr><td>Street Address</td><td>1110 Evergreen Street</td></tr>
+        <tr><td>City</td><td>Bentonville</td></tr>
+        <tr><td>State</td><td>Arkansas</td></tr>
+        <tr><td>Zip Code</td><td>72712</td></tr>
+        <tr><td>County</td><td>Benton County</td></tr>
+        <tr><td>Previous MLS</td><td>1270263 (Expired 02/28/2025)</td></tr>
       </table>
     </div>
 
@@ -728,19 +785,19 @@ html.in-iframe .hero { min-height: 900px; }
           <div class="gauge-ring" style="background:conic-gradient(var(--crimson) 0deg, var(--crimson) 180deg, var(--gray-200) 180deg);">
             <div class="gauge-inner"><div class="g-val">1.97</div><div class="g-unit">ACRES</div></div>
           </div>
-          <div class="gauge-label" data-en="Lot Size" data-es="Tamano del Lote">Lot Size</div>
+          <div class="gauge-label">Lot Size</div>
         </div>
         <div class="gauge-item animate">
           <div class="gauge-ring" style="background:conic-gradient(var(--gold) 0deg, var(--gold) 320deg, var(--gray-200) 320deg);">
             <div class="gauge-inner"><div class="g-val">12,322</div><div class="g-unit">SQ FT</div></div>
           </div>
-          <div class="gauge-label" data-en="Heated Structure" data-es="Estructura Calefaccionada">Heated Structure</div>
+          <div class="gauge-label">Heated Structure</div>
         </div>
         <div class="gauge-item animate">
           <div class="gauge-ring" style="background:conic-gradient(var(--navy) 0deg, var(--navy) 260deg, var(--gray-200) 260deg);">
             <div class="gauge-inner"><div class="g-val">$20,864</div><div class="g-unit">TAX / YR</div></div>
           </div>
-          <div class="gauge-label" data-en="Annual Taxes" data-es="Impuestos Anuales">Annual Taxes</div>
+          <div class="gauge-label">Annual Taxes</div>
         </div>
       </div>
     </div>
@@ -751,33 +808,33 @@ html.in-iframe .hero { min-height: 900px; }
 <section class="section section-dark" id="valuation">
   <div class="container">
     <div class="section-header text-center centered mb-48">
-      <span class="label text-gold" data-en="Market Analysis" data-es="Analisis de Mercado">Market Analysis</span>
-      <h2 style="color:var(--white)" data-en="Your Property's Market Position" data-es="La Posicion de Mercado de Su Propiedad">Your Property's Market Position</h2>
+      <span class="label text-gold">Market Analysis</span>
+      <h2 style="color:var(--white)">Your Property's Market Position</h2>
       <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
-      <p style="color:var(--gray-300)" data-en="Using comparable market analysis across active, pending, sold, and expired commercial properties in the Bentonville corridor, we've established a data-driven market position for your property. This CMA provides the foundation for a strategic pricing decision." data-es="Utilizando analisis de mercado comparable a traves de propiedades comerciales activas, pendientes, vendidas y expiradas en el corredor de Bentonville, hemos establecido una posicion de mercado basada en datos para su propiedad.">Using comparable market analysis across active, pending, sold, and expired commercial properties in the Bentonville corridor, we've established a data-driven market position for your property. This CMA provides the foundation for a strategic pricing decision.</p>
+      <p style="color:var(--gray-300)">Using comparable market analysis across active, pending, sold, and expired commercial properties in the Bentonville corridor, we've established a data-driven market position for your property. This CMA provides the foundation for a strategic pricing decision.</p>
     </div>
     <div class="val-cards mb-48">
       <div class="val-card">
-        <div class="val-label" data-en="Average Sold Price" data-es="Precio Promedio Vendido">Average Sold Price</div>
+        <div class="val-label">Average Sold Price</div>
         <div class="val-amount">$1,487,500</div>
-        <div style="font-size:18px;font-weight:700;color:var(--gold);margin-top:4px;" data-en="$383.79 / SF" data-es="$383.79 / SF">$383.79 / SF</div>
-        <div class="val-sub" data-en="Based on 2 recent sold comps<br>Bentonville corridor" data-es="Basado en 2 comparables vendidos recientes<br>Corredor de Bentonville">Based on 2 recent sold comps<br>Bentonville corridor</div>
+        <div style="font-size:18px;font-weight:700;color:var(--gold);margin-top:4px;">$383.79 / SF</div>
+        <div class="val-sub">Based on 2 recent sold comps<br>Bentonville corridor</div>
       </div>
       <div class="val-card featured">
-        <div class="val-label" data-en="Recommended Price Range" data-es="Rango de Precio Recomendado">Recommended Price Range</div>
-        <div class="val-amount">$3.0M &ndash; $3.8M</div>
-        <div class="val-sub" data-en="Low generates activity &bull; High targets right-fit groups<br>Strategic positioning" data-es="Bajo genera actividad &bull; Alto apunta a grupos ideales<br>Posicionamiento estrategico">Low generates activity &bull; High targets right-fit groups<br>Strategic positioning</div>
+        <div class="val-label">Recommended Price Range</div>
+        <div class="val-amount">$3,450,000 &ndash; $4,000,000</div>
+        <div class="val-sub">Low generates activity &bull; High targets right-fit groups<br>Strategic positioning</div>
       </div>
       <div class="val-card">
-        <div class="val-label" data-en="Price per Square Foot" data-es="Precio por Pie Cuadrado">Price per Square Foot</div>
-        <div class="val-amount">$243 &ndash; $308</div>
-        <div class="val-sub" data-en="Based on $3.0M-$3.8M range<br>Avg active $/SF: $524.77" data-es="Basado en rango de $3.0M-$3.8M<br>$/SF activo promedio: $524.77">Based on $3.0M-$3.8M range<br>Avg active $/SF: $524.77</div>
+        <div class="val-label">Price per Square Foot</div>
+        <div class="val-amount">$280 &ndash; $325</div>
+        <div class="val-sub">Based on $3.45M-$4.0M range<br>Avg active $/SF: $524.77</div>
       </div>
     </div>
 
     <!-- Value Comparison Bar Chart -->
     <div class="chart-container-dark animate">
-      <h4 data-en="Comparable Property Pricing Overview" data-es="Resumen de Precios de Propiedades Comparables">Comparable Property Pricing Overview</h4>
+      <h4>Comparable Property Pricing Overview</h4>
       <div class="bar-chart">
         <div class="bar-group">
           <div class="bar-value" style="color:var(--gold)">$475K</div>
@@ -806,7 +863,7 @@ html.in-iframe .hero { min-height: 900px; }
         </div>
         <div class="bar-group">
           <div class="bar-value" style="color:var(--crimson);font-weight:900">SUBJECT</div>
-          <div class="bar" style="height:53%; background:linear-gradient(180deg, #d4304f, var(--crimson)); border:2px solid var(--gold);"></div>
+          <div class="bar" style="height:58%; background:linear-gradient(180deg, #d4304f, var(--crimson)); border:2px solid var(--gold);"></div>
           <div class="bar-label" style="color:var(--crimson);font-weight:900">SUBJECT<br><span style="font-size:9px;font-weight:400">1110 Evergreen</span></div>
         </div>
         <div class="bar-group">
@@ -830,7 +887,7 @@ html.in-iframe .hero { min-height: 900px; }
 
     <div style="text-align:center;">
       <p style="color:var(--gray-300);font-size:14px;max-width:700px;margin:0 auto;">
-        <strong style="color:var(--gold)" data-en="Key Insight:" data-es="Punto Clave:">Key Insight:</strong> <span data-en="At $3,000,000, the property generates maximum buyer activity and attracts general investors looking for commercial speculation opportunities in Bentonville's booming market. At $3,800,000, the property targets end-users and right-fit groups — childcare operators, school organizations, or corporate tenants — who will pay a premium for a move-in ready 12,322 SF facility directly across from Walmart HQ. The previous listing expired at $3,600,000 after 344 days; our strategic positioning and marketing platform will deliver the exposure the property deserves." data-es="A $3,000,000, la propiedad genera maxima actividad de compradores y atrae inversores generales. A $3,800,000, apunta a usuarios finales y grupos ideales que pagaran una prima por una instalacion lista para ocupar frente a Walmart HQ.">At $3,000,000, the property generates maximum buyer activity and attracts general investors looking for commercial speculation opportunities in Bentonville's booming market. At $3,800,000, the property targets end-users and right-fit groups — childcare operators, school organizations, or corporate tenants — who will pay a premium for a move-in ready 12,322 SF facility directly across from Walmart HQ. The previous listing expired at $3,600,000 after 344 days; our strategic positioning and marketing platform will deliver the exposure the property deserves.</span>
+        <strong style="color:var(--gold)">Key Insight:</strong> <span>At $3,450,000, the property generates maximum buyer activity and attracts general investors looking for commercial speculation opportunities in Bentonville's booming market. At $4,000,000, the property targets end-users and right-fit groups — childcare operators, school organizations, or corporate tenants — who will pay a premium for a move-in ready 12,322 SF facility directly across from Walmart HQ. The previous listing expired at $3,600,000 after 344 days; our strategic positioning and marketing platform will deliver the exposure the property deserves.</span>
       </p>
     </div>
   </div>
@@ -840,25 +897,25 @@ html.in-iframe .hero { min-height: 900px; }
 <section class="section section-alt" id="cma">
   <div class="container">
     <div class="section-header mb-48">
-      <span class="label text-crimson" data-en="Comparative Market Analysis" data-es="Analisis Comparativo de Mercado">Comparative Market Analysis</span>
-      <h2 data-en="Comparable Sales &amp; Active Listings" data-es="Ventas Comparables y Listados Activos">Comparable Sales &amp; Active Listings</h2>
+      <span class="label text-crimson">Comparative Market Analysis</span>
+      <h2>Comparable Sales &amp; Active Listings</h2>
       <div class="accent-line mb-16" style="margin-top:12px"></div>
-      <p data-en="We analyzed 13 comparable commercial properties in the Bentonville corridor — including active, pending, sold, and expired listings — to establish an accurate market position for your property." data-es="Analizamos 13 propiedades comerciales comparables en el corredor de Bentonville — incluyendo listados activos, pendientes, vendidos y expirados — para establecer una posicion de mercado precisa.">We analyzed 13 comparable commercial properties in the Bentonville corridor — including active, pending, sold, and expired listings — to establish an accurate market position for your property.</p>
-      <p style="font-size:13px;color:var(--crimson);font-weight:600;margin-top:12px;margin-bottom:0;" data-en="&#128204; Each listing below is interactive — click any address to view the full property details on masoncapitalgroup.com for deeper understanding and comparison." data-es="&#128204; Cada listado a continuacion es interactivo — haga clic en cualquier direccion para ver los detalles completos de la propiedad en masoncapitalgroup.com para una comprension y comparacion mas profunda.">&#128204; Each listing below is interactive — click any address to view the full property details on masoncapitalgroup.com for deeper understanding and comparison.</p>
+      <p>We analyzed 13 comparable commercial properties in the Bentonville corridor — including active, pending, sold, and expired listings — to establish an accurate market position for your property.</p>
+      <p style="font-size:13px;color:var(--crimson);font-weight:600;margin-top:12px;margin-bottom:0;">&#128204; Each listing below is interactive — click any address to view the full property details on masoncapitalgroup.com for deeper understanding and comparison.</p>
     </div>
 
     <div class="cma-table-wrap">
       <table class="cma-table">
         <thead>
           <tr>
-            <th data-en="Address" data-es="Direccion">Address</th>
-            <th data-en="Status" data-es="Estado">Status</th>
-            <th data-en="MLS #" data-es="MLS #">MLS #</th>
-            <th data-en="SF / Type" data-es="SF / Tipo">SF / Type</th>
-            <th data-en="DOM" data-es="DOM">DOM</th>
-            <th data-en="List Price" data-es="Precio Lista">List Price</th>
-            <th data-en="Sold Price" data-es="Precio Vendido">Sold Price</th>
-            <th data-en="$/SF" data-es="$/SF">$/SF</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>MLS #</th>
+            <th>SF / Type</th>
+            <th>DOM</th>
+            <th>List Price</th>
+            <th>Sold Price</th>
+            <th>$/SF</th>
           </tr>
         </thead>
         <tbody>
@@ -868,12 +925,12 @@ html.in-iframe .hero { min-height: 900px; }
             <td>&mdash;</td>
             <td>12,322 SF / Commercial</td>
             <td>&mdash;</td>
-            <td><strong>$3.0M&ndash;$3.8M</strong></td>
+            <td><strong>$3,450,000&ndash;$4,000,000</strong></td>
             <td>&mdash;</td>
-            <td>$243&ndash;$308</td>
+            <td>$280&ndash;$325</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=1311+SE+C+ST+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">1311 SE C ST, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1362729/1311-SE-C-Street-Bentonville-AR-72712" target="_blank" style="color:var(--crimson);text-decoration:underline;">1311 SE C ST, Bentonville</a></td>
             <td><span class="status-badge status-active">Active</span></td>
             <td>1355389</td>
             <td>1,664 SF</td>
@@ -883,7 +940,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>$354.63</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=1107+SW+A+ST+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">1107 SW A ST, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1362643/1107-SW-A-Street-Bentonville-AR-72712" target="_blank" style="color:var(--crimson);text-decoration:underline;">1107 SW A ST, Bentonville</a></td>
             <td><span class="status-badge status-active">Active</span></td>
             <td>1356192</td>
             <td>1,464 SF</td>
@@ -893,7 +950,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>$812.29</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=301+SW+16th+ST+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">301 SW 16th ST, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1305230/301-SW-16th-Street-Bentonville-AR-72712" target="_blank" style="color:var(--crimson);text-decoration:underline;">301 SW 16th ST, Bentonville</a></td>
             <td><span class="status-badge status-active">Active</span></td>
             <td>1340992</td>
             <td>3,630 SF / Med-Dental</td>
@@ -903,7 +960,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>$413.22</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=1412+14th+ST+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">1412 14th ST, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1324006/1412-14th-Street-Bentonville-AR-72712" target="_blank" style="color:var(--crimson);text-decoration:underline;">1412 14th ST, Bentonville</a></td>
             <td><span class="status-badge status-active">Active</span></td>
             <td>1342820</td>
             <td>3,104 SF / Med-Dental</td>
@@ -913,7 +970,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>$547.74</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=2102+SE+14th+ST+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">2102 SE 14th ST, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1363651/2102-SE-14th-Street-Bentonville-AR-72712" target="_blank" style="color:var(--crimson);text-decoration:underline;">2102 SE 14th ST, Bentonville</a></td>
             <td><span class="status-badge status-active">Active</span></td>
             <td>1354414</td>
             <td>2,905 SF</td>
@@ -923,7 +980,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>$602.41</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=1601+SW+A+ST+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">1601 SW A ST, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1361891/1601-SW-A-Street-Bentonville-AR-72712" target="_blank" style="color:var(--crimson);text-decoration:underline;">1601 SW A ST, Bentonville</a></td>
             <td><span class="status-badge status-active">Active</span></td>
             <td>1355539</td>
             <td>10,209 SF / Office</td>
@@ -933,7 +990,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>$293.86</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=701+SE+5th+ST+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">701 SE 5th ST, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1333852/701-SE-5th-Street-Bentonville-AR-72712" target="_blank" style="color:var(--crimson);text-decoration:underline;">701 SE 5th ST, Bentonville</a></td>
             <td><span class="status-badge status-active">Active</span></td>
             <td>1340802</td>
             <td>4,392 SF / Warehouse</td>
@@ -943,7 +1000,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>$910.75</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=2701+SE+J+ST+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">2701 SE J ST, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1364498/2701-SE-J-Street-Bentonville-AR-72712" target="_blank" style="color:var(--crimson);text-decoration:underline;">2701 SE J ST, Bentonville</a></td>
             <td><span class="status-badge status-active">Active</span></td>
             <td>1352932</td>
             <td>24,488 SF / Office</td>
@@ -953,7 +1010,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>$263.45</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=102+SE+Executive+DR+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">102 SE Executive DR, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1352915/102-SE-Executive-Drive-Bentonville-AR-72712" target="_blank" style="color:var(--crimson);text-decoration:underline;">102 SE Executive DR, Bentonville</a></td>
             <td><span class="status-badge status-pending">Pending</span></td>
             <td>1352915</td>
             <td>6,576 SF</td>
@@ -963,7 +1020,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>$225.00</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=1006+S+Main+ST+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">1006 S Main ST, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/results/listings?pt=4&ccz=city&city[]=3686&aw_address=1006+S+Main+ST" target="_blank" style="color:var(--crimson);text-decoration:underline;">1006 S Main ST, Bentonville</a></td>
             <td><span class="status-badge status-closed">Sold</span></td>
             <td>&mdash;</td>
             <td>&mdash;</td>
@@ -973,7 +1030,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>&mdash;</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=910+SE+14th+ST+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">910 SE 14th ST, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/results/listings?pt=4&ccz=city&city[]=3686&aw_address=910+SE+14th+ST" target="_blank" style="color:var(--crimson);text-decoration:underline;">910 SE 14th ST, Bentonville</a></td>
             <td><span class="status-badge status-closed">Sold</span></td>
             <td>&mdash;</td>
             <td>6,514 SF</td>
@@ -983,7 +1040,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>$383.79</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=1110+Evergreen+ST+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">1110 Evergreen ST (Previous)</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/results/listings?pt=4&ccz=city&city[]=3686&aw_address=1110+Evergreen+ST" target="_blank" style="color:var(--crimson);text-decoration:underline;">1110 Evergreen ST (Previous)</a></td>
             <td><span class="status-badge status-expired">Expired</span></td>
             <td>1270263</td>
             <td>12,322 SF</td>
@@ -993,7 +1050,7 @@ html.in-iframe .hero { min-height: 900px; }
             <td>$292.16</td>
           </tr>
           <tr>
-            <td><a href="https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=1705+S+Walton+BLVD+Bentonville" target="_blank" style="color:var(--crimson);text-decoration:underline;">1705 S Walton BLVD, Bentonville</a></td>
+            <td><a href="https://masoncapitalgroup.idxbroker.com/idx/results/listings?pt=4&ccz=city&city[]=3686&aw_address=1705+S+Walton+BLVD" target="_blank" style="color:var(--crimson);text-decoration:underline;">1705 S Walton BLVD, Bentonville</a></td>
             <td><span class="status-badge status-expired">Expired</span></td>
             <td>&mdash;</td>
             <td>69,581 SF</td>
@@ -1005,11 +1062,11 @@ html.in-iframe .hero { min-height: 900px; }
         </tbody>
       </table>
     </div>
-    <p style="font-size:12px;color:var(--gray-500);margin-top:16px;" data-en="Data source: CMA Report / Arkansas MLS. Report date: 10/2026. Analysis includes active, pending, sold, and expired comparables in the Bentonville corridor. Avg active price: $2,522,527. Avg $/SF: $524.77. Avg sold: $1,487,500 in 89 DOM." data-es="Fuente de datos: Reporte CMA / MLS de Arkansas. Fecha: 10/2026. El analisis incluye comparables activos, pendientes, vendidos y expirados en el corredor de Bentonville.">Data source: CMA Report / Arkansas MLS. Report date: 10/2026. Analysis includes active, pending, sold, and expired comparables in the Bentonville corridor. Avg active price: $2,522,527. Avg $/SF: $524.77. Avg sold: $1,487,500 in 89 DOM.</p>
+    <p style="font-size:12px;color:var(--gray-500);margin-top:16px;">Data source: CMA Report / Arkansas MLS. Report date: 10/2026. Analysis includes active, pending, sold, and expired comparables in the Bentonville corridor. Avg active price: $2,522,527. Avg $/SF: $524.77. Avg sold: $1,487,500 in 89 DOM.</p>
 
     <!-- COMP LOCATION MAP -->
     <div style="margin-top:48px;">
-      <h3 style="font-family:var(--font-serif);font-size:24px;font-weight:700;margin-bottom:8px;" data-en="Comparable Properties Map" data-es="Mapa de Propiedades Comparables">Comparable Properties Map</h3>
+      <h3 style="font-family:var(--font-serif);font-size:24px;font-weight:700;margin-bottom:8px;">Comparable Properties Map</h3>
       <div class="accent-line mb-24" style="margin-top:8px"></div>
       <div id="compMap" style="width:100%;height:480px;border-radius:8px;border:2px solid var(--gray-200);overflow:hidden;"></div>
       <div style="display:flex;gap:24px;margin-top:12px;flex-wrap:wrap;">
@@ -1027,40 +1084,40 @@ html.in-iframe .hero { min-height: 900px; }
 <section class="section">
   <div class="container">
     <div class="section-header mb-48">
-      <span class="label text-crimson" data-en="Public Records" data-es="Registros Publicos">Public Records</span>
-      <h2 data-en="Tax Assessment" data-es="Evaluacion Fiscal">Tax Assessment</h2>
+      <span class="label text-crimson">Public Records</span>
+      <h2>Tax Assessment</h2>
       <div class="accent-line mb-16" style="margin-top:12px"></div>
-      <p data-en="Current annual tax for 1110 Evergreen Street, Bentonville, AR 72712 is $20,864. This reflects the commercial assessment on a 12,322 SF facility on 1.97 acres with C-2 zoning." data-es="El impuesto anual actual para 1110 Evergreen Street, Bentonville, AR 72712 es $20,864.">Current annual tax for 1110 Evergreen Street, Bentonville, AR 72712 is $20,864. This reflects the commercial assessment on a 12,322 SF facility on 1.97 acres with C-2 zoning.</p>
+      <p>Current annual tax for 1110 Evergreen Street, Bentonville, AR 72712 is $20,864. This reflects the commercial assessment on a 12,322 SF facility on 1.97 acres with C-2 zoning.</p>
     </div>
 
     <!-- Tax Bar Chart -->
     <div class="chart-container animate mb-32">
-      <h4 data-en="Annual Tax &mdash; Current Year" data-es="Impuesto Anual &mdash; Ano Actual">Annual Tax &mdash; Current Year</h4>
+      <h4>Annual Tax &mdash; Current Year</h4>
       <div class="bar-chart" style="height:220px">
         <div class="bar-group">
           <div class="bar-value" style="color:var(--crimson);font-weight:900">$20,864</div>
           <div class="bar" style="height:100%; background:linear-gradient(180deg, #d4304f, var(--crimson));"></div>
-          <div class="bar-label" style="font-weight:900;color:var(--crimson)" data-en="Current" data-es="Actual">Current</div>
+          <div class="bar-label" style="font-weight:900;color:var(--crimson)">Current</div>
         </div>
       </div>
-      <p style="text-align:center;font-size:13px;color:var(--gray-500);margin-top:16px;" data-en="Source: Benton County Assessor. Commercial property assessment." data-es="Fuente: Asesor del Condado de Benton. Evaluacion de propiedad comercial.">Source: Benton County Assessor. Commercial property assessment.</p>
+      <p style="text-align:center;font-size:13px;color:var(--gray-500);margin-top:16px;">Source: Benton County Assessor. Commercial property assessment.</p>
     </div>
 
     <!-- Property Records Table -->
     <div class="cma-table-wrap" style="margin-top:24px;">
       <table class="tax-table">
         <thead>
-          <tr><th style="text-align:left;" data-en="Property Record" data-es="Registro de Propiedad">Property Record</th><th style="text-align:left;" data-en="Detail" data-es="Detalle">Detail</th></tr>
+          <tr><th style="text-align:left;">Property Record</th><th style="text-align:left;">Detail</th></tr>
         </thead>
         <tbody>
-          <tr><td data-en="Address" data-es="Direccion">Address</td><td>1110 Evergreen Street, Bentonville, AR 72712</td></tr>
-          <tr><td data-en="County" data-es="Condado">County</td><td>Benton County</td></tr>
-          <tr><td data-en="Property Type" data-es="Tipo de Propiedad">Property Type</td><td>Commercial / Retail / Childcare-School</td></tr>
-          <tr><td data-en="Heated Sq Ft" data-es="Pies Cuadrados Calefaccionados">Heated Sq Ft</td><td>12,322 SF</td></tr>
-          <tr><td data-en="Zoning" data-es="Zonificacion">Zoning</td><td>C-2 (Commercial)</td></tr>
-          <tr><td data-en="Year Built" data-es="Ano de Construccion">Year Built</td><td>2004</td></tr>
-          <tr><td data-en="Lot Size" data-es="Tamano del Lote">Lot Size</td><td>1.97 Acres</td></tr>
-          <tr><td data-en="Annual Tax" data-es="Impuesto Anual">Annual Tax</td><td>$20,864</td></tr>
+          <tr><td>Address</td><td>1110 Evergreen Street, Bentonville, AR 72712</td></tr>
+          <tr><td>County</td><td>Benton County</td></tr>
+          <tr><td>Property Type</td><td>Commercial / Retail / Childcare-School</td></tr>
+          <tr><td>Heated Sq Ft</td><td>12,322 SF</td></tr>
+          <tr><td>Zoning</td><td>C-2 (Commercial)</td></tr>
+          <tr><td>Year Built</td><td>2004</td></tr>
+          <tr><td>Lot Size</td><td>1.97 Acres</td></tr>
+          <tr><td>Annual Tax</td><td>$20,864</td></tr>
         </tbody>
       </table>
     </div>
@@ -1071,17 +1128,17 @@ html.in-iframe .hero { min-height: 900px; }
 <section class="section section-dark" id="syndication">
   <div class="container">
     <div class="section-header text-center centered mb-48">
-      <span class="label text-gold" data-en="Global Marketing Reach" data-es="Alcance de Marketing Global">Global Marketing Reach</span>
-      <h2 style="color:var(--white)" data-en="Your Property Advertised on Nearly 100 Platforms" data-es="Su Propiedad Anunciada en Casi 100 Plataformas">Your Property Advertised on<br>Nearly 100 Platforms</h2>
+      <span class="label text-gold">Global Marketing Reach</span>
+      <h2 style="color:var(--white)">Your Property Advertised on<br>Nearly 100 Platforms</h2>
       <div class="accent-line-gold accent-line-center mb-16" style="margin-top:12px"></div>
-      <p style="color:var(--gray-300)" data-en="When you list with Mason Capital Group, your property doesn't just sit on the MLS. We syndicate your listing across nearly 100 platforms — reaching commercial buyers, investors, childcare operators, school groups, and developers both nationally and internationally." data-es="Cuando lista con Mason Capital Group, su propiedad no solo se queda en el MLS. Sindicamos su listado en casi 100 plataformas — alcanzando compradores comerciales, inversores y desarrolladores tanto nacional como internacionalmente.">When you list with Mason Capital Group, your property doesn't just sit on the MLS. We syndicate your listing across nearly 100 platforms — reaching commercial buyers, investors, childcare operators, school groups, and developers both nationally and internationally.</p>
+      <p style="color:var(--gray-300)">When you list with Mason Capital Group, your property doesn't just sit on the MLS. We syndicate your listing across nearly 100 platforms — reaching commercial buyers, investors, childcare operators, school groups, and developers both nationally and internationally.</p>
     </div>
 
     <div class="synd-hero-grid mb-48">
       <div style="text-align:center;">
         <div class="synd-number" style="color:var(--gold)">~100</div>
-        <div class="synd-subtitle" style="color:var(--white);" data-en="Syndication Platforms" data-es="Plataformas de Sindicacion">Syndication Platforms</div>
-        <p style="color:var(--gray-300);font-size:14px;line-height:1.7;" data-en="Your listing is pushed to consumer real estate portals, investor marketplaces, commercial property platforms, social media networks, international property sites, and specialized operator databases — ensuring maximum visibility across every buyer category." data-es="Su listado se distribuye a portales inmobiliarios de consumo, mercados de inversores, plataformas de propiedades comerciales, redes sociales y sitios de propiedad internacionales.">Your listing is pushed to consumer real estate portals, investor marketplaces, commercial property platforms, social media networks, international property sites, and specialized operator databases — ensuring maximum visibility across every buyer category.</p>
+        <div class="synd-subtitle" style="color:var(--white);">Syndication Platforms</div>
+        <p style="color:var(--gray-300);font-size:14px;line-height:1.7;">Your listing is pushed to consumer real estate portals, investor marketplaces, commercial property platforms, social media networks, international property sites, and specialized operator databases — ensuring maximum visibility across every buyer category.</p>
       </div>
       <div>
         <div class="platform-grid" style="gap:12px;">
@@ -1126,18 +1183,18 @@ html.in-iframe .hero { min-height: 900px; }
     <div class="investor-cards">
       <div class="investor-card animate">
         <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="6" width="26" height="22" rx="2" stroke="#c4a35a" stroke-width="2"/><path d="M11 6V3a1 1 0 011-1h8a1 1 0 011 1v3" stroke="#c4a35a" stroke-width="2"/><path d="M3 14h26" stroke="rgba(196,163,90,0.4)" stroke-width="1.5"/><circle cx="16" cy="14" r="3" fill="#c4a35a"/></svg></div>
-        <h4 data-en="Investor Targeting" data-es="Orientacion a Inversores">Investor Targeting</h4>
-        <p data-en="Your property is showcased on Crexi, LoopNet, and other commercial real estate portals where active investors search for acquisition opportunities. We also leverage our private investor network for off-market introductions to NWA buy-and-hold investors." data-es="Su propiedad se exhibe en Crexi, LoopNet y otros portales de bienes raices comerciales donde inversores activos buscan oportunidades de adquisicion.">Your property is showcased on Crexi, LoopNet, and other commercial real estate portals where active investors search for acquisition opportunities. We also leverage our private investor network for off-market introductions to NWA buy-and-hold investors.</p>
+        <h4>Investor Targeting</h4>
+        <p>Your property is showcased on Crexi, LoopNet, and other commercial real estate portals where active investors search for acquisition opportunities. We also leverage our private investor network for off-market introductions to NWA buy-and-hold investors.</p>
       </div>
       <div class="investor-card animate">
         <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 28h24" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><path d="M8 28V16l8-10 8 10v12" stroke="#c4a35a" stroke-width="2" stroke-linejoin="round" fill="none"/><rect x="13" y="20" width="6" height="8" stroke="#c4a35a" stroke-width="1.5" fill="none"/><path d="M2 16l14-12 14 12" stroke="#c4a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
-        <h4 data-en="End-User &amp; Operator Outreach" data-es="Alcance a Usuarios Finales y Operadores">End-User &amp; Operator Outreach</h4>
-        <p data-en="Targeted advertising and direct outreach to childcare operators, school organizations, retail tenants, and corporate users looking for move-in ready commercial space in Bentonville's premier location across from Walmart Global HQ." data-es="Publicidad dirigida y alcance directo a operadores de guarderias, organizaciones escolares e inquilinos comerciales que buscan espacio comercial listo para ocupar en Bentonville.">Targeted advertising and direct outreach to childcare operators, school organizations, retail tenants, and corporate users looking for move-in ready commercial space in Bentonville's premier location across from Walmart Global HQ.</p>
+        <h4>End-User &amp; Operator Outreach</h4>
+        <p>Targeted advertising and direct outreach to childcare operators, school organizations, retail tenants, and corporate users looking for move-in ready commercial space in Bentonville's premier location across from Walmart Global HQ.</p>
       </div>
       <div class="investor-card animate">
         <div class="ic-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="#c4a35a" stroke-width="2"/><ellipse cx="16" cy="16" rx="6" ry="13" stroke="#c4a35a" stroke-width="1.5" fill="none"/><path d="M3 12h26M3 20h26" stroke="rgba(196,163,90,0.5)" stroke-width="1.5"/><path d="M16 3v26" stroke="rgba(196,163,90,0.3)" stroke-width="1"/></svg></div>
-        <h4 data-en="International Exposure" data-es="Exposicion Internacional">International Exposure</h4>
-        <p data-en="Through platforms like Juwai.com, Investorist, and global MLS syndication networks, your property reaches qualified international buyers — particularly those targeting NWA for its economic growth driven by Walmart, Tyson, and J.B. Hunt." data-es="A traves de plataformas como Juwai.com, Investorist y redes de sindicacion MLS globales, su propiedad llega a compradores internacionales calificados.">Through platforms like Juwai.com, Investorist, and global MLS syndication networks, your property reaches qualified international buyers — particularly those targeting NWA for its economic growth driven by Walmart, Tyson, and J.B. Hunt.</p>
+        <h4>International Exposure</h4>
+        <p>Through platforms like Juwai.com, Investorist, and global MLS syndication networks, your property reaches qualified international buyers — particularly those targeting NWA for its economic growth driven by Walmart, Tyson, and J.B. Hunt.</p>
       </div>
     </div>
   </div>
@@ -1147,10 +1204,10 @@ html.in-iframe .hero { min-height: 900px; }
 <section class="section" id="homes">
   <div class="container">
     <div class="section-header text-center centered mb-48">
-      <span class="label text-crimson" data-en="MCG Digital Marketing Platform" data-es="Plataforma de Marketing Digital MCG">MCG Digital Marketing Platform</span>
-      <h2 data-en="Your Listing Gets Unmatched Digital Exposure" data-es="Su Listado Obtiene Exposicion Digital Inigualable">Your Listing Gets<br>Unmatched Digital Exposure</h2>
+      <span class="label text-crimson">MCG Digital Marketing Platform</span>
+      <h2>Your Listing Gets<br>Unmatched Digital Exposure</h2>
       <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
-      <p data-en="Through our exclusive premium platform partnerships, I give your listing a level of digital exposure and buyer engagement that other agents in this market simply cannot offer." data-es="A traves de nuestras asociaciones exclusivas de plataformas premium, le doy a su listado un nivel de exposicion digital y participacion de compradores que otros agentes simplemente no pueden ofrecer.">Through our exclusive premium platform partnerships, I give your listing a level of digital exposure and buyer engagement that other agents in this market simply cannot offer.</p>
+      <p>Through our exclusive premium platform partnerships, I give your listing a level of digital exposure and buyer engagement that other agents in this market simply cannot offer.</p>
     </div>
 
     <div class="homes-grid mb-48">
@@ -1158,15 +1215,15 @@ html.in-iframe .hero { min-height: 900px; }
         <div class="homes-feature-list">
           <div class="homes-feature">
             <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.5 5H17l-4 3.5 1.5 5.5L10 13l-4.5 3 1.5-5.5L3 7h4.5z" fill="white"/></svg></div>
-            <div><h4 data-en="Priority Search Placement" data-es="Colocacion Prioritaria en Busqueda">Priority Search Placement</h4><p data-en="Your listing sorts above non-member listings in search results with a larger, more prominent display that features the best photos of your property and my contact information as your listing agent." data-es="Su listado se posiciona por encima de los listados de no miembros en los resultados de busqueda.">Your listing sorts above non-member listings in search results with a larger, more prominent display that features the best photos of your property and my contact information as your listing agent.</p></div>
+            <div><h4>Priority Search Placement</h4><p>Your listing sorts above non-member listings in search results with a larger, more prominent display that features the best photos of your property and my contact information as your listing agent.</p></div>
           </div>
           <div class="homes-feature">
             <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="white" stroke-width="2" fill="none"/><path d="M10 6v4l3 2" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
-            <div><h4 data-en="Strategic Retargeting" data-es="Retargeting Estrategico">Strategic Retargeting</h4><p data-en="Your property follows interested buyers across more than 1,000 websites and social platforms including Facebook and Instagram — keeping your commercial listing top-of-mind while they browse the internet." data-es="Su propiedad sigue a los compradores interesados a traves de mas de 1,000 sitios web y plataformas sociales.">Your property follows interested buyers across more than 1,000 websites and social platforms including Facebook and Instagram — keeping your commercial listing top-of-mind while they browse the internet.</p></div>
+            <div><h4>Strategic Retargeting</h4><p>Your property follows interested buyers across more than 1,000 websites and social platforms including Facebook and Instagram — keeping your commercial listing top-of-mind while they browse the internet.</p></div>
           </div>
           <div class="homes-feature">
             <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16V6l6-4 6 4v10H4z" stroke="white" stroke-width="2" fill="none"/><rect x="7" y="10" width="6" height="6" stroke="white" stroke-width="1.5" fill="none"/></svg></div>
-            <div><h4 data-en="Listing Performance Reports" data-es="Reportes de Rendimiento del Listado">Listing Performance Reports</h4><p data-en="Full transparency with detailed performance reports showing views, favorites, shares, and buyer engagement data so you always know exactly how your listing is performing." data-es="Transparencia total con reportes detallados de rendimiento.">Full transparency with detailed performance reports showing views, favorites, shares, and buyer engagement data so you always know exactly how your listing is performing.</p></div>
+            <div><h4>Listing Performance Reports</h4><p>Full transparency with detailed performance reports showing views, favorites, shares, and buyer engagement data so you always know exactly how your listing is performing.</p></div>
           </div>
         </div>
       </div>
@@ -1190,62 +1247,62 @@ html.in-iframe .hero { min-height: 900px; }
     </div>
 
     <div class="homes-stats-row">
-      <div class="homes-stat"><div class="big">110M+</div><div class="sm" data-en="Monthly Visitors" data-es="Visitantes Mensuales">Monthly Visitors</div></div>
-      <div class="homes-stat"><div class="big">143M+</div><div class="sm" data-en="Network Reach" data-es="Alcance de Red">Network Reach</div></div>
-      <div class="homes-stat"><div class="big">14K+</div><div class="sm" data-en="Buyers Reached" data-es="Compradores Alcanzados">Buyers Reached</div></div>
-      <div class="homes-stat"><div class="big">540%</div><div class="sm" data-en="More Favorites" data-es="Mas Favoritos">More Favorites</div></div>
+      <div class="homes-stat"><div class="big">110M+</div><div class="sm">Monthly Visitors</div></div>
+      <div class="homes-stat"><div class="big">143M+</div><div class="sm">Network Reach</div></div>
+      <div class="homes-stat"><div class="big">14K+</div><div class="sm">Buyers Reached</div></div>
+      <div class="homes-stat"><div class="big">540%</div><div class="sm">More Favorites</div></div>
     </div>
 
     <!-- How We Find Your Buyer -->
     <div style="margin-top:64px;">
       <div class="section-header text-center centered mb-48">
-        <span class="label text-crimson" data-en="Precision Marketing" data-es="Marketing de Precision">Precision Marketing</span>
-        <h2 data-en="How We Find Your Buyer" data-es="Como Encontramos a Su Comprador">How We Find<br>Your Buyer</h2>
+        <span class="label text-crimson">Precision Marketing</span>
+        <h2>How We Find<br>Your Buyer</h2>
         <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
-        <p data-en="We don't just list your property — we actively market it to qualified buyers through precision campaigns across multiple channels." data-es="No solo listamos su propiedad — la comercializamos activamente a compradores calificados a traves de campanas de precision en multiples canales.">We don't just list your property — we actively market it to qualified buyers through precision campaigns across multiple channels.</p>
+        <p>We don't just list your property — we actively market it to qualified buyers through precision campaigns across multiple channels.</p>
       </div>
 
       <div class="reach-banner">
         <div class="reach-cell">
           <div class="reach-num">110M<span style="font-size:24px">+</span></div>
-          <div class="reach-unit" data-en="Monthly Visitors" data-es="Visitantes Mensuales">Monthly Visitors</div>
-          <div class="reach-desc" data-en="Our primary listing platform reaches over 110 million unique visitors per month — the #2 most-visited real estate portal in America" data-es="Nuestra plataforma principal alcanza mas de 110 millones de visitantes unicos por mes">Our primary listing platform reaches over 110 million unique visitors per month — the #2 most-visited real estate portal in America</div>
+          <div class="reach-unit">Monthly Visitors</div>
+          <div class="reach-desc">Our primary listing platform reaches over 110 million unique visitors per month — the #2 most-visited real estate portal in America</div>
         </div>
         <div class="reach-cell">
           <div class="reach-num">143M<span style="font-size:24px">+</span></div>
-          <div class="reach-unit" data-en="Network Reach" data-es="Alcance de Red">Network Reach</div>
-          <div class="reach-desc" data-en="Our full partner network reaches 143 million+ monthly unique visitors across residential, commercial, investment, and rental platforms" data-es="Nuestra red completa de socios alcanza mas de 143 millones de visitantes unicos mensuales">Our full partner network reaches 143 million+ monthly unique visitors across residential, commercial, investment, and rental platforms</div>
+          <div class="reach-unit">Network Reach</div>
+          <div class="reach-desc">Our full partner network reaches 143 million+ monthly unique visitors across residential, commercial, investment, and rental platforms</div>
         </div>
         <div class="reach-cell">
           <div class="reach-num">14K<span style="font-size:24px">+</span></div>
-          <div class="reach-unit" data-en="Buyers Reached" data-es="Compradores Alcanzados">Buyers Reached</div>
-          <div class="reach-desc" data-en="Boosted listings reach over 14,000 active buyers with an average of 32 views per buyer — generating real engagement" data-es="Los listados impulsados alcanzan mas de 14,000 compradores activos">Boosted listings reach over 14,000 active buyers with an average of 32 views per buyer — generating real engagement</div>
+          <div class="reach-unit">Buyers Reached</div>
+          <div class="reach-desc">Boosted listings reach over 14,000 active buyers with an average of 32 views per buyer — generating real engagement</div>
         </div>
       </div>
 
       <div class="target-marketing-grid">
         <div class="target-card animate">
           <div class="tc-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="4" y="10" width="28" height="18" rx="2" stroke="#ab012e" stroke-width="2" fill="none"/><path d="M18 10V6" stroke="#c4a35a" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="5" r="2" fill="#ab012e"/><path d="M10 16h16M10 22h10" stroke="#ab012e" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg></div>
-          <h4 data-en="Primetime TV &amp; Streaming" data-es="TV en Horario Estelar y Streaming">Primetime TV &amp; Streaming</h4>
-          <p data-en="Our platform partners invest heavily in major TV networks and streaming platforms — driving millions of high-intent buyers to search for properties like yours through massive brand recognition campaigns." data-es="Nuestros socios de plataforma invierten fuertemente en redes de TV y plataformas de streaming.">Our platform partners invest heavily in major TV networks and streaming platforms — driving millions of high-intent buyers to search for properties like yours through massive brand recognition campaigns.</p>
+          <h4>Primetime TV &amp; Streaming</h4>
+          <p>Our platform partners invest heavily in major TV networks and streaming platforms — driving millions of high-intent buyers to search for properties like yours through massive brand recognition campaigns.</p>
         </div>
         <div class="target-card animate">
           <div class="tc-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="#ab012e" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="8" stroke="#c4a35a" stroke-width="1.5" fill="none"/><circle cx="18" cy="18" r="3" fill="#ab012e"/><line x1="18" y1="4" x2="18" y2="10" stroke="#c4a35a" stroke-width="1.5" opacity="0.5"/><line x1="32" y1="18" x2="26" y2="18" stroke="#c4a35a" stroke-width="1.5" opacity="0.5"/></svg></div>
-          <h4 data-en="Social Media Retargeting" data-es="Retargeting en Redes Sociales">Social Media Retargeting</h4>
-          <p data-en="After viewing your listing, buyers see your property follow them on Facebook, Instagram, and over 1,000 websites — a persistent, targeted ad campaign that keeps your commercial property top-of-mind." data-es="Despues de ver su listado, los compradores ven su propiedad seguirlos en Facebook, Instagram y mas de 1,000 sitios web.">After viewing your listing, buyers see your property follow them on Facebook, Instagram, and over 1,000 websites — a persistent, targeted ad campaign that keeps your commercial property top-of-mind.</p>
+          <h4>Social Media Retargeting</h4>
+          <p>After viewing your listing, buyers see your property follow them on Facebook, Instagram, and over 1,000 websites — a persistent, targeted ad campaign that keeps your commercial property top-of-mind.</p>
         </div>
         <div class="target-card animate">
           <div class="tc-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4v28M4 18h28" stroke="#ab012e" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="18" r="14" stroke="#c4a35a" stroke-width="1.5" fill="none"/><circle cx="11" cy="12" r="3" fill="#c4a35a" opacity="0.3"/><circle cx="25" cy="12" r="3" fill="#ab012e" opacity="0.3"/><circle cx="11" cy="24" r="3" fill="#ab012e" opacity="0.3"/><circle cx="25" cy="24" r="3" fill="#c4a35a" opacity="0.3"/></svg></div>
-          <h4 data-en="Intent-Based Buyer Matching" data-es="Emparejamiento de Compradores Basado en Intencion">Intent-Based Buyer Matching</h4>
-          <p data-en="Advanced algorithms analyze buyer search behavior, price range, location preferences, and browsing patterns — then proactively serve your listing to the most qualified, high-intent buyers in real time." data-es="Algoritmos avanzados analizan el comportamiento de busqueda del comprador y sirven su listado proactivamente.">Advanced algorithms analyze buyer search behavior, price range, location preferences, and browsing patterns — then proactively serve your listing to the most qualified, high-intent buyers in real time.</p>
+          <h4>Intent-Based Buyer Matching</h4>
+          <p>Advanced algorithms analyze buyer search behavior, price range, location preferences, and browsing patterns — then proactively serve your listing to the most qualified, high-intent buyers in real time.</p>
         </div>
       </div>
 
       <!-- CoStar Network Visual -->
       <div class="network-visual">
         <div class="network-center">
-          <div class="nc-label" data-en="Your Listing Reaches" data-es="Su Listado Alcanza">Your Listing Reaches</div>
-          <div class="nc-brand" data-en="Our Exclusive Partner Network" data-es="Nuestra Red Exclusiva de Socios">Our Exclusive Partner Network</div>
+          <div class="nc-label">Your Listing Reaches</div>
+          <div class="nc-brand">Our Exclusive Partner Network</div>
           <div class="nc-sub">143 million+ monthly unique visitors across all platforms</div>
         </div>
         <div class="network-brands">
@@ -1271,41 +1328,41 @@ html.in-iframe .hero { min-height: 900px; }
 <section class="section section-dark">
   <div class="container">
     <div class="section-header text-center centered mb-48">
-      <span class="label text-gold" data-en="Superior to the Competition" data-es="Superior a la Competencia">Superior to the Competition</span>
-      <h2 style="color:var(--white)" data-en="What Sets Mason Capital Group Apart from Traditional Agents" data-es="Lo Que Distingue a Mason Capital Group de Agentes Tradicionales">What Sets Mason Capital Group<br>Apart from Traditional Agents</h2>
+      <span class="label text-gold">Superior to the Competition</span>
+      <h2 style="color:var(--white)">What Sets Mason Capital Group<br>Apart from Traditional Agents</h2>
       <div class="accent-line-gold accent-line-center mb-16" style="margin-top:16px"></div>
-      <p style="color:var(--gray-300)" data-en="When comparing Mason Capital Group to traditional brokerages in Northwest Arkansas, the differences are clear. Here's what you get with us that you won't find anywhere else." data-es="Cuando se compara Mason Capital Group con corredur&iacute;as tradicionales en el Noroeste de Arkansas, las diferencias son claras.">When comparing Mason Capital Group to traditional brokerages in Northwest Arkansas, the differences are clear. Here's what you get with us that you won't find anywhere else.</p>
+      <p style="color:var(--gray-300)">When comparing Mason Capital Group to traditional brokerages in Northwest Arkansas, the differences are clear. Here's what you get with us that you won't find anywhere else.</p>
     </div>
     <div class="why-grid">
       <div class="why-card animate">
         <div class="num">01</div>
-        <h4 data-en="Proactive Off-Market Discovery" data-es="Descubrimiento Proactivo Fuera del Mercado">Proactive Off-Market Discovery</h4>
-        <p data-en="I didn't wait for this listing to come to me — I found 1110 Evergreen while proactively searching for opportunities for another client. I contacted you directly, and I've already shown this property multiple times to qualified buyers before it's even listed. Traditional agents wait for business. We go find it. That's the difference between a reactive agent and a proactive investment firm." data-es="No espere a que este listado llegara a mi — encontre 1110 Evergreen mientras buscaba proactivamente oportunidades para otro cliente. Lo contacte directamente y ya he mostrado esta propiedad multiples veces. Los agentes tradicionales esperan el negocio. Nosotros lo buscamos.">I didn't wait for this listing to come to me — I found 1110 Evergreen while proactively searching for opportunities for another client. I contacted you directly, and I've already shown this property multiple times to qualified buyers before it's even listed. Traditional agents wait for business. We go find it. That's the difference between a reactive agent and a proactive investment firm.</p>
+        <h4>Proactive Off-Market Discovery</h4>
+        <p>I didn't wait for this listing to come to me — I found 1110 Evergreen while proactively searching for opportunities for another client. I contacted you directly, and I've already shown this property multiple times to qualified buyers before it's even listed. Traditional agents wait for business. We go find it. That's the difference between a reactive agent and a proactive investment firm.</p>
       </div>
       <div class="why-card animate">
         <div class="num">02</div>
-        <h4 data-en="Full-Service Investment Firm, Not Just a Brokerage" data-es="Firma de Inversion de Servicio Completo, No Solo una Correduría">Full-Service Investment Firm, Not Just a Brokerage</h4>
-        <p data-en="Most agents work for a traditional brokerage and follow a cookie-cutter approach. Mason Capital Group operates as a real estate investment and trust firm — which means we bring institutional-level market analysis, negotiation power, and marketing sophistication to every commercial listing. We understand how investors think because we are investors." data-es="La mayoria de los agentes trabajan para una correduria tradicional. Mason Capital Group opera como una firma de inversion y fideicomiso inmobiliario con analisis de nivel institucional.">Most agents work for a traditional brokerage and follow a cookie-cutter approach. Mason Capital Group operates as a real estate investment and trust firm — which means we bring institutional-level market analysis, negotiation power, and marketing sophistication to every commercial listing. We understand how investors think because we are investors.</p>
+        <h4>Full-Service Investment Firm, Not Just a Brokerage</h4>
+        <p>Most agents work for a traditional brokerage and follow a cookie-cutter approach. Mason Capital Group operates as a real estate investment and trust firm — which means we bring institutional-level market analysis, negotiation power, and marketing sophistication to every commercial listing. We understand how investors think because we are investors.</p>
       </div>
       <div class="why-card animate">
         <div class="num">03</div>
-        <h4 data-en="Technology-Forward Marketing" data-es="Marketing con Tecnologia Avanzada">Technology-Forward Marketing</h4>
-        <p data-en="From premium portal priority placement and professional aerial media to digital retargeting across 1,000+ websites, custom offering memorandums, and AI-powered market analytics — we deploy a marketing technology stack that most traditional agents simply don't have access to." data-es="Desde colocacion prioritaria en portales premium y medios aereos profesionales hasta retargeting digital en mas de 1,000 sitios web.">From premium portal priority placement and professional aerial media to digital retargeting across 1,000+ websites, custom offering memorandums, and AI-powered market analytics — we deploy a marketing technology stack that most traditional agents simply don't have access to.</p>
+        <h4>Technology-Forward Marketing</h4>
+        <p>From premium portal priority placement and professional aerial media to digital retargeting across 1,000+ websites, custom offering memorandums, and AI-powered market analytics — we deploy a marketing technology stack that most traditional agents simply don't have access to.</p>
       </div>
       <div class="why-card animate">
         <div class="num">04</div>
-        <h4 data-en="Nearly 100 Platform Syndication" data-es="Sindicacion en Casi 100 Plataformas">Nearly 100 Platform Syndication</h4>
-        <p data-en="Your listing doesn't just go on the MLS. We syndicate to Zillow, Realtor.com, Redfin, Crexi, LoopNet, and nearly 100 additional platforms — targeting commercial buyers, investors, childcare operators, and end-users nationally and internationally. The previous listing's failure to sell in 344 days was a marketing problem, not a property problem." data-es="Su listado no solo va al MLS. Sindicamos a casi 100 plataformas adicionales — apuntando a compradores comerciales, inversores y usuarios finales.">Your listing doesn't just go on the MLS. We syndicate to Zillow, Realtor.com, Redfin, Crexi, LoopNet, and nearly 100 additional platforms — targeting commercial buyers, investors, childcare operators, and end-users nationally and internationally. The previous listing's failure to sell in 344 days was a marketing problem, not a property problem.</p>
+        <h4>Nearly 100 Platform Syndication</h4>
+        <p>Your listing doesn't just go on the MLS. We syndicate to Zillow, Realtor.com, Redfin, Crexi, LoopNet, and nearly 100 additional platforms — targeting commercial buyers, investors, childcare operators, and end-users nationally and internationally. The previous listing's failure to sell in 344 days was a marketing problem, not a property problem.</p>
       </div>
       <div class="why-card animate">
         <div class="num">05</div>
-        <h4 data-en="Proven Track Record in NWA" data-es="Trayectoria Comprobada en NWA">Proven Track Record in NWA</h4>
-        <p data-en="From listing commercial investment properties at premium prices to residential homes across Benton County — we have the local market experience and transaction history to back up our strategies. Over 30 years and $2.4 billion in transactions speak for themselves." data-es="Desde listar propiedades comerciales de inversion a precios premium hasta casas residenciales en todo el Condado de Benton — tenemos la experiencia para respaldar nuestras estrategias.">From listing commercial investment properties at premium prices to residential homes across Benton County — we have the local market experience and transaction history to back up our strategies. Over 30 years and $2.4 billion in transactions speak for themselves.</p>
+        <h4>Proven Track Record in NWA</h4>
+        <p>From listing commercial investment properties at premium prices to residential homes across Benton County — we have the local market experience and transaction history to back up our strategies. Over 30 years and $2.4 billion in transactions speak for themselves.</p>
       </div>
       <div class="why-card animate">
         <div class="num">06</div>
-        <h4 data-en="Transparent Communication &amp; Reporting" data-es="Comunicacion Transparente y Reportes">Transparent Communication &amp; Reporting</h4>
-        <p data-en="You'll receive regular performance reports, market updates, and showing feedback. No black boxes. You'll always know exactly where your listing stands and what actions we're taking to drive it toward a successful close." data-es="Recibira reportes de rendimiento regulares, actualizaciones de mercado y retroalimentacion de visitas. Sin cajas negras.">You'll receive regular performance reports, market updates, and showing feedback. No black boxes. You'll always know exactly where your listing stands and what actions we're taking to drive it toward a successful close.</p>
+        <h4>Transparent Communication &amp; Reporting</h4>
+        <p>You'll receive regular performance reports, market updates, and showing feedback. No black boxes. You'll always know exactly where your listing stands and what actions we're taking to drive it toward a successful close.</p>
       </div>
     </div>
   </div>
@@ -1315,31 +1372,31 @@ html.in-iframe .hero { min-height: 900px; }
 <section class="section section-alt">
   <div class="container">
     <div class="section-header text-center centered mb-48">
-      <span class="label text-crimson" data-en="Market Snapshot" data-es="Panorama del Mercado">Market Snapshot</span>
-      <h2 data-en="Bentonville Commercial Real Estate at a Glance" data-es="Bienes Raices Comerciales de Bentonville de un Vistazo">Bentonville Commercial Real Estate at a Glance</h2>
+      <span class="label text-crimson">Market Snapshot</span>
+      <h2>Bentonville Commercial Real Estate at a Glance</h2>
       <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
-      <p data-en="Bentonville continues to be one of the fastest-growing commercial real estate markets in Northwest Arkansas, driven by Walmart's Global HQ expansion, Fortune 500 vendor presence, and sustained population growth." data-es="Bentonville continua siendo uno de los mercados inmobiliarios comerciales de mas rapido crecimiento en el Noroeste de Arkansas.">Bentonville continues to be one of the fastest-growing commercial real estate markets in Northwest Arkansas, driven by Walmart's Global HQ expansion, Fortune 500 vendor presence, and sustained population growth.</p>
+      <p>Bentonville continues to be one of the fastest-growing commercial real estate markets in Northwest Arkansas, driven by Walmart's Global HQ expansion, Fortune 500 vendor presence, and sustained population growth.</p>
     </div>
     <div class="snapshot-grid">
       <div class="snap-card animate">
         <div class="snap-val">$2.52M</div>
-        <div class="snap-label" data-en="Avg Active Price" data-es="Precio Activo Promedio">Avg Active Price</div>
-        <div class="snap-change" style="color:#2e7d32" data-en="8 active comps" data-es="8 comparables activos">8 active comps</div>
+        <div class="snap-label">Avg Active Price</div>
+        <div class="snap-change" style="color:#2e7d32">8 active comps</div>
       </div>
       <div class="snap-card animate">
         <div class="snap-val">89</div>
-        <div class="snap-label" data-en="Avg Days on Market" data-es="Dias Promedio en Mercado">Avg Days on Market</div>
-        <div class="snap-change" style="color:var(--gold)" data-en="Sold comps average" data-es="Promedio de comparables vendidos">Sold comps average</div>
+        <div class="snap-label">Avg Days on Market</div>
+        <div class="snap-change" style="color:var(--gold)">Sold comps average</div>
       </div>
       <div class="snap-card animate">
         <div class="snap-val">$524.77</div>
-        <div class="snap-label" data-en="Avg $/SF (Active)" data-es="$/SF Promedio (Activo)">Avg $/SF (Active)</div>
-        <div class="snap-change" style="color:#2e7d32" data-en="Strong market" data-es="Mercado fuerte">Strong market</div>
+        <div class="snap-label">Avg $/SF (Active)</div>
+        <div class="snap-change" style="color:#2e7d32">Strong market</div>
       </div>
       <div class="snap-card animate">
         <div class="snap-val">$1.49M</div>
-        <div class="snap-label" data-en="Avg Sold Price" data-es="Precio Promedio Vendido">Avg Sold Price</div>
-        <div class="snap-change" style="color:var(--gray-500)" data-en="Bentonville corridor" data-es="Corredor de Bentonville">Bentonville corridor</div>
+        <div class="snap-label">Avg Sold Price</div>
+        <div class="snap-change" style="color:var(--gray-500)">Bentonville corridor</div>
       </div>
     </div>
   </div>
@@ -1349,10 +1406,10 @@ html.in-iframe .hero { min-height: 900px; }
 <section class="section" id="web-signage">
   <div class="container">
     <div class="section-header text-center centered mb-48">
-      <span class="label text-crimson" data-en="Digital Infrastructure" data-es="Infraestructura Digital">Digital Infrastructure</span>
-      <h2 data-en="A Website Built for Global Reach" data-es="Un Sitio Web Construido para Alcance Global">A Website Built for<br>Global Reach</h2>
+      <span class="label text-crimson">Digital Infrastructure</span>
+      <h2>A Website Built for<br>Global Reach</h2>
       <div class="accent-line accent-line-center mb-16" style="margin-top:16px"></div>
-      <p data-en="Our state-of-the-art website isn't just a local listing page — it's a global marketing engine optimized to attract buyers, investors, and commercial operators from around the world." data-es="Nuestro sitio web de ultima generacion no es solo una pagina de listado local — es un motor de marketing global.">Our state-of-the-art website isn't just a local listing page — it's a global marketing engine optimized to attract buyers, investors, and commercial operators from around the world.</p>
+      <p>Our state-of-the-art website isn't just a local listing page — it's a global marketing engine optimized to attract buyers, investors, and commercial operators from around the world.</p>
     </div>
 
     <div class="web-global-grid mb-48">
@@ -1360,33 +1417,33 @@ html.in-iframe .hero { min-height: 900px; }
         <div class="web-feature-list">
           <div class="web-feature">
             <div class="web-feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="white" stroke-width="2"/><path d="M2 10h16M10 2c2 3 3 5 3 8s-1 5-3 8c-2-3-3-5-3-8s1-5 3-8z" stroke="white" stroke-width="1.5" fill="none"/></svg></div>
-            <div><h4 data-en="SEO-Optimized for Global Discovery" data-es="Optimizado para SEO y Descubrimiento Global">SEO-Optimized for Global Discovery</h4><p data-en="Our website is engineered with advanced SEO practices — structured data, schema markup, and geo-targeted landing pages — so your listing surfaces in search results for buyers searching from anywhere in the world." data-es="Nuestro sitio web esta disenado con practicas avanzadas de SEO.">Our website is engineered with advanced SEO practices — structured data, schema markup, and geo-targeted landing pages — so your listing surfaces in search results for buyers searching from anywhere in the world.</p></div>
+            <div><h4>SEO-Optimized for Global Discovery</h4><p>Our website is engineered with advanced SEO practices — structured data, schema markup, and geo-targeted landing pages — so your listing surfaces in search results for buyers searching from anywhere in the world.</p></div>
           </div>
           <div class="web-feature">
             <div class="web-feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="5" y="2" width="10" height="16" rx="2" stroke="white" stroke-width="2"/><line x1="8" y1="15" x2="12" y2="15" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-            <div><h4 data-en="Mobile-First, Lightning-Fast Design" data-es="Diseno Mobile-First, Ultra-Rapido">Mobile-First, Lightning-Fast Design</h4><p data-en="Over 70% of buyers start their property search on mobile devices. Our site is fully responsive with sub-second load times, ensuring a seamless experience on every device and connection speed." data-es="Mas del 70% de los compradores comienzan su busqueda en dispositivos moviles.">Over 70% of buyers start their property search on mobile devices. Our site is fully responsive with sub-second load times, ensuring a seamless experience on every device and connection speed.</p></div>
+            <div><h4>Mobile-First, Lightning-Fast Design</h4><p>Over 70% of buyers start their property search on mobile devices. Our site is fully responsive with sub-second load times, ensuring a seamless experience on every device and connection speed.</p></div>
           </div>
           <div class="web-feature">
             <div class="web-feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16V6l6-4 6 4v10" stroke="white" stroke-width="2" fill="none" stroke-linejoin="round"/><rect x="7" y="10" width="6" height="6" stroke="white" stroke-width="1.5" fill="none"/></svg></div>
-            <div><h4 data-en="Integrated Analytics &amp; Lead Capture" data-es="Analiticas Integradas y Captura de Leads">Integrated Analytics &amp; Lead Capture</h4><p data-en="Every visitor interaction is tracked. Integrated lead capture forms, click-to-call functionality, and real-time analytics mean we know exactly who's engaging with your listing and how to convert them." data-es="Cada interaccion del visitante es rastreada con formularios de captura de leads integrados.">Every visitor interaction is tracked. Integrated lead capture forms, click-to-call functionality, and real-time analytics mean we know exactly who's engaging with your listing and how to convert them.</p></div>
+            <div><h4>Integrated Analytics &amp; Lead Capture</h4><p>Every visitor interaction is tracked. Integrated lead capture forms, click-to-call functionality, and real-time analytics mean we know exactly who's engaging with your listing and how to convert them.</p></div>
           </div>
           <div class="web-feature">
             <div class="web-feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="white" stroke-width="2"/><path d="M6 10h8M10 6v8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
-            <div><h4 data-en="Multi-Language &amp; International Accessibility" data-es="Multi-Idioma y Accesibilidad Internacional">Multi-Language &amp; International Accessibility</h4><p data-en="Our digital infrastructure is designed to serve international buyers — with translation-ready pages and integration with global property search platforms like Juwai.com and Investorist." data-es="Nuestra infraestructura digital esta disenada para servir a compradores internacionales.">Our digital infrastructure is designed to serve international buyers — with translation-ready pages and integration with global property search platforms like Juwai.com and Investorist.</p></div>
+            <div><h4>Multi-Language &amp; International Accessibility</h4><p>Our digital infrastructure is designed to serve international buyers — with translation-ready pages and integration with global property search platforms like Juwai.com and Investorist.</p></div>
           </div>
         </div>
       </div>
       <div>
         <div class="sign-visual">
           <div style="margin-bottom:24px;">
-            <div style="font-family:var(--font-serif);font-size:28px;font-weight:900;color:var(--white);margin-bottom:4px;" data-en="Smart Signage Technology" data-es="Tecnologia de Senalizacion Inteligente">Smart Signage Technology</div>
-            <div style="font-size:12px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;" data-en="Links Built Into Every Sign" data-es="Enlaces Integrados en Cada Senal">Links Built Into Every Sign</div>
+            <div style="font-family:var(--font-serif);font-size:28px;font-weight:900;color:var(--white);margin-bottom:4px;">Smart Signage Technology</div>
+            <div style="font-size:12px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;">Links Built Into Every Sign</div>
           </div>
           <div class="sign-mockup">
             <div class="qr-placeholder" style="background:transparent;">
               <img src="mcg-qr-code.jpg" alt="Scan QR Code — Mason Capital Group" style="width:100px;height:100px;border-radius:8px;">
             </div>
-            <div style="font-family:var(--font-serif);font-size:14px;font-weight:700;color:var(--navy);" data-en="Scan for Full Listing" data-es="Escanee para Ver Listado Completo">Scan for Full Listing</div>
+            <div style="font-family:var(--font-serif);font-size:14px;font-weight:700;color:var(--navy);">Scan for Full Listing</div>
             <div style="font-size:10px;color:var(--gray-400);">masoncapitalgroup.com</div>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;text-align:left;max-width:280px;margin:0 auto;">
@@ -1398,18 +1455,18 @@ html.in-iframe .hero { min-height: 900px; }
       </div>
     </div>
     <div style="text-align:center;max-width:700px;margin:0 auto;">
-      <p style="font-size:15px;color:var(--gray-500);line-height:1.7;" data-en="The Bottom Line: The sign in front of your property isn't just a 'For Sale' notice — it's a direct-response marketing piece that drives qualified traffic to your listing 24/7, connecting the physical and digital worlds." data-es="En resumen: El letrero frente a su propiedad no es solo un aviso de 'Se Vende' — es una pieza de marketing de respuesta directa."><strong style="color:var(--navy)">The Bottom Line:</strong> The sign in front of your property isn't just a "For Sale" notice — it's a direct-response marketing piece that drives qualified traffic to your listing 24/7, connecting the physical and digital worlds.</p>
+      <p style="font-size:15px;color:var(--gray-500);line-height:1.7;"><strong style="color:var(--navy)">The Bottom Line:</strong> The sign in front of your property isn't just a "For Sale" notice — it's a direct-response marketing piece that drives qualified traffic to your listing 24/7, connecting the physical and digital worlds.</p>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="cta-section" id="contact">
-  <h2 data-en="Let's Get Your Property Sold" data-es="Vendamos Su Propiedad">Let's Get Your Property Sold</h2>
-  <p data-en="Shiv, I'm ready to put the full power of Mason Capital Group, nearly 100 syndication platforms, and our exclusive digital marketing platform to work for you and your partners. Let's schedule a time to discuss your goals and pricing strategy." data-es="Shiv, estoy listo para poner todo el poder de Mason Capital Group a trabajar para usted y sus socios. Programemos un momento para discutir sus objetivos.">Shiv, I'm ready to put the full power of Mason Capital Group, nearly 100 syndication platforms, and our exclusive digital marketing platform to work for you and your partners. Let's schedule a time to discuss your goals and pricing strategy.</p>
+  <h2>Let's Get Your Property Sold</h2>
+  <p>Shiv, I'm ready to put the full power of Mason Capital Group, nearly 100 syndication platforms, and our exclusive digital marketing platform to work for you and your partners. Let's schedule a time to discuss your goals and pricing strategy.</p>
   <div class="cta-buttons">
-    <a href="tel:4799253333" class="btn btn-crimson" data-en="Call (479) 925-3333" data-es="Llamar (479) 925-3333">Call (479) 925-3333</a>
-    <a href="mailto:Info@MasonCapitalGroup.com" class="btn btn-outline" data-en="Email Us" data-es="Envienos un Correo">Email Us</a>
+    <a href="tel:4799253333" class="btn btn-crimson">Call (479) 925-3333</a>
+    <a href="mailto:Info@MasonCapitalGroup.com" class="btn btn-outline">Email Us</a>
   </div>
   <p style="font-size:13px;color:var(--gray-400);margin-top:40px;">www.MasonCapitalGroup.com</p>
 </section>
@@ -1421,30 +1478,14 @@ html.in-iframe .hero { min-height: 900px; }
   <p>Cameron Torabi, Principal Broker<br>
   Arkansas Real Estate License #PB00056565<br>
   (479) 925-3333 &nbsp;|&nbsp; Info@MasonCapitalGroup.com</p>
-  <p class="disclaimer" data-en="This presentation contains data and information from public records and third-party sources. Neither this presentation nor the estimated value of a property is an appraisal. Property valuations are approximate estimates generated using comparable market data. Mason Capital Group is not responsible for any claim or loss resulting from the content of, or errors or omissions in, this presentation. Equal Housing Opportunity." data-es="Esta presentacion contiene datos e informacion de registros publicos y fuentes de terceros. Ni esta presentacion ni el valor estimado de una propiedad es una tasacion. Mason Capital Group no es responsable de ningun reclamo o perdida resultante del contenido de esta presentacion. Igualdad de Oportunidades de Vivienda.">This presentation contains data and information from public records and third-party sources. Neither this presentation nor the estimated value of a property is an appraisal. Property valuations are approximate estimates generated using comparable market data. Mason Capital Group is not responsible for any claim or loss resulting from the content of, or errors or omissions in, this presentation. Equal Housing Opportunity.</p>
+  <p class="disclaimer">This presentation contains data and information from public records and third-party sources. Neither this presentation nor the estimated value of a property is an appraisal. Property valuations are approximate estimates generated using comparable market data. Mason Capital Group is not responsible for any claim or loss resulting from the content of, or errors or omissions in, this presentation. Equal Housing Opportunity.</p>
   <p style="font-size:10px;color:var(--gray-500);margin-top:12px;">&copy; 2026 Mason Capital Group Real Estate Investment &amp; Trust. All rights reserved.</p>
 </footer>
 
 
 <!-- SCRIPTS -->
 <script>
-// ===== LANGUAGE TOGGLE =====
-var currentLang = 'en';
-function toggleLanguage() {
-  currentLang = currentLang === 'en' ? 'es' : 'en';
-  document.querySelectorAll('[data-' + currentLang + ']').forEach(function(el) {
-    var text = el.getAttribute('data-' + currentLang);
-    if (text) {
-      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-        el.placeholder = text;
-      } else {
-        el.innerHTML = text;
-      }
-    }
-  });
-  document.getElementById('langLabel').textContent = currentLang === 'en' ? 'Espanol' : 'English';
-  document.documentElement.lang = currentLang;
-}
+
 
 // Mobile Nav Toggle
 document.getElementById('navToggle').addEventListener('click', function() {
@@ -1537,47 +1578,61 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   var sold = dot('#c4a35a', 14, '2px solid #fff');
   var expired = dot('#c62828', 14, '2px solid #fff');
 
-  var idxBase = 'https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=';
+  var idxUrls = {
+    '1311 SE C ST': 'https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1362729/1311-SE-C-Street-Bentonville-AR-72712',
+    '1107 SW A ST': 'https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1362643/1107-SW-A-Street-Bentonville-AR-72712',
+    '301 SW 16th ST': 'https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1305230/301-SW-16th-Street-Bentonville-AR-72712',
+    '1412 14th ST': 'https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1324006/1412-14th-Street-Bentonville-AR-72712',
+    '2102 SE 14th ST': 'https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1363651/2102-SE-14th-Street-Bentonville-AR-72712',
+    '1601 SW A ST': 'https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1361891/1601-SW-A-Street-Bentonville-AR-72712',
+    '701 SE 5th ST': 'https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1333852/701-SE-5th-Street-Bentonville-AR-72712',
+    '2701 SE J ST': 'https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1364498/2701-SE-J-Street-Bentonville-AR-72712',
+    '102 SE Executive DR': 'https://masoncapitalgroup.idxbroker.com/idx/details/listing/d198/1352915/102-SE-Executive-Drive-Bentonville-AR-72712',
+    '1006 S Main ST': 'https://masoncapitalgroup.idxbroker.com/idx/results/listings?pt=4&ccz=city&city[]=3686&aw_address=1006+S+Main+ST',
+    '910 SE 14th ST': 'https://masoncapitalgroup.idxbroker.com/idx/results/listings?pt=4&ccz=city&city[]=3686&aw_address=910+SE+14th+ST',
+    '1705 S Walton BLVD': 'https://masoncapitalgroup.idxbroker.com/idx/results/listings?pt=4&ccz=city&city[]=3686&aw_address=1705+S+Walton+BLVD'
+  };
 
-  function popupWithLink(label, details, idxQuery) {
-    return '<a href="' + idxBase + encodeURIComponent(idxQuery) + '" target="_blank" style="color:#ab012e;font-weight:700;text-decoration:underline;">' + label + '</a><br>' + details;
+  function popupWithLink(label, details) {
+    var url = idxUrls[label] || '#';
+    return '<a href="' + url + '" target="_blank" style="color:#ab012e;font-weight:700;text-decoration:underline;">' + label + '</a><br>' + details;
   }
 
   // Subject: 1110 Evergreen ST, Bentonville — geocoded [36.3556, -94.1949]
   L.marker([36.3556, -94.1949], {icon: subjectIcon}).addTo(map)
-    .bindPopup('<a href="' + idxBase + encodeURIComponent('1110 Evergreen ST Bentonville') + '" target="_blank" style="color:#ab012e;font-weight:900;text-decoration:underline;">SUBJECT: 1110 Evergreen ST</a><br>1.97 Ac &bull; 12,322 SF &bull; C-2<br><strong>$3.0M &ndash; $3.8M</strong>');
+    .bindPopup('<span style="color:#ab012e;font-weight:900;">SUBJECT: 1110 Evergreen ST</span><br>1.97 Ac &bull; 12,322 SF &bull; C-2<br><strong>$3,450,000 &ndash; $4,000,000</strong>');
 
   // Active comps — geocoded coordinates
   L.marker([36.3571, -94.2057], {icon: active}).addTo(map)
-    .bindPopup(popupWithLink('1311 SE C ST', '1,664 SF &bull; Active &bull; $589,900', '1311 SE C ST Bentonville'));
+    .bindPopup(popupWithLink('1311 SE C ST', '1,664 SF &bull; Active &bull; $589,900'));
   L.marker([36.3594, -94.2100], {icon: active}).addTo(map)
-    .bindPopup(popupWithLink('1107 SW A ST', '1,464 SF &bull; Active &bull; $1,189,188', '1107 SW A ST Bentonville'));
+    .bindPopup(popupWithLink('1107 SW A ST', '1,464 SF &bull; Active &bull; $1,189,188'));
   L.marker([36.3550, -94.2135], {icon: active}).addTo(map)
-    .bindPopup(popupWithLink('301 SW 16th ST', '3,630 SF &bull; Active &bull; $1,500,000', '301 SW 16th ST Bentonville'));
+    .bindPopup(popupWithLink('301 SW 16th ST', '3,630 SF &bull; Active &bull; $1,500,000'));
   L.marker([36.3575, -94.2303], {icon: active}).addTo(map)
-    .bindPopup(popupWithLink('1412 14th ST', '3,104 SF &bull; Active &bull; $1,699,999', '1412 14th ST Bentonville'));
+    .bindPopup(popupWithLink('1412 14th ST', '3,104 SF &bull; Active &bull; $1,699,999'));
   L.marker([36.3565, -94.1867], {icon: active}).addTo(map)
-    .bindPopup(popupWithLink('2102 SE 14th ST', '2,905 SF &bull; Active &bull; $1,749,985', '2102 SE 14th ST Bentonville'));
+    .bindPopup(popupWithLink('2102 SE 14th ST', '2,905 SF &bull; Active &bull; $1,749,985'));
   L.marker([36.3544, -94.2101], {icon: active}).addTo(map)
-    .bindPopup(popupWithLink('1601 SW A ST', '10,209 SF &bull; Active &bull; $3,000,000', '1601 SW A ST Bentonville'));
+    .bindPopup(popupWithLink('1601 SW A ST', '10,209 SF &bull; Active &bull; $3,000,000'));
   L.marker([36.3676, -94.2005], {icon: active}).addTo(map)
-    .bindPopup(popupWithLink('701 SE 5th ST', '4,392 SF &bull; Active &bull; $4,000,000', '701 SE 5th ST Bentonville'));
+    .bindPopup(popupWithLink('701 SE 5th ST', '4,392 SF &bull; Active &bull; $4,000,000'));
   L.marker([36.3431, -94.1967], {icon: active}).addTo(map)
-    .bindPopup(popupWithLink('2701 SE J ST', '24,488 SF &bull; Active &bull; $6,451,146', '2701 SE J ST Bentonville'));
+    .bindPopup(popupWithLink('2701 SE J ST', '24,488 SF &bull; Active &bull; $6,451,146'));
 
   // Pending — geocoded
   L.marker([36.3468, -94.2090], {icon: pending}).addTo(map)
-    .bindPopup(popupWithLink('102 SE Executive DR', '6,576 SF &bull; Pending &bull; $1,479,600', '102 SE Executive DR Bentonville'));
+    .bindPopup(popupWithLink('102 SE Executive DR', '6,576 SF &bull; Pending &bull; $1,479,600'));
 
   // Sold comps — geocoded
   L.marker([36.3612, -94.2093], {icon: sold}).addTo(map)
-    .bindPopup(popupWithLink('1006 S Main ST', '<strong style="color:#c4a35a">Sold</strong> &bull; $475,000', '1006 S Main ST Bentonville'));
+    .bindPopup(popupWithLink('1006 S Main ST', '<strong style="color:#c4a35a">Sold</strong> &bull; $475,000'));
   L.marker([36.3567, -94.2008], {icon: sold}).addTo(map)
-    .bindPopup(popupWithLink('910 SE 14th ST', '6,514 SF &bull; <strong style="color:#c4a35a">Sold</strong> &bull; $2,500,000', '910 SE 14th ST Bentonville'));
+    .bindPopup(popupWithLink('910 SE 14th ST', '6,514 SF &bull; <strong style="color:#c4a35a">Sold</strong> &bull; $2,500,000'));
 
   // Expired — geocoded
   L.marker([36.3474, -94.2108], {icon: expired}).addTo(map)
-    .bindPopup(popupWithLink('1705 S Walton BLVD', '69,581 SF &bull; Expired &bull; $18,000,000', '1705 S Walton BLVD Bentonville'));
+    .bindPopup(popupWithLink('1705 S Walton BLVD', '69,581 SF &bull; Expired &bull; $18,000,000'));
 
   // Fit bounds to all markers
   var allCoords = [
