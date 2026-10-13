@@ -1515,7 +1515,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 (function() {
   var mapEl = document.getElementById('compMap');
   if (!mapEl || typeof L === 'undefined') return;
-  var map = L.map('compMap', { scrollWheelZoom: false }).setView([36.3575, -94.2088], 13);
+  var map = L.map('compMap', { scrollWheelZoom: false }).setView([36.3556, -94.1949], 13);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors',
     maxZoom: 18
@@ -1524,61 +1524,67 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   function dot(color, size, border) {
     return L.divIcon({
       className: '',
-      html: '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:'+color+';border:'+(border||'none')+';box-shadow:0 2px 6px rgba(0,0,0,0.35);"></div>',
+      html: '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:'+color+';border:'+(border||'none')+';box-shadow:0 2px 6px rgba(0,0,0,0.35);cursor:pointer;"></div>',
       iconSize: [size, size],
       iconAnchor: [size/2, size/2]
     });
   }
 
-  var subject = dot('#ab012e', 22, '3px solid #c4a35a');
+  var subjectIcon = dot('#ab012e', 22, '3px solid #c4a35a');
   var active = dot('#5a8fd4', 14, '2px solid #fff');
   var pending = dot('#f57f17', 14, '2px solid #fff');
   var sold = dot('#c4a35a', 14, '2px solid #fff');
   var expired = dot('#c62828', 14, '2px solid #fff');
 
-  // Subject: 1110 Evergreen ST, Bentonville
-  L.marker([36.3575, -94.2088], {icon: subject}).addTo(map)
-    .bindPopup('<strong style="color:#ab012e">SUBJECT: 1110 Evergreen ST</strong><br>1.97 Ac &bull; 12,322 SF &bull; C-2<br><strong>$3.0M &ndash; $3.8M</strong>');
+  var idxBase = 'https://www.masoncapitalgroup.com/idx/results/?searchtype=address&q=';
 
-  // Active comps
-  L.marker([36.3520, -94.2020], {icon: active}).addTo(map)
-    .bindPopup('<strong>1311 SE C ST</strong><br>1,664 SF &bull; Active &bull; $589,900');
-  L.marker([36.3710, -94.2150], {icon: active}).addTo(map)
-    .bindPopup('<strong>1107 SW A ST</strong><br>1,464 SF &bull; Active &bull; $1,189,188');
-  L.marker([36.3650, -94.2250], {icon: active}).addTo(map)
-    .bindPopup('<strong>301 SW 16th ST</strong><br>3,630 SF &bull; Active &bull; $1,500,000');
-  L.marker([36.3630, -94.2200], {icon: active}).addTo(map)
-    .bindPopup('<strong>1412 14th ST</strong><br>3,104 SF &bull; Active &bull; $1,699,999');
-  L.marker([36.3480, -94.2000], {icon: active}).addTo(map)
-    .bindPopup('<strong>2102 SE 14th ST</strong><br>2,905 SF &bull; Active &bull; $1,749,985');
-  L.marker([36.3700, -94.2160], {icon: active}).addTo(map)
-    .bindPopup('<strong>1601 SW A ST</strong><br>10,209 SF &bull; Active &bull; $3,000,000');
-  L.marker([36.3540, -94.2050], {icon: active}).addTo(map)
-    .bindPopup('<strong>701 SE 5th ST</strong><br>4,392 SF &bull; Active &bull; $4,000,000');
-  L.marker([36.3440, -94.1950], {icon: active}).addTo(map)
-    .bindPopup('<strong>2701 SE J ST</strong><br>24,488 SF &bull; Active &bull; $6,451,146');
+  function popupWithLink(label, details, idxQuery) {
+    return '<a href="' + idxBase + encodeURIComponent(idxQuery) + '" target="_blank" style="color:#ab012e;font-weight:700;text-decoration:underline;">' + label + '</a><br>' + details;
+  }
 
-  // Pending
-  L.marker([36.3560, -94.2030], {icon: pending}).addTo(map)
-    .bindPopup('<strong>102 SE Executive DR</strong><br>6,576 SF &bull; Pending &bull; $1,479,600');
+  // Subject: 1110 Evergreen ST, Bentonville — geocoded [36.3556, -94.1949]
+  L.marker([36.3556, -94.1949], {icon: subjectIcon}).addTo(map)
+    .bindPopup('<a href="' + idxBase + encodeURIComponent('1110 Evergreen ST Bentonville') + '" target="_blank" style="color:#ab012e;font-weight:900;text-decoration:underline;">SUBJECT: 1110 Evergreen ST</a><br>1.97 Ac &bull; 12,322 SF &bull; C-2<br><strong>$3.0M &ndash; $3.8M</strong>');
 
-  // Sold comps
-  L.marker([36.3680, -94.2100], {icon: sold}).addTo(map)
-    .bindPopup('<strong>1006 S Main ST</strong><br><strong style="color:#c4a35a">Sold</strong> &bull; $475,000');
-  L.marker([36.3490, -94.2010], {icon: sold}).addTo(map)
-    .bindPopup('<strong>910 SE 14th ST</strong><br>6,514 SF &bull; <strong style="color:#c4a35a">Sold</strong> &bull; $2,500,000');
+  // Active comps — geocoded coordinates
+  L.marker([36.3571, -94.2057], {icon: active}).addTo(map)
+    .bindPopup(popupWithLink('1311 SE C ST', '1,664 SF &bull; Active &bull; $589,900', '1311 SE C ST Bentonville'));
+  L.marker([36.3594, -94.2100], {icon: active}).addTo(map)
+    .bindPopup(popupWithLink('1107 SW A ST', '1,464 SF &bull; Active &bull; $1,189,188', '1107 SW A ST Bentonville'));
+  L.marker([36.3550, -94.2135], {icon: active}).addTo(map)
+    .bindPopup(popupWithLink('301 SW 16th ST', '3,630 SF &bull; Active &bull; $1,500,000', '301 SW 16th ST Bentonville'));
+  L.marker([36.3575, -94.2303], {icon: active}).addTo(map)
+    .bindPopup(popupWithLink('1412 14th ST', '3,104 SF &bull; Active &bull; $1,699,999', '1412 14th ST Bentonville'));
+  L.marker([36.3565, -94.1867], {icon: active}).addTo(map)
+    .bindPopup(popupWithLink('2102 SE 14th ST', '2,905 SF &bull; Active &bull; $1,749,985', '2102 SE 14th ST Bentonville'));
+  L.marker([36.3544, -94.2101], {icon: active}).addTo(map)
+    .bindPopup(popupWithLink('1601 SW A ST', '10,209 SF &bull; Active &bull; $3,000,000', '1601 SW A ST Bentonville'));
+  L.marker([36.3676, -94.2005], {icon: active}).addTo(map)
+    .bindPopup(popupWithLink('701 SE 5th ST', '4,392 SF &bull; Active &bull; $4,000,000', '701 SE 5th ST Bentonville'));
+  L.marker([36.3431, -94.1967], {icon: active}).addTo(map)
+    .bindPopup(popupWithLink('2701 SE J ST', '24,488 SF &bull; Active &bull; $6,451,146', '2701 SE J ST Bentonville'));
 
-  // Expired
-  L.marker([36.3610, -94.2280], {icon: expired}).addTo(map)
-    .bindPopup('<strong>1705 S Walton BLVD</strong><br>69,581 SF &bull; Expired &bull; $18,000,000');
+  // Pending — geocoded
+  L.marker([36.3468, -94.2090], {icon: pending}).addTo(map)
+    .bindPopup(popupWithLink('102 SE Executive DR', '6,576 SF &bull; Pending &bull; $1,479,600', '102 SE Executive DR Bentonville'));
+
+  // Sold comps — geocoded
+  L.marker([36.3612, -94.2093], {icon: sold}).addTo(map)
+    .bindPopup(popupWithLink('1006 S Main ST', '<strong style="color:#c4a35a">Sold</strong> &bull; $475,000', '1006 S Main ST Bentonville'));
+  L.marker([36.3567, -94.2008], {icon: sold}).addTo(map)
+    .bindPopup(popupWithLink('910 SE 14th ST', '6,514 SF &bull; <strong style="color:#c4a35a">Sold</strong> &bull; $2,500,000', '910 SE 14th ST Bentonville'));
+
+  // Expired — geocoded
+  L.marker([36.3474, -94.2108], {icon: expired}).addTo(map)
+    .bindPopup(popupWithLink('1705 S Walton BLVD', '69,581 SF &bull; Expired &bull; $18,000,000', '1705 S Walton BLVD Bentonville'));
 
   // Fit bounds to all markers
   var allCoords = [
-    [36.3575, -94.2088], [36.3520, -94.2020], [36.3710, -94.2150],
-    [36.3650, -94.2250], [36.3630, -94.2200], [36.3480, -94.2000],
-    [36.3700, -94.2160], [36.3540, -94.2050], [36.3440, -94.1950],
-    [36.3560, -94.2030], [36.3680, -94.2100], [36.3490, -94.2010],
-    [36.3610, -94.2280]
+    [36.3556, -94.1949], [36.3571, -94.2057], [36.3594, -94.2100],
+    [36.3550, -94.2135], [36.3575, -94.2303], [36.3565, -94.1867],
+    [36.3544, -94.2101], [36.3676, -94.2005], [36.3431, -94.1967],
+    [36.3468, -94.2090], [36.3612, -94.2093], [36.3567, -94.2008],
+    [36.3474, -94.2108]
   ];
   map.fitBounds(L.latLngBounds(allCoords).pad(0.15));
 })();
