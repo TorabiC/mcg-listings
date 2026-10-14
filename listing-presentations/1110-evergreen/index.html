@@ -1703,7 +1703,7 @@ if (window.self !== window.top) {
   // Nav: keep fixed but offset below Webflow's 72px global nav, transparent background
   var navEl = document.querySelector('.nav');
   if (navEl) {
-    navEl.style.top = '72px';
+    navEl.style.top = '144px';
     navEl.style.background = 'transparent';
     navEl.style.backdropFilter = 'none';
     navEl.style.webkitBackdropFilter = 'none';
@@ -1712,7 +1712,7 @@ if (window.self !== window.top) {
     navStyle.textContent = [
       '.nav-links a { color: rgba(255,255,255,0.9) !important; text-shadow: 0 1px 4px rgba(0,0,0,0.7); }',
       '.nav-links a:hover { color: var(--gold) !important; }',
-      '@media(max-width:860px){.nav-links{top:136px !important; background:rgba(22,22,42,0.95) !important; backdrop-filter:blur(12px) !important;}}'
+      '@media(max-width:860px){.nav-links{top:208px !important; background:rgba(22,22,42,0.95) !important; backdrop-filter:blur(12px) !important;}}'
     ].join('\n');
     document.head.appendChild(navStyle);
   }
@@ -1723,14 +1723,14 @@ if (window.self !== window.top) {
     var screenH = window.screen.availHeight || window.screen.height || 900;
     var heroH = Math.max(720, screenH - 180);
     heroEl.style.minHeight = heroH + 'px';
-    heroEl.style.paddingTop = '156px';
+    heroEl.style.paddingTop = '220px';
     heroEl.style.background = 'linear-gradient(180deg, rgba(22,22,42,0.45) 0%, rgba(22,22,42,0.12) 30%, rgba(22,22,42,0.10) 50%, rgba(22,22,42,0.30) 70%, rgba(22,22,42,0.65) 85%, transparent 100%), url(hero.jpg) center bottom/cover no-repeat';
   }
 
   // Listen for parent viewport height to refine hero sizing
   window.addEventListener('message', function(e) {
     if (e.data && e.data.type === 'parentViewportHeight' && heroEl) {
-      heroEl.style.minHeight = Math.max(720, e.data.height - 136) + 'px';
+      heroEl.style.minHeight = Math.max(720, e.data.height - 208) + 'px';
     }
   });
 }
