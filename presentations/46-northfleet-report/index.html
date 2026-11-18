@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-trk-page="46-northfleet-report">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -1136,7 +1136,7 @@ if(IN_FRAME){
   };
   document.addEventListener("click",e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const el=document.getElementById(a.getAttribute("href").slice(1));if(el){e.preventDefault();el.scrollIntoView({block:"start"});}},true);
   addEventListener("message",e=>{const d=e.data;if(!d||typeof d!=="object")return;
-    if(d.type==="nfParent"){OFF=+d.top||0;if(d.vh&&Math.abs(d.vh-PVH)>40){PVH=+d.vh;document.documentElement.style.setProperty("--pvh",Math.max(640,PVH)+"px");}
+    if(d.type==="nfParent"){if(window.__trk){__trk.touch();if(d.test)__trk.setTest(true);}OFF=+d.top||0;if(d.vh&&Math.abs(d.vh-PVH)>40){PVH=+d.vh;document.documentElement.style.setProperty("--pvh",Math.max(640,PVH)+"px");}
       if(!ticking){ticking=true;requestAnimationFrame(onScroll);}}});
   let lastH=0;const rep=()=>{const hh=document.documentElement.scrollHeight;if(Math.abs(hh-lastH)>2){lastH=hh;post({type:"listingHeight",height:hh});}};
   addEventListener("load",rep);addEventListener("resize",rep);
@@ -1427,8 +1427,65 @@ $$("#analytics .acard[id]").forEach(c=>anObs.observe(c));
 let rz; addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(()=>{renderViews();renderCmp();lmap.invalidateSize();fitMin();},200);});
 const mq=matchMedia("(prefers-color-scheme: dark)"); mq.addEventListener&&mq.addEventListener("change",()=>{renderViews();renderCmp();});
 
-/* engagement events: queued locally; a logging endpoint is added separately */
-const TRK=(function(){const q=window.__nfEvents=[];function ev(k,l){if(q.length<400)q.push({t:new Date().toISOString(),k:k,l:String(l).slice(0,80)});}return {ev:ev,state:()=>"local"};})();
+/* MCG page engagement tracker (reusable): posts one upserted row per visit to the MCG Make webhook */
+const TRK=(function(){
+  const HOOK="https://hook.us2.make.com/jsmmjd4g82qy644ixstrhgmy8h476rvm";
+  const PAGE=(document.documentElement.dataset.trkPage||"page").toLowerCase().replace(/[^a-z0-9-]/g,"").slice(0,60)||"page";
+  const LABEL={tab:"Tab",nav:"Menu",map_layer:"Map layer",map_pin:"Map pin",history_open:"Opened history",history_close:"Closed history",
+    card_map:"Card map",jump_from_map:"Jumped from map",listing_link:"Opened listing",rental_link:"Opened rental listing",an_jump:"Analytics jump",
+    an_metric:"Analytics metric",an_period:"Analytics period",an_compare:"Analytics compare",vm_mode:"View mode",section:"Section"};
+  const HOME_K={history_open:1,map_pin:1,listing_link:1,rental_link:1,card_map:1};
+  const rid=()=>{let s="";const a=new Uint8Array(10);(window.crypto||{getRandomValues:x=>x.map(()=>Math.random()*256|0)}).getRandomValues(a);a.forEach(b=>s+=("0"+b.toString(16)).slice(-2));return s;};
+  const clean=v=>String(v==null?"":v).replace(/[\u0000-\u001f\u007f"\\<>]/g," ").replace(/\s+/g," ").trim().slice(0,90);
+  let vid;try{vid=localStorage.getItem("mcgVid");if(!/^[a-z0-9]{8,32}$/.test(vid||"")){vid=rid();localStorage.setItem("mcgVid",vid);}}catch(e){vid="ns-"+rid().slice(0,12);}
+  const visit=rid(), started=new Date().toISOString();
+  let test=false, active=0, lastInput=Date.now(), lastAt=started, dirty=true, sentSig="", lastSend=0;
+  const evs=[], homes=[], secT={};
+  const ua=navigator.userAgent||"";
+  const device=clean((/iPad|Tablet/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?"Tablet":/Mobi|iPhone|Android/.test(ua)?"Phone":"Desktop")+" · "+
+    (/Edg\//.test(ua)?"Edge":/CriOS|Chrome\//.test(ua)?"Chrome":/FxiOS|Firefox\//.test(ua)?"Firefox":/Safari\//.test(ua)?"Safari":"Other")+" · "+
+    (/iPhone|iPad/.test(ua)?"iOS":/Android/.test(ua)?"Android":/Mac OS X/.test(ua)?"Mac":/Windows/.test(ua)?"Windows":"Other"));
+  const tfmt=d=>{try{return d.toLocaleTimeString("en-US",{timeZone:"America/Chicago",hour:"numeric",minute:"2-digit",second:"2-digit"});}catch(e){return d.toISOString().slice(11,19);}};
+  function touch(){lastInput=Date.now();}
+  ["pointerdown","pointermove","keydown","wheel","touchstart","scroll"].forEach(t=>addEventListener(t,touch,{passive:true}));
+  function ev(k,l){
+    touch();const lab=clean(l);if(evs.length<300)evs.push(tfmt(new Date())+"  "+(LABEL[k]||clean(k))+(lab?": "+lab:""));
+    if(HOME_K[k]&&lab&&homes.indexOf(lab)<0&&homes.length<60)homes.push(lab);
+    lastAt=new Date().toISOString();dirty=true;
+  }
+  function curSec(){
+    const mid=(typeof VH==="function"?VH():innerHeight)/2;let name="";
+    document.querySelectorAll("[data-sec]").forEach(s=>{const r=typeof VR==="function"?VR(s):s.getBoundingClientRect();if(r.top<=mid&&r.bottom>=mid)name=s.dataset.sec;});
+    return name;
+  }
+  let lastSec="";
+  setInterval(()=>{
+    if(document.visibilityState!=="visible"||Date.now()-lastInput>90000)return;
+    active+=5;const s=curSec();if(s){secT[s]=(secT[s]||0)+5;if(s!==lastSec){lastSec=s;ev("section",s);}}
+    lastAt=new Date().toISOString();dirty=true;
+  },5000);
+  function payload(){
+    const secs=Object.keys(secT).sort((a,b)=>secT[b]-secT[a]).map(k=>k+": "+(secT[k]/60).toFixed(1)+" min");
+    const tail=evs.length>120?["(first "+(evs.length-120)+" events not shown)"].concat(evs.slice(-120)):evs;
+    return new URLSearchParams({visit:visit,page:PAGE,vid:vid,started:started,last:lastAt,mins:(active/60).toFixed(1),device:device,
+      sections:secs.join("\\n"),homes:homes.join("\\n"),count:String(evs.length),events:tail.join("\\n"),test:test?"1":"0"});
+  }
+  function send(final){
+    if(!dirty&&!final)return;
+    if(active<5&&evs.length===0)return; /* ignore bounces with no activity */
+    const body=payload(),sig=body.toString();if(sig===sentSig)return;
+    sentSig=sig;dirty=false;lastSend=Date.now();
+    try{if(final&&navigator.sendBeacon&&navigator.sendBeacon(HOOK,body))return;}catch(e){}
+    try{fetch(HOOK,{method:"POST",body:body,mode:"no-cors",keepalive:true,credentials:"omit"});}catch(e){}
+  }
+  setInterval(()=>{if(Date.now()-lastSend>=45000)send(false);},15000);
+  addEventListener("pagehide",()=>send(true));
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")send(true);});
+  function setTest(v){if(v&&!test){test=true;dirty=true;}}
+  try{if(/(^|[?&])mcgtest=1(&|$)/.test(location.search))setTest(true);}catch(e){}
+  window.__trk={touch:touch,setTest:setTest};
+  return {ev:ev,state:()=>"on"};
+})();
 
 setTab("sale",false);
 renderViews(); renderCmp(); observeRv(); onScroll();
