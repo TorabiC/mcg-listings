@@ -782,6 +782,28 @@ table.ev td:first-child{white-space:nowrap;width:96px}
 table.ev td:last-child{text-align:right;white-space:nowrap}
 .down{color:var(--crimson);font-weight:700}.up{color:var(--ok);font-weight:700}
 .tscroll{overflow-x:auto}
+/* ---------- larger card type (rev 11-17) ---------- */
+.subject .price,.comp .price{font-size:25px}
+.subject .facts,.comp .facts{font-size:15px}
+.subject .small,.comp .small{font-size:14px}
+.subject .badge,.comp .badge{font-size:11.5px}
+.subject .summary b,.comp .summary b{font-size:19px!important}
+.subject .summary span,.comp .summary span{font-size:11.5px}
+.subject .note,.comp .note{font-size:14.5px}
+.subject .btn,.comp .btn{font-size:13px;padding:10px 15px}
+.comp h3{font-size:21px}
+.cycle h4{font-size:13px}
+table.ev{font-size:15px}
+table.ev td{padding:7px 10px 7px 0}
+table.ev td:first-child{width:112px}
+.hnote{margin-bottom:4px;letter-spacing:.5px}
+@media (max-width:560px){
+  .subject{padding:18px 16px}.comp{padding:14px 14px}
+  .subject .price,.comp .price{font-size:23px}
+  .comp h3{font-size:19px}
+  table.ev{font-size:14px}table.ev td:first-child{width:auto}
+  .subject .acts .btn,.comp .acts .btn{flex:1 1 auto;text-align:center}
+}
 /* ---------- market ---------- */
 .seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:3px;overflow:hidden;margin:0 0 16px;background:var(--panel)}
 .seg button{font:inherit;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:0;background:transparent;color:var(--text);padding:10px 16px;cursor:pointer}
@@ -1182,12 +1204,15 @@ function evRow(e){let price=fmt$(e.price),cls="";const t=e.type;let label=t;
   if(t==="Price Increase"){const m=e.change.match(/\$([\d,]+)->\$([\d,]+)/);if(m){label="Price raised from $"+m[1];cls="up";}}
   if(t==="New Listing")label="Listed"; if(t==="Back On Market")label="Back on market";
   return '<tr><td>'+fmtD(e.date)+'</td><td>'+esc(label)+(e.dom!=null&&t!=="New Listing"?' <span class="muted small">· day '+e.dom+'</span>':'')+'</td><td class="'+cls+'">'+price+'</td></tr>';}
-function historyHTML(c){let h='';
+function historyHTML(c){const blocks=[];
   c.listings.forEach((L,i)=>{const last=L.events[L.events.length-1];
     const outcome=last.type==="Withdrawn"?"Withdrawn":last.type==="Expired"?"Expired":last.type==="Sold"?"Sold":last.type==="Pending"?"Pending":(c.status==="Sold"&&i===c.listings.length-1?"Sold":"Active");
-    h+='<div class="cycle"><h4>Listing '+(i+1)+' of '+c.listings.length+' · MLS '+esc(L.mls)+' · '+esc(outcome)+'</h4><div class="muted small">'+esc(L.office||"")+'</div><div class="tscroll"><table class="ev"><tbody>'+L.events.map(evRow).join("")+'</tbody></table></div></div>';});
-  c.rentals.forEach(r=>{h+='<div class="cycle"><h4>Rental listing · MLS '+esc(r.mls)+'</h4><div class="tscroll"><table class="ev"><tbody>'+r.events.map(e=>'<tr><td>'+fmtD(e.date)+'</td><td>'+(e.change_type==="New Listing"?"Listed for rent":esc(e.change_type))+'</td><td>'+fmt$(e.price)+' / month</td></tr>').join("")+'</tbody></table></div></div>';});
-  return h;}
+    const evs=L.events.slice().reverse();
+    blocks.push({d:last.date,i:i,h:'<div class="cycle"><h4>Listing '+(i+1)+' of '+c.listings.length+' · MLS '+esc(L.mls)+' · '+esc(outcome)+'</h4><div class="muted small">'+esc(L.office||"")+'</div><div class="tscroll"><table class="ev"><tbody>'+evs.map(evRow).join("")+'</tbody></table></div></div>'});});
+  c.rentals.forEach(r=>{const evs=r.events.slice().reverse();
+    blocks.push({d:r.events[r.events.length-1].date,i:-1,h:'<div class="cycle"><h4>Rental listing · MLS '+esc(r.mls)+'</h4><div class="tscroll"><table class="ev"><tbody>'+evs.map(e=>'<tr><td>'+fmtD(e.date)+'</td><td>'+(e.change_type==="New Listing"?"Listed for rent":esc(e.change_type))+'</td><td>'+fmt$(e.price)+' / month</td></tr>').join("")+'</tbody></table></div></div>'});});
+  blocks.sort((a,b)=>String(b.d).localeCompare(String(a.d))||b.i-a.i);
+  return '<div class="muted small hnote">Newest activity first</div>'+blocks.map(b=>b.h).join("");}
 function summaryHTML(c,views){const we=c.withdrawn_or_expired.length;
   const cells=[[c.times_listed_for_sale,c.times_listed_for_sale===1?"time listed":"times listed"],[c.cuts.length,c.cuts.length===1?"price cut":"price cuts"],[we,"withdrawn or expired"],
     [c.cycle_change_pct==null?"—":(c.cycle_change_pct>0?"+":"")+c.cycle_change_pct+"%",c.status==="Sold"?"list to final list":"since this listing began"],[views||c.homes_views||"Not shown","Homes.com views"]];
@@ -1206,7 +1231,7 @@ function rentalNote(c){if(!c.rentals.length)return"";return c.rentals.map(r=>{co
 (function(){const c=subj;
   $("#subjectCard").innerHTML='<div class="top" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px"><div>'+badge(c)+' <span class="muted small">MLS '+esc(c.mls)+'</span>'+factsHTML(c)+'</div><div>'+priceLine(c)+'</div></div>'+
     summaryHTML(c,"61,443")+
-    '<div class="acts"><a class="btn primary" target="_blank" rel="noopener" data-trk="idx" data-k="'+esc(c.address)+'" href="'+esc(c.idx)+'">View your listing</a><button class="btn" data-toggle="subj" aria-expanded="false">Show full history</button></div>'+
+    '<div class="acts"><a class="btn primary" target="_blank" rel="noopener" data-trk="mcg" data-k="'+esc(c.address)+' (MCG listing page)" href="https://www.masoncapitalgroup.com/property-listings/featured-listings/46-northfleet-drive-bella-vista-ar">View your listing</a><button class="btn" data-toggle="subj" aria-expanded="false">Show full history</button></div>'+
     '<div class="hist" id="h-subj" hidden>'+historyHTML(c)+'</div>';})();
 
 /* ---------- market map ---------- */
